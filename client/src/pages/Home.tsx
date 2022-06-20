@@ -135,8 +135,8 @@ const Home: React.FC = () => {
           </div>
           {loading && <div className="loading-spinner" />}
         </section>
-        <div className="observer" ref={targetRef} />
       </div>
+      <div className="observer" ref={targetRef} />
     </Base>
   );
 };
