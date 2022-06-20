@@ -1,10 +1,11 @@
 import React from "react";
 import styled from "styled-components";
-import Input from "../components/common/Input";
+import FloatingIconButton from "../components/common/FloatingIconButton";
 import Header from "../components/Header";
 import MenuModal from "../components/MenuModal";
 import ProfileModal from "../components/ProfileModal";
 import { useSelector } from "../store";
+import AddIcon from "@mui/icons-material/Add";
 
 const Base = styled.section`
   display: flex;
@@ -21,7 +22,9 @@ const Home: React.FC = () => {
       <Header />
       {menuModalOpen && <MenuModal />}
       {profileModalOpen && <ProfileModal />}
-      <Input />
+      <FloatingIconButton>
+        <AddIcon />
+      </FloatingIconButton>
     </Base>
   );
 };
