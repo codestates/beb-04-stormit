@@ -1,39 +1,50 @@
-import { Divider } from "@mui/material";
 import React from "react";
 import styled from "styled-components";
-import { useDispatch } from "../store";
-import { modalActions } from "../store/modalSlice";
-import Backdrop from "./common/Backdrop";
+import palette from "../styles/palette";
+import ListItem from "./common/ListItem";
 
 const Base = styled.div`
   position: absolute;
   width: 16rem; // 256px
   top: 3.5rem; // 56px // 헤더의 높이만큼 아래로
   left: 0;
-  height: calc(100vh - 3.5rem); // top이 3.5rem이기 때문에
   background-color: white;
   z-index: 999;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1), 0px 16px 32px rgba(0, 0, 0, 0.2);
+  padding-bottom: 1rem;
+
+  .menu-modal-title-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+
+    padding: 1rem;
+
+    .menu-modal-title {
+      font-size: 1.25rem; // 20px
+      font-weight: 500;
+    }
+
+    .menu-modal-subtitle {
+      font-size: 0.75rem; // 12px
+      color: ${palette.gray[400]};
+    }
+  }
 `;
 
 const MenuModal: React.FC = () => {
-  const dispatch = useDispatch();
-
-  const closeMenuModal = () => {
-    dispatch(modalActions.closeMenuModal());
-  };
-
   return (
-    <>
-      <Backdrop onClick={closeMenuModal} />
-
-      <Base>
-        <p>aaa</p>
-        <Divider />
-        <p>aaa</p>
-        <Divider />
-        <p>ccc</p>
-      </Base>
-    </>
+    <Base>
+      <div className="menu-modal-title-wrapper">
+        <p className="menu-modal-title">Community</p>
+        <p className="menu-modal-subtitle">this is community list modal</p>
+      </div>
+      <ListItem>Community</ListItem>
+      <ListItem>Community</ListItem>
+      <ListItem>Community</ListItem>
+      <ListItem>Community</ListItem>
+      <ListItem>Community</ListItem>
+    </Base>
   );
 };
 
