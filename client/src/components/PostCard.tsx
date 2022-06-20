@@ -8,6 +8,7 @@ import palette from "../styles/palette";
 import Divider from "./common/Divider";
 import { parseDate, shortenPostContents } from "../lib/utils";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
+import IconButton from "./common/IconButton";
 
 const CONTENTS_PLACEHOLDER =
   "싶이 수 우리 이상은 힘있다. 뛰노는 듣기만 너의 있으며 행복스럽고 위하여서 밝은 부패뿐이다 같이 행복스럽고 인생을 그들은 것이 과실이 소금이라 것이다 그들은 것이 과실이 소금이라 것이다 그들은 것이 과실이 소금이라 것이다 그들은 것이 과실이 소금이라 것이다 그들은 것이 과실이 소금이라 것이다 그들은 것이 과실이 소금이라 것이다 그들은 것이 과실이 소금이라 것이다 ";
@@ -29,11 +30,6 @@ const Base = styled.li`
     display: flex;
     align-items: center;
     gap: 0.5rem; // 8px
-  }
-
-  .post-more-icon {
-    color: ${palette.gray[500]};
-    cursor: pointer;
   }
 
   .time {
@@ -101,7 +97,9 @@ const PostCard: React.FC = () => {
             <span className="views">0 views</span>
             <span className="time">{parseDate(new Date())}</span>
           </p>
-          <MoreVertIcon className="post-more-icon" />
+          <IconButton>
+            <MoreVertIcon />
+          </IconButton>
         </div>
         <div className="post-title-area-wrapper">
           <p className="post-title">이것은 게시물의 제목입니다.</p>
