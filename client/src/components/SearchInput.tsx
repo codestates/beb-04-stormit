@@ -35,6 +35,10 @@ const Base = styled.div`
     border: none;
     font-size: 1rem;
   }
+
+  .search-input-close-icon {
+    cursor: pointer;
+  }
 `;
 
 const SearchInput: React.FC = () => {
@@ -67,7 +71,10 @@ const SearchInput: React.FC = () => {
           ref={inputRef}
         />
       </div>
-      <CloseIcon onClick={closeSearchInputModal} />
+      <CloseIcon
+        className="search-input-close-icon"
+        onClick={closeSearchInputModal}
+      />
     </Base>
   );
 };

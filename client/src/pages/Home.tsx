@@ -8,6 +8,7 @@ import { useSelector } from "../store";
 import CreateIcon from "@mui/icons-material/Create";
 import PostCard from "../components/PostCard";
 import NavigationRail from "../components/NavigationRail";
+import LoadingSpinner from "../components/common/LoadingSpinner";
 
 const FAKE_ARRAY = Array(10).fill(0);
 
@@ -42,6 +43,12 @@ const Base = styled.section`
 
   .navigation-rail {
     display: none;
+  }
+
+  .loading-spinner-wrapper {
+    display: flex;
+    justify-content: center;
+    padding: 2rem;
   }
 
   // 600px
@@ -133,7 +140,11 @@ const Home: React.FC = () => {
               <CreateIcon />
             </FloatingIconButton>
           </div>
-          {loading && <div className="loading-spinner" />}
+          {loading && (
+            <div className="loading-spinner-wrapper">
+              <LoadingSpinner />
+            </div>
+          )}
         </section>
       </div>
       <div className="observer" ref={targetRef} />
