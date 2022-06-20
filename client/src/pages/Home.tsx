@@ -24,6 +24,10 @@ const Base = styled.section`
     padding: 0.5rem; // 16px
   } */
 
+  .body {
+    display: flex;
+  }
+
   .section-title {
     font-size: 2rem; // 32px
     text-align: center;
@@ -43,14 +47,14 @@ const Base = styled.section`
   // 600px
   @media screen and (min-width: 37.5rem) {
     .contents {
-      margin: 0 2rem; // 32px
+      margin: 0 auto;
+      max-width: 37.5rem; // 600px
     }
   }
 
   // 1240px
   @media screen and (min-width: 77.5rem) {
     .contents {
-      margin: 0 auto;
       max-width: 52.5rem; // 840px
     }
 
@@ -107,30 +111,32 @@ const Home: React.FC = () => {
   return (
     <Base>
       <Header />
-      <NavigationRail className="navigation-rail" />
-      {menuModalOpen && <MenuModal />}
-      {profileModalOpen && <ProfileModal />}
-      <section className="contents">
-        <div className="contents-top">
-          {/* <h1 className="section-title">모든 게시글</h1> */}
-          {/* <p className="posts-sort">
+      <div className="body">
+        <NavigationRail className="navigation-rail" />
+        {menuModalOpen && <MenuModal />}
+        {profileModalOpen && <ProfileModal />}
+        <section className="contents">
+          <div className="contents-top">
+            {/* <h1 className="section-title">모든 게시글</h1> */}
+            {/* <p className="posts-sort">
             <span className="newest">최신순</span>
             <span className="popular">인기순</span>
           </p> */}
-        </div>
-        <ul className="posts-wrapper">
-          {postData.map((_, index) => (
-            <PostCard key={index} />
-          ))}
-        </ul>
-        <div className="fab-wrapper">
-          <FloatingIconButton>
-            <CreateIcon />
-          </FloatingIconButton>
-        </div>
-        {loading && <div className="loading-spinner" />}
-      </section>
-      <div className="observer" ref={targetRef} />
+          </div>
+          <ul className="posts-wrapper">
+            {postData.map((_, index) => (
+              <PostCard key={index} />
+            ))}
+          </ul>
+          <div className="fab-wrapper">
+            <FloatingIconButton>
+              <CreateIcon />
+            </FloatingIconButton>
+          </div>
+          {loading && <div className="loading-spinner" />}
+        </section>
+        <div className="observer" ref={targetRef} />
+      </div>
     </Base>
   );
 };

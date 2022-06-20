@@ -3,11 +3,13 @@ import { createSlice } from "@reduxjs/toolkit";
 interface modalState {
   menuModalOpen: boolean;
   profileModalOpen: boolean;
+  searchInputModalOpen: boolean;
 }
 
 const initialState: modalState = {
   menuModalOpen: false,
   profileModalOpen: false,
+  searchInputModalOpen: false,
 };
 
 export const modalSlice = createSlice({
@@ -27,6 +29,12 @@ export const modalSlice = createSlice({
     },
     closeProfileModal(state) {
       state.profileModalOpen = false;
+    },
+    openSearchInputModal(state) {
+      state.searchInputModalOpen = true;
+    },
+    closeSearchInputModal(state) {
+      state.searchInputModalOpen = false;
     },
   },
 });

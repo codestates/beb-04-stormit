@@ -7,16 +7,20 @@ import PermIdentityIcon from "@mui/icons-material/PermIdentity";
 import CloseIcon from "@mui/icons-material/Close";
 import { useDispatch, useSelector } from "../store";
 import { modalActions } from "../store/modalSlice";
+import SearchInput from "./SearchInput";
 
 const Base = styled.header`
   display: flex;
   justify-content: space-between;
   align-items: center;
 
+  position: sticky;
+  top: 0;
   color: white;
   padding: 1rem; // 16px
   background-color: ${theme.primary};
   height: 3.5rem; // 56px
+  box-shadow: 0px 0px 9px 3px rgba(41, 41, 41, 0.25);
 
   .header-left {
     cursor: pointer;
@@ -49,6 +53,8 @@ const Base = styled.header`
 
   // 1240px
   @media screen and (min-width: 77.5rem) {
+    position: static;
+
     .header-left {
       display: none;
     }
@@ -62,6 +68,9 @@ const Base = styled.header`
 const Header: React.FC = () => {
   const menuModalOpen = useSelector((state) => state.modal.menuModalOpen);
   const profileModalOpen = useSelector((state) => state.modal.profileModalOpen);
+  const searchInputModalOpen = useSelector(
+    (state) => state.modal.searchInputModalOpen
+  );
 
   const dispatch = useDispatch();
 
@@ -81,8 +90,13 @@ const Header: React.FC = () => {
     dispatch(modalActions.closeProfileModal());
   };
 
+  const openSearchInputModal = () => {
+    dispatch(modalActions.openSearchInputModal());
+  };
+
   return (
     <Base>
+      {searchInputModalOpen && <SearchInput />}
       <div className="header-left">
         {menuModalOpen && <CloseIcon onClick={closeMenuModal} />}
         {!menuModalOpen && <MenuIcon onClick={openMenuModal} />}
@@ -92,7 +106,7 @@ const Header: React.FC = () => {
         <span className="header-text">Stormit</span>
       </div>
       <div className="header-right">
-        <SearchIcon />
+        <SearchIcon onClick={openSearchInputModal} />
         {profileModalOpen && <CloseIcon onClick={closeProfileModal} />}
         {!profileModalOpen && <PermIdentityIcon onClick={openProfileModal} />}
       </div>
