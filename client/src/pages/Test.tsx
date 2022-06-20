@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import Chip from "../components/common/Chip";
+import Dialog from "../components/common/Dialog";
 
 const Base = styled.section`
   display: flex;
@@ -13,14 +13,7 @@ const Base = styled.section`
 const Test: React.FC = () => {
   return (
     <Base>
-      <Chip size="small">Tag</Chip>
-      <Chip size="small">Very Very Long Tag</Chip>
-
-      <Chip size="medium">Tag</Chip>
-      <Chip size="large">Tag</Chip>
-      <Chip size="large">Very Long Tag</Chip>
-
-      <Chip size="large">Tag</Chip>
+      <Dialog>asdasdsd</Dialog>
     </Base>
   );
 };

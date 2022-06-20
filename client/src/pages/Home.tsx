@@ -5,8 +5,9 @@ import Header from "../components/Header";
 import MenuModal from "../components/MenuModal";
 import ProfileModal from "../components/ProfileModal";
 import { useSelector } from "../store";
-import AddIcon from "@mui/icons-material/Add";
+import CreateIcon from "@mui/icons-material/Create";
 import PostCard from "../components/PostCard";
+import NavigationRail from "../components/NavigationRail";
 
 const FAKE_ARRAY = Array(10).fill(0);
 
@@ -14,6 +15,53 @@ const Base = styled.section`
   display: flex;
   flex-direction: column;
   height: 100vh;
+
+  /* 
+  .contents-top {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem; // 8px
+    padding: 0.5rem; // 16px
+  } */
+
+  .section-title {
+    font-size: 2rem; // 32px
+    text-align: center;
+    font-weight: 500;
+  }
+
+  .fab-wrapper {
+    position: fixed;
+    right: 1rem; // 16px
+    bottom: 1rem; // 16px
+  }
+
+  .navigation-rail {
+    display: none;
+  }
+
+  // 600px
+  @media screen and (min-width: 37.5rem) {
+    .contents {
+      margin: 0 2rem; // 32px
+    }
+  }
+
+  // 1240px
+  @media screen and (min-width: 77.5rem) {
+    .contents {
+      margin: 0 auto;
+      max-width: 52.5rem; // 840px
+    }
+
+    .navigation-rail {
+      display: inherit;
+    }
+
+    .fab-wrapper {
+      display: none;
+    }
+  }
 `;
 
 const Home: React.FC = () => {
@@ -45,6 +93,7 @@ const Home: React.FC = () => {
     });
   }, []);
 
+  // 무한스크롤
   useEffect(() => {
     if (!targetRef?.current) return;
 
@@ -58,17 +107,29 @@ const Home: React.FC = () => {
   return (
     <Base>
       <Header />
+      <NavigationRail className="navigation-rail" />
       {menuModalOpen && <MenuModal />}
       {profileModalOpen && <ProfileModal />}
-      <ul className="posts-wrapper">
-        {postData.map((_, index) => (
-          <PostCard key={index} />
-        ))}
-      </ul>
-      <FloatingIconButton>
-        <AddIcon />
-      </FloatingIconButton>
-      {loading && <div className="loading-spinner" />}
+      <section className="contents">
+        <div className="contents-top">
+          {/* <h1 className="section-title">모든 게시글</h1> */}
+          {/* <p className="posts-sort">
+            <span className="newest">최신순</span>
+            <span className="popular">인기순</span>
+          </p> */}
+        </div>
+        <ul className="posts-wrapper">
+          {postData.map((_, index) => (
+            <PostCard key={index} />
+          ))}
+        </ul>
+        <div className="fab-wrapper">
+          <FloatingIconButton>
+            <CreateIcon />
+          </FloatingIconButton>
+        </div>
+        {loading && <div className="loading-spinner" />}
+      </section>
       <div className="observer" ref={targetRef} />
     </Base>
   );

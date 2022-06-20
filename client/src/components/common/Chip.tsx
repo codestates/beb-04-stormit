@@ -1,5 +1,6 @@
 import React from "react";
 import styled, { css } from "styled-components";
+import palette from "../../styles/palette";
 import theme from "../../styles/theme";
 
 const getChipSize = (size?: "small" | "medium" | "large") => {
@@ -40,6 +41,11 @@ const Base = styled.div<BaseProps>`
   border-radius: 1.5rem; // 24px
   background-color: ${theme.primary};
   color: white;
+  cursor: pointer;
+
+  &:hover {
+    background-color: ${palette.blue[600]};
+  }
 
   ${({ size }) => getChipSize(size)}
 `;

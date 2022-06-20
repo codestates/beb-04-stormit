@@ -27,6 +27,36 @@ const Base = styled.header`
     gap: 1rem; // 16px
     cursor: pointer;
   }
+
+  .header-left-desktop {
+    display: none;
+    align-items: center;
+    gap: 1rem; // 16px
+
+    cursor: pointer;
+
+    .header-logo {
+      background-color: white;
+      border-radius: 50%;
+      width: 2rem; // 32px
+      height: 2rem; // 32px
+    }
+
+    .header-text {
+      font-size: 1.25rem;
+    }
+  }
+
+  // 1240px
+  @media screen and (min-width: 77.5rem) {
+    .header-left {
+      display: none;
+    }
+
+    .header-left-desktop {
+      display: flex;
+    }
+  }
 `;
 
 const Header: React.FC = () => {
@@ -56,6 +86,10 @@ const Header: React.FC = () => {
       <div className="header-left">
         {menuModalOpen && <CloseIcon onClick={closeMenuModal} />}
         {!menuModalOpen && <MenuIcon onClick={openMenuModal} />}
+      </div>
+      <div className="header-left-desktop">
+        <div className="header-logo" />
+        <span className="header-text">Stormit</span>
       </div>
       <div className="header-right">
         <SearchIcon />

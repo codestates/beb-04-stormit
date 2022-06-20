@@ -34,6 +34,11 @@ const Base = styled.li`
   .post-title {
     font-size: 0.875rem; // 14px
     color: ${theme.primary};
+    cursor: pointer;
+
+    &:hover {
+      opacity: 0.7;
+    }
   }
 
   .post-comments-views-wrapper {

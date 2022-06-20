@@ -16,9 +16,6 @@ const Base = styled.button`
   border-radius: 50%;
   border: none;
   color: white;
-  position: fixed;
-  bottom: 1rem; // 16px
-  right: 1rem; // 16px
   cursor: pointer;
 
   &:hover {
