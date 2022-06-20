@@ -105,8 +105,8 @@ const Header: React.FC = () => {
         {!menuModalOpen && <MenuIcon onClick={openMenuModal} />}
       </div>
       <div className="header-left-desktop" onClick={() => navigate("/")}>
-        <span className="header-text">Stormit</span>
         <div className="header-logo" />
+        <span className="header-text">Stormit</span>
       </div>
       <div className="header-right">
         <SearchIcon onClick={openSearchInputModal} />
