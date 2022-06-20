@@ -1,27 +1,136 @@
-import React from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import styled from "styled-components";
-import Input from "../components/common/Input";
+import FloatingIconButton from "../components/common/FloatingIconButton";
 import Header from "../components/Header";
 import MenuModal from "../components/MenuModal";
 import ProfileModal from "../components/ProfileModal";
 import { useSelector } from "../store";
+import CreateIcon from "@mui/icons-material/Create";
+import PostCard from "../components/PostCard";
+import NavigationRail from "../components/NavigationRail";
+
+const FAKE_ARRAY = Array(10).fill(0);
 
 const Base = styled.section`
   display: flex;
   flex-direction: column;
   height: 100vh;
+
+  /* 
+  .contents-top {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem; // 8px
+    padding: 0.5rem; // 16px
+  } */
+
+  .section-title {
+    font-size: 2rem; // 32px
+    text-align: center;
+    font-weight: 500;
+  }
+
+  .fab-wrapper {
+    position: fixed;
+    right: 1rem; // 16px
+    bottom: 1rem; // 16px
+  }
+
+  .navigation-rail {
+    display: none;
+  }
+
+  // 600px
+  @media screen and (min-width: 37.5rem) {
+    .contents {
+      margin: 0 2rem; // 32px
+    }
+  }
+
+  // 1240px
+  @media screen and (min-width: 77.5rem) {
+    .contents {
+      margin: 0 auto;
+      max-width: 52.5rem; // 840px
+    }
+
+    .navigation-rail {
+      display: inherit;
+    }
+
+    .fab-wrapper {
+      display: none;
+    }
+  }
 `;
 
 const Home: React.FC = () => {
+  const [loading, setLoading] = useState(false);
+  const [postData, setPostData] = useState(FAKE_ARRAY);
+
   const menuModalOpen = useSelector((state) => state.modal.menuModalOpen);
   const profileModalOpen = useSelector((state) => state.modal.profileModalOpen);
+
+  const targetRef = useRef<HTMLDivElement | null>(null);
+
+  // 무한스크롤
+  const observer = useMemo(() => {
+    return new IntersectionObserver((entries) => {
+      if (!targetRef?.current) return;
+
+      if (entries[0].isIntersecting) {
+        setLoading(true);
+
+        console.log("fetch triggered");
+
+        setTimeout(() => {
+          const FAKE_FETCH_ARRAY = Array(10).fill(0);
+
+          setPostData((postData) => [...postData, ...FAKE_FETCH_ARRAY]);
+          setLoading(false);
+        }, 1000);
+      }
+    });
+  }, []);
+
+  // 무한스크롤
+  useEffect(() => {
+    if (!targetRef?.current) return;
+
+    observer.observe(targetRef.current);
+
+    return () => {
+      observer.disconnect();
+    };
+  }, [observer]);
 
   return (
     <Base>
       <Header />
+      <NavigationRail className="navigation-rail" />
       {menuModalOpen && <MenuModal />}
       {profileModalOpen && <ProfileModal />}
-      <Input />
+      <section className="contents">
+        <div className="contents-top">
+          {/* <h1 className="section-title">모든 게시글</h1> */}
+          {/* <p className="posts-sort">
+            <span className="newest">최신순</span>
+            <span className="popular">인기순</span>
+          </p> */}
+        </div>
+        <ul className="posts-wrapper">
+          {postData.map((_, index) => (
+            <PostCard key={index} />
+          ))}
+        </ul>
+        <div className="fab-wrapper">
+          <FloatingIconButton>
+            <CreateIcon />
+          </FloatingIconButton>
+        </div>
+        {loading && <div className="loading-spinner" />}
+      </section>
+      <div className="observer" ref={targetRef} />
     </Base>
   );
 };

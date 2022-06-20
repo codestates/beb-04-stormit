@@ -22,7 +22,7 @@ const Base = styled.div`
 
     .menu-modal-title {
       font-size: 1.25rem; // 20px
-      font-weight: 500;
+      font-weight: 600;
     }
 
     .menu-modal-subtitle {
@@ -36,14 +36,15 @@ const MenuModal: React.FC = () => {
   return (
     <Base>
       <div className="menu-modal-title-wrapper">
-        <p className="menu-modal-title">Community</p>
-        <p className="menu-modal-subtitle">this is community list modal</p>
+        <p className="menu-modal-title">커뮤니티</p>
+        <p className="menu-modal-subtitle">다양한 커뮤니티를 찾아보세요</p>
       </div>
-      <ListItem>Community</ListItem>
-      <ListItem>Community</ListItem>
-      <ListItem>Community</ListItem>
-      <ListItem>Community</ListItem>
-      <ListItem>Community</ListItem>
+      <ListItem>All</ListItem>
+      <ListItem>공지사항</ListItem>
+      <ListItem>사는얘기</ListItem>
+      <ListItem>포럼</ListItem>
+      <ListItem>IT 행사</ListItem>
+      <ListItem>Q&amp;A</ListItem>
     </Base>
   );
 };
