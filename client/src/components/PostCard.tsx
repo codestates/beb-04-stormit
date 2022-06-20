@@ -6,6 +6,10 @@ import ChatBubbleOutlineOutlinedIcon from "@mui/icons-material/ChatBubbleOutline
 import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
 import palette from "../styles/palette";
 import Divider from "./common/Divider";
+import { parseDate, shortenPostContents } from "../lib/utils";
+
+const CONTENTS_PLACEHOLDER =
+  "싶이 수 우리 이상은 힘있다. 뛰노는 듣기만 너의 있으며 행복스럽고 위하여서 밝은 부패뿐이다 같이 행복스럽고 인생을 그들은 것이 과실이 소금이라 것이다 그들은 것이 과실이 소금이라 것이다 그들은 것이 과실이 소금이라 것이다 그들은 것이 과실이 소금이라 것이다 그들은 것이 과실이 소금이라 것이다 그들은 것이 과실이 소금이라 것이다 그들은 것이 과실이 소금이라 것이다 ";
 
 const Base = styled.li`
   display: flex;
@@ -82,7 +86,7 @@ const PostCard: React.FC = () => {
           <span className="votes">0 votes</span>
           <span className="replies">0 replies</span>
           <span className="views">0 views</span>
-          <span className="time">2022-06-20 00:00:00</span>
+          <span className="time">{parseDate(new Date())}</span>
         </p>
         <div className="post-title-area-wrapper">
           <p className="post-title">이것은 게시물의 제목입니다.</p>
@@ -98,9 +102,7 @@ const PostCard: React.FC = () => {
           </div> */}
         </div>
         <p className="post-contents">
-          싶이 수 우리 이상은 힘있다. 뛰노는 듣기만 너의 있으며, 행복스럽고
-          위하여서, 밝은 부패뿐이다. 같이, 행복스럽고 인생을 그들은 것이 과실이
-          소금이라 것이다...
+          {shortenPostContents(CONTENTS_PLACEHOLDER)}
         </p>
         <div className="chips-wrapper">
           <Chip size="small">Tag</Chip>
