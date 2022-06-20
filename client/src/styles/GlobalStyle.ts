@@ -16,6 +16,10 @@ const globalStyle = css`
   a {
     text-decoration: none;
   }
+
+  li {
+    list-style: none;
+  }
 `;
 
 const GlobalStyle = createGlobalStyle`

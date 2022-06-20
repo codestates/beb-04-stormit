@@ -15,12 +15,14 @@ export const modalSlice = createSlice({
   initialState,
   reducers: {
     openMenuModal(state) {
+      state.profileModalOpen = false;
       state.menuModalOpen = true;
     },
     closeMenuModal(state) {
       state.menuModalOpen = false;
     },
     openProfileModal(state) {
+      state.menuModalOpen = false;
       state.profileModalOpen = true;
     },
     closeProfileModal(state) {

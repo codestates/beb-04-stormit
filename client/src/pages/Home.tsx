@@ -1,15 +1,14 @@
 import React from "react";
 import styled from "styled-components";
+import Input from "../components/common/Input";
 import Header from "../components/Header";
 import MenuModal from "../components/MenuModal";
 import ProfileModal from "../components/ProfileModal";
 import { useSelector } from "../store";
 
 const Base = styled.section`
-  border: 1px solid red;
   display: flex;
   flex-direction: column;
-
   height: 100vh;
 `;
 
@@ -22,6 +21,7 @@ const Home: React.FC = () => {
       <Header />
       {menuModalOpen && <MenuModal />}
       {profileModalOpen && <ProfileModal />}
+      <Input />
     </Base>
   );
 };
