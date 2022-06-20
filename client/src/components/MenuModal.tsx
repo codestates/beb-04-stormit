@@ -9,7 +9,6 @@ const Base = styled.div`
   top: 3.5rem; // 56px // 헤더의 높이만큼 아래로
   left: 0;
   background-color: white;
-  z-index: 999;
   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1), 0px 16px 32px rgba(0, 0, 0, 0.2);
   padding-bottom: 1rem;
 
