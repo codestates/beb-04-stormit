@@ -1,7 +1,9 @@
 import { Divider } from "@mui/material";
 import React from "react";
 import styled from "styled-components";
-import ListItem from "./common/ListItem";
+import palette from "../styles/palette";
+import LogoutIcon from "@mui/icons-material/Logout";
+import { useSelector } from "../store";
 
 const Base = styled.div`
   position: absolute;
@@ -12,18 +14,48 @@ const Base = styled.div`
   background-color: white;
   z-index: 999;
   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1), 0px 16px 32px rgba(0, 0, 0, 0.2);
+
+  .profile-modal-item {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 0.5rem; // 8px
+
+    height: 3rem; // 48px
+    padding: 0.5rem; // 8px
+    font-size: 0.875rem; // 14px
+    cursor: pointer;
+
+    &:hover {
+      background-color: ${palette.gray[100]};
+    }
+  }
 `;
 
 const ProfileModal: React.FC = () => {
+  const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
+
   return (
     <Base>
-      <ListItem>마이페이지</ListItem>
-      <Divider />
-      <ListItem>개인정보 변경</ListItem>
-      <Divider />
-
-      <ListItem>로그아웃</ListItem>
-      <Divider />
+      {!isLoggedIn && (
+        <>
+          <div className="profile-modal-item">로그인</div>
+          <Divider />
+        </>
+      )}
+      {isLoggedIn && (
+        <>
+          <div className="profile-modal-item">마이페이지</div>
+          <Divider />
+          <div className="profile-modal-item">개인정보 변경</div>
+          <Divider />
+          <div className="profile-modal-item">
+            <LogoutIcon />
+            <span>로그아웃</span>
+          </div>
+          <Divider />
+        </>
+      )}
     </Base>
   );
 };
