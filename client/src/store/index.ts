@@ -4,12 +4,14 @@ import {
   useDispatch as useTypedDispatch,
   useSelector as useTypedSelector,
 } from "react-redux";
+import modalSlice from "./modalSlice";
 import userSlice from "./userSlice";
 // ...
 
 export const store = configureStore({
   reducer: {
     user: userSlice.reducer,
+    modal: modalSlice.reducer,
   },
 });
 
