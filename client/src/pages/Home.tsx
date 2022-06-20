@@ -1,32 +1,27 @@
 import React from "react";
 import styled from "styled-components";
-import Button from "../components/common/Button";
 import Header from "../components/Header";
-import { useDispatch, useSelector } from "../store";
-import { userActions } from "../store/userSlice";
+import MenuModal from "../components/MenuModal";
+import ProfileModal from "../components/ProfileModal";
+import { useSelector } from "../store";
 
 const Base = styled.section`
+  border: 1px solid red;
   display: flex;
   flex-direction: column;
 
-  .contents {
-    margin: 1rem; // 16px
-  }
+  height: 100vh;
 `;
 
 const Home: React.FC = () => {
-  const name = useSelector((state) => state.user.name);
-
-  const dispatch = useDispatch();
-
-  dispatch(userActions.setName("hi"));
+  const menuModalOpen = useSelector((state) => state.modal.menuModalOpen);
+  const profileModalOpen = useSelector((state) => state.modal.profileModalOpen);
 
   return (
     <Base>
       <Header />
-      <div className="contents">
-        <Button variant="contained">{name}</Button>
-      </div>
+      {menuModalOpen && <MenuModal />}
+      {profileModalOpen && <ProfileModal />}
     </Base>
   );
 };
