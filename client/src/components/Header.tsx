@@ -8,6 +8,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import { useDispatch, useSelector } from "../store";
 import { modalActions } from "../store/modalSlice";
 import SearchInput from "./SearchInput";
+import { useNavigate } from "react-router-dom";
 
 const Base = styled.header`
   display: flex;
@@ -72,6 +73,8 @@ const Header: React.FC = () => {
     (state) => state.modal.searchInputModalOpen
   );
 
+  const navigate = useNavigate();
+
   const dispatch = useDispatch();
 
   const openMenuModal = () => {
@@ -101,7 +104,7 @@ const Header: React.FC = () => {
         {menuModalOpen && <CloseIcon onClick={closeMenuModal} />}
         {!menuModalOpen && <MenuIcon onClick={openMenuModal} />}
       </div>
-      <div className="header-left-desktop">
+      <div className="header-left-desktop" onClick={() => navigate("/")}>
         <div className="header-logo" />
         <span className="header-text">Stormit</span>
       </div>

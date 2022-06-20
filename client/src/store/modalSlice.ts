@@ -36,6 +36,11 @@ export const modalSlice = createSlice({
     closeSearchInputModal(state) {
       state.searchInputModalOpen = false;
     },
+    closeAllModal(state) {
+      state.menuModalOpen = false;
+      state.profileModalOpen = false;
+      state.searchInputModalOpen = false;
+    },
   },
 });
 

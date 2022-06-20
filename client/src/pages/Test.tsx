@@ -1,25 +1,32 @@
 import React from "react";
 import styled from "styled-components";
+import Button from "../components/common/Button";
 import Dialog from "../components/common/Dialog";
-import LoadingSpinner from "../components/common/LoadingSpinner";
-import ToggleButton from "../components/common/ToggleButton";
-import SearchInput from "../components/SearchInput";
+import Input from "../components/common/Input";
 
 const Base = styled.section`
-  display: flex;
-  flex-direction: column;
   gap: 1rem; // 16px
-
   padding: 1rem; // 16px
+
+  .modal {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem; // 16px
+  }
 `;
 
 const Test: React.FC = () => {
   return (
     <Base>
-      <Dialog>asdasdsd</Dialog>
-      <SearchInput />
-      <LoadingSpinner />
-      <ToggleButton />
+      <Dialog className="modal">
+        <label>변경할 비밀번호</label>
+        <Input />
+        <label>비밀번호 확인</label>
+        <Input />
+        <Button variant="contained">변경하기</Button>
+      </Dialog>
     </Base>
   );
 };
