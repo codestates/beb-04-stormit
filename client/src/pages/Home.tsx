@@ -1,10 +1,6 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import styled from "styled-components";
 import FloatingIconButton from "../components/common/FloatingIconButton";
-import Header from "../components/Header";
-import MenuModal from "../components/MenuModal";
-import ProfileModal from "../components/ProfileModal";
-import { useSelector } from "../store";
 import CreateIcon from "@mui/icons-material/Create";
 import PostCard from "../components/PostCard";
 import NavigationRail from "../components/NavigationRail";
@@ -12,7 +8,7 @@ import LoadingSpinner from "../components/common/LoadingSpinner";
 
 const FAKE_ARRAY = Array(10).fill(0);
 
-const Base = styled.section`
+const Base = styled.div`
   display: flex;
   flex-direction: column;
   height: 100vh;
@@ -66,7 +62,7 @@ const Base = styled.section`
     }
 
     .navigation-rail {
-      display: inherit;
+      display: flex;
     }
 
     .fab-wrapper {
@@ -78,9 +74,6 @@ const Base = styled.section`
 const Home: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [postData, setPostData] = useState(FAKE_ARRAY);
-
-  const menuModalOpen = useSelector((state) => state.modal.menuModalOpen);
-  const profileModalOpen = useSelector((state) => state.modal.profileModalOpen);
 
   const targetRef = useRef<HTMLDivElement | null>(null);
 
@@ -117,11 +110,8 @@ const Home: React.FC = () => {
 
   return (
     <Base>
-      <Header />
       <div className="body">
         <NavigationRail className="navigation-rail" />
-        {menuModalOpen && <MenuModal />}
-        {profileModalOpen && <ProfileModal />}
         <section className="contents">
           <div className="contents-top">
             {/* <h1 className="section-title">모든 게시글</h1> */}

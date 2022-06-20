@@ -4,10 +4,11 @@ import styled from "styled-components";
 import palette from "../styles/palette";
 import LogoutIcon from "@mui/icons-material/Logout";
 import { useDispatch, useSelector } from "../store";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import DarkModeIcon from "@mui/icons-material/DarkMode";
 import ToggleButton from "./common/ToggleButton";
 import { themeActions } from "../store/themeSlice";
+import { modalActions } from "../store/modalSlice";
 
 const Base = styled.div`
   position: absolute;
@@ -17,7 +18,7 @@ const Base = styled.div`
   height: calc(100vh - 3.5rem); // top이 3.5rem이기 때문에
   background-color: white;
   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1), 0px 16px 32px rgba(0, 0, 0, 0.2);
-  z-index: 20;
+  z-index: 999;
 
   .profile-modal-item {
     display: flex;
@@ -63,10 +64,26 @@ const ProfileModal: React.FC = () => {
   const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
   const isDarkMode = useSelector((state) => state.theme.isDarkMode);
 
+  const navigate = useNavigate();
+
   const dispatch = useDispatch();
 
   const toggleDarkMode = () => {
     dispatch(themeActions.toggleDarkMode());
+  };
+
+  const closeModal = () => {
+    dispatch(modalActions.closeAllModal());
+  };
+
+  const onClickMyPageButton = () => {
+    closeModal();
+    navigate("/mypage");
+  };
+
+  const onClickAccountButton = () => {
+    closeModal();
+    navigate("/account");
   };
 
   return (
@@ -79,11 +96,14 @@ const ProfileModal: React.FC = () => {
       )}
       {isLoggedIn && (
         <>
-          <Link to="/mypage">
-            <div className="profile-modal-item">마이페이지</div>
-          </Link>
+          <div className="profile-modal-item" onClick={onClickMyPageButton}>
+            마이페이지
+          </div>
           <Divider />
-          <div className="profile-modal-item">개인정보 변경</div>
+          <div className="profile-modal-item" onClick={onClickAccountButton}>
+            개인정보 변경
+          </div>
+
           <Divider />
           <div className="profile-modal-item">
             <LogoutIcon />

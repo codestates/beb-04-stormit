@@ -20,6 +20,7 @@ const globalStyle = css<GlobalStyleProps>`
 
   a {
     text-decoration: none;
+    color: inherit;
 
     &:visited {
       color: inherit;
