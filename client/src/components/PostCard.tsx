@@ -7,6 +7,7 @@ import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
 import palette from "../styles/palette";
 import Divider from "./common/Divider";
 import { parseDate, shortenPostContents } from "../lib/utils";
+import MoreVertIcon from "@mui/icons-material/MoreVert";
 
 const CONTENTS_PLACEHOLDER =
   "싶이 수 우리 이상은 힘있다. 뛰노는 듣기만 너의 있으며 행복스럽고 위하여서 밝은 부패뿐이다 같이 행복스럽고 인생을 그들은 것이 과실이 소금이라 것이다 그들은 것이 과실이 소금이라 것이다 그들은 것이 과실이 소금이라 것이다 그들은 것이 과실이 소금이라 것이다 그들은 것이 과실이 소금이라 것이다 그들은 것이 과실이 소금이라 것이다 그들은 것이 과실이 소금이라 것이다 ";
@@ -18,10 +19,21 @@ const Base = styled.li`
 
   padding: 0.5rem;
 
+  .post-metadata-area {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
   .post-metadata {
     display: flex;
     align-items: center;
     gap: 0.5rem; // 8px
+  }
+
+  .post-more-icon {
+    color: ${palette.gray[500]};
+    cursor: pointer;
   }
 
   .time {
@@ -82,12 +94,15 @@ const PostCard: React.FC = () => {
   return (
     <>
       <Base>
-        <p className="post-metadata">
-          <span className="votes">0 votes</span>
-          <span className="replies">0 replies</span>
-          <span className="views">0 views</span>
-          <span className="time">{parseDate(new Date())}</span>
-        </p>
+        <div className="post-metadata-area">
+          <p className="post-metadata">
+            <span className="votes">0 votes</span>
+            <span className="replies">0 replies</span>
+            <span className="views">0 views</span>
+            <span className="time">{parseDate(new Date())}</span>
+          </p>
+          <MoreVertIcon className="post-more-icon" />
+        </div>
         <div className="post-title-area-wrapper">
           <p className="post-title">이것은 게시물의 제목입니다.</p>
           {/* <div className="post-comments-views-wrapper">
