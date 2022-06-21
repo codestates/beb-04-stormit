@@ -27,8 +27,8 @@ interface Props extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   children: React.ReactNode;
 }
 
-const FloatingIconButton: React.FC<Props> = ({ children }) => {
-  return <Base>{children}</Base>;
+const FloatingIconButton: React.FC<Props> = ({ children, ...props }) => {
+  return <Base {...props}>{children}</Base>;
 };
 
 export default FloatingIconButton;

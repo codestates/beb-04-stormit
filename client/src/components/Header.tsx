@@ -15,15 +15,12 @@ const Base = styled.header`
   justify-content: space-between;
   align-items: center;
 
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
   color: white;
   padding: 1rem; // 16px
   background-color: ${theme.primary};
   height: 3.5rem; // 56px
   box-shadow: 0px 0px 9px 3px rgba(41, 41, 41, 0.25);
+  z-index: 999;
 
   .header-left {
     display: flex;
@@ -113,7 +110,7 @@ const Header: React.FC = () => {
         </span>
       </div>
       <div className="header-left-desktop" onClick={() => navigate("/")}>
-        <div className="header-logo" />
+        {/* <div className="header-logo" /> */}
         <span className="header-text">Stormit</span>
       </div>
       <div className="header-right">

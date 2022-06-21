@@ -8,6 +8,7 @@ import MailIcon from "@mui/icons-material/Mail";
 import SendIcon from "@mui/icons-material/Send";
 import SearchIcon from "@mui/icons-material/Search";
 import PersonIcon from "@mui/icons-material/Person";
+import { useNavigate } from "react-router-dom";
 
 const Base = styled.aside`
   display: flex;
@@ -46,13 +47,15 @@ const Base = styled.aside`
 interface Props extends React.HtmlHTMLAttributes<HTMLElement> {}
 
 const NavigationRail: React.FC<Props> = ({ ...props }) => {
+  const navigate = useNavigate();
+
   return (
     <Base {...props}>
       <div className="navigation-logo-wrapper">
         <ArrowRightIcon />
         <div className="navigation-logo" />
       </div>
-      <FloatingIconButton>
+      <FloatingIconButton onClick={() => navigate("/post")}>
         <CreateIcon />
       </FloatingIconButton>
       <MailIcon className="navigation-icon" />

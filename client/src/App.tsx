@@ -9,6 +9,7 @@ import MenuModal from "./components/MenuModal";
 import ProfileModal from "./components/ProfileModal";
 import Account from "./pages/Account";
 import Header from "./components/Header";
+import Post from "./pages/Post";
 
 const App: React.FC = () => {
   const menuModalOpen = useSelector((state) => state.modal.menuModalOpen);
@@ -28,6 +29,7 @@ const App: React.FC = () => {
         <Route path="/test" element={<Test />} />
         <Route path="/mypage" element={<MyPage />} />
         <Route path="/account" element={<Account />} />
+        <Route path="/post" element={<Post />} />
       </Routes>
     </>
   );

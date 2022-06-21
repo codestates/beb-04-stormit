@@ -11,7 +11,6 @@ const Base = styled.div`
   background-color: white;
   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1), 0px 16px 32px rgba(0, 0, 0, 0.2);
   padding-bottom: 1rem;
-  z-index: 999;
 
   .menu-modal-title-wrapper {
     display: flex;
