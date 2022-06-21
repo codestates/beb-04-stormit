@@ -1,11 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import Button from "../components/common/Button";
 import Dialog from "../components/common/Dialog";
 import Input from "../components/common/Input";
 import Snackbar from "../components/common/Snackbar";
 import PostOptionCard from "../components/PostOptionCard";
-import palette from "../styles/palette";
+import DoneIcon from "@mui/icons-material/Done";
 
 const Base = styled.section`
   display: flex;
@@ -23,6 +23,16 @@ const Base = styled.section`
 `;
 
 const Test: React.FC = () => {
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+
+  const openSnackbar = () => {
+    setSnackbarOpen(true);
+  };
+
+  const closeSnackbar = () => {
+    setSnackbarOpen(false);
+  };
+
   return (
     <Base>
       <Dialog className="modal">
@@ -33,6 +43,15 @@ const Test: React.FC = () => {
         <Button variant="contained">변경하기</Button>
       </Dialog>
       <PostOptionCard />
+      <Button onClick={openSnackbar}>스낵바</Button>
+      <Snackbar
+        icon={<DoneIcon />}
+        open={snackbarOpen}
+        onClose={closeSnackbar}
+        autoHideDuration={3000}
+      >
+        로그인되었습니다.
+      </Snackbar>
     </Base>
   );
 };
