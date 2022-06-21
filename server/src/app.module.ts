@@ -1,8 +1,5 @@
 import { Module } from '@nestjs/common';
-
-
 import { TypeOrmModule } from '@nestjs/typeorm';
-
 import { AuthModule } from './auth/auth.module';
 import { User } from './auth/entity/user.entity';
 
@@ -16,8 +13,8 @@ import { User } from './auth/entity/user.entity';
       username: 'root',
       password: 'mypassword',
       database: 'STORMIT_DB',
-      //entities: [User],
-      entities: [__dirname + '/**/*.entity{.ts,.js}'],
+      entities: [User],
+      // entities: [__dirname + '../**/*.entity{.ts,.js}'],
       synchronize: true,
     }),
 
