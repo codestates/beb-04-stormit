@@ -27,7 +27,7 @@ const Base = styled.div`
   }
 
   .contents {
-    padding: 0.5rem; // 8px
+    margin: 1rem; // 16px
   }
 
   .body {

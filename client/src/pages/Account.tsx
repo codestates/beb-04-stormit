@@ -2,7 +2,6 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import Button from "../components/common/Button";
-import Dialog from "../components/common/Dialog";
 import Input from "../components/common/Input";
 import palette from "../styles/palette";
 

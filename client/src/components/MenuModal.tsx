@@ -61,7 +61,6 @@ const MenuModal: React.FC = () => {
         <p className="menu-modal-title">커뮤니티</p>
         <p className="menu-modal-subtitle">다양한 커뮤니티를 찾아보세요</p>
       </div>
-      <ListItem onClick={() => moveTo("/community/all")}>All</ListItem>
       <ListItem onClick={() => moveTo("/community/notice")}>공지사항</ListItem>
       <ListItem onClick={() => moveTo("/community/talk")}>사는얘기</ListItem>
       <ListItem onClick={() => moveTo("/community/forum")}>포럼</ListItem>

@@ -19,11 +19,14 @@ const Base = styled.div`
     display: flex;
   }
 
+  .contents {
+    margin: 1rem;
+  }
   .contents-top {
     display: flex;
     flex-direction: column;
     gap: 0.5rem; // 8px
-    padding: 2rem 0.5rem 0.5rem; // 32px 8px 8px;
+    margin: 1rem 0; // 16px
   }
 
   .community-title {
@@ -68,13 +71,7 @@ const Community: React.FC = () => {
             <p className="community-title">
               {translateCommunityName(communityName)}
             </p>
-            {/* <h1 className="section-title">모든 게시글</h1> */}
-            {/* <p className="posts-sort">
-            <span className="newest">최신순</span>
-            <span className="popular">인기순</span>
-          </p> */}
           </div>
-
           <ul className="posts-wrapper">
             {postData.map((_, index) => (
               <PostCard key={index} />
