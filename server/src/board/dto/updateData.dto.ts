@@ -1,10 +1,9 @@
 import { IsNumber, IsString } from 'class-validator';
 
-export class editPostDto {
-  @IsString()
-  readonly email: string;
+export class UpdateDataDto {
   @IsNumber()
   readonly content_id: number;
+
   @IsString()
   readonly content: string;
 }

@@ -1,4 +1,4 @@
-import { IsNumber, IsString } from 'class-validator';
+import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
 
 // DTO(Data Transfer Object)
 // 계층간 데이터 교환을 위한 객체
@@ -11,5 +11,9 @@ import { IsNumber, IsString } from 'class-validator';
 // 더 안정적인 코드로 만들어준다.
 export class CreateBoardDto {
   @IsString()
+  @IsNotEmpty()
   readonly title: string;
+  @IsString()
+  @IsNotEmpty()
+  readonly content: string;
 }

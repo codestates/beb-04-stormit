@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 
 import { BoardRepository } from './board.repository';
 import { CreateBoardDto } from './dto/create-board.dto';
+import { UpdateDataDto } from './dto/updateData.dto';
 import { Board } from './entity/board.entity';
 
 @Injectable()
@@ -10,6 +11,10 @@ export class BoardService {
   constructor(
     @InjectRepository(BoardRepository) private boardRepository: BoardRepository,
   ) {}
+  async getAllBoards(): Promise<Board[]> {
+    return this.boardRepository.find();
+  }
+
   async getBoardById(id: number): Promise<Board> {
     const found = await this.boardRepository.findOne(id);
     if (!found) {
@@ -19,6 +24,14 @@ export class BoardService {
   }
   createBoard(createBoardDto: CreateBoardDto): Promise<Board> {
     return this.boardRepository.createBoard(createBoardDto); // repository 패턴
+  }
+
+  async deleteBoard(id: number): Promise<void> {
+    this.boardRepository.deleteBoard(id);
+  }
+
+  async updateBoard(id: number, updateDataDto: UpdateDataDto): Promise<Board> {
+    return this.boardRepository.updateBoard(id, updateDataDto);
   }
 }
 
