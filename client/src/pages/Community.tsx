@@ -1,34 +1,34 @@
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import FloatingIconButton from "../components/common/FloatingIconButton";
-import CreateIcon from "@mui/icons-material/Create";
-import PostCard from "../components/PostCard";
 import NavigationRail from "../components/NavigationRail";
-import LoadingSpinner from "../components/common/LoadingSpinner";
-import { useNavigate } from "react-router-dom";
-import { FAKE_ARRAY } from "../lib/utils";
+import CreateIcon from "@mui/icons-material/Create";
+import { useNavigate, useLocation } from "react-router-dom";
+import PostCard from "../components/PostCard";
+import {
+  FAKE_ARRAY,
+  getLastPathname,
+  translateCommunityName,
+} from "../lib/utils";
 
 const Base = styled.div`
   display: flex;
   flex-direction: column;
   height: 100vh;
 
-  /* 
-  .contents-top {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem; // 8px
-    padding: 0.5rem; // 16px
-  } */
-
   .body {
     display: flex;
   }
 
-  .section-title {
-    font-size: 2rem; // 32px
-    text-align: center;
-    font-weight: 500;
+  .contents-top {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem; // 8px
+    padding: 2rem 0.5rem 0.5rem; // 32px 8px 8px;
+  }
+
+  .navigation-rail {
+    display: none;
   }
 
   .fab-wrapper {
@@ -37,14 +37,8 @@ const Base = styled.div`
     bottom: 1rem; // 16px
   }
 
-  .navigation-rail {
-    display: none;
-  }
-
-  .loading-spinner-wrapper {
-    display: flex;
-    justify-content: center;
-    padding: 2rem;
+  .community-title {
+    font-size: 2rem; // 32px
   }
 
   // 600px
@@ -71,57 +65,31 @@ const Base = styled.div`
   }
 `;
 
-const Home: React.FC = () => {
-  const [loading, setLoading] = useState(false);
+const Community: React.FC = () => {
   const [postData, setPostData] = useState(FAKE_ARRAY);
-
-  const targetRef = useRef<HTMLDivElement | null>(null);
 
   const navigate = useNavigate();
 
-  // 무한스크롤
-  const observer = useMemo(() => {
-    return new IntersectionObserver((entries) => {
-      if (!targetRef?.current) return;
+  const location = useLocation();
 
-      if (entries[0].isIntersecting) {
-        setLoading(true);
-
-        console.log("fetch triggered");
-
-        setTimeout(() => {
-          const FAKE_FETCH_ARRAY = Array(10).fill(0);
-
-          setPostData((postData) => [...postData, ...FAKE_FETCH_ARRAY]);
-          setLoading(false);
-        }, 1000);
-      }
-    });
-  }, []);
-
-  // 무한스크롤
-  useEffect(() => {
-    if (!targetRef?.current) return;
-
-    observer.observe(targetRef.current);
-
-    return () => {
-      observer.disconnect();
-    };
-  }, [observer]);
+  const communityName = getLastPathname(location.pathname);
 
   return (
     <Base>
       <div className="body">
         <NavigationRail className="navigation-rail" />
-        <section className="contents">
+        <div className="contents">
           <div className="contents-top">
+            <p className="community-title">
+              {translateCommunityName(communityName)}
+            </p>
             {/* <h1 className="section-title">모든 게시글</h1> */}
             {/* <p className="posts-sort">
             <span className="newest">최신순</span>
             <span className="popular">인기순</span>
           </p> */}
           </div>
+
           <ul className="posts-wrapper">
             {postData.map((_, index) => (
               <PostCard key={index} />
@@ -132,16 +100,10 @@ const Home: React.FC = () => {
               <CreateIcon />
             </FloatingIconButton>
           </div>
-          {loading && (
-            <div className="loading-spinner-wrapper">
-              <LoadingSpinner />
-            </div>
-          )}
-        </section>
+        </div>
       </div>
-      <div className="observer" ref={targetRef} />
     </Base>
   );
 };
 
-export default Home;
+export default Community;

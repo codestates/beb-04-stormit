@@ -1,4 +1,5 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import palette from "../styles/palette";
 import ListItem from "./common/ListItem";
@@ -42,18 +43,22 @@ const Base = styled.div`
 `;
 
 const MenuModal: React.FC = () => {
+  const navigate = useNavigate();
+
   return (
     <Base>
       <div className="menu-modal-title-wrapper">
         <p className="menu-modal-title">커뮤니티</p>
         <p className="menu-modal-subtitle">다양한 커뮤니티를 찾아보세요</p>
       </div>
-      <ListItem>All</ListItem>
-      <ListItem>공지사항</ListItem>
-      <ListItem>사는얘기</ListItem>
-      <ListItem>포럼</ListItem>
-      <ListItem>IT 행사</ListItem>
-      <ListItem>Q&amp;A</ListItem>
+      <ListItem onClick={() => navigate("/community/all")}>All</ListItem>
+      <ListItem onClick={() => navigate("/community/notice")}>
+        공지사항
+      </ListItem>
+      <ListItem onClick={() => navigate("/community/talk")}>사는얘기</ListItem>
+      <ListItem onClick={() => navigate("/community/forum")}>포럼</ListItem>
+      <ListItem onClick={() => navigate("/community/it")}>IT 행사</ListItem>
+      <ListItem onClick={() => navigate("/community/qa")}>Q&amp;A</ListItem>
     </Base>
   );
 };
