@@ -15,8 +15,10 @@ const Base = styled.header`
   justify-content: space-between;
   align-items: center;
 
-  position: sticky;
+  position: fixed;
   top: 0;
+  left: 0;
+  right: 0;
   color: white;
   padding: 1rem; // 16px
   background-color: ${theme.primary};
