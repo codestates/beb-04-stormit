@@ -3,8 +3,11 @@ import styled from "styled-components";
 import Button from "../components/common/Button";
 import Dialog from "../components/common/Dialog";
 import Input from "../components/common/Input";
+import PostOptionCard from "../components/PostOptionCard";
 
 const Base = styled.section`
+  display: flex;
+  flex-direction: column;
   gap: 1rem; // 16px
   padding: 1rem; // 16px
 
@@ -27,6 +30,7 @@ const Test: React.FC = () => {
         <Input />
         <Button variant="contained">변경하기</Button>
       </Dialog>
+      <PostOptionCard />
     </Base>
   );
 };
