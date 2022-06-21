@@ -36,11 +36,6 @@ const Base = styled.div`
     right: 1rem; // 16px
     bottom: 1rem; // 16px
   }
-
-  .navigation-rail {
-    display: none;
-  }
-
   .loading-spinner-wrapper {
     display: flex;
     justify-content: center;
@@ -59,10 +54,6 @@ const Base = styled.div`
   @media screen and (min-width: 77.5rem) {
     .contents {
       max-width: 52.5rem; // 840px
-    }
-
-    .navigation-rail {
-      display: flex;
     }
 
     .fab-wrapper {
@@ -113,7 +104,7 @@ const Home: React.FC = () => {
   return (
     <Base>
       <div className="body">
-        <NavigationRail className="navigation-rail" />
+        <NavigationRail />
         <section className="contents">
           <div className="contents-top">
             {/* <h1 className="section-title">모든 게시글</h1> */}

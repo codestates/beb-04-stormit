@@ -27,10 +27,6 @@ const Base = styled.div`
     padding: 2rem 0.5rem 0.5rem; // 32px 8px 8px;
   }
 
-  .navigation-rail {
-    display: none;
-  }
-
   .fab-wrapper {
     position: fixed;
     right: 1rem; // 16px
@@ -55,10 +51,6 @@ const Base = styled.div`
       max-width: 52.5rem; // 840px
     }
 
-    .navigation-rail {
-      display: flex;
-    }
-
     .fab-wrapper {
       display: none;
     }
@@ -77,7 +69,7 @@ const Community: React.FC = () => {
   return (
     <Base>
       <div className="body">
-        <NavigationRail className="navigation-rail" />
+        <NavigationRail />
         <div className="contents">
           <div className="contents-top">
             <p className="community-title">
