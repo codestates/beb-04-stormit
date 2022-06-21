@@ -21,7 +21,7 @@ const Base = styled.div`
 
     .menu-modal-title {
       font-size: 1.25rem; // 20px
-      font-weight: 600;
+      font-weight: 500;
     }
 
     .menu-modal-subtitle {

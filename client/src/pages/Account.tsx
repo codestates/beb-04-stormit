@@ -4,6 +4,7 @@ import styled from "styled-components";
 import Button from "../components/common/Button";
 import Dialog from "../components/common/Dialog";
 import Input from "../components/common/Input";
+import palette from "../styles/palette";
 
 const Base = styled.div`
   display: flex;
@@ -29,8 +30,16 @@ const Base = styled.div`
     margin: 1rem 0; // 16px 0
   }
 
-  .private-key {
+  .private-key-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem; // 8px
     margin: 1rem 0; // 16px 0
+  }
+
+  .private-key {
+    font-size: 0.875rem; // 14px
+    color: ${palette.gray[400]};
   }
 
   // 600px
@@ -53,8 +62,11 @@ const Account: React.FC = () => {
       <Dialog>
         <div className="account-dialog-contents">
           <p className="account-dialog-title">보안 및 로그인</p>
-          <p className="private-key">
-            개인 키: anewafkv-ajfnzkvkx1123-dffnwkfsd-sfwefl
+          <p className="private-key-wrapper">
+            <span>개인 키:</span>
+            <span className="private-key">
+              anewafkv-ajfnzkvkx1123-dffnwkfsd-sfwefl
+            </span>
           </p>
           <label className="password-label">비밀번호</label>
           <Input placeholder="변경할 비밀번호" />
