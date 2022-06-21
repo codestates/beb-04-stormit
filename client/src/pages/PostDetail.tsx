@@ -1,9 +1,6 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import FloatingIconButton from "../components/common/FloatingIconButton";
 import NavigationRail from "../components/NavigationRail";
-import CreateIcon from "@mui/icons-material/Create";
 import { FAKE_POST_CONTENTS } from "../lib/dummyData";
 import Textarea from "../components/common/Textarea";
 import Button from "../components/common/Button";

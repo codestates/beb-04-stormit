@@ -7,6 +7,7 @@ import Snackbar from "../components/common/Snackbar";
 import PostOptionCard from "../components/PostOptionCard";
 import DoneIcon from "@mui/icons-material/Done";
 import CommentCard from "../components/CommentCard";
+import Pagination from "../components/Pagination";
 
 const Base = styled.section`
   display: flex;
@@ -36,13 +37,7 @@ const Test: React.FC = () => {
 
   return (
     <Base>
-      <Dialog className="modal">
-        <label>변경할 비밀번호</label>
-        <Input />
-        <label>비밀번호 확인</label>
-        <Input />
-        <Button variant="contained">변경하기</Button>
-      </Dialog>
+      <Pagination />
       <PostOptionCard />
       <Button onClick={openSnackbar}>스낵바</Button>
       <Snackbar
