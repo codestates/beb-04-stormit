@@ -4,7 +4,7 @@ import styled from "styled-components";
 import palette from "../styles/palette";
 import LogoutIcon from "@mui/icons-material/Logout";
 import { useDispatch, useSelector } from "../store";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import DarkModeIcon from "@mui/icons-material/DarkMode";
 import ToggleButton from "./common/ToggleButton";
 import { themeActions } from "../store/themeSlice";
