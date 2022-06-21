@@ -23,7 +23,6 @@ const Base = styled.div`
     flex-direction: column;
     gap: 0.5rem; // 8px
     padding: 2rem 0; // 32px 0
-    padding-bottom: 4rem;
   }
 
   .contents {
@@ -48,7 +47,9 @@ const Base = styled.div`
     text-align: center;
   }
 
-  .home-cta {
+  .home-cta-wrapper {
+    display: flex;
+    gap: 1rem; // 16px
     margin: 2rem 0;
   }
 
@@ -151,25 +152,36 @@ const Home: React.FC = () => {
       <div className="body">
         <NavigationRail />
         <section className="contents">
-          {!isLoggedIn && (
-            <div className="contents-top">
-              <h1 className="stormit">Stormit.</h1>
-              <h2 className="stormit-subtitle">
-                스톰잇은 ERC-20 기반의 온라인 커뮤니티로, 누구나 자유롭게 이용할
-                수 있습니다.
-              </h2>
-              <h2 className="stormit-subtitle">
-                지금 바로 새 글을 작성하고 토큰을 지급받으세요!
-              </h2>
-              <Button
-                className="home-cta"
-                variant="contained"
-                onClick={() => navigate("/login")}
-              >
-                시작하기
-              </Button>
-            </div>
-          )}
+          <div className="contents-top">
+            <h1 className="stormit">Stormit.</h1>
+            {!isLoggedIn && (
+              <>
+                <h2 className="stormit-subtitle">
+                  스톰잇은 ERC-20 기반의 온라인 커뮤니티로, 누구나 자유롭게
+                  이용할 수 있습니다.
+                </h2>
+                <h2 className="stormit-subtitle">
+                  지금 바로 새 글을 작성하고 토큰을 지급받으세요!
+                </h2>
+                <div className="home-cta-wrapper">
+                  <Button
+                    className="home-cta"
+                    variant="contained"
+                    onClick={() => navigate("/signup")}
+                  >
+                    시작하기
+                  </Button>
+                  <Button
+                    className="home-cta-sub"
+                    variant="outlined"
+                    onClick={() => navigate("/login")}
+                  >
+                    로그인
+                  </Button>
+                </div>
+              </>
+            )}
+          </div>
           <h2 className="section-title">전체 글 보기</h2>
           <ul className="posts-wrapper">
             {postData.map((_, index) => (

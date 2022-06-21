@@ -16,7 +16,8 @@ const Base = styled.div`
   margin: 2rem 1rem; // 32px 16px
 
   .post-heading {
-    font-size: 2rem;
+    font-size: 1.5rem;
+    font-weight: 500;
   }
 
   .community-wrapper {
