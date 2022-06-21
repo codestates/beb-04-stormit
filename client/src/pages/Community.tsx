@@ -10,6 +10,7 @@ import {
   getLastPathname,
   translateCommunityName,
 } from "../lib/utils";
+import Pagination from "../components/Pagination";
 
 const Base = styled.div`
   display: flex;
@@ -35,6 +36,12 @@ const Base = styled.div`
 
   .community-title {
     font-size: 2rem; // 32px
+  }
+
+  .pagination-wrapper {
+    display: flex;
+    justify-content: center;
+    padding: 1rem; //16px
   }
 
   // 600px
@@ -87,6 +94,9 @@ const Community: React.FC = () => {
               <PostCard key={index} />
             ))}
           </ul>
+          <div className="pagination-wrapper">
+            <Pagination />
+          </div>
           <div className="fab-wrapper">
             <FloatingIconButton onClick={() => navigate("/post")}>
               <CreateIcon />

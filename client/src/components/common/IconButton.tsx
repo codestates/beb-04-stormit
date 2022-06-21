@@ -17,6 +17,7 @@ const getIconButtonColor = (color?: "default" | "primary") => {
     case "primary":
       return css`
         color: ${theme.primary};
+        font-weight: 500;
 
         &:hover {
           background-color: ${palette.blue[100]};
@@ -66,7 +67,7 @@ const Base = styled.button<BaseProps>`
   ${({ disabled }) => getIconButtonDisabled(disabled)}
 `;
 
-interface Props {
+interface Props extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   children: React.ReactNode;
   color?: "default" | "primary";
   disabled?: boolean;
