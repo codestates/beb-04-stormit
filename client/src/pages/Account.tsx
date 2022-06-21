@@ -50,7 +50,7 @@ const Base = styled.div`
 
   // 1240px
   @media screen and (min-width: 77.5rem) {
-    max-width: 52.5rem; // 840px
+    max-width: 25rem; // 400px
   }
 `;
 
@@ -59,26 +59,24 @@ const Account: React.FC = () => {
 
   return (
     <Base>
-      <Dialog>
-        <div className="account-dialog-contents">
-          <p className="account-dialog-title">보안 및 로그인</p>
-          <p className="private-key-wrapper">
-            <span>개인 키:</span>
-            <span className="private-key">
-              anewafkv-ajfnzkvkx1123-dffnwkfsd-sfwefl
-            </span>
-          </p>
-          <label className="password-label">비밀번호</label>
-          <Input placeholder="변경할 비밀번호" />
-          <label className="password-label">비밀번호 재입력</label>
-          <Input placeholder="비밀번호 확인" />
-          <div className="account-button-wrapper">
-            <Button variant="contained" onClick={() => navigate("/")}>
-              저장하기
-            </Button>
-          </div>
+      <div className="account-dialog-contents">
+        <p className="account-dialog-title">보안 및 로그인</p>
+        <p className="private-key-wrapper">
+          <span>개인 키:</span>
+          <span className="private-key">
+            anewafkv-ajfnzkvkx1123-dffnwkfsd-sfwefl
+          </span>
+        </p>
+        <label className="password-label">비밀번호</label>
+        <Input placeholder="변경할 비밀번호" />
+        <label className="password-label">비밀번호 재입력</label>
+        <Input placeholder="비밀번호 확인" />
+        <div className="account-button-wrapper">
+          <Button variant="contained" onClick={() => navigate("/")}>
+            저장하기
+          </Button>
         </div>
-      </Dialog>
+      </div>
     </Base>
   );
 };

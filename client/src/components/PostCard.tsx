@@ -15,9 +15,9 @@ const CONTENTS_PLACEHOLDER =
 const Base = styled.li`
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 0.5rem; // 8px
 
-  padding: 0.5rem;
+  padding: 0.5rem 0; // 8px 0
 
   .post-metadata-area {
     display: flex;
@@ -97,7 +97,6 @@ const PostCard: React.FC = () => {
       <Base>
         <div className="post-metadata-area">
           <p className="post-metadata">
-            <span className="votes">0 votes</span>
             <span className="replies">0 replies</span>
             <span className="views">0 views</span>
             <span className="time">{parseDate(new Date())}</span>
