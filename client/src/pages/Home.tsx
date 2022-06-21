@@ -87,6 +87,18 @@ const Base = styled.div`
       max-width: 52.5rem; // 840px
     }
 
+    .contents-top {
+      align-items: flex-start;
+    }
+
+    .stormit {
+      font-size: 5rem;
+    }
+
+    .stormit-subtitle {
+      padding: 0;
+    }
+
     .fab-wrapper {
       display: none;
     }
@@ -143,11 +155,11 @@ const Home: React.FC = () => {
             <div className="contents-top">
               <h1 className="stormit">Stormit.</h1>
               <h2 className="stormit-subtitle">
-                스톰잇은 ERC-20 기반의 웹 커뮤니티로, 누구나 자유롭게 이용할 수
-                있습니다.
+                스톰잇은 ERC-20 기반의 온라인 커뮤니티로, 누구나 자유롭게 이용할
+                수 있습니다.
               </h2>
               <h2 className="stormit-subtitle">
-                지금 새 글을 작성하고 토큰을 지급받으세요!
+                지금 바로 새 글을 작성하고 토큰을 지급받으세요!
               </h2>
               <Button
                 className="home-cta"
