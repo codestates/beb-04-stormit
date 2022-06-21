@@ -20,12 +20,6 @@ const Base = styled.div`
     display: flex;
   }
 
-  .fab-wrapper {
-    position: fixed;
-    right: 1rem; // 16px
-    bottom: 1rem; // 16px
-  }
-
   .contents {
     display: flex;
     flex-direction: column;
@@ -98,16 +92,10 @@ const Base = styled.div`
     .contents {
       max-width: 52.5rem; // 840px
     }
-
-    .fab-wrapper {
-      display: none;
-    }
   }
 `;
 
 const PostDetail: React.FC = () => {
-  const navigate = useNavigate();
-
   return (
     <Base>
       <div className="body">
@@ -133,11 +121,6 @@ const PostDetail: React.FC = () => {
           <Textarea placeholder="댓글을 남겨보세요" height="6rem" />
           <div className="comment-submit-button-wrapper">
             <Button variant="contained">등록</Button>
-          </div>
-          <div className="fab-wrapper">
-            <FloatingIconButton onClick={() => navigate("/post")}>
-              <CreateIcon />
-            </FloatingIconButton>
           </div>
         </div>
       </div>
