@@ -122,6 +122,7 @@ const ProfileModal: React.FC = () => {
   const onClickLogOutButton = () => {
     closeModal();
     dispatch(userActions.setLoggedOut());
+    navigate("/");
   };
 
   return (
@@ -149,7 +150,7 @@ const ProfileModal: React.FC = () => {
           </div>
           <Divider />
           <div className="profile-modal-item" onClick={onClickAccountButton}>
-            보안 및 로그인
+            개인정보 설정
           </div>
 
           <Divider />

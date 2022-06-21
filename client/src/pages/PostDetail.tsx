@@ -8,6 +8,7 @@ import palette from "../styles/palette";
 import CommentCard from "../components/CommentCard";
 import Chip from "../components/common/Chip";
 import Divider from "../components/common/Divider";
+import { useSelector } from "../store";
 
 const Base = styled.div`
   display: flex;
@@ -116,6 +117,8 @@ const Base = styled.div`
 `;
 
 const PostDetail: React.FC = () => {
+  const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
+
   return (
     <Base>
       <div className="body">
@@ -149,11 +152,15 @@ const PostDetail: React.FC = () => {
           <CommentCard />
           <CommentCard />
           <CommentCard />
-          <p className="comment-submit-title">댓글 쓰기</p>
-          <Textarea placeholder="댓글을 남겨보세요" height="6rem" />
-          <div className="comment-submit-button-wrapper">
-            <Button variant="contained">등록</Button>
-          </div>
+          {isLoggedIn && (
+            <>
+              <p className="comment-submit-title">댓글 쓰기</p>
+              <Textarea placeholder="댓글을 남겨보세요" height="6rem" />
+              <div className="comment-submit-button-wrapper">
+                <Button variant="contained">등록</Button>
+              </div>
+            </>
+          )}
         </div>
       </div>
     </Base>
