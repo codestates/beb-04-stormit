@@ -8,6 +8,7 @@ import { FAKE_POST_CONTENTS } from "../lib/dummyData";
 import Textarea from "../components/common/Textarea";
 import Button from "../components/common/Button";
 import palette from "../styles/palette";
+import CommentCard from "../components/CommentCard";
 
 const Base = styled.div`
   display: flex;
@@ -74,6 +75,11 @@ const Base = styled.div`
     padding-top: 1rem; // 16px
   }
 
+  .comment-submit-title {
+    font-size: 1.25rem; // 20px
+    font-weight: 500;
+  }
+
   .comment-submit-button-wrapper {
     display: flex;
     justify-content: flex-end;
@@ -118,7 +124,12 @@ const PostDetail: React.FC = () => {
             </div>
           </div>
           <p className="post-detail-contents">{FAKE_POST_CONTENTS}</p>
-          <p className="comment-title">댓글 8개</p>
+          <p className="comment-title">댓글 4개</p>
+          <CommentCard />
+          <CommentCard />
+          <CommentCard />
+          <CommentCard />
+          <p className="comment-submit-title">댓글 쓰기</p>
           <Textarea placeholder="댓글을 남겨보세요" height="6rem" />
           <div className="comment-submit-button-wrapper">
             <Button variant="contained">등록</Button>
