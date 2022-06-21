@@ -13,7 +13,6 @@ import MenuIcon from "@mui/icons-material/Menu";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "../store";
 import { modalActions } from "../store/modalSlice";
-import CloseIcon from "@mui/icons-material/Close";
 
 const Base = styled.aside`
   display: flex;

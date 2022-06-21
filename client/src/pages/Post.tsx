@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import Button from "../components/common/Button";
+import Chip from "../components/common/Chip";
 import Input from "../components/common/Input";
 import Textarea from "../components/common/Textarea";
 import PostOptionCard from "../components/PostOptionCard";
@@ -17,6 +18,11 @@ const Base = styled.div`
     font-size: 2rem;
   }
 
+  .community-wrapper {
+    display: flex;
+    gap: 0.5rem; // 8px
+  }
+
   // 1240px
   @media screen and (min-width: 77.5rem) {
     max-width: 52.5rem;
@@ -31,6 +37,15 @@ const Post: React.FC = () => {
       <Input placeholder="제목" />
       <PostOptionCard />
       <Textarea height="25rem" placeholder="내용을 입력해주세요." />
+      <div className="community-wrapper">
+        <Chip>Tag</Chip>
+        <Chip>Community</Chip>
+        <Chip>Long Community Name</Chip>
+        <Chip>Random</Chip>
+        <Chip>Select</Chip>
+        <Chip>One</Chip>
+        <Chip>Community</Chip>
+      </div>
       <Button variant="contained">등록하기</Button>
     </Base>
   );
