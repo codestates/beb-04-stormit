@@ -20,6 +20,28 @@ const Base = styled.div`
   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1), 0px 16px 32px rgba(0, 0, 0, 0.2);
   z-index: 999;
 
+  .profile-modal-image-wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem; // 16px
+
+    padding: 1rem; // 16px
+  }
+
+  .profile-modal-image {
+    width: 6.25rem; // 100px
+    height: 6.25rem; // 100px
+    background-color: ${palette.gray[200]};
+    border-radius: 50%;
+  }
+
+  .profile-modal-username {
+    font-size: 1.25rem; // 20px
+    font-weight: 500;
+  }
+
   .profile-modal-item {
     display: flex;
     justify-content: flex-start;
@@ -96,6 +118,11 @@ const ProfileModal: React.FC = () => {
       )}
       {isLoggedIn && (
         <>
+          <div className="profile-modal-image-wrapper">
+            <div className="profile-modal-image" />
+            <div className="profile-modal-username">스톰잇닉네임</div>
+          </div>
+          <Divider />
           <div className="profile-modal-item" onClick={onClickMyPageButton}>
             마이페이지
           </div>
