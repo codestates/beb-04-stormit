@@ -2,6 +2,9 @@ import React from "react";
 import styled from "styled-components";
 import theme from "../styles/theme";
 import palette from "../styles/palette";
+import { useDispatch } from "../store";
+import { userActions } from "../store/userSlice";
+import { useNavigate } from "react-router-dom";
 
 const Base = styled.div`
   display: flex;
@@ -98,16 +101,27 @@ const Base = styled.div`
 `;
 
 const Login: React.FC = () => {
+  const dispatch = useDispatch();
+
+  const navigate = useNavigate();
+
+  const onClickLoginButton = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
+
+    dispatch(userActions.setLoggedIn());
+    navigate("/");
+  };
+
   return (
     <Base>
       <h1 className="logo">Stormit</h1>
       <form className="login-form">
         <input className="inputBox" type="text" placeholder="아이디" />
         <input className="inputBox" type="password" placeholder="비밀번호" />
-        <button className="login-btn">로그인</button>
-        <a className="forgot-pw" href="">
-          비밀번호를 잊으셨나요?
-        </a>
+        <button className="login-btn" onClick={onClickLoginButton}>
+          로그인
+        </button>
+        <p className="forgot-pw">비밀번호를 잊으셨나요?</p>
         <div className="underline"></div>
         <div className="createAccount-btn-container">
           <button className="createAccount-btn">새 계정 만들기</button>

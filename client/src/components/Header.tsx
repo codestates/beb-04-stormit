@@ -5,6 +5,7 @@ import MenuIcon from "@mui/icons-material/Menu";
 import SearchIcon from "@mui/icons-material/Search";
 import PermIdentityIcon from "@mui/icons-material/PermIdentity";
 import CloseIcon from "@mui/icons-material/Close";
+import LoginIcon from "@mui/icons-material/Login";
 import { useDispatch, useSelector } from "../store";
 import { modalActions } from "../store/modalSlice";
 import SearchInput from "./SearchInput";
@@ -14,7 +15,6 @@ const Base = styled.header`
   display: flex;
   justify-content: space-between;
   align-items: center;
-
   color: white;
   padding: 1rem; // 16px
   background-color: ${theme.primary};
@@ -74,6 +74,7 @@ const Header: React.FC = () => {
   const searchInputModalOpen = useSelector(
     (state) => state.modal.searchInputModalOpen
   );
+  const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
 
   const navigate = useNavigate();
 
@@ -116,7 +117,12 @@ const Header: React.FC = () => {
       <div className="header-right">
         <SearchIcon onClick={openSearchInputModal} />
         {profileModalOpen && <CloseIcon onClick={closeProfileModal} />}
-        {!profileModalOpen && <PermIdentityIcon onClick={openProfileModal} />}
+        {!profileModalOpen && isLoggedIn && (
+          <PermIdentityIcon onClick={openProfileModal} />
+        )}
+        {!profileModalOpen && !isLoggedIn && (
+          <LoginIcon onClick={openProfileModal} />
+        )}
       </div>
     </Base>
   );

@@ -9,6 +9,7 @@ import DarkModeIcon from "@mui/icons-material/DarkMode";
 import ToggleButton from "./common/ToggleButton";
 import { themeActions } from "../store/themeSlice";
 import { modalActions } from "../store/modalSlice";
+import { userActions } from "../store/userSlice";
 
 const Base = styled.div`
   position: absolute;
@@ -113,6 +114,11 @@ const ProfileModal: React.FC = () => {
     navigate("/login");
   };
 
+  const onClickLogOutButton = () => {
+    closeModal();
+    dispatch(userActions.setLoggedOut());
+  };
+
   return (
     <Base>
       {!isLoggedIn && (
@@ -139,7 +145,7 @@ const ProfileModal: React.FC = () => {
           </div>
 
           <Divider />
-          <div className="profile-modal-item">
+          <div className="profile-modal-item" onClick={onClickLogOutButton}>
             <LogoutIcon />
             <span>로그아웃</span>
           </div>
