@@ -1,5 +1,5 @@
 import { TypeOrmModuleOptions } from '@nestjs/typeorm';
-import { Board } from 'src/board/entity/pages.entity';
+import { Board } from 'src/board/entity/board.entity';
 
 export const typeORMConfig: TypeOrmModuleOptions = {
   type: 'mysql',

@@ -7,7 +7,7 @@ import {
 } from 'typeorm';
 
 //CREATE TABLE board{}
-@Entity('board') // BoardEntity가 board 엔티티임을 나타낸다.
+@Entity() // BoardEntity가 board 엔티티임을 나타낸다.
 export class Board {
   @PrimaryGeneratedColumn() // 기본 key 열임을 나타낸다.
   id: number;
