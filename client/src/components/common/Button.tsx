@@ -11,7 +11,7 @@ const getButtonVariant = (variant?: "text" | "contained" | "outlined") => {
         color: ${theme.primary};
 
         &:hover {
-          background-color: ${palette.blue[100]};
+          background-color: ${palette.blue[50]};
         }
       `;
     case "contained":
@@ -30,7 +30,7 @@ const getButtonVariant = (variant?: "text" | "contained" | "outlined") => {
         color: ${theme.primary};
 
         &:hover {
-          background-color: ${palette.blue[100]};
+          background-color: ${palette.blue[50]};
         }
       `;
   }

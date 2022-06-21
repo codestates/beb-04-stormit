@@ -1,4 +1,5 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import Button from "../components/common/Button";
 import Chip from "../components/common/Chip";
@@ -24,6 +25,12 @@ const Base = styled.div`
     gap: 0.5rem; // 8px
   }
 
+  .post-button-wrapper {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+  }
+
   // 1240px
   @media screen and (min-width: 77.5rem) {
     max-width: 52.5rem;
@@ -32,6 +39,16 @@ const Base = styled.div`
 `;
 
 const Post: React.FC = () => {
+  const navigate = useNavigate();
+
+  const onClickCancelButton = () => {
+    navigate(-1);
+  };
+
+  const onClickSubmitButton = () => {
+    navigate(-1);
+  };
+
   return (
     <Base>
       <p className="post-heading">새 글 등록</p>
@@ -47,7 +64,14 @@ const Post: React.FC = () => {
         <Chip>One</Chip>
         <Chip>Community</Chip>
       </div>
-      <Button variant="contained">등록하기</Button>
+      <div className="post-button-wrapper">
+        <Button variant="outlined" onClick={onClickCancelButton}>
+          돌아가기
+        </Button>
+        <Button variant="contained" onClick={onClickSubmitButton}>
+          등록하기
+        </Button>
+      </div>
     </Base>
   );
 };
