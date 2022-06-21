@@ -72,6 +72,7 @@ const Base = styled.div`
   .post-detail-title {
     font-size: 2rem; // 36px
     font-weight: 500;
+    line-height: 1.2;
   }
 
   .post-detail-contents {
