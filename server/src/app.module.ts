@@ -1,14 +1,19 @@
 import { Module } from '@nestjs/common';
-import { AuthModule } from './auth/auth.module';
+// import { AuthModule } from './auth/auth.module';
 import { typeORMConfig } from './configs/typeorm.config';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { BoardController } from './board/board.controller';
+import { Board } from './board/entity/pages.entity';
+import { BoardModule } from './board/board.module';
+import { BoardService } from './board/board.service';
 
 @Module({
   imports: [
     TypeOrmModule.forRoot(typeORMConfig),
-    AuthModule
+    TypeOrmModule.forFeature([Board]),
+    BoardModule,
   ],
-  // controllers: [AppController],
-  // providers: [AppService],
+  controllers: [],
+  providers: [],
 })
 export class AppModule {}
