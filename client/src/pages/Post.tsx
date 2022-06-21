@@ -20,6 +20,7 @@ const Base = styled.div`
 
   .community-wrapper {
     display: flex;
+    flex-wrap: wrap;
     gap: 0.5rem; // 8px
   }
 
