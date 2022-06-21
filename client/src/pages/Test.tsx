@@ -3,7 +3,9 @@ import styled from "styled-components";
 import Button from "../components/common/Button";
 import Dialog from "../components/common/Dialog";
 import Input from "../components/common/Input";
+import Snackbar from "../components/common/Snackbar";
 import PostOptionCard from "../components/PostOptionCard";
+import palette from "../styles/palette";
 
 const Base = styled.section`
   display: flex;

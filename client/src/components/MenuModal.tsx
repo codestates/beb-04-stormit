@@ -1,6 +1,8 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import { useDispatch } from "../store";
+import { modalActions } from "../store/modalSlice";
 import palette from "../styles/palette";
 import ListItem from "./common/ListItem";
 
@@ -43,7 +45,15 @@ const Base = styled.div`
 `;
 
 const MenuModal: React.FC = () => {
+  const dispatch = useDispatch();
+
   const navigate = useNavigate();
+
+  // 페이지 이동 후 모달을 닫습니다
+  const moveTo = (url: string) => {
+    navigate(url);
+    dispatch(modalActions.closeAllModal());
+  };
 
   return (
     <Base>
@@ -51,14 +61,12 @@ const MenuModal: React.FC = () => {
         <p className="menu-modal-title">커뮤니티</p>
         <p className="menu-modal-subtitle">다양한 커뮤니티를 찾아보세요</p>
       </div>
-      <ListItem onClick={() => navigate("/community/all")}>All</ListItem>
-      <ListItem onClick={() => navigate("/community/notice")}>
-        공지사항
-      </ListItem>
-      <ListItem onClick={() => navigate("/community/talk")}>사는얘기</ListItem>
-      <ListItem onClick={() => navigate("/community/forum")}>포럼</ListItem>
-      <ListItem onClick={() => navigate("/community/it")}>IT 행사</ListItem>
-      <ListItem onClick={() => navigate("/community/qa")}>Q&amp;A</ListItem>
+      <ListItem onClick={() => moveTo("/community/all")}>All</ListItem>
+      <ListItem onClick={() => moveTo("/community/notice")}>공지사항</ListItem>
+      <ListItem onClick={() => moveTo("/community/talk")}>사는얘기</ListItem>
+      <ListItem onClick={() => moveTo("/community/forum")}>포럼</ListItem>
+      <ListItem onClick={() => moveTo("/community/it")}>IT 행사</ListItem>
+      <ListItem onClick={() => moveTo("/community/qa")}>Q&amp;A</ListItem>
     </Base>
   );
 };
