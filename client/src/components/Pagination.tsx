@@ -47,7 +47,7 @@ const Base = styled.div<BaseProps>`
     `}
 `;
 
-// totalPage: 전체 페이지의 갯수 ex) 전체 글 갯수 1000개 -> totalPage = 100
+// totalPage: 전체 페이지의 갯수 ex) 서버에서 받아오는 전체 글 갯수가 1000개 -> 100
 // currentPage: 현재 보여지고 있는 페이지
 // pageListIndex: 페이지 리스트의 인덱스 ex) 1 -> 1~5, 2 -> 6~10, 3 -> 11~15
 // currentPageList: 현재 보여지고 있는 페이지 리스트

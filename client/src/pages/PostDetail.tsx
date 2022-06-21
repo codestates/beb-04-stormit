@@ -7,6 +7,7 @@ import Button from "../components/common/Button";
 import palette from "../styles/palette";
 import CommentCard from "../components/CommentCard";
 import Chip from "../components/common/Chip";
+import Divider from "../components/common/Divider";
 
 const Base = styled.div`
   display: flex;
@@ -38,8 +39,23 @@ const Base = styled.div`
 
   .post-detail-metadata {
     display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 2rem; // 32px
+  }
+
+  .post-detail-metadata-left-area {
+    display: flex;
     align-items: center;
     gap: 0.5rem; // 8px
+  }
+
+  .post-detail-metadata-right-area {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem; // 8px
+    height: 1.5rem; // 24px
+    color: ${palette.gray[500]};
   }
 
   .post-detail-author-profile-image {
@@ -109,9 +125,17 @@ const PostDetail: React.FC = () => {
             <p className="post-detail-title">
               블록체인 너무 어려운 것 같습니다..
             </p>
+
             <div className="post-detail-metadata">
-              <div className="post-detail-author-profile-image" />
-              <span className="post-detail-author-name">노논크러스트</span>
+              <div className="post-detail-metadata-left-area">
+                <div className="post-detail-author-profile-image" />
+                <span className="post-detail-author-name">노논크러스트</span>
+              </div>
+              <div className="post-detail-metadata-right-area">
+                <p className="post-detail-modify">수정</p>
+                <Divider orientation="vertical" />
+                <p className="post-detail-delete">삭제</p>
+              </div>
             </div>
           </div>
           <p className="post-detail-contents">{FAKE_POST_CONTENTS}</p>
