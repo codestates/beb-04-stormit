@@ -30,7 +30,8 @@ const Base = styled.div`
   }
 
   .community-title {
-    font-size: 2rem; // 32px
+    font-size: 1.5rem; // 32px
+    font-weight: 500;
   }
 
   .pagination-wrapper {
