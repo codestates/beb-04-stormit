@@ -11,6 +11,7 @@ import ProfileModal from "./components/ProfileModal";
 import Account from "./pages/Account";
 import Header from "./components/Header";
 import Post from "./pages/Post";
+import Community from "./pages/Community";
 
 const App: React.FC = () => {
   const menuModalOpen = useSelector((state) => state.modal.menuModalOpen);
@@ -32,6 +33,7 @@ const App: React.FC = () => {
         <Route path="/login" element={<Login />} />
         <Route path="/account" element={<Account />} />
         <Route path="/post" element={<Post />} />
+        <Route path="/community/:name" element={<Community />} />
       </Routes>
     </>
   );

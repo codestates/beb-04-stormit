@@ -22,13 +22,13 @@ const Base = styled.li`
   }
 `;
 
-interface Props {
+interface Props extends React.LiHTMLAttributes<HTMLLIElement> {
   children: React.ReactNode;
 }
 
-const ListItem: React.FC<Props> = ({ children }) => {
+const ListItem: React.FC<Props> = ({ children, ...props }) => {
   return (
-    <Base>
+    <Base {...props}>
       <div className="contents">{children}</div>
     </Base>
   );
