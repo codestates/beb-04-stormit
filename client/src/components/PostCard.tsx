@@ -127,9 +127,9 @@ const PostCard: React.FC = () => {
           {shortenPostContents(CONTENTS_PLACEHOLDER)}
         </p>
         <div className="chips-wrapper">
-          <Chip size="small">Tag</Chip>
-          <Chip size="small">Community</Chip>
-          <Chip size="small">Long Community Name</Chip>
+          <Chip size="small">태그</Chip>
+          <Chip size="small">커뮤니티</Chip>
+          <Chip size="small">아주 긴 커뮤니티 이름</Chip>
         </div>
       </Base>
       <Divider />

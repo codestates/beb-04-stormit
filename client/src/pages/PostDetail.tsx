@@ -6,6 +6,7 @@ import Textarea from "../components/common/Textarea";
 import Button from "../components/common/Button";
 import palette from "../styles/palette";
 import CommentCard from "../components/CommentCard";
+import Chip from "../components/common/Chip";
 
 const Base = styled.div`
   display: flex;
@@ -61,6 +62,11 @@ const Base = styled.div`
     line-height: 1.6;
   }
 
+  .post-detail-chip-wrapper {
+    display: flex;
+    gap: 0.5rem; // 8px
+  }
+
   .comment-title {
     font-size: 1.5rem; // 24px
     padding-top: 1rem; // 16px
@@ -109,6 +115,10 @@ const PostDetail: React.FC = () => {
             </div>
           </div>
           <p className="post-detail-contents">{FAKE_POST_CONTENTS}</p>
+          <div className="post-detail-chip-wrapper">
+            <Chip>태그</Chip>
+            <Chip>커뮤니티</Chip>
+          </div>
           <p className="comment-title">댓글 4개</p>
           <CommentCard />
           <CommentCard />
