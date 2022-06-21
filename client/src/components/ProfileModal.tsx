@@ -128,7 +128,7 @@ const ProfileModal: React.FC = () => {
           </div>
           <Divider />
           <div className="profile-modal-item" onClick={onClickAccountButton}>
-            개인정보 변경
+            보안 및 로그인
           </div>
 
           <Divider />
