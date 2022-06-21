@@ -6,6 +6,7 @@ import Input from "../components/common/Input";
 import Snackbar from "../components/common/Snackbar";
 import PostOptionCard from "../components/PostOptionCard";
 import DoneIcon from "@mui/icons-material/Done";
+import CommentCard from "../components/CommentCard";
 
 const Base = styled.section`
   display: flex;
@@ -52,6 +53,7 @@ const Test: React.FC = () => {
       >
         로그인되었습니다.
       </Snackbar>
+      <CommentCard />
     </Base>
   );
 };
