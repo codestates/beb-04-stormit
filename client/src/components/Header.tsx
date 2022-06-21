@@ -15,15 +15,17 @@ const Base = styled.header`
   justify-content: space-between;
   align-items: center;
 
-  position: sticky;
-  top: 0;
   color: white;
   padding: 1rem; // 16px
   background-color: ${theme.primary};
   height: 3.5rem; // 56px
   box-shadow: 0px 0px 9px 3px rgba(41, 41, 41, 0.25);
+  z-index: 999;
 
   .header-left {
+    display: flex;
+    align-items: center;
+    gap: 1rem; // 16px
     cursor: pointer;
   }
 
@@ -103,9 +105,12 @@ const Header: React.FC = () => {
       <div className="header-left">
         {menuModalOpen && <CloseIcon onClick={closeMenuModal} />}
         {!menuModalOpen && <MenuIcon onClick={openMenuModal} />}
+        <span className="header-text" onClick={() => navigate("/")}>
+          Stormit
+        </span>
       </div>
       <div className="header-left-desktop" onClick={() => navigate("/")}>
-        <div className="header-logo" />
+        {/* <div className="header-logo" /> */}
         <span className="header-text">Stormit</span>
       </div>
       <div className="header-right">

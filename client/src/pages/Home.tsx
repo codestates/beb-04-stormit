@@ -5,6 +5,7 @@ import CreateIcon from "@mui/icons-material/Create";
 import PostCard from "../components/PostCard";
 import NavigationRail from "../components/NavigationRail";
 import LoadingSpinner from "../components/common/LoadingSpinner";
+import { useNavigate } from "react-router-dom";
 
 const FAKE_ARRAY = Array(10).fill(0);
 
@@ -77,6 +78,8 @@ const Home: React.FC = () => {
 
   const targetRef = useRef<HTMLDivElement | null>(null);
 
+  const navigate = useNavigate();
+
   // 무한스크롤
   const observer = useMemo(() => {
     return new IntersectionObserver((entries) => {
@@ -126,7 +129,7 @@ const Home: React.FC = () => {
             ))}
           </ul>
           <div className="fab-wrapper">
-            <FloatingIconButton>
+            <FloatingIconButton onClick={() => navigate("/post")}>
               <CreateIcon />
             </FloatingIconButton>
           </div>

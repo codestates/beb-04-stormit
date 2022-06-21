@@ -1,14 +1,29 @@
 import React from "react";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import palette from "../../styles/palette";
 
-const Divider: React.FC = () => {
-  return <Base />;
-};
+interface BaseProps {
+  orientation?: "horizontal" | "vertical";
+}
 
-const Base = styled.div`
+const Base = styled.div<BaseProps>`
   height: 1px;
   background-color: ${palette.gray[200]};
+
+  ${({ orientation }) =>
+    orientation === "vertical" &&
+    css`
+      height: 100%;
+      width: 1px;
+    `}
 `;
+
+interface Props {
+  orientation?: "horizontal" | "vertical";
+}
+
+const Divider: React.FC<Props> = ({ orientation }) => {
+  return <Base orientation={orientation} />;
+};
 
 export default Divider;

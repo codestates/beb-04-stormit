@@ -22,13 +22,22 @@ const Base = styled.div`
 
     .menu-modal-title {
       font-size: 1.25rem; // 20px
-      font-weight: 600;
+      font-weight: 500;
     }
 
     .menu-modal-subtitle {
       font-size: 0.75rem; // 12px
       color: ${palette.gray[400]};
     }
+  }
+
+  // 600px
+  @media screen and (min-width: 37.5rem) {
+  }
+
+  // 1240px
+  @media screen and (min-width: 77.5rem) {
+    left: 4.5rem;
   }
 `;
 
