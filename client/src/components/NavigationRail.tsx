@@ -3,12 +3,17 @@ import styled from "styled-components";
 import palette from "../styles/palette";
 import FloatingIconButton from "./common/FloatingIconButton";
 import CreateIcon from "@mui/icons-material/Create";
+import ArrowLeftIcon from "@mui/icons-material/ArrowLeft";
 import ArrowRightIcon from "@mui/icons-material/ArrowRight";
 import MailIcon from "@mui/icons-material/Mail";
 import SendIcon from "@mui/icons-material/Send";
 import SearchIcon from "@mui/icons-material/Search";
 import PersonIcon from "@mui/icons-material/Person";
+import MenuIcon from "@mui/icons-material/Menu";
 import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "../store";
+import { modalActions } from "../store/modalSlice";
+import CloseIcon from "@mui/icons-material/Close";
 
 const Base = styled.aside`
   display: flex;
@@ -30,13 +35,13 @@ const Base = styled.aside`
 
     transform: translateX(-0.75rem);
     cursor: pointer;
+  }
 
-    .navigation-logo {
-      background-color: ${palette.gray[200]};
-      width: 2rem; // 32px
-      height: 2rem; // 32px
-      border-radius: 50%;
-    }
+  .navigation-logo {
+    background-color: ${palette.gray[200]};
+    width: 2rem; // 32px
+    height: 2rem; // 32px
+    border-radius: 50%;
   }
 
   .navigation-icon {
@@ -47,14 +52,37 @@ const Base = styled.aside`
 interface Props extends React.HtmlHTMLAttributes<HTMLElement> {}
 
 const NavigationRail: React.FC<Props> = ({ ...props }) => {
+  const menuModalOpen = useSelector((state) => state.modal.menuModalOpen);
+
+  const dispatch = useDispatch();
+
+  const openMenuModal = () => {
+    dispatch(modalActions.openMenuModal());
+  };
+
+  const closeMenuModal = () => {
+    dispatch(modalActions.closeMenuModal());
+  };
+
   const navigate = useNavigate();
 
   return (
     <Base {...props}>
       <div className="navigation-logo-wrapper">
-        <ArrowRightIcon />
-        <div className="navigation-logo" />
+        {!menuModalOpen && (
+          <>
+            <ArrowRightIcon />
+            <MenuIcon onClick={openMenuModal} />
+          </>
+        )}
+        {menuModalOpen && (
+          <>
+            <ArrowLeftIcon />
+            <MenuIcon onClick={closeMenuModal} />
+          </>
+        )}
       </div>
+      <div className="navigation-logo" />
       <FloatingIconButton onClick={() => navigate("/post")}>
         <CreateIcon />
       </FloatingIconButton>
