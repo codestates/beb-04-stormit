@@ -17,6 +17,7 @@ const Base = styled.div`
     font-size: 2rem;
   }
 
+  // 1240px
   @media screen and (min-width: 77.5rem) {
     max-width: 52.5rem;
     margin: 2rem auto;

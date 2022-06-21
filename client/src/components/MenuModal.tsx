@@ -11,6 +11,7 @@ const Base = styled.div`
   background-color: white;
   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1), 0px 16px 32px rgba(0, 0, 0, 0.2);
   padding-bottom: 1rem;
+  z-index: 999;
 
   .menu-modal-title-wrapper {
     display: flex;
@@ -28,6 +29,15 @@ const Base = styled.div`
       font-size: 0.75rem; // 12px
       color: ${palette.gray[400]};
     }
+  }
+
+  // 600px
+  @media screen and (min-width: 37.5rem) {
+  }
+
+  // 1240px
+  @media screen and (min-width: 77.5rem) {
+    left: 4.5rem;
   }
 `;
 
