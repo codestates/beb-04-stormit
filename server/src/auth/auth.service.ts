@@ -1,17 +1,20 @@
-import { Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { UserRepository } from './user.repository';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { UserDTO } from './dto/user.dto';
+import { UserService } from './user.service';
 
 @Injectable()
 export class AuthService {
     constructor(
-        @InjectRepository(UserRepository)
-        private userRepository: UserRepository,
-    ) { }
+        private userService: UserService
+    ){}
 
-    async signUp(authCredentialsDto: UserDTO): Promise<void> {
-        return this.userRepository.createUser(authCredentialsDto);
+    async registerUser(newUser: UserDTO): Promise<UserDTO> {
+        let userFind: UserDTO = await this.userService.findByFields({ 
+            where: { username: newUser.username }
+        });
+        if(userFind) {
+            throw new HttpException('Username aleady used!', HttpStatus.BAD_REQUEST);
+        }
+        return await this.userService.save(newUser);
     }
-
 }
