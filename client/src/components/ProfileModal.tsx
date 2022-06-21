@@ -114,6 +114,11 @@ const ProfileModal: React.FC = () => {
     navigate("/login");
   };
 
+  const onClickSignUpButton = () => {
+    closeModal();
+    navigate("/signup");
+  };
+
   const onClickLogOutButton = () => {
     closeModal();
     dispatch(userActions.setLoggedOut());
@@ -127,6 +132,9 @@ const ProfileModal: React.FC = () => {
             로그인
           </div>
           <Divider />
+          <div className="profile-modal-item" onClick={onClickSignUpButton}>
+            회원가입
+          </div>
         </>
       )}
       {isLoggedIn && (
@@ -159,6 +167,7 @@ const ProfileModal: React.FC = () => {
         </div>
         <ToggleButton checked={isDarkMode} onClick={toggleDarkMode} />
       </div>
+      <Divider />
     </Base>
   );
 };
