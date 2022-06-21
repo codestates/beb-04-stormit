@@ -3,6 +3,7 @@ import { Route, Routes } from "react-router-dom";
 import Home from "./pages/Home";
 import Test from "./pages/Test";
 import MyPage from "./pages/MyPage";
+import Login from "./pages/Login";
 import { useSelector } from "./store";
 import GlobalStyle from "./styles/GlobalStyle";
 import MenuModal from "./components/MenuModal";
@@ -27,6 +28,7 @@ const App: React.FC = () => {
         <Route path="/" element={<Home />} />
         <Route path="/test" element={<Test />} />
         <Route path="/mypage" element={<MyPage />} />
+        <Route path="/login" element={<Login />} />
         <Route path="/account" element={<Account />} />
       </Routes>
     </>

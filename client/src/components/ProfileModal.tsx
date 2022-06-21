@@ -86,11 +86,18 @@ const ProfileModal: React.FC = () => {
     navigate("/account");
   };
 
+  const onClickLoginButton = () => {
+    closeModal();
+    navigate("/login");
+  };
+
   return (
     <Base>
       {!isLoggedIn && (
         <>
-          <div className="profile-modal-item">로그인</div>
+          <div className="profile-modal-item" onClick={onClickLoginButton}>
+            로그인
+          </div>
           <Divider />
         </>
       )}
