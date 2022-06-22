@@ -29,6 +29,7 @@ const Base = styled.div`
       }
     }
   }
+  // 사용자 이름과 연동하자
   .move-post {
     position: relative;
     left: 0;
