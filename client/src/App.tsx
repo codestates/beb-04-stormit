@@ -13,6 +13,7 @@ import Header from "./components/Header";
 import Post from "./pages/Post";
 import Community from "./pages/Community";
 import PostDetail from "./pages/PostDetail";
+import Edit from "./pages/Edit";
 
 const App: React.FC = () => {
   const menuModalOpen = useSelector((state) => state.modal.menuModalOpen);
@@ -36,6 +37,7 @@ const App: React.FC = () => {
         <Route path="/post" element={<Post />} />
         <Route path="/community/:name" element={<Community />} />
         <Route path="/post/:id" element={<PostDetail />} />
+        <Route path="/edit/:id" element={<Edit />} />
       </Routes>
     </>
   );

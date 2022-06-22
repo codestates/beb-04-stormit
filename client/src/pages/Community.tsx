@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import NavigationRail from "../components/NavigationRail";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import {
   FAKE_ARRAY,
   getLastPathname,
@@ -65,6 +65,8 @@ const Community: React.FC = () => {
 
   const location = useLocation();
 
+  const navigate = useNavigate();
+
   const communityName = getLastPathname(location.pathname);
 
   return (
@@ -76,7 +78,9 @@ const Community: React.FC = () => {
             <p className="community-title">
               {translateCommunityName(communityName)}
             </p>
-            <Button variant="contained">글쓰기</Button>
+            <Button variant="contained" onClick={() => navigate("/post")}>
+              글쓰기
+            </Button>
           </div>
         </div>
         <ul className="posts-wrapper">

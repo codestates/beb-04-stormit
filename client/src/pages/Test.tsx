@@ -8,6 +8,7 @@ import PostOptionCard from "../components/PostOptionCard";
 import DoneIcon from "@mui/icons-material/Done";
 import CommentCard from "../components/CommentCard";
 import Pagination from "../components/Pagination";
+import Select from "../components/common/Select";
 
 const Base = styled.section`
   display: flex;
@@ -49,6 +50,11 @@ const Test: React.FC = () => {
         로그인되었습니다.
       </Snackbar>
       <CommentCard />
+      <Select>
+        <option>1</option>
+        <option>2</option>
+        <option>3</option>
+      </Select>
     </Base>
   );
 };

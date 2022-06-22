@@ -40,7 +40,7 @@ const Base = styled.div`
   }
 `;
 
-const Post: React.FC = () => {
+const Edit: React.FC = () => {
   const navigate = useNavigate();
 
   const onClickCancelButton = () => {
@@ -53,7 +53,7 @@ const Post: React.FC = () => {
 
   return (
     <Base>
-      <p className="post-heading">새 글 등록</p>
+      <p className="post-heading">수정하기</p>
       <Select>
         <option>공지사항</option>
         <option>커뮤니티</option>
@@ -76,11 +76,11 @@ const Post: React.FC = () => {
           돌아가기
         </Button>
         <Button variant="contained" onClick={onClickSubmitButton}>
-          등록하기
+          수정하기
         </Button>
       </div>
     </Base>
   );
 };
 
-export default Post;
+export default Edit;
