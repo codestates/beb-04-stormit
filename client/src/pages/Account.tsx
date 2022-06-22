@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import Button from "../components/common/Button";
 import Input from "../components/common/Input";
-import { useDispatch } from "../store";
+import { updatePasswordAPI, withdrawalAPI } from "../lib/api/user";
+import { useDispatch, useSelector } from "../store";
 import { userActions } from "../store/userSlice";
 import palette from "../styles/palette";
 
@@ -43,7 +44,7 @@ const Base = styled.div`
     color: ${palette.gray[400]};
   }
 
-  .unregister {
+  .withdrawal {
     text-align: right;
     color: ${palette.gray[300]};
     text-decoration: underline;
@@ -63,16 +64,56 @@ const Base = styled.div`
 `;
 
 const Account: React.FC = () => {
+  const [password, setPassword] = useState("");
+  const [passwordConfirm, setPasswordConfirm] = useState("");
+
+  const email = useSelector((state) => state.user.email);
+  const userId = useSelector((state) => state.user.userId);
+  const passwordHash = useSelector((state) => state.user.passwordHash);
+
   const navigate = useNavigate();
 
   const dispatch = useDispatch();
 
-  const onClickUnregisterButton = () => {
+  const onChangePassword = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setPassword(event.target.value);
+  };
+
+  const onChangePasswordConfirm = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    setPasswordConfirm(event.target.value);
+  };
+
+  const onClickSubmit = async () => {
+    // 밸리데이션 로직 작성 필요
+
+    const body = {
+      user_id: userId,
+      current_password: passwordHash,
+      new_password: password,
+    };
+
+    try {
+      await updatePasswordAPI(email, body);
+    } catch (error) {
+      console.log(error);
+    }
+
+    navigate("/");
+  };
+
+  const onClickWithdrawalButton = async () => {
     if (
       window.confirm("한 번 탈퇴하면 되돌릴 수 없습니다. 탈퇴하시겠습니까?")
     ) {
-      dispatch(userActions.setLoggedOut());
-      navigate("/");
+      try {
+        await withdrawalAPI(email);
+        dispatch(userActions.setLoggedOut());
+        navigate("/");
+      } catch (error) {
+        console.log(error);
+      }
     }
   };
 
@@ -87,15 +128,23 @@ const Account: React.FC = () => {
           </span>
         </p>
         <label className="password-label">비밀번호</label>
-        <Input placeholder="변경할 비밀번호" />
+        <Input
+          placeholder="변경할 비밀번호"
+          value={password}
+          onChange={onChangePassword}
+        />
         <label className="password-label">비밀번호 재입력</label>
-        <Input placeholder="비밀번호 확인" />
+        <Input
+          placeholder="비밀번호 확인"
+          value={passwordConfirm}
+          onChange={onChangePasswordConfirm}
+        />
         <div className="account-button-wrapper">
-          <Button variant="contained" onClick={() => navigate("/")}>
+          <Button variant="contained" onClick={onClickSubmit}>
             저장하기
           </Button>
         </div>
-        <p className="unregister" onClick={onClickUnregisterButton}>
+        <p className="withdrawal" onClick={onClickWithdrawalButton}>
           회원탈퇴
         </p>
       </div>
