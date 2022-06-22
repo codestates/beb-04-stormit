@@ -12,7 +12,7 @@ type GetAllPostsResponseType = {
   nickname: string;
   created_at: string;
   comment_count: number;
-  board: string;
+  board_name: string;
 }[];
 
 type GetPostsByBoardBodyType = {

@@ -85,11 +85,27 @@ const Base = styled.li`
   }
 `;
 
-const PostCard: React.FC = () => {
+interface Props {
+  postId: number;
+  commentCount: number;
+  postTitle: string;
+  postContents: string;
+  community: string;
+  createdAt: string;
+}
+
+const PostCard: React.FC<Props> = ({
+  postId,
+  commentCount,
+  postTitle,
+  postContents,
+  community,
+  createdAt,
+}) => {
   const navigate = useNavigate();
 
   const onClickPostTitle = () => {
-    navigate(`/post/${128234}`);
+    navigate(`/post/${postId}`);
   };
 
   return (
@@ -97,9 +113,9 @@ const PostCard: React.FC = () => {
       <Base>
         <div className="post-metadata-area">
           <p className="post-metadata">
-            <span className="replies">0 replies</span>
+            <span className="replies">{commentCount} comments</span>
             <span className="views">0 views</span>
-            <span className="time">{parseDate(new Date())}</span>
+            <span className="time">{createdAt}</span>
           </p>
           <IconButton>
             <MoreVertIcon />
@@ -107,14 +123,12 @@ const PostCard: React.FC = () => {
         </div>
         <div className="post-title-area-wrapper">
           <p className="post-title" onClick={onClickPostTitle}>
-            이것은 게시물의 제목입니다.
+            {postTitle}
           </p>
         </div>
-        <p className="post-contents">
-          {shortenPostContents(CONTENTS_PLACEHOLDER)}
-        </p>
+        <p className="post-contents">{shortenPostContents(postContents)}</p>
         <div className="chips-wrapper">
-          <Chip size="small">커뮤니티</Chip>
+          <Chip size="small">{community}</Chip>
         </div>
       </Base>
       <Divider />

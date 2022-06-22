@@ -12,6 +12,7 @@ import palette from "../styles/palette";
 import Button from "../components/common/Button";
 import { useSelector } from "../store";
 import MovetoPost from "../components/MovetoPost";
+import { getAllPostAPI } from "../lib/api/post";
 
 const Base = styled.div`
   display: flex;
@@ -109,7 +110,8 @@ const Base = styled.div`
 
 const Home: React.FC = () => {
   const [loading, setLoading] = useState(false);
-  const [postData, setPostData] = useState(FAKE_ARRAY);
+  const [fakePostData, setFakePostData] = useState(FAKE_ARRAY);
+  const [postList, setPostList] = useState<GetAllPostsResponseType>([]);
 
   const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
 
@@ -130,7 +132,7 @@ const Home: React.FC = () => {
         setTimeout(() => {
           const FAKE_FETCH_ARRAY = Array(10).fill(0);
 
-          setPostData((postData) => [...postData, ...FAKE_FETCH_ARRAY]);
+          setFakePostData((postData) => [...postData, ...FAKE_FETCH_ARRAY]);
           setLoading(false);
         }, 1000);
       }
@@ -147,6 +149,15 @@ const Home: React.FC = () => {
       observer.disconnect();
     };
   }, [observer]);
+
+  useEffect(() => {
+    const fetchPosts = async () => {
+      const response = await getAllPostAPI();
+      setPostList(response.data);
+    };
+
+    fetchPosts();
+  }, []);
 
   return (
     <Base>
@@ -186,8 +197,15 @@ const Home: React.FC = () => {
           <MovetoPost />
           <h2 className="section-title">전체 글 보기</h2>
           <ul className="posts-wrapper">
-            {postData.map((_, index) => (
-              <PostCard key={index} />
+            {postList.map((post) => (
+              <PostCard
+                postId={post.post_id}
+                commentCount={post.comment_count}
+                postTitle={post.post_title}
+                postContents={post.post_content}
+                community={post.board_name}
+                createdAt={post.created_at}
+              />
             ))}
           </ul>
           <div className="fab-wrapper">
