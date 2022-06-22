@@ -4,12 +4,14 @@ interface modalState {
   menuModalOpen: boolean;
   profileModalOpen: boolean;
   searchInputModalOpen: boolean;
+  createAccountOpen: boolean;
 }
 
 const initialState: modalState = {
   menuModalOpen: false,
   profileModalOpen: false,
   searchInputModalOpen: false,
+  createAccountOpen: false,
 };
 
 export const modalSlice = createSlice({
@@ -40,6 +42,12 @@ export const modalSlice = createSlice({
       state.menuModalOpen = false;
       state.profileModalOpen = false;
       state.searchInputModalOpen = false;
+    },
+    openCreateAccountModal(state) {
+      state.createAccountOpen = true;
+    },
+    closeCreateAccountModal(state) {
+      state.createAccountOpen = false;
     },
   },
 });
