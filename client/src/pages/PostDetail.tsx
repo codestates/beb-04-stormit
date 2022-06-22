@@ -9,16 +9,15 @@ import CommentCard from "../components/CommentCard";
 import Chip from "../components/common/Chip";
 import Divider from "../components/common/Divider";
 import { useSelector } from "../store";
+import IconButton from "../components/common/IconButton";
+import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
+import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
+import theme from "../styles/theme";
 
 const Base = styled.div`
   display: flex;
   flex-direction: column;
-
   height: 100vh;
-
-  .body {
-    display: flex;
-  }
 
   .contents {
     display: flex;
@@ -80,6 +79,18 @@ const Base = styled.div`
     line-height: 1.6;
   }
 
+  .post-detail-vote-area {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .post-detail-vote {
+    font-size: 1.5rem;
+    color: ${theme.primary};
+  }
+
   .post-detail-chip-wrapper {
     display: flex;
     gap: 0.5rem; // 8px
@@ -121,47 +132,53 @@ const PostDetail: React.FC = () => {
 
   return (
     <Base>
-      <div className="body">
-        <NavigationRail />
-        <div className="contents">
-          <div className="contents-top">
-            <p className="post-id">#123456</p>
-            <p className="post-detail-title">
-              블록체인 너무 어려운 것 같습니다..
-            </p>
-
-            <div className="post-detail-metadata">
-              <div className="post-detail-metadata-left-area">
-                <div className="post-detail-author-profile-image" />
-                <span className="post-detail-author-name">노논크러스트</span>
-              </div>
-              <div className="post-detail-metadata-right-area">
-                <p className="post-detail-modify">수정</p>
-                <Divider orientation="vertical" />
-                <p className="post-detail-delete">삭제</p>
-              </div>
+      <NavigationRail />
+      <div className="contents">
+        <div className="contents-top">
+          <p className="post-id">#123456</p>
+          <p className="post-detail-title">
+            블록체인 너무 어려운 것 같습니다..
+          </p>
+          <div className="post-detail-metadata">
+            <div className="post-detail-metadata-left-area">
+              <div className="post-detail-author-profile-image" />
+              <span className="post-detail-author-name">노논크러스트</span>
+            </div>
+            <div className="post-detail-metadata-right-area">
+              <p className="post-detail-modify">수정</p>
+              <Divider orientation="vertical" />
+              <p className="post-detail-delete">삭제</p>
             </div>
           </div>
-          <p className="post-detail-contents">{FAKE_POST_CONTENTS}</p>
-          <div className="post-detail-chip-wrapper">
-            <Chip>태그</Chip>
-            <Chip>커뮤니티</Chip>
-          </div>
-          <p className="comment-title">댓글 4개</p>
-          <CommentCard />
-          <CommentCard />
-          <CommentCard />
-          <CommentCard />
-          {isLoggedIn && (
-            <>
-              <p className="comment-submit-title">댓글 쓰기</p>
-              <Textarea placeholder="댓글을 남겨보세요" height="6rem" />
-              <div className="comment-submit-button-wrapper">
-                <Button variant="contained">등록</Button>
-              </div>
-            </>
-          )}
         </div>
+        <p className="post-detail-contents">{FAKE_POST_CONTENTS}</p>
+        <div className="post-detail-chip-wrapper">
+          <Chip>태그</Chip>
+          <Chip>커뮤니티</Chip>
+        </div>
+        <div className="post-detail-vote-area">
+          <IconButton>
+            <KeyboardArrowUpIcon />
+          </IconButton>
+          <span className="post-detail-vote">3</span>
+          <IconButton>
+            <KeyboardArrowDownIcon />
+          </IconButton>
+        </div>
+        <p className="comment-title">댓글 4개</p>
+        <CommentCard />
+        <CommentCard />
+        <CommentCard />
+        <CommentCard />
+        {isLoggedIn && (
+          <>
+            <p className="comment-submit-title">댓글 쓰기</p>
+            <Textarea placeholder="댓글을 남겨보세요" height="6rem" />
+            <div className="comment-submit-button-wrapper">
+              <Button variant="contained">등록</Button>
+            </div>
+          </>
+        )}
       </div>
     </Base>
   );

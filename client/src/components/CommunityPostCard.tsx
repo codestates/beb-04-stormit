@@ -3,20 +3,23 @@ import styled from "styled-components";
 import palette from "../styles/palette";
 import Divider from "./common/Divider";
 import { parseDate } from "../lib/utils";
-import MoreVertIcon from "@mui/icons-material/MoreVert";
-import IconButton from "./common/IconButton";
+
 import { useNavigate } from "react-router-dom";
+import theme from "../styles/theme";
+
+import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 
 const Base = styled.li`
   display: flex;
   flex-direction: column;
   gap: 0.5rem; // 8px
-  padding: 0.5rem 0; // 8px 0
+  padding-top: 0.5rem; // 8px
 
   .post-metadata-area {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    height: 0.875rem; // 14px
   }
 
   .post-metadata {
@@ -25,7 +28,8 @@ const Base = styled.li`
     gap: 0.5rem; // 8px
   }
 
-  .time {
+  .time,
+  .post-views {
     font-size: 0.75rem; // 12px
     color: ${palette.gray[400]};
   }
@@ -38,6 +42,8 @@ const Base = styled.li`
 
   .post-title-wrapper {
     display: flex;
+    align-items: center;
+    gap: 0.5rem; // 8px
   }
 
   .post-title {
@@ -49,12 +55,21 @@ const Base = styled.li`
     }
   }
 
-  .post-views-comments-wrapper {
+  .post-vote-wrapper {
     display: flex;
     align-items: center;
-    gap: 0.5rem; // 8px
+  }
 
-    color: ${palette.gray[500]};
+  .post-vote-icon {
+    color: ${palette.gray[600]};
+  }
+
+  .post-vote {
+    color: ${theme.primary};
+  }
+
+  .post-comments {
+    color: ${theme.primary};
   }
 
   .post-author {
@@ -77,10 +92,11 @@ const CommunityPostCard: React.FC = () => {
             <p className="post-title" onClick={onClickPostTitle}>
               이것은 게시물의 제목입니다.
             </p>
-            <span className="post-comments">3</span>
+            <span className="post-comments">[3]</span>
           </div>
-          <div className="post-views-wrapper">
-            <p className="post-views">100</p>
+          <div className="post-vote-wrapper">
+            <KeyboardArrowUpIcon className="post-vote-icon" />
+            <span className="post-vote">3</span>
           </div>
         </div>
         <div className="post-metadata-area">
@@ -88,10 +104,8 @@ const CommunityPostCard: React.FC = () => {
             <span className="post-author">스팀잇닉네임</span>
 
             <span className="time">{parseDate(new Date())}</span>
+            <span className="post-views">조회수 23</span>
           </p>
-          <IconButton>
-            <MoreVertIcon />
-          </IconButton>
         </div>
         <Divider />
       </Base>
