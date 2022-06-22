@@ -2,7 +2,11 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import NavigationRail from "../components/NavigationRail";
 import { useLocation, useNavigate } from "react-router-dom";
-import { getLastPathname, translateCommunityName } from "../lib/utils";
+import {
+  getLastPathname,
+  parseDate,
+  translateCommunityName,
+} from "../lib/utils";
 import Pagination from "../components/Pagination";
 import Button from "../components/common/Button";
 import CommunityPostCard from "../components/CommunityPostCard";
@@ -100,6 +104,13 @@ const Community: React.FC = () => {
               createdAt={post.created_at}
             />
           ))}
+          <CommunityPostCard
+            postId={1}
+            title="비비큐 황금올리브"
+            commentCount={3}
+            nickname="노논"
+            createdAt={parseDate(new Date())}
+          />
         </ul>
         <div className="pagination-wrapper">
           <Pagination />

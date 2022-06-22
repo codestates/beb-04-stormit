@@ -5,7 +5,6 @@ import { useSelector } from "../store";
 import palette from "../styles/palette";
 import Button from "./common/Button";
 import Divider from "./common/Divider";
-import Input from "./common/Input";
 import Textarea from "./common/Textarea";
 
 const Base = styled.div`
