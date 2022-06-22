@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import NavigationRail from "../components/NavigationRail";
-import { FAKE_POST_CONTENTS } from "../lib/dummyData";
 import Textarea from "../components/common/Textarea";
 import Button from "../components/common/Button";
 import palette from "../styles/palette";
@@ -13,8 +12,8 @@ import IconButton from "../components/common/IconButton";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import theme from "../styles/theme";
-import { getPostByIdAPI } from "../lib/api/post";
-import { useLocation } from "react-router-dom";
+import { deletePostByIdAPI, getPostByIdAPI } from "../lib/api/post";
+import { useLocation, useNavigate } from "react-router-dom";
 import { getLastPathname } from "../lib/utils";
 
 const Base = styled.div`
@@ -106,6 +105,11 @@ const Base = styled.div`
     gap: 0.5rem; // 8px
   }
 
+  .post-detail-edit,
+  .post-detail-delete {
+    cursor: pointer;
+  }
+
   .comment-title {
     font-size: 1.5rem; // 24px
     padding-top: 1rem; // 16px
@@ -137,13 +141,6 @@ const Base = styled.div`
   }
 `;
 
-/*
-post_title: string;
-  nickname: string;
-  created_at: string;
-  comment: { nickname: string; comment_content: string; comment_id: number }[];
-*/
-
 const PostDetail: React.FC = () => {
   const [postData, setPostData] = useState({
     postTitle: "",
@@ -162,10 +159,26 @@ const PostDetail: React.FC = () => {
   >([]);
 
   const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
+  const nickname = useSelector((state) => state.user.nickname);
+
+  const navigate = useNavigate();
 
   const location = useLocation();
 
   const postId = Number(getLastPathname(location.pathname));
+
+  const isMyPost = postData.nickname === nickname;
+
+  const onClickEditButton = () => {
+    navigate(`/edit/${postId}`);
+  };
+
+  const onClickDeleteButton = async () => {
+    if (window.confirm("삭제하시겠습니까?")) {
+      await deletePostByIdAPI(postId);
+      navigate(-1);
+    }
+  };
 
   useEffect(() => {
     const fetchPost = async () => {
@@ -205,7 +218,7 @@ const PostDetail: React.FC = () => {
     };
 
     fetchPost();
-  }, []);
+  }, [postId]);
 
   return (
     <Base>
@@ -223,9 +236,20 @@ const PostDetail: React.FC = () => {
               <span className="post-detail-views">조회수 0</span>
             </div>
             <div className="post-detail-metadata-right-area">
-              <p className="post-detail-modify">수정</p>
-              <Divider orientation="vertical" />
-              <p className="post-detail-delete">삭제</p>
+              {isMyPost && (
+                <>
+                  <p className="post-detail-edit" onClick={onClickEditButton}>
+                    수정
+                  </p>
+                  <Divider orientation="vertical" />
+                  <p
+                    className="post-detail-delete"
+                    onClick={onClickDeleteButton}
+                  >
+                    삭제
+                  </p>
+                </>
+              )}
             </div>
           </div>
         </div>
