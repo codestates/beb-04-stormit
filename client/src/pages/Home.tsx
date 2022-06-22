@@ -11,6 +11,7 @@ import theme from "../styles/theme";
 import palette from "../styles/palette";
 import Button from "../components/common/Button";
 import { useSelector } from "../store";
+import MovetoPost from "../components/MovetoPsot";
 
 const Base = styled.div`
   display: flex;
@@ -182,6 +183,7 @@ const Home: React.FC = () => {
               </>
             )}
           </div>
+          <MovetoPost />
           <h2 className="section-title">전체 글 보기</h2>
           <ul className="posts-wrapper">
             {postData.map((_, index) => (
