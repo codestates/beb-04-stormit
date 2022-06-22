@@ -3,6 +3,8 @@ import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import Button from "../components/common/Button";
 import Input from "../components/common/Input";
+import { useDispatch } from "../store";
+import { userActions } from "../store/userSlice";
 import palette from "../styles/palette";
 
 const Base = styled.div`
@@ -41,6 +43,13 @@ const Base = styled.div`
     color: ${palette.gray[400]};
   }
 
+  .unregister {
+    text-align: right;
+    color: ${palette.gray[300]};
+    text-decoration: underline;
+    cursor: pointer;
+  }
+
   // 600px
   @media screen and (min-width: 37.5rem) {
     margin: 1rem auto;
@@ -55,6 +64,17 @@ const Base = styled.div`
 
 const Account: React.FC = () => {
   const navigate = useNavigate();
+
+  const dispatch = useDispatch();
+
+  const onClickUnregisterButton = () => {
+    if (
+      window.confirm("한 번 탈퇴하면 되돌릴 수 없습니다. 탈퇴하시겠습니까?")
+    ) {
+      dispatch(userActions.setLoggedOut());
+      navigate("/");
+    }
+  };
 
   return (
     <Base>
@@ -75,6 +95,9 @@ const Account: React.FC = () => {
             저장하기
           </Button>
         </div>
+        <p className="unregister" onClick={onClickUnregisterButton}>
+          회원탈퇴
+        </p>
       </div>
     </Base>
   );
