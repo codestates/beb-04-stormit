@@ -103,7 +103,7 @@ const Base = styled.div`
   // 600px
   @media screen and (min-width: 37.5rem) {
     .contents {
-      margin: 0 auto;
+      margin: 1rem auto;
       max-width: 37.5rem; // 600px
     }
   }

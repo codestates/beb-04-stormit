@@ -21,6 +21,9 @@ const Base = styled.aside`
   align-items: center;
   gap: 1rem;
 
+  position: absolute;
+  top: 3.5rem;
+  left: 0;
   width: 4.5rem; // 72px
   height: calc(100vh - 3.5rem);
   padding: 1rem; // 16px

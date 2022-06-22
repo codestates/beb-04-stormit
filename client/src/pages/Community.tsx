@@ -2,31 +2,35 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import NavigationRail from "../components/NavigationRail";
 import { useLocation } from "react-router-dom";
-import PostCard from "../components/PostCard";
 import {
   FAKE_ARRAY,
   getLastPathname,
   translateCommunityName,
 } from "../lib/utils";
 import Pagination from "../components/Pagination";
+import Button from "../components/common/Button";
+import CommunityPostCard from "../components/CommunityPostCard";
 
 const Base = styled.div`
   display: flex;
   flex-direction: column;
   height: 100vh;
 
-  .body {
-    display: flex;
-  }
-
   .contents {
     margin: 1rem;
   }
+
   .contents-top {
     display: flex;
     flex-direction: column;
     gap: 0.5rem; // 8px
     margin: 1rem 0; // 16px
+  }
+
+  .community-title-area {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
   }
 
   .community-title {
@@ -43,15 +47,15 @@ const Base = styled.div`
   // 600px
   @media screen and (min-width: 37.5rem) {
     .contents {
-      margin: 0 auto;
-      max-width: 37.5rem; // 600px
+      margin: 1rem auto;
+      width: 37.5rem; // 600px
     }
   }
 
   // 1240px
   @media screen and (min-width: 77.5rem) {
     .contents {
-      max-width: 52.5rem; // 840px
+      width: 52.5rem; // 840px
     }
   }
 `;
@@ -65,22 +69,23 @@ const Community: React.FC = () => {
 
   return (
     <Base>
-      <div className="body">
-        <NavigationRail />
-        <div className="contents">
-          <div className="contents-top">
+      <NavigationRail />
+      <div className="contents">
+        <div className="contents-top">
+          <div className="community-title-area">
             <p className="community-title">
               {translateCommunityName(communityName)}
             </p>
+            <Button variant="contained">글쓰기</Button>
           </div>
-          <ul className="posts-wrapper">
-            {postData.map((_, index) => (
-              <PostCard key={index} />
-            ))}
-          </ul>
-          <div className="pagination-wrapper">
-            <Pagination />
-          </div>
+        </div>
+        <ul className="posts-wrapper">
+          {postData.map((_, index) => (
+            <CommunityPostCard key={index} />
+          ))}
+        </ul>
+        <div className="pagination-wrapper">
+          <Pagination />
         </div>
       </div>
     </Base>
