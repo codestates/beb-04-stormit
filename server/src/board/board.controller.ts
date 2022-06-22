@@ -8,13 +8,10 @@ import {
   ParseIntPipe,
   Patch,
   Post,
-  Put,
   UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
 import { BoardService } from './board.service';
-import { deletePostDto } from './dto/delete-post.dto';
-
 import { CreateBoardDto } from './dto/create-board.dto';
 import { Board } from './entity/board.entity';
 import { UpdateDataDto } from './dto/updateData.dto';

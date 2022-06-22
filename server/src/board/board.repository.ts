@@ -16,10 +16,12 @@ export class BoardRepository extends Repository<Board> {
   }
 
   async createBoard(createBoardDto: CreateBoardDto): Promise<Board> {
-    const { title, content } = createBoardDto;
+    const { email, content, board_name, post_name } = createBoardDto;
     const board = this.create({
-      title,
+      email,
       content,
+      board_name,
+      post_name,
     });
 
     await this.save(board);

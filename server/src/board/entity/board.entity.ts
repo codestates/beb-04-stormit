@@ -1,13 +1,26 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  BaseEntity,
+  Column,
+  Entity,
+  PrimaryGeneratedColumn,
+  Timestamp,
+  Unique,
+} from 'typeorm';
 
 //CREATE TABLE board{}
 @Entity() // BoardEntity가 board 엔티티임을 나타낸다.
-export class Board {
+export class Board extends BaseEntity {
   @PrimaryGeneratedColumn() // 기본 key 열임을 나타낸다.
   id: number;
 
+  @Column()
+  email: string;
+
+  @Column()
+  board_name: string;
+
   @Column() // title 및 description과 같은 다른 열을 나타낼 때 사용한다.
-  title: string;
+  post_name: string;
 
   @Column()
   content: string;
