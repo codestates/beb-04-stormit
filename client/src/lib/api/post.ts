@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import axios from ".";
 
 /* ------------------------ 게시글 관련 API ------------------------ */

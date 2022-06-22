@@ -4,12 +4,16 @@ interface userState {
   isLoggedIn: boolean;
   nickname: string;
   email: string;
+  password: string;
+  userId: number;
 }
 
 const initialState: userState = {
   isLoggedIn: false,
   nickname: "",
   email: "",
+  password: "",
+  userId: 0,
 };
 
 export const userSlice = createSlice({
@@ -31,10 +35,17 @@ export const userSlice = createSlice({
     // 로그인 시 같이 호출해야함
     setUserInfo(
       state,
-      action: PayloadAction<{ email: string; nickname: string }>
+      action: PayloadAction<{
+        email: string;
+        nickname: string;
+        password: string;
+        userId: number;
+      }>
     ) {
       state.email = action.payload.email;
       state.nickname = action.payload.nickname;
+      state.password = action.payload.password;
+      state.userId = action.payload.userId;
     },
   },
 });
