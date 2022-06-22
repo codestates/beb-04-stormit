@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import Button from "../components/common/Button";
@@ -9,6 +9,7 @@ import Textarea from "../components/common/Textarea";
 import PostOptionCard from "../components/PostOptionCard";
 import { updatePostAPI } from "../lib/api/post";
 import { getLastPathname } from "../lib/utils";
+import { useSelector } from "../store";
 
 const Base = styled.div`
   display: flex;
@@ -47,6 +48,10 @@ const Edit: React.FC = () => {
   const [title, setTitle] = useState("");
   const [contents, setContents] = useState("");
 
+  const prevTitle = useSelector((state) => state.post.title);
+  const prevContents = useSelector((state) => state.post.contents);
+  const prevCommunity = useSelector((state) => state.post.community);
+
   const navigate = useNavigate();
 
   const location = useLocation();
@@ -83,6 +88,12 @@ const Edit: React.FC = () => {
       console.log(error);
     }
   };
+
+  useEffect(() => {
+    setTitle(prevTitle);
+    setCommunity(prevCommunity);
+    setContents(prevContents);
+  }, [prevCommunity, prevTitle, prevContents]);
 
   return (
     <Base>

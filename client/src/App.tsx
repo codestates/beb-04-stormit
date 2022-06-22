@@ -14,10 +14,13 @@ import Post from "./pages/Post";
 import Community from "./pages/Community";
 import PostDetail from "./pages/PostDetail";
 import Edit from "./pages/Edit";
+import { ThemeProvider } from "styled-components";
+import { darkTheme, theme } from "./styles/theme";
 
 const App: React.FC = () => {
   const menuModalOpen = useSelector((state) => state.modal.menuModalOpen);
   const profileModalOpen = useSelector((state) => state.modal.profileModalOpen);
+  const isDarkMode = useSelector((state) => state.theme.isDarkMode);
 
   document.cookie = "test=123";
   document.cookie = "test2=2222";
@@ -25,7 +28,7 @@ const App: React.FC = () => {
   console.log(document.cookie);
 
   return (
-    <>
+    <ThemeProvider theme={isDarkMode ? darkTheme : theme}>
       <GlobalStyle
         menuModalOpen={menuModalOpen}
         profileModalOpen={profileModalOpen}
@@ -44,7 +47,7 @@ const App: React.FC = () => {
         <Route path="/post/:id" element={<PostDetail />} />
         <Route path="/edit/:id" element={<Edit />} />
       </Routes>
-    </>
+    </ThemeProvider>
   );
 };
 

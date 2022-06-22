@@ -7,7 +7,7 @@ import palette from "../styles/palette";
 import CommentCard from "../components/CommentCard";
 import Chip from "../components/common/Chip";
 import Divider from "../components/common/Divider";
-import { useSelector } from "../store";
+import { useDispatch, useSelector } from "../store";
 import IconButton from "../components/common/IconButton";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
@@ -15,6 +15,7 @@ import theme from "../styles/theme";
 import { deletePostByIdAPI, getPostByIdAPI } from "../lib/api/post";
 import { useLocation, useNavigate } from "react-router-dom";
 import { getLastPathname, parseDate } from "../lib/utils";
+import { postActions } from "../store/postSlice";
 
 const Base = styled.div`
   display: flex;
@@ -123,6 +124,7 @@ const Base = styled.div`
   .comment-submit-button-wrapper {
     display: flex;
     justify-content: flex-end;
+    margin-bottom: 2rem;
   }
 
   // 600px
@@ -164,6 +166,8 @@ const PostDetail: React.FC = () => {
   const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
   const nickname = useSelector((state) => state.user.nickname);
 
+  const dispatch = useDispatch();
+
   const navigate = useNavigate();
 
   const location = useLocation();
@@ -173,6 +177,20 @@ const PostDetail: React.FC = () => {
   const isMyPost = postData.nickname === nickname;
 
   const onClickEditButton = () => {
+    dispatch(
+      postActions.setPostState({
+        title: "글 수정 제목",
+        contents: "글 수정 내용",
+        community: "공지사항",
+      })
+    );
+
+    // dispatch(postActions.setPostState({
+    //   title: postData.postTitle,
+    //   contents: postData.postContents,
+    //   community: postData.community
+    // }))
+
     navigate(`/edit/${postId}`);
   };
 
