@@ -30,10 +30,10 @@ const Base = styled.div`
     display: flex;
     flex-direction: column;
     gap: 0.5rem; // 8px
-    padding: 2rem 0 1rem 0; // 32px 0
+    padding-top: 2rem; // 32px
   }
 
-  .post-id {
+  .post-detail-community {
     color: ${palette.gray[500]};
   }
 
@@ -67,6 +67,12 @@ const Base = styled.div`
 
   .post-detail-author-name {
     font-weight: 500;
+    color: ${palette.gray[700]};
+  }
+
+  .post-detail-views {
+    font-size: 0.875rem; // 14px
+    color: ${palette.gray[400]};
   }
 
   .post-detail-title {
@@ -76,6 +82,7 @@ const Base = styled.div`
   }
 
   .post-detail-contents {
+    padding-top: 1rem; // 16px
     line-height: 1.6;
   }
 
@@ -135,7 +142,7 @@ const PostDetail: React.FC = () => {
       <NavigationRail />
       <div className="contents">
         <div className="contents-top">
-          <p className="post-id">#123456</p>
+          <p className="post-detail-community"># 사는얘기</p>
           <p className="post-detail-title">
             블록체인 너무 어려운 것 같습니다..
           </p>
@@ -143,6 +150,7 @@ const PostDetail: React.FC = () => {
             <div className="post-detail-metadata-left-area">
               <div className="post-detail-author-profile-image" />
               <span className="post-detail-author-name">노논크러스트</span>
+              <span className="post-detail-views">조회수 22909</span>
             </div>
             <div className="post-detail-metadata-right-area">
               <p className="post-detail-modify">수정</p>
@@ -151,6 +159,7 @@ const PostDetail: React.FC = () => {
             </div>
           </div>
         </div>
+        <Divider />
         <p className="post-detail-contents">{FAKE_POST_CONTENTS}</p>
         <div className="post-detail-chip-wrapper">
           <Chip>태그</Chip>

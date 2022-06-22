@@ -4,6 +4,7 @@ import styled from "styled-components";
 import Button from "../components/common/Button";
 import Chip from "../components/common/Chip";
 import Input from "../components/common/Input";
+import Select from "../components/common/Select";
 import Textarea from "../components/common/Textarea";
 import PostOptionCard from "../components/PostOptionCard";
 
@@ -53,6 +54,11 @@ const Post: React.FC = () => {
   return (
     <Base>
       <p className="post-heading">새 글 등록</p>
+      <Select>
+        <option>공지사항</option>
+        <option>커뮤니티</option>
+        <option>사는얘기</option>
+      </Select>
       <Input placeholder="제목" />
       <PostOptionCard />
       <Textarea height="25rem" placeholder="내용을 입력해주세요." />
