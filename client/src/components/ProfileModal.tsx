@@ -9,6 +9,7 @@ import DarkModeIcon from "@mui/icons-material/DarkMode";
 import ToggleButton from "./common/ToggleButton";
 import { themeActions } from "../store/themeSlice";
 import { modalActions } from "../store/modalSlice";
+import { userActions } from "../store/userSlice";
 
 const Base = styled.div`
   position: absolute;
@@ -113,6 +114,17 @@ const ProfileModal: React.FC = () => {
     navigate("/login");
   };
 
+  const onClickSignUpButton = () => {
+    closeModal();
+    navigate("/signup");
+  };
+
+  const onClickLogOutButton = () => {
+    closeModal();
+    dispatch(userActions.setLoggedOut());
+    navigate("/");
+  };
+
   return (
     <Base>
       {!isLoggedIn && (
@@ -121,6 +133,9 @@ const ProfileModal: React.FC = () => {
             로그인
           </div>
           <Divider />
+          <div className="profile-modal-item" onClick={onClickSignUpButton}>
+            회원가입
+          </div>
         </>
       )}
       {isLoggedIn && (
@@ -135,11 +150,11 @@ const ProfileModal: React.FC = () => {
           </div>
           <Divider />
           <div className="profile-modal-item" onClick={onClickAccountButton}>
-            보안 및 로그인
+            개인정보 설정
           </div>
 
           <Divider />
-          <div className="profile-modal-item">
+          <div className="profile-modal-item" onClick={onClickLogOutButton}>
             <LogoutIcon />
             <span>로그아웃</span>
           </div>
@@ -153,6 +168,7 @@ const ProfileModal: React.FC = () => {
         </div>
         <ToggleButton checked={isDarkMode} onClick={toggleDarkMode} />
       </div>
+      <Divider />
     </Base>
   );
 };

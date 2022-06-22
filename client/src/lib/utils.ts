@@ -18,3 +18,22 @@ export const parseDate = (date: Date) => {
 
   return `${year}년 ${month}월 ${day}일 ${hours}:${minutes}:${seconds}`;
 };
+
+// 게시글 배열 더미데이터 - nonon
+export const FAKE_ARRAY = Array(10).fill(0);
+
+// URL 경로의 마지막 부분만 잘라줍니다 - nonon
+// ex) 'localhost:3000/community/talk' -> 'talk'
+export const getLastPathname = (path: string) => {
+  const pathArray = path.split("/");
+  return pathArray[pathArray.length - 1];
+};
+
+// path에서 가져온 커뮤니티 이름을 한글로 변환합니다 - nonon
+export const translateCommunityName = (communityName: string) => {
+  if (communityName === "notice") return "공지사항";
+  if (communityName === "talk") return "사는얘기";
+  if (communityName === "forum") return "포럼";
+  if (communityName === "it") return "IT 행사";
+  if (communityName === "qa") return "Q&A";
+};

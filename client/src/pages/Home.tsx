@@ -6,30 +6,57 @@ import PostCard from "../components/PostCard";
 import NavigationRail from "../components/NavigationRail";
 import LoadingSpinner from "../components/common/LoadingSpinner";
 import { useNavigate } from "react-router-dom";
-
-const FAKE_ARRAY = Array(10).fill(0);
+import { FAKE_ARRAY } from "../lib/utils";
+import theme from "../styles/theme";
+import palette from "../styles/palette";
+import Button from "../components/common/Button";
+import { useSelector } from "../store";
 
 const Base = styled.div`
   display: flex;
   flex-direction: column;
   height: 100vh;
 
-  /* 
   .contents-top {
     display: flex;
+    align-items: center;
     flex-direction: column;
     gap: 0.5rem; // 8px
-    padding: 0.5rem; // 16px
-  } */
+    padding: 2rem 0; // 32px 0
+  }
+
+  .contents {
+    margin: 1rem; // 16px
+  }
 
   .body {
     display: flex;
   }
 
-  .section-title {
-    font-size: 2rem; // 32px
-    text-align: center;
+  .stormit {
+    font-size: 4rem;
     font-weight: 500;
+    color: ${theme.primary};
+    padding-bottom: 1rem;
+  }
+
+  .stormit-subtitle {
+    color: ${palette.gray[600]};
+    padding: 0 4rem; // 64px
+    line-height: 1.4;
+    text-align: center;
+  }
+
+  .home-cta-wrapper {
+    display: flex;
+    gap: 1rem; // 16px
+    margin: 2rem 0;
+  }
+
+  .section-title {
+    font-size: 1.5rem; // 24px
+    font-weight: 500;
+    padding: 1rem 0; // 16px 0
   }
 
   .fab-wrapper {
@@ -37,15 +64,14 @@ const Base = styled.div`
     right: 1rem; // 16px
     bottom: 1rem; // 16px
   }
-
-  .navigation-rail {
-    display: none;
-  }
-
   .loading-spinner-wrapper {
     display: flex;
     justify-content: center;
     padding: 2rem;
+  }
+
+  .observer {
+    border-bottom: 1px solid transparent;
   }
 
   // 600px
@@ -62,8 +88,16 @@ const Base = styled.div`
       max-width: 52.5rem; // 840px
     }
 
-    .navigation-rail {
-      display: flex;
+    .contents-top {
+      align-items: flex-start;
+    }
+
+    .stormit {
+      font-size: 5rem;
+    }
+
+    .stormit-subtitle {
+      padding: 0;
     }
 
     .fab-wrapper {
@@ -75,6 +109,8 @@ const Base = styled.div`
 const Home: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [postData, setPostData] = useState(FAKE_ARRAY);
+
+  const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
 
   const targetRef = useRef<HTMLDivElement | null>(null);
 
@@ -114,15 +150,39 @@ const Home: React.FC = () => {
   return (
     <Base>
       <div className="body">
-        <NavigationRail className="navigation-rail" />
+        <NavigationRail />
         <section className="contents">
           <div className="contents-top">
-            {/* <h1 className="section-title">모든 게시글</h1> */}
-            {/* <p className="posts-sort">
-            <span className="newest">최신순</span>
-            <span className="popular">인기순</span>
-          </p> */}
+            <h1 className="stormit">Stormit.</h1>
+            {!isLoggedIn && (
+              <>
+                <h2 className="stormit-subtitle">
+                  스톰잇은 ERC-20 기반의 온라인 커뮤니티로, 누구나 자유롭게
+                  이용할 수 있습니다.
+                </h2>
+                <h2 className="stormit-subtitle">
+                  지금 바로 새 글을 작성하고 토큰을 지급받으세요!
+                </h2>
+                <div className="home-cta-wrapper">
+                  <Button
+                    className="home-cta"
+                    variant="contained"
+                    onClick={() => navigate("/signup")}
+                  >
+                    시작하기
+                  </Button>
+                  <Button
+                    className="home-cta-sub"
+                    variant="outlined"
+                    onClick={() => navigate("/login")}
+                  >
+                    로그인
+                  </Button>
+                </div>
+              </>
+            )}
           </div>
+          <h2 className="section-title">전체 글 보기</h2>
           <ul className="posts-wrapper">
             {postData.map((_, index) => (
               <PostCard key={index} />

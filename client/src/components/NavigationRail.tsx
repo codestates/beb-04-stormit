@@ -15,14 +15,12 @@ import { useDispatch, useSelector } from "../store";
 import { modalActions } from "../store/modalSlice";
 
 const Base = styled.aside`
-  display: flex;
+  display: none;
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
   gap: 1rem;
 
-  position: sticky;
-  top: 0;
   width: 4.5rem; // 72px
   height: calc(100vh - 3.5rem);
   padding: 1rem; // 16px
@@ -45,6 +43,11 @@ const Base = styled.aside`
 
   .navigation-icon {
     cursor: pointer;
+  }
+
+  // 1024px
+  @media screen and (min-width: 77.5rem) {
+    display: flex;
   }
 `;
 

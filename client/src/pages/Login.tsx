@@ -6,9 +6,11 @@ import CreateAccount from "../components/CreateAccount";
 import Divider from "../components/common/Divider";
 // modal 상태를 가지고 있는 파일
 import { modalActions } from "../store/modalSlice";
+import { userActions } from "../store/userSlice";
 // 상태를 활용할 수 있는 useSelector, useDispatch -> store/index에 저장되어 있어서 redux까지가서 import할 필요가 없다
 import { useSelector, useDispatch } from "../store";
 import { Backdrop } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
 const Base = styled.div`
   display: flex;
@@ -117,9 +119,17 @@ const Login: React.FC = () => {
   const createAccountOpen = useSelector(
     (state) => state.modal.createAccountOpen
   );
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const onCreateAccountBtn = () => {
     dispatch(modalActions.openCreateAccountModal());
+  };
+
+  const onClickLoginButton = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
+
+    dispatch(userActions.setLoggedIn());
+    navigate("/");
   };
   return (
     <Base className={createAccountOpen ? "Backdrop" : ""}>
@@ -127,10 +137,10 @@ const Login: React.FC = () => {
       <LoginForm className={createAccountOpen ? "BackForm" : ""}>
         <input className="inputBox" type="text" placeholder="아이디" />
         <input className="inputBox" type="password" placeholder="비밀번호" />
-        <div className="login-btn">로그인</div>
-        <a className="forgot-pw" href="">
-          비밀번호를 잊으셨나요?
-        </a>
+        <button className="login-btn" onClick={onClickLoginButton}>
+          로그인
+        </button>
+        <p className="forgot-pw">비밀번호를 잊으셨나요?</p>
         <Divider />
         <div className="createAccount-btn-container">
           <div className="createAccount-btn" onClick={onCreateAccountBtn}>

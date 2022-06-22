@@ -12,7 +12,7 @@ const Base = styled.div`
   height: 2.5rem; // 40px
   padding: 0.5rem; // 8px
   gap: 0.5rem; // 8px
-  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
 
   .heading-option-dropdown {
     display: flex;
