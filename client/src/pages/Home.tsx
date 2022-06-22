@@ -79,14 +79,14 @@ const Base = styled.div`
   @media screen and (min-width: 37.5rem) {
     .contents {
       margin: 0 auto;
-      max-width: 37.5rem; // 600px
+      width: 37.5rem; // 600px
     }
   }
 
   // 1240px
   @media screen and (min-width: 77.5rem) {
     .contents {
-      max-width: 52.5rem; // 840px
+      width: 52.5rem; // 840px
     }
 
     .contents-top {
@@ -202,6 +202,14 @@ const Home: React.FC = () => {
                 createdAt={post.created_at}
               />
             ))}
+            <PostCard
+              postId={0}
+              commentCount={4}
+              postTitle="이건 그냥 글 제목임"
+              postContents="이건 그냥 글 내용임"
+              community="리그 오브 레전드"
+              createdAt="0000년 00월 00일 00:00:00"
+            />
           </ul>
           <div className="fab-wrapper">
             <FloatingIconButton onClick={() => navigate("/post")}>

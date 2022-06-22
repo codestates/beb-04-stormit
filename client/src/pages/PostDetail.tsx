@@ -14,7 +14,7 @@ import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import theme from "../styles/theme";
 import { deletePostByIdAPI, getPostByIdAPI } from "../lib/api/post";
 import { useLocation, useNavigate } from "react-router-dom";
-import { getLastPathname } from "../lib/utils";
+import { getLastPathname, parseDate } from "../lib/utils";
 
 const Base = styled.div`
   display: flex;
@@ -141,6 +141,9 @@ const Base = styled.div`
   }
 `;
 
+const FAKE_POST_CONTENTS =
+  "들어 피가 목숨이 우리의 아니다. 하였으며, 안고, 천지는 이상 사랑의 그리하였는가? 수 어디 타오르고 시들어 피부가 부패뿐이다. 남는 끓는 오아이스도 노년에게서 안고, 관현악이며, 얼마나 황금시대를 놀이 있는가? 천자만홍이 장식하는 가치를 위하여, 인생에 못할 것은 힘있다. 피어나는 이상의 지혜는 피가 주는 찬미를 불러 그러므로 군영과 위하여서. 거친 하였으며, 위하여 인간은 이상은 부패를 꽃이 청춘의 그들은 아니다. 청춘 피가 싹이 주는 이상은 것은 석가는 넣는 끝에 피다. 찾아 몸이 살았으며, 사막이다.";
+
 const PostDetail: React.FC = () => {
   const [postData, setPostData] = useState({
     postTitle: "",
@@ -225,13 +228,17 @@ const PostDetail: React.FC = () => {
       <NavigationRail />
       <div className="contents">
         <div className="contents-top">
-          <p className="post-detail-community"># {postData.community}</p>
-          <p className="post-detail-title">{postData.postTitle}</p>
+          <p className="post-detail-community">
+            # {postData.community || "블록체인"}
+          </p>
+          <p className="post-detail-title">
+            {postData.postTitle || "해당하는 글이 아무것도 없습니다"}
+          </p>
           <div className="post-detail-metadata">
             <div className="post-detail-metadata-left-area">
               <div className="post-detail-author-profile-image" />
               <span className="post-detail-author-name">
-                {postData.nickname}
+                {postData.nickname || "노논"}
               </span>
               <span className="post-detail-views">조회수 0</span>
             </div>
@@ -254,7 +261,9 @@ const PostDetail: React.FC = () => {
           </div>
         </div>
         <Divider />
-        <p className="post-detail-contents">{postData.postContents}</p>
+        <p className="post-detail-contents">
+          {postData.postContents || FAKE_POST_CONTENTS}
+        </p>
         <div className="post-detail-chip-wrapper">
           <Chip>태그</Chip>
           <Chip>커뮤니티</Chip>
@@ -268,7 +277,7 @@ const PostDetail: React.FC = () => {
             <KeyboardArrowDownIcon />
           </IconButton>
         </div>
-        <p className="comment-title">댓글 {commentsData.length}개</p>
+        <p className="comment-title">댓글 {commentsData.length || "3"}개</p>
         {commentsData.map((comment) => (
           <CommentCard
             nickname={comment.nickname}
@@ -277,6 +286,24 @@ const PostDetail: React.FC = () => {
             commentId={comment.commentId}
           />
         ))}
+        <CommentCard
+          nickname="너구리"
+          createdAt={parseDate(new Date())}
+          commentContents="와"
+          commentId={0}
+        />
+        <CommentCard
+          nickname="너구리"
+          createdAt={parseDate(new Date())}
+          commentContents="와"
+          commentId={0}
+        />
+        <CommentCard
+          nickname="너구리"
+          createdAt={parseDate(new Date())}
+          commentContents="와"
+          commentId={0}
+        />
         {isLoggedIn && (
           <>
             <p className="comment-submit-title">댓글 쓰기</p>
