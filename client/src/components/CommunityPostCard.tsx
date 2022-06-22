@@ -2,7 +2,6 @@ import React from "react";
 import styled from "styled-components";
 import palette from "../styles/palette";
 import Divider from "./common/Divider";
-import { parseDate } from "../lib/utils";
 import { useNavigate } from "react-router-dom";
 import theme from "../styles/theme";
 
@@ -76,11 +75,25 @@ const Base = styled.li`
   }
 `;
 
-const CommunityPostCard: React.FC = () => {
+interface Props {
+  postId: number;
+  title: string;
+  commentCount: number;
+  nickname: string;
+  createdAt: string;
+}
+
+const CommunityPostCard: React.FC<Props> = ({
+  postId,
+  title,
+  commentCount,
+  nickname,
+  createdAt,
+}) => {
   const navigate = useNavigate();
 
   const onClickPostTitle = () => {
-    navigate(`/post/${128234}`);
+    navigate(`/post/${postId}`);
   };
 
   return (
@@ -89,21 +102,21 @@ const CommunityPostCard: React.FC = () => {
         <div className="post-title-area-wrapper">
           <div className="post-title-wrapper">
             <p className="post-title" onClick={onClickPostTitle}>
-              이것은 게시물의 제목입니다.
+              {title}
             </p>
-            <span className="post-comments">[3]</span>
+            <span className="post-comments">[{commentCount}]</span>
           </div>
           <div className="post-vote-wrapper">
             <KeyboardArrowUpIcon className="post-vote-icon" />
-            <span className="post-vote">3</span>
+            <span className="post-vote">0</span>
           </div>
         </div>
         <div className="post-metadata-area">
           <p className="post-metadata">
-            <span className="post-author">스팀잇닉네임</span>
+            <span className="post-author">{nickname}</span>
 
-            <span className="time">{parseDate(new Date())}</span>
-            <span className="post-views">조회수 23</span>
+            <span className="time">{createdAt}</span>
+            <span className="post-views">조회수 0</span>
           </p>
         </div>
         <Divider />

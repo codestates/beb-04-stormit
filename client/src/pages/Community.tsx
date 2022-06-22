@@ -1,15 +1,12 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import NavigationRail from "../components/NavigationRail";
 import { useLocation, useNavigate } from "react-router-dom";
-import {
-  FAKE_ARRAY,
-  getLastPathname,
-  translateCommunityName,
-} from "../lib/utils";
+import { getLastPathname, translateCommunityName } from "../lib/utils";
 import Pagination from "../components/Pagination";
 import Button from "../components/common/Button";
 import CommunityPostCard from "../components/CommunityPostCard";
+import { getAllPostAPI } from "../lib/api/post";
 
 const Base = styled.div`
   display: flex;
@@ -61,13 +58,23 @@ const Base = styled.div`
 `;
 
 const Community: React.FC = () => {
-  const [postData, setPostData] = useState(FAKE_ARRAY);
+  const [postList, setPostList] = useState<GetAllPostsResponseType>([]);
 
   const location = useLocation();
 
   const navigate = useNavigate();
 
   const communityName = getLastPathname(location.pathname);
+
+  useEffect(() => {
+    const fetchPosts = async () => {
+      const response = await getAllPostAPI();
+
+      setPostList(response.data);
+    };
+
+    fetchPosts();
+  }, []);
 
   return (
     <Base>
@@ -84,8 +91,14 @@ const Community: React.FC = () => {
           </div>
         </div>
         <ul className="posts-wrapper">
-          {postData.map((_, index) => (
-            <CommunityPostCard key={index} />
+          {postList.map((post) => (
+            <CommunityPostCard
+              postId={post.post_id}
+              title={post.post_title}
+              commentCount={post.comment_count}
+              nickname={post.nickname}
+              createdAt={post.created_at}
+            />
           ))}
         </ul>
         <div className="pagination-wrapper">

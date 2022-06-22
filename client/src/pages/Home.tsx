@@ -1,17 +1,17 @@
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import FloatingIconButton from "../components/common/FloatingIconButton";
 import CreateIcon from "@mui/icons-material/Create";
 import PostCard from "../components/PostCard";
 import NavigationRail from "../components/NavigationRail";
-import LoadingSpinner from "../components/common/LoadingSpinner";
 import { useNavigate } from "react-router-dom";
-import { FAKE_ARRAY } from "../lib/utils";
+
 import theme from "../styles/theme";
 import palette from "../styles/palette";
 import Button from "../components/common/Button";
 import { useSelector } from "../store";
 import MovetoPost from "../components/MovetoPost";
+import { getAllPostAPI } from "../lib/api/post";
 
 const Base = styled.div`
   display: flex;
@@ -108,8 +108,8 @@ const Base = styled.div`
 `;
 
 const Home: React.FC = () => {
-  const [loading, setLoading] = useState(false);
-  const [postData, setPostData] = useState(FAKE_ARRAY);
+  // const [loading, setLoading] = useState(false);
+  const [postList, setPostList] = useState<GetAllPostsResponseType>([]);
 
   const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
 
@@ -117,36 +117,42 @@ const Home: React.FC = () => {
 
   const navigate = useNavigate();
 
-  // 무한스크롤
-  const observer = useMemo(() => {
-    return new IntersectionObserver((entries) => {
-      if (!targetRef?.current) return;
+  // // 무한스크롤
+  // const observer = useMemo(() => {
+  //   return new IntersectionObserver((entries) => {
+  //     if (!targetRef?.current) return;
 
-      if (entries[0].isIntersecting) {
-        setLoading(true);
+  //     if (entries[0].isIntersecting) {
+  //       setLoading(true);
 
-        console.log("fetch triggered");
+  //       console.log("fetch triggered");
 
-        setTimeout(() => {
-          const FAKE_FETCH_ARRAY = Array(10).fill(0);
+  //       setTimeout(() => {
+  //         setLoading(false);
+  //       }, 1000);
+  //     }
+  //   });
+  // }, []);
 
-          setPostData((postData) => [...postData, ...FAKE_FETCH_ARRAY]);
-          setLoading(false);
-        }, 1000);
-      }
-    });
-  }, []);
+  // // 무한스크롤
+  // useEffect(() => {
+  //   if (!targetRef?.current) return;
 
-  // 무한스크롤
+  //   observer.observe(targetRef.current);
+
+  //   return () => {
+  //     observer.disconnect();
+  //   };
+  // }, [observer]);
+
   useEffect(() => {
-    if (!targetRef?.current) return;
-
-    observer.observe(targetRef.current);
-
-    return () => {
-      observer.disconnect();
+    const fetchPosts = async () => {
+      const response = await getAllPostAPI();
+      setPostList(response.data);
     };
-  }, [observer]);
+
+    fetchPosts();
+  }, []);
 
   return (
     <Base>
@@ -186,8 +192,15 @@ const Home: React.FC = () => {
           <MovetoPost />
           <h2 className="section-title">전체 글 보기</h2>
           <ul className="posts-wrapper">
-            {postData.map((_, index) => (
-              <PostCard key={index} />
+            {postList.map((post) => (
+              <PostCard
+                postId={post.post_id}
+                commentCount={post.comment_count}
+                postTitle={post.post_title}
+                postContents={post.post_content}
+                community={post.board_name}
+                createdAt={post.created_at}
+              />
             ))}
           </ul>
           <div className="fab-wrapper">
@@ -195,11 +208,11 @@ const Home: React.FC = () => {
               <CreateIcon />
             </FloatingIconButton>
           </div>
-          {loading && (
+          {/* {loading && (
             <div className="loading-spinner-wrapper">
               <LoadingSpinner />
             </div>
-          )}
+          )} */}
         </section>
       </div>
       <div className="observer" ref={targetRef} />

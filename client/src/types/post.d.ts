@@ -6,12 +6,13 @@ type SubmitPostAPIBodyType = {
 };
 
 type GetAllPostsResponseType = {
+  post_id: number;
   post_title: string;
   post_content: string;
   nickname: string;
-  timestamp: string;
+  created_at: string;
   comment_count: number;
-  board: string;
+  board_name: string;
 }[];
 
 type GetPostsByBoardBodyType = {
@@ -21,22 +22,29 @@ type GetPostsByBoardBodyType = {
 type GetPostsByBoardResponseType = {
   post_title: string;
   nickname: string;
-  timestamp: string;
+  created_at: string;
   comment_count: number;
 }[];
 
 type GetPostByIdResponseType = {
   post_title: string;
+  post_content: string;
   nickname: string;
-  timestamp: string;
-  comment: { nickname: string; comment_content: string; comment_id: number }[];
+  created_at: string;
+  board_name: string;
+  comments: {
+    nickname: string;
+    comment_content: string;
+    comment_id: number;
+    created_at: string;
+  }[];
 };
 
 type UpdatePostAPIBodyType = {
   post_id: string;
-  post_content: string;
   board_name: string;
   post_title: string;
+  post_content: string;
 };
 
 type SubmitCommentAPIBodyType = {
