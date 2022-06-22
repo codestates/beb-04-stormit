@@ -9,7 +9,6 @@ import { modalActions } from "../store/modalSlice";
 import { userActions } from "../store/userSlice";
 // 상태를 활용할 수 있는 useSelector, useDispatch -> store/index에 저장되어 있어서 redux까지가서 import할 필요가 없다
 import { useSelector, useDispatch } from "../store";
-import { Backdrop } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 
 const Base = styled.div`
@@ -76,7 +75,6 @@ const LoginForm = styled.form`
     }
     :active {
       transform: scale(0.9);
-      background-color: ${palette.blue[600]};
     }
   }
 
@@ -100,16 +98,15 @@ const LoginForm = styled.form`
       padding: 0.7rem;
       border-radius: 0.3rem;
       border: none;
-      background-color: #67a74c;
+      background-color: ${palette.green[500]};
       color: #ffff;
       cursor: pointer;
       transition: 0.3s;
       :hover {
-        background-color: #36a420;
+        background-color: ${palette.green[600]};
       }
       :active {
         transform: scale(0.9);
-        background-color: #36a420;
       }
     }
   }

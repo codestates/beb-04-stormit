@@ -45,8 +45,21 @@ const Cover = styled.div`
       gap: 0.6rem;
       display: flex;
       flex-direction: column;
+      justify-content: center;
       .submit {
+        margin: 1.5rem 5rem;
+        font-size: 1.2rem;
+        padding: 1.5rem;
         border: 1px solid;
+        background-color: ${palette.blue[500]};
+        color: #ffff;
+        transition: 0.3s;
+        :hover {
+          background-color: ${palette.blue[600]};
+        }
+        :active {
+          transform: scale(0.9);
+        }
       }
     }
   }
