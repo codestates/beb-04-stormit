@@ -274,6 +274,7 @@ const PostDetail: React.FC = () => {
             nickname={comment.nickname}
             createdAt={comment.createdAt}
             commentContents={comment.commentContent}
+            commentId={comment.commentId}
           />
         ))}
         {isLoggedIn && (
