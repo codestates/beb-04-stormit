@@ -1,12 +1,11 @@
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import FloatingIconButton from "../components/common/FloatingIconButton";
 import CreateIcon from "@mui/icons-material/Create";
 import PostCard from "../components/PostCard";
 import NavigationRail from "../components/NavigationRail";
-import LoadingSpinner from "../components/common/LoadingSpinner";
 import { useNavigate } from "react-router-dom";
-import { FAKE_ARRAY } from "../lib/utils";
+
 import theme from "../styles/theme";
 import palette from "../styles/palette";
 import Button from "../components/common/Button";
@@ -109,8 +108,7 @@ const Base = styled.div`
 `;
 
 const Home: React.FC = () => {
-  const [loading, setLoading] = useState(false);
-  const [fakePostData, setFakePostData] = useState(FAKE_ARRAY);
+  // const [loading, setLoading] = useState(false);
   const [postList, setPostList] = useState<GetAllPostsResponseType>([]);
 
   const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
@@ -119,36 +117,33 @@ const Home: React.FC = () => {
 
   const navigate = useNavigate();
 
-  // 무한스크롤
-  const observer = useMemo(() => {
-    return new IntersectionObserver((entries) => {
-      if (!targetRef?.current) return;
+  // // 무한스크롤
+  // const observer = useMemo(() => {
+  //   return new IntersectionObserver((entries) => {
+  //     if (!targetRef?.current) return;
 
-      if (entries[0].isIntersecting) {
-        setLoading(true);
+  //     if (entries[0].isIntersecting) {
+  //       setLoading(true);
 
-        console.log("fetch triggered");
+  //       console.log("fetch triggered");
 
-        setTimeout(() => {
-          const FAKE_FETCH_ARRAY = Array(10).fill(0);
+  //       setTimeout(() => {
+  //         setLoading(false);
+  //       }, 1000);
+  //     }
+  //   });
+  // }, []);
 
-          setFakePostData((postData) => [...postData, ...FAKE_FETCH_ARRAY]);
-          setLoading(false);
-        }, 1000);
-      }
-    });
-  }, []);
+  // // 무한스크롤
+  // useEffect(() => {
+  //   if (!targetRef?.current) return;
 
-  // 무한스크롤
-  useEffect(() => {
-    if (!targetRef?.current) return;
+  //   observer.observe(targetRef.current);
 
-    observer.observe(targetRef.current);
-
-    return () => {
-      observer.disconnect();
-    };
-  }, [observer]);
+  //   return () => {
+  //     observer.disconnect();
+  //   };
+  // }, [observer]);
 
   useEffect(() => {
     const fetchPosts = async () => {
@@ -213,11 +208,11 @@ const Home: React.FC = () => {
               <CreateIcon />
             </FloatingIconButton>
           </div>
-          {loading && (
+          {/* {loading && (
             <div className="loading-spinner-wrapper">
               <LoadingSpinner />
             </div>
-          )}
+          )} */}
         </section>
       </div>
       <div className="observer" ref={targetRef} />

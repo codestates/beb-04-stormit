@@ -1,12 +1,9 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import Button from "../components/common/Button";
-import Dialog from "../components/common/Dialog";
-import Input from "../components/common/Input";
 import Snackbar from "../components/common/Snackbar";
 import PostOptionCard from "../components/PostOptionCard";
 import DoneIcon from "@mui/icons-material/Done";
-import CommentCard from "../components/CommentCard";
 import Pagination from "../components/Pagination";
 import Select from "../components/common/Select";
 
@@ -49,7 +46,6 @@ const Test: React.FC = () => {
       >
         로그인되었습니다.
       </Snackbar>
-      <CommentCard />
       <Select>
         <option>1</option>
         <option>2</option>

@@ -1,5 +1,5 @@
-import React from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import Button from "../components/common/Button";
 import Chip from "../components/common/Chip";
@@ -7,6 +7,8 @@ import Input from "../components/common/Input";
 import Select from "../components/common/Select";
 import Textarea from "../components/common/Textarea";
 import PostOptionCard from "../components/PostOptionCard";
+import { updatePostAPI } from "../lib/api/post";
+import { getLastPathname } from "../lib/utils";
 
 const Base = styled.div`
   display: flex;
@@ -41,27 +43,63 @@ const Base = styled.div`
 `;
 
 const Edit: React.FC = () => {
+  const [community, setCommunity] = useState("공지사항");
+  const [title, setTitle] = useState("");
+  const [contents, setContents] = useState("");
+
   const navigate = useNavigate();
+
+  const location = useLocation();
+
+  const postId = getLastPathname(location.pathname);
+
+  const onChangeCommunity = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setCommunity(event.target.value);
+  };
+
+  const onChangeTitle = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setTitle(event.target.value);
+  };
+
+  const onChangeContents = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setContents(event.target.value);
+  };
 
   const onClickCancelButton = () => {
     navigate(-1);
   };
 
-  const onClickSubmitButton = () => {
-    navigate(-1);
+  const onClickSubmitButton = async () => {
+    const body = {
+      post_id: postId,
+      board_name: community,
+      post_title: title,
+      post_content: contents,
+    };
+
+    try {
+      await updatePostAPI(body);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
     <Base>
       <p className="post-heading">수정하기</p>
-      <Select>
-        <option>공지사항</option>
-        <option>커뮤니티</option>
-        <option>사는얘기</option>
+      <Select value={community} onChange={onChangeCommunity}>
+        <option value={"공지사항"}>공지사항</option>
+        <option value={"커뮤니티"}>커뮤니티</option>
+        <option value={"사는얘기"}>사는얘기</option>
       </Select>
-      <Input placeholder="제목" />
+      <Input placeholder="제목" value={title} onChange={onChangeTitle} />
       <PostOptionCard />
-      <Textarea height="25rem" placeholder="내용을 입력해주세요." />
+      <Textarea
+        height="25rem"
+        placeholder="내용을 입력해주세요."
+        value={contents}
+        onChange={onChangeContents}
+      />
       <div className="community-wrapper">
         <Chip>Tag</Chip>
         <Chip>Community</Chip>

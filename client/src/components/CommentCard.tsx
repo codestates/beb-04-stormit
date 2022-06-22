@@ -52,15 +52,25 @@ const Base = styled.div`
   }
 `;
 
-const CommentCard: React.FC = () => {
+interface Props {
+  nickname: string;
+  createdAt: string;
+  commentContents: string;
+}
+
+const CommentCard: React.FC<Props> = ({
+  nickname,
+  createdAt,
+  commentContents,
+}) => {
   return (
     <Base>
       <Divider />
       <div className="comment-metadata">
         <div className="comment-metadata-left-area">
-          <p className="comment-author">너구리</p>
+          <p className="comment-author">{nickname}</p>
           <Divider orientation="vertical" />
-          <p className="comment-date">{parseDate(new Date())}</p>
+          <p className="comment-date">{createdAt}</p>
         </div>
         <div className="comment-metadata-right-area">
           <p className="comment-modify">수정</p>
@@ -68,7 +78,7 @@ const CommentCard: React.FC = () => {
           <p className="comment-delete">삭제</p>
         </div>
       </div>
-      <p className="comment-contents">인정합니다.</p>
+      <p className="comment-contents">{commentContents}</p>
     </Base>
   );
 };

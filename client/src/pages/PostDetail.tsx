@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import NavigationRail from "../components/NavigationRail";
 import { FAKE_POST_CONTENTS } from "../lib/dummyData";
@@ -13,6 +13,9 @@ import IconButton from "../components/common/IconButton";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import theme from "../styles/theme";
+import { getPostByIdAPI } from "../lib/api/post";
+import { useLocation } from "react-router-dom";
+import { getLastPathname } from "../lib/utils";
 
 const Base = styled.div`
   display: flex;
@@ -134,23 +137,90 @@ const Base = styled.div`
   }
 `;
 
+/*
+post_title: string;
+  nickname: string;
+  created_at: string;
+  comment: { nickname: string; comment_content: string; comment_id: number }[];
+*/
+
 const PostDetail: React.FC = () => {
+  const [postData, setPostData] = useState({
+    postTitle: "",
+    postContents: "",
+    nickname: "",
+    community: "",
+    createdAt: "",
+  });
+  const [commentsData, setCommentsData] = useState<
+    {
+      nickname: string;
+      commentContent: string;
+      commentId: number;
+      createdAt: string;
+    }[]
+  >([]);
+
   const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
+
+  const location = useLocation();
+
+  const postId = Number(getLastPathname(location.pathname));
+
+  useEffect(() => {
+    const fetchPost = async () => {
+      try {
+        const response = await getPostByIdAPI(postId);
+        const {
+          post_title,
+          post_content,
+          nickname,
+          created_at,
+          board_name,
+          comments,
+        } = response.data;
+
+        setPostData({
+          postTitle: post_title,
+          postContents: post_content,
+          nickname: nickname,
+          createdAt: created_at,
+          community: board_name,
+        });
+
+        comments.map((comment) =>
+          setCommentsData((commentsData) => [
+            ...commentsData,
+            {
+              nickname: comment.nickname,
+              commentContent: comment.comment_content,
+              commentId: comment.comment_id,
+              createdAt: comment.created_at,
+            },
+          ])
+        );
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    fetchPost();
+  }, []);
 
   return (
     <Base>
       <NavigationRail />
       <div className="contents">
         <div className="contents-top">
-          <p className="post-detail-community"># 사는얘기</p>
-          <p className="post-detail-title">
-            블록체인 너무 어려운 것 같습니다..
-          </p>
+          <p className="post-detail-community"># {postData.community}</p>
+          <p className="post-detail-title">{postData.postTitle}</p>
           <div className="post-detail-metadata">
             <div className="post-detail-metadata-left-area">
               <div className="post-detail-author-profile-image" />
-              <span className="post-detail-author-name">노논크러스트</span>
-              <span className="post-detail-views">조회수 22909</span>
+              <span className="post-detail-author-name">
+                {postData.nickname}
+              </span>
+              <span className="post-detail-views">조회수 0</span>
             </div>
             <div className="post-detail-metadata-right-area">
               <p className="post-detail-modify">수정</p>
@@ -160,7 +230,7 @@ const PostDetail: React.FC = () => {
           </div>
         </div>
         <Divider />
-        <p className="post-detail-contents">{FAKE_POST_CONTENTS}</p>
+        <p className="post-detail-contents">{postData.postContents}</p>
         <div className="post-detail-chip-wrapper">
           <Chip>태그</Chip>
           <Chip>커뮤니티</Chip>
@@ -169,16 +239,19 @@ const PostDetail: React.FC = () => {
           <IconButton>
             <KeyboardArrowUpIcon />
           </IconButton>
-          <span className="post-detail-vote">3</span>
+          <span className="post-detail-vote">0</span>
           <IconButton>
             <KeyboardArrowDownIcon />
           </IconButton>
         </div>
-        <p className="comment-title">댓글 4개</p>
-        <CommentCard />
-        <CommentCard />
-        <CommentCard />
-        <CommentCard />
+        <p className="comment-title">댓글 {commentsData.length}개</p>
+        {commentsData.map((comment) => (
+          <CommentCard
+            nickname={comment.nickname}
+            createdAt={comment.createdAt}
+            commentContents={comment.commentContent}
+          />
+        ))}
         {isLoggedIn && (
           <>
             <p className="comment-submit-title">댓글 쓰기</p>

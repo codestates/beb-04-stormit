@@ -28,16 +28,23 @@ type GetPostsByBoardResponseType = {
 
 type GetPostByIdResponseType = {
   post_title: string;
+  post_content: string;
   nickname: string;
   created_at: string;
-  comment: { nickname: string; comment_content: string; comment_id: number }[];
+  board_name: string;
+  comments: {
+    nickname: string;
+    comment_content: string;
+    comment_id: number;
+    created_at: string;
+  }[];
 };
 
 type UpdatePostAPIBodyType = {
   post_id: string;
-  post_content: string;
   board_name: string;
   post_title: string;
+  post_content: string;
 };
 
 type SubmitCommentAPIBodyType = {

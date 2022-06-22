@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import axios from ".";
 
 /* ------------------------ 게시글 관련 API ------------------------ */
@@ -15,7 +14,8 @@ export const getPostsByBoardAPI = (body: GetPostsByBoardBodyType) =>
   axios.post<GetPostsByBoardResponseType>("/board", body);
 
 // 게시글 id로 게시글 상세 내용 가져오기
-export const getPostByIdAPI = (id: number) => axios.get(`/board/${id}`);
+export const getPostByIdAPI = (id: number) =>
+  axios.get<GetPostByIdResponseType>(`/board/${id}`);
 
 // 게시글 수정
 export const updatePostAPI = (body: UpdatePostAPIBodyType) =>

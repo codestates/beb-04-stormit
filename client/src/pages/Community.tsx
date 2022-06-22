@@ -2,11 +2,7 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import NavigationRail from "../components/NavigationRail";
 import { useLocation, useNavigate } from "react-router-dom";
-import {
-  FAKE_ARRAY,
-  getLastPathname,
-  translateCommunityName,
-} from "../lib/utils";
+import { getLastPathname, translateCommunityName } from "../lib/utils";
 import Pagination from "../components/Pagination";
 import Button from "../components/common/Button";
 import CommunityPostCard from "../components/CommunityPostCard";
