@@ -40,9 +40,24 @@ const getIconButtonDisabled = (disabled?: boolean) => {
   }
 };
 
+const getIconButtonVariant = (variant?: "contained") => {
+  switch (variant) {
+    case "contained":
+      return css`
+        background-color: ${theme.primary};
+        color: white;
+
+        &:hover {
+          background-color: ${palette.blue[400]};
+        }
+      `;
+  }
+};
+
 interface BaseProps {
   color?: "default" | "primary";
   disabled?: boolean;
+  variant?: "contained";
 }
 
 const Base = styled.button<BaseProps>`
@@ -64,12 +79,15 @@ const Base = styled.button<BaseProps>`
 
   ${({ color }) => getIconButtonColor(color)};
 
-  ${({ disabled }) => getIconButtonDisabled(disabled)}
+  ${({ disabled }) => getIconButtonDisabled(disabled)};
+
+  ${({ variant }) => getIconButtonVariant(variant)};
 `;
 
 interface Props extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   children: React.ReactNode;
   color?: "default" | "primary";
+  variant?: "contained";
   disabled?: boolean;
 }
 
@@ -77,10 +95,11 @@ const IconButton: React.FC<Props> = ({
   children,
   color,
   disabled,
+  variant,
   ...props
 }) => {
   return (
-    <Base color={color} disabled={disabled} {...props}>
+    <Base color={color} disabled={disabled} variant={variant} {...props}>
       {children}
     </Base>
   );

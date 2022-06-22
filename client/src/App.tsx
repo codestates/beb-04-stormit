@@ -19,6 +19,11 @@ const App: React.FC = () => {
   const menuModalOpen = useSelector((state) => state.modal.menuModalOpen);
   const profileModalOpen = useSelector((state) => state.modal.profileModalOpen);
 
+  document.cookie = "test=123";
+  document.cookie = "test2=2222";
+
+  console.log(document.cookie);
+
   return (
     <>
       <GlobalStyle

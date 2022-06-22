@@ -14,7 +14,6 @@ type LoginAPIBodyType = {
 };
 
 type UpdateNameAPIBodyType = {
-  user_id: number;
   nickname: string;
 };
 

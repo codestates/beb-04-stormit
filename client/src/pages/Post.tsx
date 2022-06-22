@@ -75,9 +75,12 @@ const Post: React.FC = () => {
       board_name: community,
     };
 
-    await submitPostAPI(body);
-
-    navigate(-1);
+    try {
+      await submitPostAPI(body);
+      navigate(-1);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (

@@ -2,11 +2,13 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import Button from "../components/common/Button";
+import IconButton from "../components/common/IconButton";
 import Input from "../components/common/Input";
 import { updatePasswordAPI, withdrawalAPI } from "../lib/api/user";
 import { useDispatch, useSelector } from "../store";
 import { userActions } from "../store/userSlice";
 import palette from "../styles/palette";
+import EditIcon from "@mui/icons-material/Edit";
 
 const Base = styled.div`
   display: flex;
@@ -121,12 +123,12 @@ const Account: React.FC = () => {
     <Base>
       <div className="account-dialog-contents">
         <p className="account-dialog-title">보안 및 로그인</p>
-        <p className="private-key-wrapper">
+        <div className="private-key-wrapper">
           <span>개인 키:</span>
           <span className="private-key">
             anewafkv-ajfnzkvkx1123-dffnwkfsd-sfwefl
           </span>
-        </p>
+        </div>
         <label className="password-label">비밀번호</label>
         <Input
           placeholder="변경할 비밀번호"
