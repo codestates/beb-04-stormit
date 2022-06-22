@@ -53,7 +53,6 @@ const Base = styled.div`
   }
 
   .contents {
-    border: 1px solid red;
     display: flex;
     flex-direction: column;
     justify-content: center;

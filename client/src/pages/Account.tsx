@@ -2,13 +2,11 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import Button from "../components/common/Button";
-import IconButton from "../components/common/IconButton";
 import Input from "../components/common/Input";
 import { updatePasswordAPI, withdrawalAPI } from "../lib/api/user";
 import { useDispatch, useSelector } from "../store";
 import { userActions } from "../store/userSlice";
 import palette from "../styles/palette";
-import EditIcon from "@mui/icons-material/Edit";
 
 const Base = styled.div`
   display: flex;
@@ -32,6 +30,11 @@ const Base = styled.div`
     display: flex;
     justify-content: center;
     margin: 1rem 0; // 16px 0
+  }
+
+  .account-email-wrapper {
+    display: flex;
+    gap: 0.5rem; // 8px
   }
 
   .private-key-wrapper {
@@ -123,21 +126,27 @@ const Account: React.FC = () => {
     <Base>
       <div className="account-dialog-contents">
         <p className="account-dialog-title">보안 및 로그인</p>
+        <p className="account-email-wrapper">
+          <span>이메일:</span>
+          <span className="account-email">
+            {email || "nononcrust@gmail.com"}
+          </span>
+        </p>
         <div className="private-key-wrapper">
           <span>개인 키:</span>
           <span className="private-key">
             anewafkv-ajfnzkvkx1123-dffnwkfsd-sfwefl
           </span>
         </div>
-        <label className="password-label">비밀번호</label>
+        <label className="password-label">비밀번호 변경</label>
         <Input
           placeholder="변경할 비밀번호"
           value={password}
           onChange={onChangePassword}
         />
-        <label className="password-label">비밀번호 재입력</label>
+        <label className="password-label">비밀번호 확인</label>
         <Input
-          placeholder="비밀번호 확인"
+          placeholder="한번 더 입력해주세요"
           value={passwordConfirm}
           onChange={onChangePasswordConfirm}
         />

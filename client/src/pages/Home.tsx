@@ -156,73 +156,72 @@ const Home: React.FC = () => {
 
   return (
     <Base>
-      <div className="body">
-        <NavigationRail />
-        <section className="contents">
-          <div className="contents-top">
-            <h1 className="stormit">Stormit.</h1>
-            {!isLoggedIn && (
-              <>
-                <h2 className="stormit-subtitle">
-                  스톰잇은 ERC-20 기반의 온라인 커뮤니티로, 누구나 자유롭게
-                  이용할 수 있습니다.
-                </h2>
-                <h2 className="stormit-subtitle">
-                  지금 바로 새 글을 작성하고 토큰을 지급받으세요!
-                </h2>
-                <div className="home-cta-wrapper">
-                  <Button
-                    className="home-cta"
-                    variant="contained"
-                    onClick={() => navigate("/signup")}
-                  >
-                    시작하기
-                  </Button>
-                  <Button
-                    className="home-cta-sub"
-                    variant="outlined"
-                    onClick={() => navigate("/login")}
-                  >
-                    로그인
-                  </Button>
-                </div>
-              </>
-            )}
-          </div>
-          <MovetoPost />
-          <h2 className="section-title">전체 글 보기</h2>
-          <ul className="posts-wrapper">
-            {postList.map((post) => (
-              <PostCard
-                postId={post.post_id}
-                commentCount={post.comment_count}
-                postTitle={post.post_title}
-                postContents={post.post_content}
-                community={post.board_name}
-                createdAt={post.created_at}
-              />
-            ))}
+      <NavigationRail />
+      <section className="contents">
+        <div className="contents-top">
+          <h1 className="stormit">Stormit.</h1>
+          {!isLoggedIn && (
+            <>
+              <h2 className="stormit-subtitle">
+                스톰잇은 ERC-20 기반의 온라인 커뮤니티로, 누구나 자유롭게 이용할
+                수 있습니다.
+              </h2>
+              <h2 className="stormit-subtitle">
+                지금 바로 새 글을 작성하고 토큰을 지급받으세요!
+              </h2>
+              <div className="home-cta-wrapper">
+                <Button
+                  className="home-cta"
+                  variant="contained"
+                  onClick={() => navigate("/signup")}
+                >
+                  시작하기
+                </Button>
+                <Button
+                  className="home-cta-sub"
+                  variant="outlined"
+                  onClick={() => navigate("/login")}
+                >
+                  로그인
+                </Button>
+              </div>
+            </>
+          )}
+        </div>
+        <MovetoPost />
+        <h2 className="section-title">전체 글 보기</h2>
+        <ul className="posts-wrapper">
+          {postList.map((post) => (
             <PostCard
-              postId={0}
-              commentCount={4}
-              postTitle="이건 그냥 글 제목임"
-              postContents="이건 그냥 글 내용임"
-              community="리그 오브 레전드"
-              createdAt="0000년 00월 00일 00:00:00"
+              postId={post.post_id}
+              commentCount={post.comment_count}
+              postTitle={post.post_title}
+              postContents={post.post_content}
+              community={post.board_name}
+              createdAt={post.created_at}
             />
-          </ul>
-          <div className="fab-wrapper">
-            <FloatingIconButton onClick={() => navigate("/post")}>
-              <CreateIcon />
-            </FloatingIconButton>
-          </div>
-          {/* {loading && (
+          ))}
+          <PostCard
+            postId={0}
+            commentCount={4}
+            postTitle="이건 그냥 글 제목임"
+            postContents="이건 그냥 글 내용임"
+            community="리그 오브 레전드"
+            createdAt="0000년 00월 00일 00:00:00"
+          />
+        </ul>
+        <div className="fab-wrapper">
+          <FloatingIconButton onClick={() => navigate("/post")}>
+            <CreateIcon />
+          </FloatingIconButton>
+        </div>
+        {/* {loading && (
             <div className="loading-spinner-wrapper">
               <LoadingSpinner />
             </div>
           )} */}
-        </section>
-      </div>
+      </section>
+
       <div className="observer" ref={targetRef} />
     </Base>
   );
