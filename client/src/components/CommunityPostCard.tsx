@@ -3,7 +3,6 @@ import styled from "styled-components";
 import palette from "../styles/palette";
 import Divider from "./common/Divider";
 import { parseDate } from "../lib/utils";
-
 import { useNavigate } from "react-router-dom";
 import theme from "../styles/theme";
 

@@ -15,6 +15,7 @@ const Base = styled.div`
     .profileBtn {
       padding: 0;
       margin-right: 1rem;
+
       :hover {
         background-color: #ffff;
       }
