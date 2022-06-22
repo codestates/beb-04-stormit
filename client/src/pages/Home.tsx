@@ -12,6 +12,7 @@ import Button from "../components/common/Button";
 import { useSelector } from "../store";
 import MovetoPost from "../components/MovetoPost";
 import { getAllPostAPI } from "../lib/api/post";
+import LoadingSpinner from "../components/common/LoadingSpinner";
 
 const Base = styled.div`
   display: flex;
@@ -110,6 +111,7 @@ const Base = styled.div`
 const Home: React.FC = () => {
   // const [loading, setLoading] = useState(false);
   const [postList, setPostList] = useState<GetAllPostsResponseType>([]);
+  const [loading, setLoading] = useState(false);
 
   const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
 
@@ -147,8 +149,15 @@ const Home: React.FC = () => {
 
   useEffect(() => {
     const fetchPosts = async () => {
-      const response = await getAllPostAPI();
-      setPostList(response.data);
+      try {
+        setLoading(true);
+        const response = await getAllPostAPI();
+        setPostList(response.data);
+      } catch (error) {
+        console.log(error);
+      } finally {
+        setLoading(false);
+      }
     };
 
     fetchPosts();
@@ -215,11 +224,11 @@ const Home: React.FC = () => {
             <CreateIcon />
           </FloatingIconButton>
         </div>
-        {/* {loading && (
-            <div className="loading-spinner-wrapper">
-              <LoadingSpinner />
-            </div>
-          )} */}
+        {loading && (
+          <div className="loading-spinner-wrapper">
+            <LoadingSpinner />
+          </div>
+        )}
       </section>
 
       <div className="observer" ref={targetRef} />
