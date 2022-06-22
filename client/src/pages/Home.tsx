@@ -11,7 +11,7 @@ import theme from "../styles/theme";
 import palette from "../styles/palette";
 import Button from "../components/common/Button";
 import { useSelector } from "../store";
-import MovetoPost from "../components/MovetoPsot";
+import MovetoPost from "../components/MovetoPost";
 
 const Base = styled.div`
   display: flex;
