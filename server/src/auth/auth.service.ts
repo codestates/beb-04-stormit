@@ -69,8 +69,8 @@ export class AuthService {
         }
 
 
-    async deleteUser(user_id: number): Promise<void> {
-        this.userService.delete(user_id);
+    async deleteUser(user_id: number): Promise<any> {
+        return this.userService.delete(user_id);
 
     }
 }

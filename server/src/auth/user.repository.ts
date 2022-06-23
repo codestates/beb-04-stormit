@@ -4,11 +4,13 @@ import { NotFoundException } from '@nestjs/common';
 
 @EntityRepository(User)
 export class UserRepository extends Repository<User>{
-    async deleteUser(user_id: number): Promise<void> {
+    async deleteUser(user_id: number): Promise<any> {
         const result = await this.delete(user_id);
         if (result.affected === 0) {
           throw new NotFoundException(`Can't find User with id ${user_id}`);
         }
         console.log('result', result);
+        return result
+        
     }
 }

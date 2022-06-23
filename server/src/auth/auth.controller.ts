@@ -60,7 +60,15 @@ export class AuthController {
         })
     }
     @Delete('/:id')
-    deleteuser(@Param ('id') user_id: number): Promise<any> {
-        return this.authService.deleteUser (user_id);
+    async deleteuser(@Param ('id') user_id: number, @Res() res: Response): Promise<any>{
+        const result = await this.authService.deleteUser (user_id);
+        if(result.affected===1){
+            return res.send({
+                success: true
+            })
+        }
+
     }
+    
+
 }

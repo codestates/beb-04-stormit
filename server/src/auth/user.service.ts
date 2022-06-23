@@ -25,8 +25,8 @@ export class UserService {
     return await this.userRepository.save(userDTO);
   }
 
-  async delete(user_id: number): Promise<void>{
-    this.userRepository.deleteUser(user_id)
+  async delete(user_id: number): Promise<any>{
+    return this.userRepository.deleteUser(user_id)
   }
 
   
