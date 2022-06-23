@@ -4,36 +4,35 @@ import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from './auth/auth.module';
 import { User } from './auth/entity/user.entity';
-
-import { typeORMConfig } from './configs/typeorm.config';
-
-
-import { Content } from './content/entity/content.entity';
 import { ContentModule } from './content/content.module';
+import { Board } from './board/entity/board.entity';
+import { Comment } from './content/entity/comment.entity';
+import { Content } from './content/entity/content.entity';
 
-import { ContentRepository } from './content/content.repository';
+import * as config from 'config';
+import { BoardModule } from './board/board.module';
 
+const serverConfig = config.get('server');
+const dbConfig = config.get('db');
 @Module({
-
   imports: [
     ConfigModule.forRoot({
-      isGlobal:true
+      isGlobal: true,
     }),
     TypeOrmModule.forRoot({
-      type: 'mysql',
-      host: 'localhost',
-      port: 3306,
-      username: 'root',
-      password: 'mypassword',
-      database: 'STORMIT_DB',
-      entities: [User],
-      // entities: [__dirname + '../**/*.entity{.ts,.js}'],
+      type: dbConfig.type,
+      host: dbConfig.host,
+      port: dbConfig.port,
+      username: dbConfig.username,
+      password: dbConfig.password,
+      database: dbConfig.database,
+      entities: [User, Content, Board, Comment],
       synchronize: true,
     }),
-    // TypeOrmModule.forRootAsync({useFactory: typeORMConfig}),
-    AuthModule
-
+    BoardModule,
+    AuthModule,
+    ContentModule,
   ],
-
+  controllers: [],
 })
 export class AppModule {}

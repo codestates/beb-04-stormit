@@ -15,26 +15,35 @@ import { ContentService } from './content.service';
 import { CreateContentDto } from './dto/create-content.dto';
 import { Content } from './entity/content.entity';
 import { UpdateDataDto } from './dto/updateData.dto';
+import { BoardService } from 'src/board/board.service';
+import { BoardRepository } from 'src/board/board.repository';
+import { Board } from 'src/board/entity/board.entity';
 
-@Controller('board')
+@Controller('board/post')
 export class ContentController {
-  constructor(private contentsService: ContentService) {}
+  constructor(
+    private readonly contentsService: ContentService, // private boardRepository: BoardRepository,
+  ) {}
   private logger = new Logger('ContentController');
+
   // 전체 글 가져오기
-  @Get()
+  @Get('/total')
   getAllContents(): Promise<Content[]> {
-    this.logger.verbose(`User ### trying to get all contents `);
+    this.logger.verbose(`getAllContents() :`);
     return this.contentsService.getAllContents();
   }
   // 글 상세정보 가져오기
-  @Get('/post/:id')
+  @Get(':id')
   getContentById(@Param('id') id: number): Promise<Content> {
+    this.logger.verbose(`getContentById() : ${id}`);
     return this.contentsService.getContentById(id);
   }
   // 글 쓰기
-  @Post('/post')
+  @Post('')
   @UsePipes(ValidationPipe)
-  cretaeContent(@Body() createContentDto: CreateContentDto): Promise<string> {
+  async cretaeContent(
+    @Body() createContentDto: CreateContentDto,
+  ): Promise<string> {
     this.logger.verbose(
       `User $$$ creating a new content. \nPayload: ${JSON.stringify(
         createContentDto,
@@ -43,16 +52,13 @@ export class ContentController {
     return this.contentsService.createContent(createContentDto);
   }
   // 글 삭제
-  @Delete('/post/:id')
+  @Delete(':id')
   deleteContent(@Param('id', ParseIntPipe) id): Promise<void> {
     return this.contentsService.deleteContent(id);
   }
 
   //글 수정
-  // put, patch차이
-  // put은 일부분만 수정 후 받지 않은 값에 대해서는 null
-  // patch는 일부분만 수정한 경우 일부부만 수정되어 전달한다.
-  @Patch('/post/:id')
+  @Patch(':id')
   @UsePipes(ValidationPipe)
   path(@Param('id') id: number, @Body() updateDataDto: UpdateDataDto) {
     return this.contentsService.updateContent(id, updateDataDto);

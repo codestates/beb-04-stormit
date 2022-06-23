@@ -6,16 +6,16 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
-import { Content } from './content.entity';
+import { Content } from '../../content/entity/content.entity';
 
 @Entity()
 export class Board extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
+  @Column({ nullable: true })
   board_title: string;
 
-  @OneToMany(() => Content, (content) => content.board, { cascade: true })
+  @OneToMany(() => Content, (content) => content.board)
   contents: Content[];
 }

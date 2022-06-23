@@ -21,4 +21,7 @@ export class CreateContentDto {
 
   @IsString()
   readonly board_title: string;
+
+  @IsString()
+  readonly board_id: string;
 }
