@@ -107,6 +107,7 @@ const Mypage: React.FC = () => {
   const [editMode, setEditMode] = useState(false);
 
   const email = useSelector((state) => state.user.email);
+  const user_id = useSelector((state) => state.user.userId);
   const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
 
   const navigate = useNavigate();
@@ -120,7 +121,7 @@ const Mypage: React.FC = () => {
   };
 
   const onClickSubmitButton = async () => {
-    const body = { nickname: input };
+    const body = { nickname: input, user_id: user_id };
 
     try {
       await updateNameAPI(email, body);

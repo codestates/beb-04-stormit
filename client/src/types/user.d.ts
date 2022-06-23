@@ -9,6 +9,7 @@ type LoginAPIResponseType = {
   password: string;
   userId: number;
   nickname: string;
+  userId: number;
 };
 
 type LoginAPIBodyType = {
@@ -17,6 +18,7 @@ type LoginAPIBodyType = {
 };
 
 type UpdateNameAPIBodyType = {
+  user_id: number;
   nickname: string;
 };
 

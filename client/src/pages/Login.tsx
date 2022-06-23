@@ -3,6 +3,7 @@ import styled from "styled-components";
 import palette from "../styles/palette";
 import CreateAccount from "../components/CreateAccount";
 import Divider from "../components/common/Divider";
+import { useState } from "react";
 // modal 상태를 가지고 있는 파일
 import { modalActions } from "../store/modalSlice";
 import { userActions } from "../store/userSlice";
@@ -10,6 +11,8 @@ import { userActions } from "../store/userSlice";
 import { useSelector, useDispatch } from "../store";
 import { useNavigate } from "react-router-dom";
 import { snackbarActions } from "../store/snackbarSlice";
+// login API
+import { loginAPI } from "../lib/api/user";
 
 const Base = styled.div`
   display: flex;
@@ -113,6 +116,17 @@ const LoginForm = styled.form`
 `;
 
 const Login: React.FC = () => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  // e: 이건 타입스크립트에서 event의 타입을 지정해주는것이다.
+  const onChangeEmail = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setEmail(e.target.value);
+  };
+
+  const onChangePassword = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setPassword(e.target.value);
+  };
+  // 계정생성 클릭 시 모달창 생성
   const createAccountOpen = useSelector(
     (state) => state.modal.createAccountOpen
   );
@@ -122,9 +136,30 @@ const Login: React.FC = () => {
     dispatch(modalActions.openCreateAccountModal());
   };
 
-  const onClickLoginButton = (event: React.MouseEvent<HTMLButtonElement>) => {
+  const onClickLoginButton = async (
+    event: React.MouseEvent<HTMLButtonElement>
+  ) => {
     event.preventDefault();
+    const body = {
+      email: email,
+      password: password,
+    };
+    try {
+      const response = await loginAPI(body);
 
+      const { userId, nickname, passwordHash, email } = response.data;
+
+      dispatch(
+        userActions.setUserInfo({
+          userId: userId,
+          nickname: nickname,
+          email: email,
+          passwordHash: passwordHash,
+        })
+      );
+    } catch (error) {
+      console.log(error);
+    }
     dispatch(userActions.setLoggedIn());
     dispatch(snackbarActions.openLoginSnackbar());
     navigate("/");
@@ -133,8 +168,20 @@ const Login: React.FC = () => {
     <Base className={createAccountOpen ? "Backdrop" : ""}>
       <Logo className={createAccountOpen ? "Backlogo" : ""}>Stormit</Logo>
       <LoginForm className={createAccountOpen ? "BackForm" : ""}>
-        <input className="inputBox" type="text" placeholder="아이디" />
-        <input className="inputBox" type="password" placeholder="비밀번호" />
+        <input
+          className="inputBox"
+          type="text"
+          placeholder="이메일"
+          value={email}
+          onChange={onChangeEmail}
+        />
+        <input
+          className="inputBox"
+          type="password"
+          placeholder="비밀번호"
+          value={password}
+          onChange={onChangePassword}
+        />
         <button className="login-btn" onClick={onClickLoginButton}>
           로그인
         </button>

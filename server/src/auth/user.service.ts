@@ -3,6 +3,7 @@ import { InjectRepository } from "@nestjs/typeorm";
 import { FindOneOptions } from "typeorm";
 import { UserDTO } from "./dto/user.dto";
 import { UserRepository } from "./user.repository";
+import { User } from "./entity/user.entity"
 import * as bcrypt from 'bcrypt';
 
 @Injectable()
@@ -12,13 +13,12 @@ export class UserService {
         private userRepository: UserRepository
     ){}
 
-    async findByFields(options: FindOneOptions<UserDTO>): Promise<UserDTO | undefined> {
+    async findByFields(options: FindOneOptions<UserDTO>): Promise<User | undefined> {
         return await this.userRepository.findOne(options);
     }
 
     async save(userDTO: UserDTO): Promise<UserDTO | undefined> {
         await this.transformPassword(userDTO);
-        console.log(userDTO)
         return await this.userRepository.save(userDTO);
     }
 
