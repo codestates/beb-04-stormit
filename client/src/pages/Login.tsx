@@ -10,6 +10,7 @@ import { userActions } from "../store/userSlice";
 // 상태를 활용할 수 있는 useSelector, useDispatch -> store/index에 저장되어 있어서 redux까지가서 import할 필요가 없다
 import { useSelector, useDispatch } from "../store";
 import { useNavigate } from "react-router-dom";
+import { snackbarActions } from "../store/snackbarSlice";
 
 const Base = styled.div`
   display: flex;
@@ -126,6 +127,7 @@ const Login: React.FC = () => {
     event.preventDefault();
 
     dispatch(userActions.setLoggedIn());
+    dispatch(snackbarActions.openLoginSnackbar());
     navigate("/");
   };
   return (

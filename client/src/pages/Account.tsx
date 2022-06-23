@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import Button from "../components/common/Button";
 import Input from "../components/common/Input";
+import NavigationRail from "../components/NavigationRail";
 import { updatePasswordAPI, withdrawalAPI } from "../lib/api/user";
 import { useDispatch, useSelector } from "../store";
 import { userActions } from "../store/userSlice";
@@ -13,7 +14,7 @@ const Base = styled.div`
   flex-direction: column;
   margin: 1rem; // 16px
 
-  .account-dialog-contents {
+  .contents {
     display: flex;
     flex-direction: column;
     gap: 1rem; // 16px
@@ -124,7 +125,8 @@ const Account: React.FC = () => {
 
   return (
     <Base>
-      <div className="account-dialog-contents">
+      <NavigationRail />
+      <div className="contents">
         <p className="account-dialog-title">보안 및 로그인</p>
         <p className="account-email-wrapper">
           <span>이메일:</span>
