@@ -20,7 +20,7 @@ const getButtonVariant = (variant?: "text" | "contained" | "outlined") => {
         color: white;
 
         &:hover {
-          background-color: ${palette.blue[400]};
+          background-color: ${palette.blue[600]};
         }
       `;
     case "outlined":

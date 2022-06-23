@@ -5,14 +5,13 @@ import FloatingIconButton from "./common/FloatingIconButton";
 import CreateIcon from "@mui/icons-material/Create";
 import ArrowLeftIcon from "@mui/icons-material/ArrowLeft";
 import ArrowRightIcon from "@mui/icons-material/ArrowRight";
-import MailIcon from "@mui/icons-material/Mail";
-import SendIcon from "@mui/icons-material/Send";
-import SearchIcon from "@mui/icons-material/Search";
-import PersonIcon from "@mui/icons-material/Person";
 import MenuIcon from "@mui/icons-material/Menu";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "../store";
 import { modalActions } from "../store/modalSlice";
+import IconButton from "./common/IconButton";
+import SettingsIcon from "@mui/icons-material/Settings";
+import PersonIcon from "@mui/icons-material/Person";
 
 const Base = styled.aside`
   display: none;
@@ -90,6 +89,12 @@ const NavigationRail: React.FC<Props> = ({ ...props }) => {
       <FloatingIconButton onClick={() => navigate("/post")}>
         <CreateIcon />
       </FloatingIconButton>
+      <IconButton onClick={() => navigate("/mypage")}>
+        <PersonIcon />
+      </IconButton>
+      <IconButton onClick={() => navigate("/account")}>
+        <SettingsIcon />
+      </IconButton>
     </Base>
   );
 };

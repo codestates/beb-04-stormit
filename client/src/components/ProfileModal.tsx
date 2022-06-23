@@ -139,6 +139,9 @@ const ProfileModal: React.FC = () => {
             로그인
           </div>
           <Divider />
+          <div className="profile-modal-item" onClick={onClickSignUpButton}>
+            회원가입
+          </div>
         </>
       )}
       {isLoggedIn && (
@@ -155,7 +158,6 @@ const ProfileModal: React.FC = () => {
           <div className="profile-modal-item" onClick={onClickAccountButton}>
             개인정보 설정
           </div>
-
           <Divider />
           <div className="profile-modal-item" onClick={onClickLogOutButton}>
             <LogoutIcon />

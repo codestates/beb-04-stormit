@@ -11,6 +11,9 @@ import Pagination from "../components/Pagination";
 import Button from "../components/common/Button";
 import CommunityPostCard from "../components/CommunityPostCard";
 import { getAllPostAPI } from "../lib/api/post";
+import Input from "../components/common/Input";
+import IconButton from "../components/common/IconButton";
+import SearchIcon from "@mui/icons-material/Search";
 
 const Base = styled.div`
   display: flex;
@@ -42,7 +45,18 @@ const Base = styled.div`
   .pagination-wrapper {
     display: flex;
     justify-content: center;
-    padding: 1rem; //16px
+    padding: 1rem; // 16px
+  }
+
+  .community-search-input-wrapper {
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem; // 8px
+  }
+
+  .community-search-input {
+    width: 16rem; // 256px
+    margin-left: 4rem; // 64px
   }
 
   // 600px
@@ -135,6 +149,12 @@ const Community: React.FC = () => {
         </ul>
         <div className="pagination-wrapper">
           <Pagination />
+        </div>
+        <div className="community-search-input-wrapper">
+          <Input className="community-search-input" />
+          <IconButton>
+            <SearchIcon />
+          </IconButton>
         </div>
       </div>
     </Base>
