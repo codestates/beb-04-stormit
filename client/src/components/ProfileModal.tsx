@@ -93,6 +93,12 @@ const ProfileModal: React.FC = () => {
 
   const toggleDarkMode = () => {
     dispatch(themeActions.toggleDarkMode());
+
+    if (!isDarkMode) {
+      localStorage.setItem("darkMode", "on");
+    } else {
+      localStorage.removeItem("darkMode");
+    }
   };
 
   const closeModal = () => {
@@ -152,7 +158,6 @@ const ProfileModal: React.FC = () => {
           <div className="profile-modal-item" onClick={onClickAccountButton}>
             개인정보 설정
           </div>
-
           <Divider />
           <div className="profile-modal-item" onClick={onClickLogOutButton}>
             <LogoutIcon />

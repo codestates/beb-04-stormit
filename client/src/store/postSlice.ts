@@ -13,7 +13,7 @@ const initialState: postState = {
 };
 
 export const postSlice = createSlice({
-  name: "theme",
+  name: "post",
   initialState,
   reducers: {
     setPostState(

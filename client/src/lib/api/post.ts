@@ -15,7 +15,7 @@ export const getPostsByBoardAPI = (body: GetPostsByBoardBodyType) =>
 
 // 게시글 id로 게시글 상세 내용 가져오기
 export const getPostByIdAPI = (id: number) =>
-  axios.get<GetPostByIdResponseType>(`/board/${id}`);
+  axios.get<GetPostByIdResponseType>(`/board/post/${id}`);
 
 // 게시글 수정
 export const updatePostAPI = (body: UpdatePostAPIBodyType) =>

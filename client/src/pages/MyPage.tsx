@@ -7,7 +7,6 @@ import { parseDate } from "../lib/utils";
 import palette from "../styles/palette";
 import EditIcon from "@mui/icons-material/Edit";
 import Input from "../components/common/Input";
-import Button from "../components/common/Button";
 import { updateNameAPI } from "../lib/api/user";
 import { useSelector } from "../store";
 import CheckIcon from "@mui/icons-material/Check";

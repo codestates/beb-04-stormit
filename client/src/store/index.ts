@@ -6,6 +6,7 @@ import {
 } from "react-redux";
 import modalSlice from "./modalSlice";
 import postSlice from "./postSlice";
+import snackbarSlice from "./snackbarSlice";
 import themeSlice from "./themeSlice";
 import userSlice from "./userSlice";
 // ...
@@ -16,6 +17,7 @@ export const store = configureStore({
     modal: modalSlice.reducer,
     theme: themeSlice.reducer,
     post: postSlice.reducer,
+    snackbar: snackbarSlice.reducer,
   },
 });
 

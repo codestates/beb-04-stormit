@@ -4,7 +4,7 @@ import Home from "./pages/Home";
 import Test from "./pages/Test";
 import MyPage from "./pages/MyPage";
 import Login from "./pages/Login";
-import { useSelector } from "./store";
+import { useDispatch, useSelector } from "./store";
 import GlobalStyle from "./styles/GlobalStyle";
 import MenuModal from "./components/MenuModal";
 import ProfileModal from "./components/ProfileModal";
@@ -16,16 +16,32 @@ import PostDetail from "./pages/PostDetail";
 import Edit from "./pages/Edit";
 import { ThemeProvider } from "styled-components";
 import { darkTheme, theme } from "./styles/theme";
+import { themeActions } from "./store/themeSlice";
+import Snackbar from "./components/common/Snackbar";
+import { snackbarActions } from "./store/snackbarSlice";
 
 const App: React.FC = () => {
   const menuModalOpen = useSelector((state) => state.modal.menuModalOpen);
   const profileModalOpen = useSelector((state) => state.modal.profileModalOpen);
   const isDarkMode = useSelector((state) => state.theme.isDarkMode);
+  const loginSnackbarOpen = useSelector(
+    (state) => state.snackbar.loginSnackbarOpen
+  );
+
+  const dispatch = useDispatch();
 
   document.cookie = "test=123";
   document.cookie = "test2=2222";
 
   console.log(document.cookie);
+
+  if (localStorage.getItem("darkMode") === "on") {
+    dispatch(themeActions.setDarkMode(true));
+  }
+
+  const closeLoginSnackbar = () => {
+    dispatch(snackbarActions.closeLoginSnackbar());
+  };
 
   return (
     <ThemeProvider theme={isDarkMode ? darkTheme : theme}>
@@ -35,6 +51,13 @@ const App: React.FC = () => {
       />
       {menuModalOpen && <MenuModal />}
       {profileModalOpen && <ProfileModal />}
+      <Snackbar
+        open={loginSnackbarOpen}
+        autoHideDuration={5000}
+        onClose={closeLoginSnackbar}
+      >
+        로그인되었습니다.
+      </Snackbar>
       <Header />
       <Routes>
         <Route path="/" element={<Home />} />
