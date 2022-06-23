@@ -13,6 +13,7 @@ import MovetoPost from "../components/MovetoPost";
 import { getAllPostAPI } from "../lib/api/post";
 import LoadingSpinner from "../components/common/LoadingSpinner";
 import PersonIcon from "@mui/icons-material/Person";
+import { FAKE_ARRAY, parseDate, shortenPostContents } from "../lib/utils";
 
 const Base = styled.div`
   display: flex;
@@ -29,10 +30,6 @@ const Base = styled.div`
 
   .contents {
     margin: 1rem; // 16px
-  }
-
-  .body {
-    display: flex;
   }
 
   .stormit {
@@ -79,7 +76,7 @@ const Base = styled.div`
   // 600px
   @media screen and (min-width: 37.5rem) {
     .contents {
-      margin: 0 auto;
+      margin: 1rem auto; // 16px
       width: 37.5rem; // 600px
     }
   }
@@ -203,21 +200,25 @@ const Home: React.FC = () => {
           {postList.map((post) => (
             <PostCard
               postId={post.post_id}
+              title={post.post_title}
               commentCount={post.comment_count}
-              postTitle={post.post_title}
-              postContents={post.post_content}
               community={post.board_name}
               createdAt={post.created_at}
+              contents={shortenPostContents(post.post_content)}
+              nickname="노논"
             />
           ))}
-          <PostCard
-            postId={0}
-            commentCount={4}
-            postTitle="이건 그냥 글 제목임"
-            postContents="이건 그냥 글 내용임"
-            community="리그 오브 레전드"
-            createdAt="0000년 00월 00일 00:00:00"
-          />
+          {FAKE_ARRAY.map((_, index) => (
+            <PostCard
+              postId={0}
+              commentCount={index}
+              title="이건 그냥 글 제목임"
+              community="리그 오브 레전드"
+              createdAt={parseDate(new Date())}
+              contents="이건 그냥 글 내용임 이건 그냥 글 내용임 이건 그냥 글 내용임 이건 그냥 글 내용임 이건 그냥 글 내용임 이건 그냥 글 내용임 이건 그냥 글 내용임 이건 그냥 글 내용임..."
+              nickname="노논"
+            />
+          ))}
         </ul>
         <div className="fab-wrapper">
           {isLoggedIn && (

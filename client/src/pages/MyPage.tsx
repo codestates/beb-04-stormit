@@ -12,6 +12,7 @@ import { useSelector } from "../store";
 import CheckIcon from "@mui/icons-material/Check";
 import CloseIcon from "@mui/icons-material/Close";
 import { useNavigate } from "react-router-dom";
+import CameraAltIcon from "@mui/icons-material/CameraAlt";
 
 const Base = styled.div`
   display: flex;
@@ -41,15 +42,36 @@ const Base = styled.div`
     gap: 1rem; // 16px
   }
 
-  .profile-image {
+  .profile-image-wrapper {
     position: absolute;
-    width: 8rem;
-    height: 8rem;
     top: 7rem;
     left: 2rem;
-
+    width: 8rem;
+    height: 8rem;
     border-radius: 50%;
-    background-color: ${palette.gray[300]};
+    cursor: pointer;
+
+    &:hover {
+      opacity: 0.7;
+
+      .profile-image-edit-button {
+        display: block;
+      }
+    }
+  }
+
+  .profile-image {
+    border-radius: 50%;
+    width: 100%;
+    height: 100%;
+  }
+
+  .profile-image-edit-button {
+    color: ${palette.gray[900]};
+    position: absolute;
+    top: 3.7rem;
+    left: 3.3rem;
+    display: none;
   }
 
   .contents {
@@ -130,6 +152,10 @@ const Mypage: React.FC = () => {
     }
   };
 
+  const onClickProfileImage = () => {
+    alert("현재 프로필 변경은 지원하지 않습니다.");
+  };
+
   // 로그인 되어있지 않으면 로그인 페이지로 이동함
   useEffect(() => {
     if (!isLoggedIn) {
@@ -142,7 +168,10 @@ const Mypage: React.FC = () => {
       <NavigationRail className="navigation-rail" />
       <section className="contents">
         <div className="profile-legend">
-          <div className="profile-image" />
+          <div className="profile-image-wrapper" onClick={onClickProfileImage}>
+            <img className="profile-image" src="/profile-image.png" alt="" />
+            <CameraAltIcon className="profile-image-edit-button" />
+          </div>
         </div>
         <div className="contents-area">
           <div className="profile-nickname-wrapper">
