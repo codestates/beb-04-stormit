@@ -1,6 +1,6 @@
 import { IsNumber, IsString } from 'class-validator';
 
-export class deletePostDto {
+export class deleteContentDto {
   @IsString()
   readonly email: string;
   @IsNumber()

@@ -9,19 +9,16 @@ import { IsEmail, IsNotEmpty, IsNumber, IsString } from 'class-validator';
 // 쓰는 이유
 // 데이터 유효성을 체크하는데 효율적임
 // 더 안정적인 코드로 만들어준다.
-export class CreateBoardDto {
+export class CreateContentDto {
+  @IsString()
+  readonly post_title: string;
+
+  @IsString()
+  readonly post_content: string;
+
   @IsEmail()
-  @IsNotEmpty()
   readonly email: string;
 
   @IsString()
-  @IsNotEmpty()
-  readonly post_name: string;
-
-  @IsString()
-  readonly content: string;
-
-  @IsString()
-  @IsNotEmpty()
-  readonly board_name: string;
+  readonly board_title: string;
 }
