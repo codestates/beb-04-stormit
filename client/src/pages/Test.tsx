@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import CommentCard from "../components/CommentCard";
 import Checkbox from "../components/common/Checkbox";
+import Skeleton from "../components/common/Skeleton";
 
 const Base = styled.section`
   display: flex;
@@ -52,6 +53,10 @@ const Test: React.FC = () => {
         commentId={2}
       />
       <Checkbox checked={checked} onChange={onChangeCheckbox} />
+
+      <Skeleton width="500px" height="200px" />
+      <Skeleton width="200px" height="200px" variant="circular" />
+      <Skeleton width="100px" variant="text" />
     </Base>
   );
 };

@@ -56,6 +56,7 @@ const Base = styled.li`
   .post-contents {
     font-size: 0.75rem;
     color: ${palette.gray[600]};
+    line-height: 1.4;
   }
 
   .post-vote-wrapper {

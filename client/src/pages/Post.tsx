@@ -79,7 +79,7 @@ const Post: React.FC = () => {
       username: email,
       post_content: contents,
       post_title: title,
-      board_name: community,
+      board_title: community,
     };
 
     try {
@@ -116,10 +116,6 @@ const Post: React.FC = () => {
         <Chip>Tag</Chip>
         <Chip>Community</Chip>
         <Chip>Long Community Name</Chip>
-        <Chip>Random</Chip>
-        <Chip>Select</Chip>
-        <Chip>One</Chip>
-        <Chip>Community</Chip>
       </div>
       <div className="post-button-wrapper">
         <Button variant="outlined" onClick={onClickCancelButton}>
