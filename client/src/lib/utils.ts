@@ -38,4 +38,6 @@ export const translateCommunityName = (communityName: string) => {
   if (communityName === "qa") return "Q&A";
 };
 
-export const getCookie = (cookieString: string) => {};
+export const getCookie = (cookieString: string) => {
+  cookieString.split(";");
+};

@@ -87,14 +87,9 @@ const NavigationRail: React.FC<Props> = ({ ...props }) => {
           </>
         )}
       </div>
-      <div className="navigation-logo" />
       <FloatingIconButton onClick={() => navigate("/post")}>
         <CreateIcon />
       </FloatingIconButton>
-      <MailIcon className="navigation-icon" />
-      <SendIcon className="navigation-icon" />
-      <SearchIcon className="navigation-icon" />
-      <PersonIcon className="navigation-icon" />
     </Base>
   );
 };

@@ -106,9 +106,30 @@ const Community: React.FC = () => {
           ))}
           <CommunityPostCard
             postId={1}
-            title="비비큐 황금올리브"
+            title="랜덤 게시물"
             commentCount={3}
-            nickname="노논"
+            nickname="닉네임"
+            createdAt={parseDate(new Date())}
+          />
+          <CommunityPostCard
+            postId={1}
+            title="랜덤 게시물"
+            commentCount={3}
+            nickname="닉네임"
+            createdAt={parseDate(new Date())}
+          />
+          <CommunityPostCard
+            postId={1}
+            title="랜덤 게시물"
+            commentCount={3}
+            nickname="닉네임"
+            createdAt={parseDate(new Date())}
+          />
+          <CommunityPostCard
+            postId={1}
+            title="랜덤 게시물"
+            commentCount={3}
+            nickname="닉네임"
             createdAt={parseDate(new Date())}
           />
         </ul>
