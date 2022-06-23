@@ -1,6 +1,5 @@
 import React from "react";
 import styled from "styled-components";
-import theme from "../styles/theme";
 import palette from "../styles/palette";
 import CreateAccount from "../components/CreateAccount";
 import Divider from "../components/common/Divider";
@@ -20,16 +19,16 @@ const Base = styled.div`
   flex-direction: column;
   align-items: center;
   padding-top: ${(props) =>
-    props.className == "Backdrop" ? "8.5rem" : "5rem"};
+    props.className === "Backdrop" ? "8.5rem" : "5rem"};
   height: 100vh;
   // modal창 생성시 적용 css
-  position: ${(props) => (props.className == "Backdrop" ? "fixed" : "")};
-  top: ${(props) => (props.className == "Backdrop" ? "0" : "")};
-  left: ${(props) => (props.className == "Backdrop" ? "0" : "")};
-  bottom: ${(props) => (props.className == "Backdrop" ? "0" : "")};
-  right: ${(props) => (props.className == "Backdrop" ? "0" : "")};
+  position: ${(props) => (props.className === "Backdrop" ? "fixed" : "")};
+  top: ${(props) => (props.className === "Backdrop" ? "0" : "")};
+  left: ${(props) => (props.className === "Backdrop" ? "0" : "")};
+  bottom: ${(props) => (props.className === "Backdrop" ? "0" : "")};
+  right: ${(props) => (props.className === "Backdrop" ? "0" : "")};
   background-color: ${(props) =>
-    props.className == "Backdrop" ? "rgba(76, 76, 76, 0.5)" : ""};
+    props.className === "Backdrop" ? "rgba(76, 76, 76, 0.5)" : ""};
 `;
 
 const Logo = styled.h1`
@@ -37,11 +36,11 @@ const Logo = styled.h1`
   font-weight: 600;
   color: ${palette.blue[500]};
   padding-bottom: 20px;
-  opacity: ${(props) => (props.className == "Backlogo" ? "0.5" : "1")};
+  opacity: ${(props) => (props.className === "Backlogo" ? "0.5" : "1")};
 `;
 
 const LoginForm = styled.form`
-  opacity: ${(props) => (props.className == "BackForm" ? "0.5" : "1")};
+  opacity: ${(props) => (props.className === "BackForm" ? "0.5" : "1")};
   display: flex;
   flex-direction: column;
   border: 1px solid ${palette.gray[300]};

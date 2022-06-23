@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import IconButton from "../components/common/IconButton";
 import CommunityPostCard from "../components/CommunityPostCard";
@@ -11,6 +11,7 @@ import { updateNameAPI } from "../lib/api/user";
 import { useSelector } from "../store";
 import CheckIcon from "@mui/icons-material/Check";
 import CloseIcon from "@mui/icons-material/Close";
+import { useNavigate } from "react-router-dom";
 
 const Base = styled.div`
   display: flex;
@@ -107,6 +108,10 @@ const Mypage: React.FC = () => {
 
   const email = useSelector((state) => state.user.email);
   const user_id = useSelector((state) => state.user.userId);
+  const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
+
+  const navigate = useNavigate();
+
   const onChangeInput = (event: React.ChangeEvent<HTMLInputElement>) => {
     setInput(event.target.value);
   };
@@ -124,6 +129,13 @@ const Mypage: React.FC = () => {
       console.log(error);
     }
   };
+
+  // 로그인 되어있지 않으면 로그인 페이지로 이동함
+  useEffect(() => {
+    if (!isLoggedIn) {
+      navigate("/login");
+    }
+  }, [isLoggedIn, navigate]);
 
   return (
     <Base>

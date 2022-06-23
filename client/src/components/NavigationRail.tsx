@@ -57,6 +57,7 @@ interface Props extends React.HtmlHTMLAttributes<HTMLElement> {}
 
 const NavigationRail: React.FC<Props> = ({ ...props }) => {
   const menuModalOpen = useSelector((state) => state.modal.menuModalOpen);
+  const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
 
   const dispatch = useDispatch();
 
@@ -66,6 +67,14 @@ const NavigationRail: React.FC<Props> = ({ ...props }) => {
 
   const closeMenuModal = () => {
     dispatch(modalActions.closeMenuModal());
+  };
+
+  const onClickFloatingButton = () => {
+    if (isLoggedIn) {
+      navigate("/post");
+    } else {
+      navigate("/login");
+    }
   };
 
   const navigate = useNavigate();
@@ -86,15 +95,20 @@ const NavigationRail: React.FC<Props> = ({ ...props }) => {
           </>
         )}
       </div>
-      <FloatingIconButton onClick={() => navigate("/post")}>
-        <CreateIcon />
+      <FloatingIconButton onClick={onClickFloatingButton}>
+        {isLoggedIn && <CreateIcon />}
+        {!isLoggedIn && <PersonIcon />}
       </FloatingIconButton>
-      <IconButton onClick={() => navigate("/mypage")}>
-        <PersonIcon />
-      </IconButton>
-      <IconButton onClick={() => navigate("/account")}>
-        <SettingsIcon />
-      </IconButton>
+      {isLoggedIn && (
+        <>
+          <IconButton onClick={() => navigate("/mypage")}>
+            <PersonIcon />
+          </IconButton>
+          <IconButton onClick={() => navigate("/account")}>
+            <SettingsIcon />
+          </IconButton>
+        </>
+      )}
     </Base>
   );
 };

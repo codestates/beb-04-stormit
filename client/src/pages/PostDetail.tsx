@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import NavigationRail from "../components/NavigationRail";
 import Textarea from "../components/common/Textarea";
 import Button from "../components/common/Button";
@@ -17,7 +17,11 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { getLastPathname, parseDate } from "../lib/utils";
 import { postActions } from "../store/postSlice";
 
-const Base = styled.div`
+interface BaseProps {
+  vote: number;
+}
+
+const Base = styled.div<BaseProps>`
   display: flex;
   flex-direction: column;
   height: 100vh;
@@ -98,7 +102,24 @@ const Base = styled.div`
 
   .post-detail-vote {
     font-size: 1.5rem;
-    color: ${theme.primary};
+
+    ${({ vote }) => {
+      if (vote > 0) {
+        return css`
+          color: ${theme.primary};
+        `;
+      }
+      if (vote === 0) {
+        return css`
+          color: ${palette.black};
+        `;
+      }
+      if (vote < 0) {
+        return css`
+          color: ${palette.red[500]};
+        `;
+      }
+    }}
   }
 
   .post-detail-chip-wrapper {
@@ -165,6 +186,7 @@ const PostDetail: React.FC = () => {
 
   const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
   const nickname = useSelector((state) => state.user.nickname);
+  const vote = useSelector((state) => state.post.vote);
 
   const dispatch = useDispatch();
 
@@ -199,6 +221,14 @@ const PostDetail: React.FC = () => {
       await deletePostByIdAPI(postId);
       navigate(-1);
     }
+  };
+
+  const onClickVoteUpButton = () => {
+    dispatch(postActions.setVoteUp());
+  };
+
+  const onClickVoteDownButton = () => {
+    dispatch(postActions.setVoteDown());
   };
 
   useEffect(() => {
@@ -242,7 +272,7 @@ const PostDetail: React.FC = () => {
   }, [postId]);
 
   return (
-    <Base>
+    <Base vote={vote}>
       <NavigationRail />
       <div className="contents">
         <div className="contents-top">
@@ -287,11 +317,11 @@ const PostDetail: React.FC = () => {
           <Chip>커뮤니티</Chip>
         </div>
         <div className="post-detail-vote-area">
-          <IconButton>
+          <IconButton onClick={onClickVoteUpButton}>
             <KeyboardArrowUpIcon />
           </IconButton>
-          <span className="post-detail-vote">0</span>
-          <IconButton>
+          <span className="post-detail-vote">{vote}</span>
+          <IconButton onClick={onClickVoteDownButton}>
             <KeyboardArrowDownIcon />
           </IconButton>
         </div>
