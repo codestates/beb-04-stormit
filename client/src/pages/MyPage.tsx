@@ -153,7 +153,7 @@ const Mypage: React.FC = () => {
   };
 
   const onClickProfileImage = () => {
-    alert("프로필 이미지는 현재 변경할 수 없습니다.");
+    alert("현재 프로필 변경은 지원하지 않습니다.");
   };
 
   // 로그인 되어있지 않으면 로그인 페이지로 이동함
