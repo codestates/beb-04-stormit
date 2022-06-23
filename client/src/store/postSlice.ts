@@ -4,12 +4,14 @@ interface postState {
   title: string;
   contents: string;
   community: string;
+  vote: number;
 }
 
 const initialState: postState = {
   title: "",
   contents: "",
   community: "",
+  vote: 0,
 };
 
 export const postSlice = createSlice({
@@ -32,6 +34,12 @@ export const postSlice = createSlice({
       state.title = "";
       state.contents = "";
       state.community = "";
+    },
+    setVoteUp(state) {
+      state.vote = state.vote + 1;
+    },
+    setVoteDown(state) {
+      state.vote = state.vote - 1;
     },
   },
 });

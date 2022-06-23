@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import Button from "../components/common/Button";
@@ -73,6 +73,7 @@ const Account: React.FC = () => {
   const [password, setPassword] = useState("");
   const [passwordConfirm, setPasswordConfirm] = useState("");
 
+  const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
   const email = useSelector((state) => state.user.email);
   const userId = useSelector((state) => state.user.userId);
   const passwordHash = useSelector((state) => state.user.passwordHash);
@@ -122,6 +123,13 @@ const Account: React.FC = () => {
       }
     }
   };
+
+  // 로그인 되어있지 않으면 로그인 페이지로 이동함
+  useEffect(() => {
+    if (!isLoggedIn) {
+      navigate("/login");
+    }
+  }, [isLoggedIn, navigate]);
 
   return (
     <Base>

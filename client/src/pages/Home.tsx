@@ -5,7 +5,6 @@ import CreateIcon from "@mui/icons-material/Create";
 import PostCard from "../components/PostCard";
 import NavigationRail from "../components/NavigationRail";
 import { useNavigate } from "react-router-dom";
-
 import theme from "../styles/theme";
 import palette from "../styles/palette";
 import Button from "../components/common/Button";
@@ -13,6 +12,7 @@ import { useSelector } from "../store";
 import MovetoPost from "../components/MovetoPost";
 import { getAllPostAPI } from "../lib/api/post";
 import LoadingSpinner from "../components/common/LoadingSpinner";
+import PersonIcon from "@mui/icons-material/Person";
 
 const Base = styled.div`
   display: flex;
@@ -220,9 +220,16 @@ const Home: React.FC = () => {
           />
         </ul>
         <div className="fab-wrapper">
-          <FloatingIconButton onClick={() => navigate("/post")}>
-            <CreateIcon />
-          </FloatingIconButton>
+          {isLoggedIn && (
+            <FloatingIconButton onClick={() => navigate("/post")}>
+              <CreateIcon />
+            </FloatingIconButton>
+          )}
+          {!isLoggedIn && (
+            <FloatingIconButton onClick={() => navigate("/login")}>
+              <PersonIcon />
+            </FloatingIconButton>
+          )}
         </div>
         {loading && (
           <div className="loading-spinner-wrapper">
