@@ -92,7 +92,7 @@ const CreateAccount: React.FC = () => {
   const onClickCreateBtn = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     const body = {
-      email: email,
+      username: email,
       password: password,
       nickname: nickname,
     };

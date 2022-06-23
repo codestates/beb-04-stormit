@@ -1,5 +1,5 @@
 type SubmitPostAPIBodyType = {
-  email: string;
+  username: string;
   post_content: string;
   post_title: string;
   board_name: string;
@@ -48,7 +48,7 @@ type UpdatePostAPIBodyType = {
 };
 
 type SubmitCommentAPIBodyType = {
-  email: string;
+  username: string;
   post_id: number;
   comment_content: string;
 };
