@@ -79,7 +79,7 @@ const Post: React.FC = () => {
       username: email,
       post_content: contents,
       post_title: title,
-      board_name: community,
+      board_title: community,
     };
 
     try {
