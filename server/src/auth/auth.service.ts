@@ -49,4 +49,11 @@ export class AuthService {
             where : { user_id: payload.user_id }
         })
     }
+
+    async getInfoById(username : string): Promise<UserDTO | undefined>{
+        return await this.userService.findByFields({
+            where: {username: username}
+        })
+
+    }
 }
