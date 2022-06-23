@@ -14,6 +14,9 @@ import { getAllPostAPI } from "../lib/api/post";
 import LoadingSpinner from "../components/common/LoadingSpinner";
 import PersonIcon from "@mui/icons-material/Person";
 import { FAKE_ARRAY, parseDate, shortenPostContents } from "../lib/utils";
+import IconButton from "../components/common/IconButton";
+import KeyboardDoubleArrowDownIcon from "@mui/icons-material/KeyboardDoubleArrowDown";
+import Skeleton from "../components/common/Skeleton";
 
 const Base = styled.div`
   display: flex;
@@ -63,10 +66,18 @@ const Base = styled.div`
     right: 1rem; // 16px
     bottom: 1rem; // 16px
   }
-  .loading-spinner-wrapper {
+  .loading-skeleton-wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 0.5rem;
+    margin: 1rem 0;
+  }
+
+  .more-button-wrapper {
     display: flex;
     justify-content: center;
-    padding: 2rem;
+    margin-top: 1rem;
   }
 
   .observer {
@@ -106,43 +117,21 @@ const Base = styled.div`
 `;
 
 const Home: React.FC = () => {
-  // const [loading, setLoading] = useState(false);
   const [postList, setPostList] = useState<GetAllPostsResponseType>([]);
+  const [fakePostList, setFakePostList] = useState(FAKE_ARRAY);
   const [loading, setLoading] = useState(false);
 
   const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
 
-  const targetRef = useRef<HTMLDivElement | null>(null);
-
   const navigate = useNavigate();
 
-  // // 무한스크롤
-  // const observer = useMemo(() => {
-  //   return new IntersectionObserver((entries) => {
-  //     if (!targetRef?.current) return;
-
-  //     if (entries[0].isIntersecting) {
-  //       setLoading(true);
-
-  //       console.log("fetch triggered");
-
-  //       setTimeout(() => {
-  //         setLoading(false);
-  //       }, 1000);
-  //     }
-  //   });
-  // }, []);
-
-  // // 무한스크롤
-  // useEffect(() => {
-  //   if (!targetRef?.current) return;
-
-  //   observer.observe(targetRef.current);
-
-  //   return () => {
-  //     observer.disconnect();
-  //   };
-  // }, [observer]);
+  const onClickMorePosts = () => {
+    setLoading(true);
+    setTimeout(() => {
+      setFakePostList((fakePostList) => [...fakePostList, ...FAKE_ARRAY]);
+      setLoading(false);
+    }, 2000);
+  };
 
   useEffect(() => {
     const fetchPosts = async () => {
@@ -208,7 +197,7 @@ const Home: React.FC = () => {
               nickname="노논"
             />
           ))}
-          {FAKE_ARRAY.map((_, index) => (
+          {fakePostList.map((_, index) => (
             <PostCard
               postId={0}
               commentCount={index}
@@ -220,6 +209,23 @@ const Home: React.FC = () => {
             />
           ))}
         </ul>
+        {loading && (
+          <>
+            <div className="loading-skeleton-wrapper">
+              <Skeleton width="40%" variant="text" />
+              <Skeleton width="100%" height="4rem" />
+            </div>
+            <div className="loading-skeleton-wrapper">
+              <Skeleton width="40%" variant="text" />
+              <Skeleton width="100%" height="4rem" />
+            </div>
+          </>
+        )}
+        <div className="more-button-wrapper" onClick={onClickMorePosts}>
+          <IconButton>
+            <KeyboardDoubleArrowDownIcon />
+          </IconButton>
+        </div>
         <div className="fab-wrapper">
           {isLoggedIn && (
             <FloatingIconButton onClick={() => navigate("/post")}>
@@ -232,14 +238,7 @@ const Home: React.FC = () => {
             </FloatingIconButton>
           )}
         </div>
-        {loading && (
-          <div className="loading-spinner-wrapper">
-            <LoadingSpinner />
-          </div>
-        )}
       </section>
-
-      <div className="observer" ref={targetRef} />
     </Base>
   );
 };
