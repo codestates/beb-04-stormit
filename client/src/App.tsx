@@ -20,7 +20,7 @@ import { themeActions } from "./store/themeSlice";
 import Snackbar from "./components/common/Snackbar";
 import { snackbarActions } from "./store/snackbarSlice";
 import Agreement from "./pages/Agreement";
-import Communities from "./components/Communities";
+import Communities from "./pages/Communities";
 
 const App: React.FC = () => {
   const menuModalOpen = useSelector((state) => state.modal.menuModalOpen);
