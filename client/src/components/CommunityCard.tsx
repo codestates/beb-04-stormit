@@ -5,7 +5,7 @@ import palette from "../styles/palette";
 const Base = styled.div`
   display: flex;
 
-  padding: 1rem;
+  padding: 1rem 0;
   cursor: pointer;
 
   .community-card-image-wrapper {

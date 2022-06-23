@@ -22,6 +22,7 @@ const Base = styled.div`
     gap: 0.5rem;
 
     padding: 1rem;
+    cursor: pointer;
 
     .menu-modal-title {
       font-size: 1.25rem; // 20px
@@ -57,7 +58,10 @@ const MenuModal: React.FC = () => {
 
   return (
     <Base>
-      <div className="menu-modal-title-wrapper">
+      <div
+        className="menu-modal-title-wrapper"
+        onClick={() => moveTo("/communities")}
+      >
         <p className="menu-modal-title">커뮤니티</p>
         <p className="menu-modal-subtitle">다양한 커뮤니티를 찾아보세요</p>
       </div>
