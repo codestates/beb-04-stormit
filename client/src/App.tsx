@@ -19,6 +19,7 @@ import { darkTheme, theme } from "./styles/theme";
 import { themeActions } from "./store/themeSlice";
 import Snackbar from "./components/common/Snackbar";
 import { snackbarActions } from "./store/snackbarSlice";
+import Agreement from "./pages/Agreement";
 
 const App: React.FC = () => {
   const menuModalOpen = useSelector((state) => state.modal.menuModalOpen);
@@ -66,6 +67,7 @@ const App: React.FC = () => {
         <Route path="/login" element={<Login />} />
         <Route path="/account" element={<Account />} />
         <Route path="/post" element={<Post />} />
+        <Route path="/agreement" element={<Agreement />} />
         <Route path="/community/:name" element={<Community />} />
         <Route path="/post/:id" element={<PostDetail />} />
         <Route path="/edit/:id" element={<Edit />} />

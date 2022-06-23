@@ -124,7 +124,7 @@ const ProfileModal: React.FC = () => {
 
   const onClickSignUpButton = () => {
     closeModal();
-    navigate("/signup");
+    navigate("/agreement");
   };
 
   const onClickLogOutButton = () => {
