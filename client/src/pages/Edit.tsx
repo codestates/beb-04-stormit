@@ -75,8 +75,11 @@ const Edit: React.FC = () => {
   };
 
   const onClickSubmitButton = async () => {
-    // 밸리데이션 피드백 UI 추가 필요함
-    if (!(title && contents)) return;
+    // 밸리데이션 피드백
+    if (!(title && contents)) {
+      alert("필수 항목을 입력해주세요.");
+      return;
+    }
 
     const body = {
       post_id: postId,

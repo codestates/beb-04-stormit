@@ -25,7 +25,7 @@ const NavigationBar: React.FC = () => {
   return (
     <Base>
       <ul className="navigation-bar-items-wrapper">
-        <li onClick={() => navigate("/community")}>커뮤니티</li>
+        <li onClick={() => navigate("/communities")}>커뮤니티</li>
         {isLoggedIn && (
           <>
             <li onClick={() => navigate("/mypage")}>마이페이지</li>

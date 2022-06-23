@@ -6,7 +6,7 @@ type SignUpAPIBodyType = {
 
 type LoginAPIResponseType = {
   email: string;
-  password: string;
+  passwordHash: string;
   userId: number;
   nickname: string;
   userId: number;
