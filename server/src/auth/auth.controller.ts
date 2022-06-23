@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post, Req, Res, UseGuards, UsePipes, ValidationPipe } from '@nestjs/common';
+import { Body, Controller, Get, Post, Req, Res, UseGuards, UsePipes, ValidationPipe, Param, Delete } from '@nestjs/common';
 import { Request,Response} from 'express';
 import { AuthService } from './auth.service';
 import { UserDTO } from './dto/user.dto';
@@ -24,20 +24,25 @@ export class AuthController {
             maxAge: 24* 60 * 60 * 1000 // 1day
         })
         return res.json(jwt);
+
     }
 
-      // 사용자 프로필 가져오기
-    @Get('/user/:username')
-    getContentById(@Param('username') username: string): Promise<any> {
-        return this.authService.getInfoById(username);
-    }
 
+    
     @Get('/authenticate')
     @UseGuards(AuthGuard)
     isAuthtenticated(@Req() req: Request): any {
         const user: any= req.user;
         return user;
     }
+
+
+    // 사용자 프로필 가져오기
+    @Get('/:username')
+    getContentById(@Param ('username') username: string): Promise<any> {
+        return this.authService.getInfoById(username);
+    }
+
 
     @Get('/cookies')
     getCookies(@Req() req:Request, @Res() res:Response): any{
@@ -48,10 +53,14 @@ export class AuthController {
     @Post('/logout')
     logout(@Res() res: Response): any{
         res.cookie('jwt', '', {
-            maxAge:0
+            maxAge: 0
         });
         return res.send({
             message : 'success'
         })
+    }
+    @Delete('/:id')
+    deleteuser(@Param ('id') user_id: number): Promise<any> {
+        return this.authService.deleteUser (user_id);
     }
 }
