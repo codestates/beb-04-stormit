@@ -105,6 +105,8 @@ const PostCard: React.FC<Props> = ({
     navigate(`/post/${postId}`);
   };
 
+  const onClickMoreButton = () => {};
+
   return (
     <>
       <Base>
@@ -114,7 +116,7 @@ const PostCard: React.FC<Props> = ({
             <span className="views">0 views</span>
             <span className="time">{createdAt}</span>
           </p>
-          <IconButton>
+          <IconButton onClick={onClickMoreButton}>
             <MoreVertIcon />
           </IconButton>
         </div>

@@ -56,7 +56,7 @@ const Base = styled.div`
 
   .community-search-input {
     width: 16rem; // 256px
-    margin-left: 4rem; // 64px
+    margin-left: 3rem; // 32px
   }
 
   // 600px
@@ -86,9 +86,12 @@ const Community: React.FC = () => {
 
   useEffect(() => {
     const fetchPosts = async () => {
-      const response = await getAllPostAPI();
-
-      setPostList(response.data);
+      try {
+        const response = await getAllPostAPI();
+        setPostList(response.data);
+      } catch (error) {
+        console.log(error);
+      }
     };
 
     fetchPosts();
