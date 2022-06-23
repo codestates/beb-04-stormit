@@ -182,7 +182,7 @@ const Home: React.FC = () => {
                 <Button
                   className="home-cta"
                   variant="contained"
-                  onClick={() => navigate("/signup")}
+                  onClick={() => navigate("/agreement")}
                 >
                   시작하기
                 </Button>

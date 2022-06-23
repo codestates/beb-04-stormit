@@ -68,6 +68,9 @@ const Post: React.FC = () => {
   };
 
   const onClickSubmitButton = async () => {
+    // 밸리데이션 피드백 UI 추가 필요함
+    if (!(title && contents)) return;
+
     const body = {
       email: email,
       post_content: contents,
