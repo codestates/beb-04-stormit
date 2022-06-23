@@ -239,7 +239,7 @@ const PostDetail: React.FC = () => {
           post_content,
           nickname,
           created_at,
-          board_name,
+          board_title,
           comments,
         } = response.data;
 
@@ -248,7 +248,7 @@ const PostDetail: React.FC = () => {
           postContents: post_content,
           nickname: nickname,
           createdAt: created_at,
-          community: board_name,
+          community: board_title,
         });
 
         comments.map((comment) =>

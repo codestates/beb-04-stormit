@@ -130,7 +130,7 @@ const Home: React.FC = () => {
     setTimeout(() => {
       setFakePostList((fakePostList) => [...fakePostList, ...FAKE_ARRAY]);
       setLoading(false);
-    }, 2000);
+    }, 3000);
   };
 
   useEffect(() => {
@@ -191,7 +191,7 @@ const Home: React.FC = () => {
               postId={post.post_id}
               title={post.post_title}
               commentCount={post.comment_count}
-              community={post.board_name}
+              community={post.board_title}
               createdAt={post.created_at}
               contents={shortenPostContents(post.post_content)}
               nickname="노논"
@@ -209,18 +209,15 @@ const Home: React.FC = () => {
             />
           ))}
         </ul>
-        {loading && (
-          <>
-            <div className="loading-skeleton-wrapper">
-              <Skeleton width="40%" variant="text" />
-              <Skeleton width="100%" height="4rem" />
-            </div>
-            <div className="loading-skeleton-wrapper">
-              <Skeleton width="40%" variant="text" />
-              <Skeleton width="100%" height="4rem" />
-            </div>
-          </>
-        )}
+        {loading &&
+          Array(5)
+            .fill(0)
+            .map(() => (
+              <div className="loading-skeleton-wrapper">
+                <Skeleton width="40%" variant="text" />
+                <Skeleton width="100%" height="4rem" />
+              </div>
+            ))}
         <div className="more-button-wrapper" onClick={onClickMorePosts}>
           <IconButton>
             <KeyboardDoubleArrowDownIcon />
