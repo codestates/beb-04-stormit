@@ -4,4 +4,4 @@ server:
 db:
   type: 'mysql'
   port: 3306
-  database: 'stormit_test'
+  database: 'STORMIT_DB'
