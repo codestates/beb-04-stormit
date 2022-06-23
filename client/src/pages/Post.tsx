@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import Button from "../components/common/Button";
@@ -48,6 +48,7 @@ const Post: React.FC = () => {
   const [contents, setContents] = useState("");
 
   const email = useSelector((state) => state.user.email);
+  const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
 
   const navigate = useNavigate();
 
@@ -68,8 +69,14 @@ const Post: React.FC = () => {
   };
 
   const onClickSubmitButton = async () => {
+    // 밸리데이션 피드백
+    if (!(title && contents)) {
+      alert("필수 항목을 입력해주세요");
+      return;
+    }
+
     const body = {
-      email: email,
+      username: email,
       post_content: contents,
       post_title: title,
       board_name: community,
@@ -82,6 +89,12 @@ const Post: React.FC = () => {
       console.log(error);
     }
   };
+
+  useEffect(() => {
+    if (!isLoggedIn) {
+      navigate("/login");
+    }
+  }, [isLoggedIn, navigate]);
 
   return (
     <Base>

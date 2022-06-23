@@ -110,9 +110,11 @@ const Header: React.FC = () => {
           Stormit
         </span>
       </div>
-      <div className="header-left-desktop" onClick={() => navigate("/")}>
+      <div className="header-left-desktop">
         {/* <div className="header-logo" /> */}
-        <span className="header-text">Stormit</span>
+        <span className="header-text" onClick={() => navigate("/")}>
+          Stormit
+        </span>
         <NavigationBar />
       </div>
       <div className="header-right">

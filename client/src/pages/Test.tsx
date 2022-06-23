@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import CommentCard from "../components/CommentCard";
+import Checkbox from "../components/common/Checkbox";
 
 const Base = styled.section`
   display: flex;
@@ -18,6 +19,12 @@ const Base = styled.section`
 `;
 
 const Test: React.FC = () => {
+  const [checked, setChecked] = useState(false);
+
+  const onChangeCheckbox = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setChecked(event.target.checked);
+  };
+
   return (
     <Base>
       <CommentCard
@@ -44,6 +51,7 @@ const Test: React.FC = () => {
         commentContents="댓글 아무거나 입력해"
         commentId={2}
       />
+      <Checkbox checked={checked} onChange={onChangeCheckbox} />
     </Base>
   );
 };

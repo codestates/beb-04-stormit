@@ -141,13 +141,13 @@ const Login: React.FC = () => {
   ) => {
     event.preventDefault();
     const body = {
-      email: email,
+      username: email,
       password: password,
     };
     try {
       const response = await loginAPI(body);
 
-      const { userId, nickname, passwordHash, email } = response.data;
+      const { userId, nickname, passwordHash, username: email } = response.data;
 
       dispatch(
         userActions.setUserInfo({
