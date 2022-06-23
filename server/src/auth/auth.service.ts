@@ -19,9 +19,9 @@ export class AuthService {
         let userFind: UserDTO = await this.userService.findByFields({ 
             where: { username: newUser.username }
         });
-        console.log('userfind'+userFind)
+
         if(userFind) {
-            throw new HttpException('Username aleady used!', HttpStatus.BAD_REQUEST);
+            throw new HttpException('duplicated email', HttpStatus.BAD_REQUEST);
         }
         return await this.userService.save(newUser);
     }
@@ -37,7 +37,7 @@ export class AuthService {
             throw new UnauthorizedException();
         }
 
-        const payload: Payload = { id: userFind.id, username: userFind.username }
+        const payload: Payload = { user_id: userFind.user_id, username: userFind.username }
         return {
             accessToken: this.jwtService.sign(payload)
         }
@@ -46,7 +46,7 @@ export class AuthService {
 
     async tokenValidateUser(payload: Payload): Promise<UserDTO | undefined>{
         return await this.userService.findByFields({
-            where : { id: payload.id }
+            where : { user_id: payload.user_id }
         })
     }
 }

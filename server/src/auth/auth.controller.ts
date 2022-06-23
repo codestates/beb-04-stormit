@@ -4,14 +4,15 @@ import { AuthService } from './auth.service';
 import { UserDTO } from './dto/user.dto';
 import { AuthGuard } from './security/auth.guard';
 
-@Controller('auth')
+@Controller('user')
 export class AuthController {
     constructor(private authService: AuthService){}
 
-    @Post('/register')
+    @Post()
     @UsePipes(ValidationPipe)
     async registerAccount(@Req() req: Request, @Body() UserDTO: UserDTO): Promise<any> {
-        return await this.authService.registerUser(UserDTO);
+        const data = await this.authService.registerUser(UserDTO)
+        return {success: true, data};
     }
 
     @Post('/login')
@@ -41,7 +42,7 @@ export class AuthController {
         return res.send(jwt);
     }
 
-    @Post('./logout')
+    @Post('/logout')
     logout(@Res() res: Response): any{
         res.cookie('jwt', '', {
             maxAge:0
