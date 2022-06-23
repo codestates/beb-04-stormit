@@ -10,6 +10,8 @@ import ToggleButton from "./common/ToggleButton";
 import { themeActions } from "../store/themeSlice";
 import { modalActions } from "../store/modalSlice";
 import { userActions } from "../store/userSlice";
+import PersonIcon from "@mui/icons-material/Person";
+import SettingsIcon from "@mui/icons-material/Settings";
 
 const Base = styled.div`
   position: absolute;
@@ -93,6 +95,12 @@ const ProfileModal: React.FC = () => {
 
   const toggleDarkMode = () => {
     dispatch(themeActions.toggleDarkMode());
+
+    if (!isDarkMode) {
+      localStorage.setItem("darkMode", "on");
+    } else {
+      localStorage.removeItem("darkMode");
+    }
   };
 
   const closeModal = () => {
@@ -114,9 +122,15 @@ const ProfileModal: React.FC = () => {
     navigate("/login");
   };
 
+  const onClickSignUpButton = () => {
+    closeModal();
+    navigate("/signup");
+  };
+
   const onClickLogOutButton = () => {
     closeModal();
     dispatch(userActions.setLoggedOut());
+    navigate("/");
   };
 
   return (
@@ -127,6 +141,9 @@ const ProfileModal: React.FC = () => {
             로그인
           </div>
           <Divider />
+          <div className="profile-modal-item" onClick={onClickSignUpButton}>
+            회원가입
+          </div>
         </>
       )}
       {isLoggedIn && (
@@ -137,13 +154,14 @@ const ProfileModal: React.FC = () => {
           </div>
           <Divider />
           <div className="profile-modal-item" onClick={onClickMyPageButton}>
+            <PersonIcon />
             마이페이지
           </div>
           <Divider />
           <div className="profile-modal-item" onClick={onClickAccountButton}>
-            보안 및 로그인
+            <SettingsIcon />
+            개인정보 설정
           </div>
-
           <Divider />
           <div className="profile-modal-item" onClick={onClickLogOutButton}>
             <LogoutIcon />
@@ -159,6 +177,7 @@ const ProfileModal: React.FC = () => {
         </div>
         <ToggleButton checked={isDarkMode} onClick={toggleDarkMode} />
       </div>
+      <Divider />
     </Base>
   );
 };

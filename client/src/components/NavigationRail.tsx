@@ -5,14 +5,13 @@ import FloatingIconButton from "./common/FloatingIconButton";
 import CreateIcon from "@mui/icons-material/Create";
 import ArrowLeftIcon from "@mui/icons-material/ArrowLeft";
 import ArrowRightIcon from "@mui/icons-material/ArrowRight";
-import MailIcon from "@mui/icons-material/Mail";
-import SendIcon from "@mui/icons-material/Send";
-import SearchIcon from "@mui/icons-material/Search";
-import PersonIcon from "@mui/icons-material/Person";
 import MenuIcon from "@mui/icons-material/Menu";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "../store";
 import { modalActions } from "../store/modalSlice";
+import IconButton from "./common/IconButton";
+import SettingsIcon from "@mui/icons-material/Settings";
+import PersonIcon from "@mui/icons-material/Person";
 
 const Base = styled.aside`
   display: none;
@@ -21,6 +20,9 @@ const Base = styled.aside`
   align-items: center;
   gap: 1rem;
 
+  position: absolute;
+  top: 3.5rem;
+  left: 0;
   width: 4.5rem; // 72px
   height: calc(100vh - 3.5rem);
   padding: 1rem; // 16px
@@ -55,6 +57,7 @@ interface Props extends React.HtmlHTMLAttributes<HTMLElement> {}
 
 const NavigationRail: React.FC<Props> = ({ ...props }) => {
   const menuModalOpen = useSelector((state) => state.modal.menuModalOpen);
+  const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
 
   const dispatch = useDispatch();
 
@@ -64,6 +67,14 @@ const NavigationRail: React.FC<Props> = ({ ...props }) => {
 
   const closeMenuModal = () => {
     dispatch(modalActions.closeMenuModal());
+  };
+
+  const onClickFloatingButton = () => {
+    if (isLoggedIn) {
+      navigate("/post");
+    } else {
+      navigate("/login");
+    }
   };
 
   const navigate = useNavigate();
@@ -84,14 +95,20 @@ const NavigationRail: React.FC<Props> = ({ ...props }) => {
           </>
         )}
       </div>
-      <div className="navigation-logo" />
-      <FloatingIconButton onClick={() => navigate("/post")}>
-        <CreateIcon />
+      <FloatingIconButton onClick={onClickFloatingButton}>
+        {isLoggedIn && <CreateIcon />}
+        {!isLoggedIn && <PersonIcon />}
       </FloatingIconButton>
-      <MailIcon className="navigation-icon" />
-      <SendIcon className="navigation-icon" />
-      <SearchIcon className="navigation-icon" />
-      <PersonIcon className="navigation-icon" />
+      {isLoggedIn && (
+        <>
+          <IconButton onClick={() => navigate("/mypage")}>
+            <PersonIcon />
+          </IconButton>
+          <IconButton onClick={() => navigate("/account")}>
+            <SettingsIcon />
+          </IconButton>
+        </>
+      )}
     </Base>
   );
 };

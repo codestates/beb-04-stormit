@@ -31,10 +31,13 @@ export const getLastPathname = (path: string) => {
 
 // path에서 가져온 커뮤니티 이름을 한글로 변환합니다 - nonon
 export const translateCommunityName = (communityName: string) => {
-  if (communityName === "all") return "All";
   if (communityName === "notice") return "공지사항";
   if (communityName === "talk") return "사는얘기";
   if (communityName === "forum") return "포럼";
   if (communityName === "it") return "IT 행사";
   if (communityName === "qa") return "Q&A";
+};
+
+export const getCookie = (cookieString: string) => {
+  cookieString.split(";");
 };

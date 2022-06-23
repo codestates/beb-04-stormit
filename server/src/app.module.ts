@@ -1,7 +1,12 @@
 import { Module } from '@nestjs/common';
-// import { AuthModule } from './auth/auth.module';
-import { typeORMConfig } from './configs/typeorm.config';
+
+import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { AuthModule } from './auth/auth.module';
+import { User } from './auth/entity/user.entity';
+
+import { typeORMConfig } from './configs/typeorm.config';
+
 
 import { Content } from './content/entity/content.entity';
 import { ContentModule } from './content/content.module';
@@ -9,8 +14,26 @@ import { ContentModule } from './content/content.module';
 import { ContentRepository } from './content/content.repository';
 
 @Module({
-  imports: [TypeOrmModule.forRoot(typeORMConfig), ContentModule],
-  controllers: [],
-  providers: [],
+
+  imports: [
+    ConfigModule.forRoot({
+      isGlobal:true
+    }),
+    TypeOrmModule.forRoot({
+      type: 'mysql',
+      host: 'localhost',
+      port: 3306,
+      username: 'root',
+      password: 'mypassword',
+      database: 'STORMIT_DB',
+      entities: [User],
+      // entities: [__dirname + '../**/*.entity{.ts,.js}'],
+      synchronize: true,
+    }),
+    // TypeOrmModule.forRootAsync({useFactory: typeORMConfig}),
+    AuthModule
+
+  ],
+
 })
 export class AppModule {}

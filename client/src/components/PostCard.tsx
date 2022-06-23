@@ -2,24 +2,19 @@ import React from "react";
 import styled from "styled-components";
 import theme from "../styles/theme";
 import Chip from "./common/Chip";
-import ChatBubbleOutlineOutlinedIcon from "@mui/icons-material/ChatBubbleOutlineOutlined";
-import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
 import palette from "../styles/palette";
 import Divider from "./common/Divider";
-import { parseDate, shortenPostContents } from "../lib/utils";
+import { shortenPostContents } from "../lib/utils";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import IconButton from "./common/IconButton";
 import { useNavigate } from "react-router-dom";
 
-const CONTENTS_PLACEHOLDER =
-  "싶이 수 우리 이상은 힘있다. 뛰노는 듣기만 너의 있으며 행복스럽고 위하여서 밝은 부패뿐이다 같이 행복스럽고 인생을 그들은 것이 과실이 소금이라 것이다 그들은 것이 과실이 소금이라 것이다 그들은 것이 과실이 소금이라 것이다 그들은 것이 과실이 소금이라 것이다 그들은 것이 과실이 소금이라 것이다 그들은 것이 과실이 소금이라 것이다 그들은 것이 과실이 소금이라 것이다 ";
-
 const Base = styled.li`
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 0.5rem; // 8px
 
-  padding: 0.5rem;
+  padding: 0.5rem 0; // 8px 0
 
   .post-metadata-area {
     display: flex;
@@ -87,49 +82,52 @@ const Base = styled.li`
   }
 `;
 
-const PostCard: React.FC = () => {
+interface Props {
+  postId: number;
+  commentCount: number;
+  postTitle: string;
+  postContents: string;
+  community: string;
+  createdAt: string;
+}
+
+const PostCard: React.FC<Props> = ({
+  postId,
+  commentCount,
+  postTitle,
+  postContents,
+  community,
+  createdAt,
+}) => {
   const navigate = useNavigate();
 
   const onClickPostTitle = () => {
-    navigate(`/post/${128234}`);
+    navigate(`/post/${postId}`);
   };
+
+  const onClickMoreButton = () => {};
 
   return (
     <>
       <Base>
         <div className="post-metadata-area">
           <p className="post-metadata">
-            <span className="votes">0 votes</span>
-            <span className="replies">0 replies</span>
+            <span className="replies">{commentCount} comments</span>
             <span className="views">0 views</span>
-            <span className="time">{parseDate(new Date())}</span>
+            <span className="time">{createdAt}</span>
           </p>
-          <IconButton>
+          <IconButton onClick={onClickMoreButton}>
             <MoreVertIcon />
           </IconButton>
         </div>
         <div className="post-title-area-wrapper">
           <p className="post-title" onClick={onClickPostTitle}>
-            이것은 게시물의 제목입니다.
+            {postTitle}
           </p>
-          {/* <div className="post-comments-views-wrapper">
-            <div className="post-comments-wrapper">
-              <ChatBubbleOutlineOutlinedIcon fontSize="small" />
-              <span className="post-comments">10</span>
-            </div>
-            <div className="post-views-wrapper">
-              <VisibilityOutlinedIcon fontSize="small" />
-              <span className="post-views">100</span>
-            </div>
-          </div> */}
         </div>
-        <p className="post-contents">
-          {shortenPostContents(CONTENTS_PLACEHOLDER)}
-        </p>
+        <p className="post-contents">{shortenPostContents(postContents)}</p>
         <div className="chips-wrapper">
-          <Chip size="small">Tag</Chip>
-          <Chip size="small">Community</Chip>
-          <Chip size="small">Long Community Name</Chip>
+          <Chip size="small">{community}</Chip>
         </div>
       </Base>
       <Divider />
