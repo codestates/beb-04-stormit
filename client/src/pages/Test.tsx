@@ -1,13 +1,6 @@
-import React, { useState } from "react";
+import React from "react";
 import styled from "styled-components";
-import Button from "../components/common/Button";
-import Dialog from "../components/common/Dialog";
-import Input from "../components/common/Input";
-import Snackbar from "../components/common/Snackbar";
-import PostOptionCard from "../components/PostOptionCard";
-import DoneIcon from "@mui/icons-material/Done";
 import CommentCard from "../components/CommentCard";
-import Pagination from "../components/Pagination";
 
 const Base = styled.section`
   display: flex;
@@ -25,30 +18,32 @@ const Base = styled.section`
 `;
 
 const Test: React.FC = () => {
-  const [snackbarOpen, setSnackbarOpen] = useState(false);
-
-  const openSnackbar = () => {
-    setSnackbarOpen(true);
-  };
-
-  const closeSnackbar = () => {
-    setSnackbarOpen(false);
-  };
-
   return (
     <Base>
-      <Pagination />
-      <PostOptionCard />
-      <Button onClick={openSnackbar}>스낵바</Button>
-      <Snackbar
-        icon={<DoneIcon />}
-        open={snackbarOpen}
-        onClose={closeSnackbar}
-        autoHideDuration={3000}
-      >
-        로그인되었습니다.
-      </Snackbar>
-      <CommentCard />
+      <CommentCard
+        nickname="노논"
+        createdAt="0000년 00월 00일 00:00:00"
+        commentContents="댓글 아무거나 입력해"
+        commentId={2}
+      />
+      <CommentCard
+        nickname="노논"
+        createdAt="0000년 00월 00일 00:00:00"
+        commentContents="댓글 아무거나 입력해"
+        commentId={2}
+      />
+      <CommentCard
+        nickname="노논"
+        createdAt="0000년 00월 00일 00:00:00"
+        commentContents="댓글 아무거나 입력해"
+        commentId={2}
+      />
+      <CommentCard
+        nickname="노논"
+        createdAt="0000년 00월 00일 00:00:00"
+        commentContents="댓글 아무거나 입력해"
+        commentId={2}
+      />
     </Base>
   );
 };

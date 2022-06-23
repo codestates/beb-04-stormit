@@ -1,8 +1,12 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import Button from "../components/common/Button";
 import Input from "../components/common/Input";
+import NavigationRail from "../components/NavigationRail";
+import { updatePasswordAPI, withdrawalAPI } from "../lib/api/user";
+import { useDispatch, useSelector } from "../store";
+import { userActions } from "../store/userSlice";
 import palette from "../styles/palette";
 
 const Base = styled.div`
@@ -10,7 +14,7 @@ const Base = styled.div`
   flex-direction: column;
   margin: 1rem; // 16px
 
-  .account-dialog-contents {
+  .contents {
     display: flex;
     flex-direction: column;
     gap: 1rem; // 16px
@@ -29,6 +33,11 @@ const Base = styled.div`
     margin: 1rem 0; // 16px 0
   }
 
+  .account-email-wrapper {
+    display: flex;
+    gap: 0.5rem; // 8px
+  }
+
   .private-key-wrapper {
     display: flex;
     align-items: center;
@@ -39,6 +48,13 @@ const Base = styled.div`
   .private-key {
     font-size: 0.875rem; // 14px
     color: ${palette.gray[400]};
+  }
+
+  .withdrawal {
+    text-align: right;
+    color: ${palette.gray[300]};
+    text-decoration: underline;
+    cursor: pointer;
   }
 
   // 600px
@@ -54,27 +70,104 @@ const Base = styled.div`
 `;
 
 const Account: React.FC = () => {
+  const [password, setPassword] = useState("");
+  const [passwordConfirm, setPasswordConfirm] = useState("");
+
+  const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
+  const email = useSelector((state) => state.user.email);
+  const userId = useSelector((state) => state.user.userId);
+  const passwordHash = useSelector((state) => state.user.passwordHash);
+
   const navigate = useNavigate();
+
+  const dispatch = useDispatch();
+
+  const onChangePassword = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setPassword(event.target.value);
+  };
+
+  const onChangePasswordConfirm = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    setPasswordConfirm(event.target.value);
+  };
+
+  const onClickSubmit = async () => {
+    // 밸리데이션 로직 작성 필요
+
+    const body = {
+      user_id: userId,
+      current_password: passwordHash,
+      new_password: password,
+    };
+
+    try {
+      await updatePasswordAPI(email, body);
+    } catch (error) {
+      console.log(error);
+    }
+
+    navigate("/");
+  };
+
+  const onClickWithdrawalButton = async () => {
+    if (
+      window.confirm("한 번 탈퇴하면 되돌릴 수 없습니다. 탈퇴하시겠습니까?")
+    ) {
+      try {
+        await withdrawalAPI(email);
+        dispatch(userActions.setLoggedOut());
+        navigate("/");
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  };
+
+  // 로그인 되어있지 않으면 로그인 페이지로 이동함
+  useEffect(() => {
+    if (!isLoggedIn) {
+      navigate("/login");
+    }
+  }, [isLoggedIn, navigate]);
 
   return (
     <Base>
-      <div className="account-dialog-contents">
+      <NavigationRail />
+      <div className="contents">
         <p className="account-dialog-title">보안 및 로그인</p>
-        <p className="private-key-wrapper">
+        <p className="account-email-wrapper">
+          <span>이메일:</span>
+          <span className="account-email">
+            {email || "nononcrust@gmail.com"}
+          </span>
+        </p>
+        <div className="private-key-wrapper">
           <span>개인 키:</span>
           <span className="private-key">
             anewafkv-ajfnzkvkx1123-dffnwkfsd-sfwefl
           </span>
-        </p>
-        <label className="password-label">비밀번호</label>
-        <Input placeholder="변경할 비밀번호" />
-        <label className="password-label">비밀번호 재입력</label>
-        <Input placeholder="비밀번호 확인" />
+        </div>
+        <label className="password-label">비밀번호 변경</label>
+        <Input
+          placeholder="변경할 비밀번호"
+          value={password}
+          onChange={onChangePassword}
+        />
+        <label className="password-label">비밀번호 확인</label>
+        <Input
+          placeholder="한번 더 입력해주세요"
+          value={passwordConfirm}
+          onChange={onChangePasswordConfirm}
+        />
         <div className="account-button-wrapper">
-          <Button variant="contained" onClick={() => navigate("/")}>
+          <Button variant="contained" onClick={onClickSubmit}>
             저장하기
           </Button>
         </div>
+        <p className="withdrawal" onClick={onClickWithdrawalButton}>
+          회원탈퇴
+        </p>
       </div>
     </Base>
   );

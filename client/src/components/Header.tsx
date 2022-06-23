@@ -10,6 +10,7 @@ import { useDispatch, useSelector } from "../store";
 import { modalActions } from "../store/modalSlice";
 import SearchInput from "./SearchInput";
 import { useNavigate } from "react-router-dom";
+import NavigationBar from "./NavigationBar";
 
 const Base = styled.header`
   display: flex;
@@ -20,7 +21,6 @@ const Base = styled.header`
   background-color: ${theme.primary};
   height: 3.5rem; // 56px
   box-shadow: 0px 0px 9px 3px rgba(41, 41, 41, 0.25);
-  z-index: 999;
 
   .header-left {
     display: flex;
@@ -40,17 +40,17 @@ const Base = styled.header`
     align-items: center;
     gap: 1rem; // 16px
 
-    cursor: pointer;
-
     .header-logo {
       background-color: white;
       border-radius: 50%;
       width: 2rem; // 32px
       height: 2rem; // 32px
+      cursor: pointer;
     }
 
     .header-text {
       font-size: 1.25rem;
+      cursor: pointer;
     }
   }
 
@@ -113,6 +113,7 @@ const Header: React.FC = () => {
       <div className="header-left-desktop" onClick={() => navigate("/")}>
         {/* <div className="header-logo" /> */}
         <span className="header-text">Stormit</span>
+        <NavigationBar />
       </div>
       <div className="header-right">
         <SearchIcon onClick={openSearchInputModal} />

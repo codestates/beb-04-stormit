@@ -1,32 +1,40 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import NavigationRail from "../components/NavigationRail";
-import { useLocation } from "react-router-dom";
-import PostCard from "../components/PostCard";
+import { useLocation, useNavigate } from "react-router-dom";
 import {
-  FAKE_ARRAY,
   getLastPathname,
+  parseDate,
   translateCommunityName,
 } from "../lib/utils";
 import Pagination from "../components/Pagination";
+import Button from "../components/common/Button";
+import CommunityPostCard from "../components/CommunityPostCard";
+import { getAllPostAPI } from "../lib/api/post";
+import Input from "../components/common/Input";
+import IconButton from "../components/common/IconButton";
+import SearchIcon from "@mui/icons-material/Search";
 
 const Base = styled.div`
   display: flex;
   flex-direction: column;
   height: 100vh;
 
-  .body {
-    display: flex;
-  }
-
   .contents {
     margin: 1rem;
   }
+
   .contents-top {
     display: flex;
     flex-direction: column;
     gap: 0.5rem; // 8px
     margin: 1rem 0; // 16px
+  }
+
+  .community-title-area {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
   }
 
   .community-title {
@@ -37,50 +45,119 @@ const Base = styled.div`
   .pagination-wrapper {
     display: flex;
     justify-content: center;
-    padding: 1rem; //16px
+    padding: 1rem; // 16px
+  }
+
+  .community-search-input-wrapper {
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem; // 8px
+  }
+
+  .community-search-input {
+    width: 16rem; // 256px
+    margin-left: 3rem; // 32px
   }
 
   // 600px
   @media screen and (min-width: 37.5rem) {
     .contents {
-      margin: 0 auto;
-      max-width: 37.5rem; // 600px
+      margin: 1rem auto;
+      width: 37.5rem; // 600px
     }
   }
 
   // 1240px
   @media screen and (min-width: 77.5rem) {
     .contents {
-      max-width: 52.5rem; // 840px
+      width: 52.5rem; // 840px
     }
   }
 `;
 
 const Community: React.FC = () => {
-  const [postData, setPostData] = useState(FAKE_ARRAY);
+  const [postList, setPostList] = useState<GetAllPostsResponseType>([]);
 
   const location = useLocation();
 
+  const navigate = useNavigate();
+
   const communityName = getLastPathname(location.pathname);
+
+  useEffect(() => {
+    const fetchPosts = async () => {
+      try {
+        const response = await getAllPostAPI();
+        setPostList(response.data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    fetchPosts();
+  }, []);
 
   return (
     <Base>
-      <div className="body">
-        <NavigationRail />
-        <div className="contents">
-          <div className="contents-top">
+      <NavigationRail />
+      <div className="contents">
+        <div className="contents-top">
+          <div className="community-title-area">
             <p className="community-title">
               {translateCommunityName(communityName)}
             </p>
+            <Button variant="contained" onClick={() => navigate("/post")}>
+              글쓰기
+            </Button>
           </div>
-          <ul className="posts-wrapper">
-            {postData.map((_, index) => (
-              <PostCard key={index} />
-            ))}
-          </ul>
-          <div className="pagination-wrapper">
-            <Pagination />
-          </div>
+        </div>
+        <ul className="posts-wrapper">
+          {postList.map((post) => (
+            <CommunityPostCard
+              postId={post.post_id}
+              title={post.post_title}
+              commentCount={post.comment_count}
+              nickname={post.nickname}
+              createdAt={post.created_at}
+            />
+          ))}
+          <CommunityPostCard
+            postId={1}
+            title="랜덤 게시물"
+            commentCount={3}
+            nickname="닉네임"
+            createdAt={parseDate(new Date())}
+          />
+          <CommunityPostCard
+            postId={1}
+            title="랜덤 게시물"
+            commentCount={3}
+            nickname="닉네임"
+            createdAt={parseDate(new Date())}
+          />
+          <CommunityPostCard
+            postId={1}
+            title="랜덤 게시물"
+            commentCount={3}
+            nickname="닉네임"
+            createdAt={parseDate(new Date())}
+          />
+          <CommunityPostCard
+            postId={1}
+            title="랜덤 게시물"
+            commentCount={3}
+            nickname="닉네임"
+            createdAt={parseDate(new Date())}
+          />
+        </ul>
+        <div className="pagination-wrapper">
+          <Pagination />
+        </div>
+        <div className="community-search-input-wrapper">
+          <Input className="community-search-input" />
+          <IconButton>
+            <SearchIcon />
+          </IconButton>
         </div>
       </div>
     </Base>

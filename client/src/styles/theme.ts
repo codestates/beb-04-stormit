@@ -1,6 +1,10 @@
 import palette from "./palette";
 
-const theme = {
+export const theme = {
+  primary: palette.blue[500],
+};
+
+export const darkTheme = {
   primary: palette.blue[500],
 };
 

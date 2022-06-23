@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import Button from "../components/common/Button";
 import Chip from "../components/common/Chip";
@@ -7,7 +7,8 @@ import Input from "../components/common/Input";
 import Select from "../components/common/Select";
 import Textarea from "../components/common/Textarea";
 import PostOptionCard from "../components/PostOptionCard";
-import { submitPostAPI } from "../lib/api/post";
+import { updatePostAPI } from "../lib/api/post";
+import { getLastPathname } from "../lib/utils";
 import { useSelector } from "../store";
 
 const Base = styled.div`
@@ -42,14 +43,20 @@ const Base = styled.div`
   }
 `;
 
-const Post: React.FC = () => {
+const Edit: React.FC = () => {
   const [community, setCommunity] = useState("공지사항");
   const [title, setTitle] = useState("");
   const [contents, setContents] = useState("");
 
-  const email = useSelector((state) => state.user.email);
+  const prevTitle = useSelector((state) => state.post.title);
+  const prevContents = useSelector((state) => state.post.contents);
+  const prevCommunity = useSelector((state) => state.post.community);
 
   const navigate = useNavigate();
+
+  const location = useLocation();
+
+  const postId = getLastPathname(location.pathname);
 
   const onChangeCommunity = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setCommunity(event.target.value);
@@ -69,27 +76,32 @@ const Post: React.FC = () => {
 
   const onClickSubmitButton = async () => {
     const body = {
-      email: email,
-      post_content: contents,
-      post_title: title,
+      post_id: postId,
       board_name: community,
+      post_title: title,
+      post_content: contents,
     };
 
     try {
-      await submitPostAPI(body);
-      navigate(-1);
+      await updatePostAPI(body);
     } catch (error) {
       console.log(error);
     }
   };
 
+  useEffect(() => {
+    setTitle(prevTitle);
+    setCommunity(prevCommunity);
+    setContents(prevContents);
+  }, [prevCommunity, prevTitle, prevContents]);
+
   return (
     <Base>
-      <p className="post-heading">새 글 등록</p>
+      <p className="post-heading">수정하기</p>
       <Select value={community} onChange={onChangeCommunity}>
-        <option value="공지사항">공지사항</option>
-        <option value="커뮤니티">커뮤니티</option>
-        <option value="사는얘기">사는얘기</option>
+        <option value={"공지사항"}>공지사항</option>
+        <option value={"커뮤니티"}>커뮤니티</option>
+        <option value={"사는얘기"}>사는얘기</option>
       </Select>
       <Input placeholder="제목" value={title} onChange={onChangeTitle} />
       <PostOptionCard />
@@ -113,11 +125,11 @@ const Post: React.FC = () => {
           돌아가기
         </Button>
         <Button variant="contained" onClick={onClickSubmitButton}>
-          등록하기
+          수정하기
         </Button>
       </div>
     </Base>
   );
 };
 
-export default Post;
+export default Edit;
