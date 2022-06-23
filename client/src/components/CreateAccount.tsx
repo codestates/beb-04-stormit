@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import palette from "../styles/palette";
 import Button from "./common/Button";
@@ -10,6 +10,8 @@ import Divider from "./common/Divider";
 import CloseIcon from "@mui/icons-material/Close";
 import { modalActions } from "../store/modalSlice";
 import { useSelector, useDispatch } from "../store";
+// API 설정
+import { signUpAPI } from "../lib/api/user";
 
 const Cover = styled.div`
   .createAccount-section {
@@ -66,12 +68,40 @@ const Cover = styled.div`
 `;
 
 const CreateAccount: React.FC = () => {
-  const createAccountOpen = useSelector(
-    (state) => state.modal.createAccountOpen
-  );
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [nickname, setNickname] = useState("");
   const dispatch = useDispatch();
+
+  const onSetEmail = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setEmail(e.target.value);
+  };
+
+  const onSetPassword = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setPassword(e.target.value);
+  };
+
+  const onSetNickname = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setNickname(e.target.value);
+  };
+
   const onCreateAccountCloseBtn = () => {
     dispatch(modalActions.closeCreateAccountModal());
+  };
+
+  const onClickCreateBtn = async (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    const body = {
+      email: email,
+      password: password,
+      nickname: nickname,
+    };
+    try {
+      await signUpAPI(body);
+    } catch (error) {
+      console.log(error);
+    }
+    onCreateAccountCloseBtn();
   };
   return (
     <Cover>
@@ -87,10 +117,27 @@ const CreateAccount: React.FC = () => {
         </div>
         <Divider />
         <form className="createAccount-form">
-          <Input type="text" placeholder="닉네임" />
-          <Input type="text" placeholder="새 아이디" />
-          <Input type="text" placeholder="새 비밀번호" />
-          <Button className="submit">가입하기</Button>
+          <Input
+            type="text"
+            placeholder="닉네임"
+            value={nickname}
+            onChange={onSetNickname}
+          />
+          <Input
+            type="text"
+            placeholder="새 이메일"
+            value={email}
+            onChange={onSetEmail}
+          />
+          <Input
+            type="password"
+            placeholder="새 비밀번호"
+            value={password}
+            onChange={onSetPassword}
+          />
+          <Button className="submit" onClick={onClickCreateBtn}>
+            가입하기
+          </Button>
         </form>
       </Dialog>
     </Cover>

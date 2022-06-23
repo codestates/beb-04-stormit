@@ -5,7 +5,10 @@ type SignUpAPIBodyType = {
 };
 
 type LoginAPIResponseType = {
+  email: string;
+  passwordHash: string;
   nickname: string;
+  userId: number;
 };
 
 type LoginAPIBodyType = {
@@ -14,6 +17,7 @@ type LoginAPIBodyType = {
 };
 
 type UpdateNameAPIBodyType = {
+  user_id: number;
   nickname: string;
 };
 
