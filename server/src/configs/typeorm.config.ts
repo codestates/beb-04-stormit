@@ -1,7 +1,7 @@
 import { TypeOrmModuleOptions } from '@nestjs/typeorm';
 import { Content } from 'src/content/entity/content.entity';
 import * as config from 'config';
-import { User } from 'src/auth/entity/user.entity';
+
 import { Board } from 'src/content/entity/board.entity';
 import { Comment } from 'src/content/entity/comment.entity';
 const dbConfig = config.get('db');
@@ -13,7 +13,7 @@ export const typeORMConfig: TypeOrmModuleOptions = {
   username: dbConfig.username,
   password: dbConfig.password,
   database: dbConfig.database,
-  entities: [User, Content, Board, Comment], // 사용할 entity의 클래스명을 넣어둔다.
+  entities: [Content, Board, Comment], // 사용할 entity의 클래스명을 넣어둔다.
   synchronize: dbConfig.synchronize, // false로 Z해두는 게 안전하다.
 };
 
