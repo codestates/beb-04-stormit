@@ -36,7 +36,6 @@ const Base = styled.div`
   .profile-modal-image {
     width: 6.25rem; // 100px
     height: 6.25rem; // 100px
-    background-color: ${palette.gray[200]};
     border-radius: 50%;
   }
 
@@ -149,7 +148,11 @@ const ProfileModal: React.FC = () => {
       {isLoggedIn && (
         <>
           <div className="profile-modal-image-wrapper">
-            <div className="profile-modal-image" />
+            <img
+              className="profile-modal-image"
+              src="/profile-image.png"
+              alt=""
+            />
             <div className="profile-modal-username">스톰잇닉네임</div>
           </div>
           <Divider />
