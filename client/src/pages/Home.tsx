@@ -133,21 +133,21 @@ const Home: React.FC = () => {
     }, 3000);
   };
 
-  useEffect(() => {
-    const fetchPosts = async () => {
-      try {
-        setLoading(true);
-        const response = await getAllPostAPI();
-        setPostList(response.data);
-      } catch (error) {
-        console.log(error);
-      } finally {
-        setLoading(false);
-      }
-    };
+  // useEffect(() => {
+  //   const fetchPosts = async () => {
+  //     try {
+  //       setLoading(true);
+  //       const response = await getAllPostAPI();
+  //       setPostList(response.data);
+  //     } catch (error) {
+  //       console.log(error);
+  //     } finally {
+  //       setLoading(false);
+  //     }
+  //   };
 
-    fetchPosts();
-  }, []);
+  //   fetchPosts();
+  // }, []);
 
   return (
     <Base>
@@ -188,6 +188,7 @@ const Home: React.FC = () => {
         <ul className="posts-wrapper">
           {postList.map((post) => (
             <PostCard
+              key={post.post_id}
               postId={post.post_id}
               title={post.post_title}
               commentCount={post.comment_count}
@@ -199,6 +200,7 @@ const Home: React.FC = () => {
           ))}
           {fakePostList.map((_, index) => (
             <PostCard
+              key={index}
               postId={0}
               commentCount={index}
               title="이건 그냥 글 제목임"
@@ -212,8 +214,8 @@ const Home: React.FC = () => {
         {loading &&
           Array(5)
             .fill(0)
-            .map(() => (
-              <div className="loading-skeleton-wrapper">
+            .map((_, index) => (
+              <div key={index} className="loading-skeleton-wrapper">
                 <Skeleton width="40%" variant="text" />
                 <Skeleton width="100%" height="4rem" />
               </div>

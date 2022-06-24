@@ -38,6 +38,23 @@ export const translateCommunityName = (communityName: string) => {
   if (communityName === "qa") return "Q&A";
 };
 
-export const getCookie = (cookieString: string) => {
-  cookieString.split(";");
+// document.cookie를 객체 형태로 바꿔줍니다 - nonon
+export const parseCookie = (cookieString: string) => {
+  const cookieArray = cookieString.split(";");
+
+  const cookieObject: any = {};
+
+  cookieArray.forEach((cookie) => {
+    if (cookie.startsWith(" ")) {
+      const slicedCookie = cookie.slice(1);
+
+      const cookieNameValue = slicedCookie.split("=");
+      cookieObject[cookieNameValue[0]] = cookieNameValue[1];
+    } else {
+      const cookieNameValue = cookie.split("=");
+      cookieObject[cookieNameValue[0]] = cookieNameValue[1];
+    }
+  });
+
+  return cookieObject;
 };

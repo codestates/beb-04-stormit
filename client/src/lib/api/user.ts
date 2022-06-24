@@ -8,22 +8,27 @@ export const loginAPI = (body: LoginAPIBodyType) =>
   axios.post<LoginAPIResponseType>("/user/login", body);
 
 // 프로필 정보
-export const getProfileAPI = (email: string) =>
-  axios.get<GetProfileAPIResponseType>(`/user/${email}`);
+export const getProfileAPI = (userId: number) =>
+  axios.get<GetProfileAPIResponseType>(`/user/${userId}`);
 
 // 닉네임 변경
-export const updateNameAPI = (email: string, body: UpdateNameAPIBodyType) =>
-  axios.patch(`/user/${email}`, body);
+export const updateNameAPI = (userId: number, body: UpdateNameAPIBodyType) =>
+  axios.patch(`/user/${userId}`, body);
 
 // 비밀번호 변경
 export const updatePasswordAPI = (
-  email: string,
+  userId: number,
   body: UpdatePasswordAPIBodyType
-) => axios.patch(`/user/${email}`, body);
+) => axios.patch(`/user/${userId}`, body);
 
 // 회원탈퇴
-export const withdrawalAPI = (email: string) => axios.delete(`/user/${email}`);
+export const withdrawalAPI = (userId: number) =>
+  axios.delete(`/user/${userId}`);
 
-// 액세스 토큰으로 유저 정보 가져오기
-export const authenticateAPI = (body: AuthenticateAPIBodyType) =>
-  axios.post<AuthenticateAPIResponseType>("/user/authenticate", body);
+// 인가: 액세스 토큰으로 유저 정보 가져오기
+export const authenticateAPI = (jwt: string) =>
+  axios.get<AuthenticateAPIResponseType>("/user/authenticate", {
+    headers: {
+      Authorization: `Bearer ${jwt}`,
+    },
+  });
