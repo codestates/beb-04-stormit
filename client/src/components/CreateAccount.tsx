@@ -9,7 +9,7 @@ import Divider from "./common/Divider";
 // mui icons fontawesome 보다 좋다!
 import CloseIcon from "@mui/icons-material/Close";
 import { modalActions } from "../store/modalSlice";
-import { useSelector, useDispatch } from "../store";
+import { useDispatch } from "../store";
 // API 설정
 import { signUpAPI } from "../lib/api/user";
 
@@ -75,7 +75,9 @@ const Cover = styled.div`
 const InputExplain = styled.span`
   font-size: 0.8rem;
   color: ${(props) =>
-    props.color == "type-off" ? `${palette.gray[400]}` : `${palette.red[400]}`};
+    props.color === "type-off"
+      ? `${palette.gray[400]}`
+      : `${palette.red[400]}`};
 `;
 
 const CreateAccount: React.FC = () => {
@@ -112,7 +114,7 @@ const CreateAccount: React.FC = () => {
   // password 유효성 검사
   // issue: 조건 충족시 문자 삽입해도 통과됨.
   function validatePassword(password: string) {
-    var re = /^(?=.*\d)(?=.*[@$!%*#?&]).{6,20}$/;
+    var re = /^(?=.*[a-z])(?=.*[$@!%*#?&])[a-z0-9$@!%*#?&]{8,}$/;
     return re.test(password);
   }
 
@@ -120,24 +122,24 @@ const CreateAccount: React.FC = () => {
   const handleInputValue =
     (key: string) => (e: React.ChangeEvent<HTMLInputElement>) => {
       const value = e.target.value;
-      if (key == "email") {
-        if (value == "") {
+      if (key === "email") {
+        if (value === "") {
           setValidate({ ...validate, [key]: "none" });
         } else if (validateEmail(value)) {
           setValidate({ ...validate, [key]: "pass" });
         } else {
           setValidate({ ...validate, [key]: "fail" });
         }
-      } else if (key == "nickname") {
-        if (value == "") {
+      } else if (key === "nickname") {
+        if (value === "") {
           setValidate({ ...validate, [key]: "none" });
         } else if (validateNickname(value)) {
           setValidate({ ...validate, [key]: "pass" });
         } else {
           setValidate({ ...validate, [key]: "fail" });
         }
-      } else if (key == "password") {
-        if (value == "") {
+      } else if (key === "password") {
+        if (value === "") {
           setValidate({ ...validate, [key]: "none" });
         } else if (validatePassword(value)) {
           setValidate({ ...validate, [key]: "pass" });
@@ -201,13 +203,13 @@ const CreateAccount: React.FC = () => {
             placeholder="닉네임"
             onChange={handleInputValue("nickname")}
           />
-          {validate.nickname == "pass" ? (
+          {validate.nickname === "pass" ? (
             <InputExplain style={{ color: "#22C55E" }}>
               멋진 닉네임이네요!
             </InputExplain>
           ) : (
             <InputExplain
-              color={validate.nickname == "none" ? "type-off" : "type-on"}
+              color={validate.nickname === "none" ? "type-off" : "type-on"}
             >
               2~8자, 특수문자 사용불가 입니다.
             </InputExplain>
@@ -218,11 +220,11 @@ const CreateAccount: React.FC = () => {
             onChange={handleInputValue("email")}
           />
 
-          {validate.email == "pass" ? (
+          {validate.email === "pass" ? (
             <InputExplain style={{ gap: "1rem" }}></InputExplain>
           ) : (
             <InputExplain
-              color={validate.email == "none" ? "type-off" : "type-on"}
+              color={validate.email === "none" ? "type-off" : "type-on"}
             >
               올바른 이메일 주소를 입력하세요.
             </InputExplain>
@@ -232,15 +234,15 @@ const CreateAccount: React.FC = () => {
             placeholder="새 비밀번호"
             onChange={handleInputValue("password")}
           />
-          {validate.password == "pass" ? (
+          {validate.password === "pass" ? (
             <InputExplain style={{ color: "#22C55E" }}>
               사용 가능합니다.
             </InputExplain>
           ) : (
             <InputExplain
-              color={validate.password == "none" ? "type-off" : "type-on"}
+              color={validate.password === "none" ? "type-off" : "type-on"}
             >
-              6~20자, 하나 이상의 특수문자를 사용하세요.
+              8~20자, 하나 이상의 특수문자를 사용하세요.
             </InputExplain>
           )}
           <Button className="submit" onClick={onClickCreateBtn}>
