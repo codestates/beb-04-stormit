@@ -23,8 +23,8 @@ import Agreement from "./pages/Agreement";
 import Communities from "./pages/Communities";
 import { authenticateAPI } from "./lib/api/user";
 import { userActions } from "./store/userSlice";
-import { parseCookie, scrollToTop } from "./lib/utils";
-import ErrorPage from "./pages/ErrorPage";
+import { parseCookie } from "./lib/utils";
+import ErrorPage from "./pages/404";
 import DeletedPost from "./pages/DeletedPost";
 import SignUp from "./pages/SignUp";
 

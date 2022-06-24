@@ -263,7 +263,7 @@ const PostDetail: React.FC = () => {
           ])
         );
       } catch (error) {
-        navigate("/deleted");
+        console.log(error);
       }
     };
 

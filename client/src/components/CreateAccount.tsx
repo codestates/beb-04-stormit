@@ -114,7 +114,7 @@ const CreateAccount: React.FC = () => {
   // password 유효성 검사
   // issue: 조건 충족시 문자 삽입해도 통과됨.
   function validatePassword(password: string) {
-    var re = /^(?=.*[a-z])(?=.*[$@!%*#?&])[a-z0-9$@!%*#?&]{8,}$/;
+    var re = /^(?=.*[a-z])(?=.*[$@!%*#?&])[a-z0-9$@!%*#?&]{8,20}$/;
     return re.test(password);
   }
 

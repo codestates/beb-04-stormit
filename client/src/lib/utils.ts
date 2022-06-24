@@ -36,6 +36,8 @@ export const translateCommunityName = (communityName: string) => {
   if (communityName === "beb") return "BEB";
   if (communityName === "bitcoin") return "비트코인";
   if (communityName === "qa") return "Q&A";
+
+  return "없음";
 };
 
 // document.cookie를 객체 형태로 바꿔줍니다 - nonon

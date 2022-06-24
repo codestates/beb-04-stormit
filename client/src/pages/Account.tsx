@@ -88,7 +88,10 @@ const Account: React.FC = () => {
   };
 
   const onClickSubmit = async () => {
-    // 밸리데이션 로직 작성 필요
+    if (password !== passwordConfirm) {
+      alert("비밀번호를 확인해주세요.");
+      return;
+    }
 
     const body = {
       user_id: userId,

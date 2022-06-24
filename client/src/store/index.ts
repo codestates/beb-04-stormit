@@ -4,12 +4,12 @@ import {
   useDispatch as useTypedDispatch,
   useSelector as useTypedSelector,
 } from "react-redux";
+import communitySlice from "./communitySlice";
 import modalSlice from "./modalSlice";
 import postSlice from "./postSlice";
 import snackbarSlice from "./snackbarSlice";
 import themeSlice from "./themeSlice";
 import userSlice from "./userSlice";
-// ...
 
 export const store = configureStore({
   reducer: {
@@ -18,6 +18,7 @@ export const store = configureStore({
     theme: themeSlice.reducer,
     post: postSlice.reducer,
     snackbar: snackbarSlice.reducer,
+    community: communitySlice.reducer,
   },
 });
 

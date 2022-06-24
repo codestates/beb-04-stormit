@@ -24,7 +24,7 @@ const Base = styled.aside`
   top: 3.5rem;
   left: 0;
   width: 4.5rem; // 72px
-  height: calc(100vh - 3.5rem);
+  min-height: 100vh;
   padding: 1rem; // 16px
   border-right: 1px solid ${palette.gray[200]};
 

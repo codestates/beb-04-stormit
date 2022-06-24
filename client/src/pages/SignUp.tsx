@@ -83,7 +83,7 @@ const SignUp: React.FC = () => {
   };
 
   const validatePassword = (password: string) => {
-    const regExp = /^(?=.*[a-z])(?=.*[$@!%*#?&])[a-z0-9$@!%*#?&]{8,}$/;
+    const regExp = /^(?=.*[a-z])(?=.*[$@!%*#?&])[a-z0-9$@!%*#?&]{8,20}$/;
     setPasswordValid(regExp.test(password));
   };
 
@@ -166,7 +166,7 @@ const SignUp: React.FC = () => {
       </div>
       {emailValid && (
         <p className="signup-input-message">
-          메일주소는 비밀번호 변경이나 찾기 등에 사용됩니다.
+          이메일 주소는 로그인이나 비밀번호 변경 등에 사용됩니다.
         </p>
       )}
       {!emailValid && (
