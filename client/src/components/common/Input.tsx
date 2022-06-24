@@ -1,18 +1,6 @@
 import React from "react";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import palette from "../../styles/palette";
-
-interface Props extends React.InputHTMLAttributes<HTMLInputElement> {
-  validated?: boolean;
-}
-
-const Input: React.FC<Props> = ({ validated, ...props }) => {
-  return <Base {...props} />;
-};
-
-interface BaseProps {
-  validated?: boolean;
-}
 
 const Base = styled.input<BaseProps>`
   height: 2.5rem; // 40px
@@ -20,6 +8,24 @@ const Base = styled.input<BaseProps>`
   outline: none;
   border-radius: 0.25rem; // 4px
   padding: 0.5rem; // 8px
+
+  ${({ validated }) =>
+    !validated &&
+    css`
+      border: 1px solid ${palette.red[500]};
+    `}
 `;
+
+interface Props extends React.InputHTMLAttributes<HTMLInputElement> {
+  validated?: boolean;
+}
+
+const Input: React.FC<Props> = ({ validated = true, ...props }) => {
+  return <Base validated={validated} {...props} />;
+};
+
+interface BaseProps {
+  validated?: boolean;
+}
 
 export default Input;

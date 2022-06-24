@@ -12,6 +12,7 @@ import { modalActions } from "../store/modalSlice";
 import { userActions } from "../store/userSlice";
 import PersonIcon from "@mui/icons-material/Person";
 import SettingsIcon from "@mui/icons-material/Settings";
+import { removeCookie } from "../lib/utils";
 
 const Base = styled.div`
   position: absolute;
@@ -36,7 +37,6 @@ const Base = styled.div`
   .profile-modal-image {
     width: 6.25rem; // 100px
     height: 6.25rem; // 100px
-    background-color: ${palette.gray[200]};
     border-radius: 50%;
   }
 
@@ -124,12 +124,13 @@ const ProfileModal: React.FC = () => {
 
   const onClickSignUpButton = () => {
     closeModal();
-    navigate("/signup");
+    navigate("/agreement");
   };
 
   const onClickLogOutButton = () => {
     closeModal();
     dispatch(userActions.setLoggedOut());
+    removeCookie("access_token");
     navigate("/");
   };
 
@@ -149,7 +150,11 @@ const ProfileModal: React.FC = () => {
       {isLoggedIn && (
         <>
           <div className="profile-modal-image-wrapper">
-            <div className="profile-modal-image" />
+            <img
+              className="profile-modal-image"
+              src="/profile-image.png"
+              alt=""
+            />
             <div className="profile-modal-username">스톰잇닉네임</div>
           </div>
           <Divider />

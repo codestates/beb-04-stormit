@@ -1,4 +1,4 @@
-import { HttpException, HttpStatus, Injectable, UnauthorizedException } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable, UnauthorizedException, NotFoundException } from '@nestjs/common';
 import { UserDTO } from './dto/user.dto';
 import { UserService } from './user.service';
 import { User } from './entity/user.entity';
@@ -19,9 +19,9 @@ export class AuthService {
         let userFind: UserDTO = await this.userService.findByFields({ 
             where: { username: newUser.username }
         });
-        console.log('userfind'+userFind)
+
         if(userFind) {
-            throw new HttpException('Username aleady used!', HttpStatus.BAD_REQUEST);
+            throw new HttpException('duplicated email', HttpStatus.BAD_REQUEST);
         }
         return await this.userService.save(newUser);
     }
@@ -30,14 +30,19 @@ export class AuthService {
         let userFind: User = await this.userService.findByFields({
             where: {username: userDTO.username}
         });
-
-        const validatePassword = await bcrypt.compare(userDTO.password, userFind.password);
-
-        if(!userFind || !validatePassword){
+        
+        if(!userFind){
             throw new UnauthorizedException();
         }
 
-        const payload: Payload = { id: userFind.id, username: userFind.username }
+        const validatePassword = await bcrypt.compare(userDTO.password, userFind.password);
+
+        if(!validatePassword){
+            throw new UnauthorizedException();
+        }
+
+
+        const payload: Payload = { user_id: userFind.user_id, username: userFind.username }
         return {
             accessToken: this.jwtService.sign(payload)
         }
@@ -46,7 +51,26 @@ export class AuthService {
 
     async tokenValidateUser(payload: Payload): Promise<UserDTO | undefined>{
         return await this.userService.findByFields({
-            where : { id: payload.id }
+            where : { user_id: payload.user_id }
         })
+    }
+
+    async getInfoById(username : string): Promise<UserDTO | undefined>{
+
+
+        const found = await this.userService.findByFields({
+            where : {username: username}
+        });
+        if (!found) {
+            throw new NotFoundException(`Can't find Content with id ${username}`);
+          } else {
+            return found;
+            }
+        }
+
+
+    async deleteUser(user_id: number): Promise<any> {
+        return this.userService.delete(user_id);
+
     }
 }

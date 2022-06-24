@@ -13,6 +13,10 @@ import MovetoPost from "../components/MovetoPost";
 import { getAllPostAPI } from "../lib/api/post";
 import LoadingSpinner from "../components/common/LoadingSpinner";
 import PersonIcon from "@mui/icons-material/Person";
+import { FAKE_ARRAY, parseDate, shortenPostContents } from "../lib/utils";
+import IconButton from "../components/common/IconButton";
+import KeyboardDoubleArrowDownIcon from "@mui/icons-material/KeyboardDoubleArrowDown";
+import Skeleton from "../components/common/Skeleton";
 
 const Base = styled.div`
   display: flex;
@@ -29,10 +33,6 @@ const Base = styled.div`
 
   .contents {
     margin: 1rem; // 16px
-  }
-
-  .body {
-    display: flex;
   }
 
   .stormit {
@@ -66,10 +66,18 @@ const Base = styled.div`
     right: 1rem; // 16px
     bottom: 1rem; // 16px
   }
-  .loading-spinner-wrapper {
+  .loading-skeleton-wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 0.5rem;
+    margin: 1rem 0;
+  }
+
+  .more-button-wrapper {
     display: flex;
     justify-content: center;
-    padding: 2rem;
+    margin-top: 1rem;
   }
 
   .observer {
@@ -79,7 +87,7 @@ const Base = styled.div`
   // 600px
   @media screen and (min-width: 37.5rem) {
     .contents {
-      margin: 0 auto;
+      margin: 1rem auto; // 16px
       width: 37.5rem; // 600px
     }
   }
@@ -109,59 +117,37 @@ const Base = styled.div`
 `;
 
 const Home: React.FC = () => {
-  // const [loading, setLoading] = useState(false);
   const [postList, setPostList] = useState<GetAllPostsResponseType>([]);
+  const [fakePostList, setFakePostList] = useState(FAKE_ARRAY);
   const [loading, setLoading] = useState(false);
 
   const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
 
-  const targetRef = useRef<HTMLDivElement | null>(null);
-
   const navigate = useNavigate();
 
-  // // 무한스크롤
-  // const observer = useMemo(() => {
-  //   return new IntersectionObserver((entries) => {
-  //     if (!targetRef?.current) return;
+  const onClickMorePosts = () => {
+    setLoading(true);
+    setTimeout(() => {
+      setFakePostList((fakePostList) => [...fakePostList, ...FAKE_ARRAY]);
+      setLoading(false);
+    }, 3000);
+  };
 
-  //     if (entries[0].isIntersecting) {
-  //       setLoading(true);
-
-  //       console.log("fetch triggered");
-
-  //       setTimeout(() => {
-  //         setLoading(false);
-  //       }, 1000);
-  //     }
-  //   });
-  // }, []);
-
-  // // 무한스크롤
   // useEffect(() => {
-  //   if (!targetRef?.current) return;
-
-  //   observer.observe(targetRef.current);
-
-  //   return () => {
-  //     observer.disconnect();
+  //   const fetchPosts = async () => {
+  //     try {
+  //       setLoading(true);
+  //       const response = await getAllPostAPI();
+  //       setPostList(response.data);
+  //     } catch (error) {
+  //       console.log(error);
+  //     } finally {
+  //       setLoading(false);
+  //     }
   //   };
-  // }, [observer]);
 
-  useEffect(() => {
-    const fetchPosts = async () => {
-      try {
-        setLoading(true);
-        const response = await getAllPostAPI();
-        setPostList(response.data);
-      } catch (error) {
-        console.log(error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchPosts();
-  }, []);
+  //   fetchPosts();
+  // }, []);
 
   return (
     <Base>
@@ -182,7 +168,7 @@ const Home: React.FC = () => {
                 <Button
                   className="home-cta"
                   variant="contained"
-                  onClick={() => navigate("/signup")}
+                  onClick={() => navigate("/agreement")}
                 >
                   시작하기
                 </Button>
@@ -202,23 +188,43 @@ const Home: React.FC = () => {
         <ul className="posts-wrapper">
           {postList.map((post) => (
             <PostCard
+              key={post.post_id}
               postId={post.post_id}
+              title={post.post_title}
               commentCount={post.comment_count}
-              postTitle={post.post_title}
-              postContents={post.post_content}
-              community={post.board_name}
+              community={post.board_title}
               createdAt={post.created_at}
+              contents={shortenPostContents(post.post_content)}
+              nickname="노논"
             />
           ))}
-          <PostCard
-            postId={0}
-            commentCount={4}
-            postTitle="이건 그냥 글 제목임"
-            postContents="이건 그냥 글 내용임"
-            community="리그 오브 레전드"
-            createdAt="0000년 00월 00일 00:00:00"
-          />
+          {fakePostList.map((_, index) => (
+            <PostCard
+              key={index}
+              postId={0}
+              commentCount={index}
+              title="이건 그냥 글 제목임"
+              community="리그 오브 레전드"
+              createdAt={parseDate(new Date())}
+              contents="이건 그냥 글 내용임 이건 그냥 글 내용임 이건 그냥 글 내용임 이건 그냥 글 내용임 이건 그냥 글 내용임 이건 그냥 글 내용임 이건 그냥 글 내용임 이건 그냥 글 내용임..."
+              nickname="노논"
+            />
+          ))}
         </ul>
+        {loading &&
+          Array(5)
+            .fill(0)
+            .map((_, index) => (
+              <div key={index} className="loading-skeleton-wrapper">
+                <Skeleton width="40%" variant="text" />
+                <Skeleton width="100%" height="4rem" />
+              </div>
+            ))}
+        <div className="more-button-wrapper" onClick={onClickMorePosts}>
+          <IconButton>
+            <KeyboardDoubleArrowDownIcon />
+          </IconButton>
+        </div>
         <div className="fab-wrapper">
           {isLoggedIn && (
             <FloatingIconButton onClick={() => navigate("/post")}>
@@ -231,14 +237,7 @@ const Home: React.FC = () => {
             </FloatingIconButton>
           )}
         </div>
-        {loading && (
-          <div className="loading-spinner-wrapper">
-            <LoadingSpinner />
-          </div>
-        )}
       </section>
-
-      <div className="observer" ref={targetRef} />
     </Base>
   );
 };

@@ -1,19 +1,15 @@
 type SignUpAPIBodyType = {
-  email: string;
+  username: string;
   password: string;
   nickname: string;
 };
 
 type LoginAPIResponseType = {
-  email: string;
-  passwordHash: string;
-  userId: number;
-  nickname: string;
-  userId: number;
+  accessToken: string;
 };
 
 type LoginAPIBodyType = {
-  email: string;
+  username: string;
   password: string;
 };
 
@@ -28,20 +24,16 @@ type UpdatePasswordAPIBodyType = {
   new_password: string;
 };
 
-type AuthenticateAPIBodyType = {
-  access_token: string;
-};
-
 type AuthenticateAPIResponseType = {
   user_id: number;
-  email: string;
+  username: string;
   password: string;
   nickname: string;
 };
 
 type GetProfileAPIResponseType = {
   user_id: number;
-  email: string;
+  username: string;
   nickname: string;
   created_at: string;
   wallet_address: string;

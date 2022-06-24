@@ -128,7 +128,7 @@ const CreateAccount: React.FC = () => {
       return;
     }
     const body = {
-      email: email,
+      username: email,
       password: password,
       nickname: nickname,
     };
