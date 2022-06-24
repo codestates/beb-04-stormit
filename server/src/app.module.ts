@@ -1,16 +1,17 @@
 import { Module } from '@nestjs/common';
-
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from './auth/auth.module';
 import { User } from './auth/entity/user.entity';
-import { ContentModule } from './content/content.module';
-import { Board } from './board/entity/board.entity';
-import { Comment } from './content/entity/comment.entity';
+import { typeORMConfig } from './configs/typeorm.config';
 import { Content } from './content/entity/content.entity';
-
+import { ContentModule } from './content/content.module';
+import { ContentRepository } from './content/content.repository';
 import * as config from 'config';
+
+import { Comment } from './content/entity/comment.entity';
 import { BoardModule } from './board/board.module';
+import { Board } from './board/entity/board.entity';
 
 const serverConfig = config.get('server');
 const dbConfig = config.get('db');
@@ -27,7 +28,8 @@ const dbConfig = config.get('db');
       password: dbConfig.password,
       database: dbConfig.database,
       entities: [User, Content, Board, Comment],
-      synchronize: true,
+      // entities: [__dirname + '../**/*.entity{.ts,.js}'],
+      synchronize: dbConfig.synchronize,
     }),
     BoardModule,
     AuthModule,
