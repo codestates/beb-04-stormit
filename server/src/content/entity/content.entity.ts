@@ -21,7 +21,7 @@ export class Content extends BaseEntity {
   @ManyToOne(() => Board, (board) => board.contents)
   board: Board;
 
-  @ManyToOne(() => User, (user) => user.id)
+  @ManyToOne(() => User, (user) => user.user_id)
   user: User;
 
   @Column({ nullable: true })
