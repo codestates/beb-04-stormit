@@ -1,9 +1,7 @@
-import React, { useState } from "react";
+import React, { useRef } from "react";
 import styled from "styled-components";
-import CommentCard from "../components/CommentCard";
-import Checkbox from "../components/common/Checkbox";
-import Skeleton from "../components/common/Skeleton";
-import PostDetail from "./PostDetail";
+import Button from "../components/common/Button";
+import Tooltip from "../components/common/Tooltip";
 
 const Base = styled.section`
   display: flex;
@@ -21,7 +19,9 @@ const Base = styled.section`
 `;
 
 const Test: React.FC = () => {
-  return <PostDetail />;
+  const buttonRef = useRef<any>(null);
+
+  return <Base></Base>;
 };
 
 export default Test;
