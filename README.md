@@ -7,6 +7,7 @@ URL: http://localhost:3000/board/1
 ### 게시판 생성하기
 method: POST
 URL: http://localhost:3000/board/
+
 JSON: 
 ```
 {
@@ -43,6 +44,7 @@ URL: http://localhost:3000/board/post/1
 ### 게시물 작성( 기능우겨넣어 구현하다보니 현재 board_title이 의미없이 사용됨. 수정 필요)
 method: POST
 URL: http://localhost:3000/board/post
+
 JSON:
 ```
 {
@@ -60,6 +62,7 @@ JSON:
 ### 게시물 수정
 method: PATCH
 URL: http://localhost:3000/board/post/1
+
 JSON:
 ```
 {
