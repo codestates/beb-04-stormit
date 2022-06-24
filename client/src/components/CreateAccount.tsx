@@ -150,8 +150,16 @@ const CreateAccount: React.FC = () => {
   const onClickCreateBtn = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     const { email, password, nickname } = userinfo;
-    if (email == "" || !validateEmail(email)) {
+    if (!validateNickname(nickname)) {
+      alert("pls check your nickname");
+      return;
+    }
+    if (!validateEmail(email)) {
       alert("pls check your email");
+      return;
+    }
+    if (!validatePassword(password)) {
+      alert("pls check your password");
       return;
     }
     const body = {
