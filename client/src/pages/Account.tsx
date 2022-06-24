@@ -62,11 +62,6 @@ const Base = styled.div`
     margin: 1rem auto;
     max-width: 37.5rem; // 600px
   }
-
-  // 1240px
-  @media screen and (min-width: 77.5rem) {
-    max-width: 25rem; // 400px
-  }
 `;
 
 const Account: React.FC = () => {
