@@ -5,6 +5,7 @@ import { UserDTO } from './dto/user.dto';
 import { UserRepository } from './user.repository';
 import { User } from './entity/user.entity';
 import * as bcrypt from 'bcrypt';
+import { deleteContentDto } from '../content/dto/delete-content.dto';
 
 @Injectable()
 export class UserService {
@@ -23,6 +24,12 @@ export class UserService {
     await this.transformPassword(userDTO);
     return await this.userRepository.save(userDTO);
   }
+
+  async delete(user_id: number): Promise<any>{
+    return this.userRepository.deleteUser(user_id)
+  }
+
+  
 
   async transformPassword(user: UserDTO): Promise<void> {
     user.password = await bcrypt.hash(user.password, 10);

@@ -1,4 +1,4 @@
-import { HttpException, HttpStatus, Injectable, UnauthorizedException } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable, UnauthorizedException, NotFoundException } from '@nestjs/common';
 import { UserDTO } from './dto/user.dto';
 import { UserService } from './user.service';
 import { User } from './entity/user.entity';
@@ -30,12 +30,17 @@ export class AuthService {
         let userFind: User = await this.userService.findByFields({
             where: {username: userDTO.username}
         });
+        
+        if(!userFind){
+            throw new UnauthorizedException();
+        }
 
         const validatePassword = await bcrypt.compare(userDTO.password, userFind.password);
 
-        if(!userFind || !validatePassword){
+        if(!validatePassword){
             throw new UnauthorizedException();
         }
+
 
         const payload: Payload = { user_id: userFind.user_id, username: userFind.username }
         return {
@@ -51,9 +56,21 @@ export class AuthService {
     }
 
     async getInfoById(username : string): Promise<UserDTO | undefined>{
-        return await this.userService.findByFields({
-            where: {username: username}
-        })
+
+
+        const found = await this.userService.findByFields({
+            where : {username: username}
+        });
+        if (!found) {
+            throw new NotFoundException(`Can't find Content with id ${username}`);
+          } else {
+            return found;
+            }
+        }
+
+
+    async deleteUser(user_id: number): Promise<any> {
+        return this.userService.delete(user_id);
 
     }
 }
