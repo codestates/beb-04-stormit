@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
 import palette from "../styles/palette";
 import CreateAccount from "../components/CreateAccount";
@@ -12,7 +12,8 @@ import { useSelector, useDispatch } from "../store";
 import { useNavigate } from "react-router-dom";
 import { snackbarActions } from "../store/snackbarSlice";
 // login API
-import { loginAPI } from "../lib/api/user";
+import { authenticateAPI, loginAPI } from "../lib/api/user";
+import { setCookie } from "../lib/utils";
 
 const Base = styled.div`
   display: flex;
@@ -118,6 +119,9 @@ const LoginForm = styled.form`
 const Login: React.FC = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
+  const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
+
   // e: 이건 타입스크립트에서 event의 타입을 지정해주는것이다.
   const onChangeEmail = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(e.target.value);
@@ -145,25 +149,50 @@ const Login: React.FC = () => {
       password: password,
     };
     try {
-      const response = await loginAPI(body);
+      const loginAPIResponse = await loginAPI(body);
 
-      const { userId, nickname, passwordHash, username: email } = response.data;
+      const { accessToken } = loginAPIResponse.data;
 
+      // 실패하면 UI 피드백
+      if (loginAPIResponse.status !== 201) return;
+
+      setCookie("access_token", accessToken);
+
+      const authAPIResponse = await authenticateAPI(accessToken);
+
+      const {
+        user_id: userId,
+        username: email,
+        password: passwordHash,
+        nickname,
+      } = authAPIResponse.data;
+
+      if (authAPIResponse.status !== 200) return;
+
+      dispatch(userActions.setLoggedIn());
       dispatch(
         userActions.setUserInfo({
-          userId: userId,
-          nickname: nickname,
           email: email,
+          nickname: nickname,
           passwordHash: passwordHash,
+          userId: userId,
         })
       );
+
+      dispatch(snackbarActions.openLoginSnackbar());
+      navigate("/");
     } catch (error) {
       console.log(error);
     }
-    dispatch(userActions.setLoggedIn());
-    dispatch(snackbarActions.openLoginSnackbar());
-    navigate("/");
   };
+
+  // 로그인 되어있으면 리다이렉트
+  useEffect(() => {
+    if (isLoggedIn) {
+      navigate("/");
+    }
+  }, [isLoggedIn, navigate]);
+
   return (
     <Base className={createAccountOpen ? "Backdrop" : ""}>
       <Logo className={createAccountOpen ? "Backlogo" : ""}>Stormit</Logo>

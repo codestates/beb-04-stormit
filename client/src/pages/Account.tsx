@@ -102,7 +102,7 @@ const Account: React.FC = () => {
     };
 
     try {
-      await updatePasswordAPI(email, body);
+      await updatePasswordAPI(userId, body);
     } catch (error) {
       console.log(error);
     }
@@ -115,7 +115,8 @@ const Account: React.FC = () => {
       window.confirm("한 번 탈퇴하면 되돌릴 수 없습니다. 탈퇴하시겠습니까?")
     ) {
       try {
-        await withdrawalAPI(email);
+        const response = await withdrawalAPI(userId);
+        console.log(response);
         dispatch(userActions.setLoggedOut());
         navigate("/");
       } catch (error) {

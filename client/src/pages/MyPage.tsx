@@ -128,8 +128,7 @@ const Mypage: React.FC = () => {
   const [input, setInput] = useState("");
   const [editMode, setEditMode] = useState(false);
 
-  const email = useSelector((state) => state.user.email);
-  const user_id = useSelector((state) => state.user.userId);
+  const userId = useSelector((state) => state.user.userId);
   const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
 
   const navigate = useNavigate();
@@ -143,10 +142,10 @@ const Mypage: React.FC = () => {
   };
 
   const onClickSubmitButton = async () => {
-    const body = { nickname: input, user_id: user_id };
+    const body = { nickname: input, user_id: userId };
 
     try {
-      await updateNameAPI(email, body);
+      await updateNameAPI(userId, body);
     } catch (error) {
       console.log(error);
     }
