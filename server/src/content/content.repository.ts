@@ -29,6 +29,11 @@ export class ContentRepository extends Repository<Content> {
     contents.post_content = post_content;
     contents.post_title = post_title;
     contents.board = board;
+    //     ”email” : example@gmail.com,
+    // ”post_content” : content,(내용)
+    // ”board_title”:”board_title”(게시판 이름)
+    // ”post_title”(게시글 제목)
+    // }
     await this.save(contents);
     this.logger.debug(`createContent() : ${JSON.stringify(contents)}`);
 
@@ -39,7 +44,7 @@ export class ContentRepository extends Repository<Content> {
     if (result.affected === 0) {
       throw new NotFoundException(`Can't find Post with id ${id}`);
     }
-    console.log('result', result);
+    this.logger.debug(`deleteContent() : id => ${id}`);
   }
   async updateContent(
     id: number,

@@ -21,11 +21,22 @@ export class ContentService {
   private logger = new Logger('ContentService');
 
   async getAllContents(): Promise<Content[]> {
-    return this.contentRepository.find();
+    // const { post_id, post_title, created_at } =
+    //   await this.contentRepository.find();
+
+    //[post_id, ”post_title”, “nickname”, “created_at, comment_count, board_title, post_content]
+    // * created_at 형식:0000년 00월 00일 00:00:00
+    return this.contentRepository.find({
+      relations: ['board'],
+    });
   }
 
   async getContentById(id: number): Promise<Content> {
     // console.log(await this.boardService.getBoardById('2'));
+    // const [{ id, post_title, post_content, created_at, board }] =
+    //   await this.contentRepository.find({
+    //     relations: ['board'],
+    //   });
     const found = await this.contentRepository.findOne(id);
     if (!found) {
       throw new NotFoundException(`Can't find Content with id ${id}`);
@@ -37,6 +48,10 @@ export class ContentService {
   }
   async createContent(createContentDto: CreateContentDto): Promise<string> {
     const { board_id } = createContentDto;
+    // board_id를 board_title? 어케 변환하지
+    // 자유게시판 : 1
+    // 주간게시판 : 2
+    // 일간게시판 : 3    ->......
     const board = await this.boardService.getBoardById(board_id);
     return this.contentRepository.createContent(createContentDto, board); // repository 패턴
   }

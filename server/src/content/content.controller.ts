@@ -44,10 +44,8 @@ export class ContentController {
   async cretaeContent(
     @Body() createContentDto: CreateContentDto,
   ): Promise<string> {
-    this.logger.verbose(
-      `User $$$ creating a new content. \nPayload: ${JSON.stringify(
-        createContentDto,
-      )}`,
+    this.logger.debug(
+      `cretaeContent() : Payload: ${JSON.stringify(createContentDto)}}`,
     );
     return this.contentsService.createContent(createContentDto);
   }
