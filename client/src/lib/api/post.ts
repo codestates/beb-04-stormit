@@ -4,7 +4,7 @@ import axios from ".";
 
 // 게시글 작성
 export const submitPostAPI = (body: SubmitPostAPIBodyType) =>
-  axios.post("board/post", body);
+  axios.post("/board/post", body);
 
 // 전체 게시글 목록 가져오기
 export const getAllPostAPI = () => axios.get<GetAllPostsResponseType>("/board");

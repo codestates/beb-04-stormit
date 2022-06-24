@@ -7,6 +7,9 @@ export const signUpAPI = (body: SignUpAPIBodyType) => axios.post("/user", body);
 export const loginAPI = (body: LoginAPIBodyType) =>
   axios.post<LoginAPIResponseType>("/user/login", body);
 
+// 로그아웃
+export const logoutAPI = () => axios.post("/user/logout");
+
 // 프로필 정보
 export const getProfileAPI = (userId: number) =>
   axios.get<GetProfileAPIResponseType>(`/user/${userId}`);
@@ -26,9 +29,9 @@ export const withdrawalAPI = (userId: number) =>
   axios.delete(`/user/${userId}`);
 
 // 인가: 액세스 토큰으로 유저 정보 가져오기
-export const authenticateAPI = (jwt: string) =>
+export const authenticateAPI = (accessToken: string) =>
   axios.get<AuthenticateAPIResponseType>("/user/authenticate", {
     headers: {
-      Authorization: `Bearer ${jwt}`,
+      Authorization: `Bearer ${accessToken}`,
     },
   });

@@ -1,8 +1,10 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import Button from "../components/common/Button";
 import Checkbox from "../components/common/Checkbox";
 import { FAKE_AGREEMENT } from "../lib/dummyData";
+import { scrollToTop } from "../lib/utils";
 import palette from "../styles/palette";
 import theme from "../styles/theme";
 
@@ -65,13 +67,39 @@ const Base = styled.div`
 `;
 
 const Agreement: React.FC = () => {
+  const [terms, setTerms] = useState(false);
+  const [policy, setPolicy] = useState(false);
+
+  const navigate = useNavigate();
+
+  const onChangeTerms = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setTerms(event.target.checked);
+  };
+
+  const onChangePolicy = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setPolicy(event.target.checked);
+  };
+
+  const onClickNextButton = () => {
+    if (!(terms && policy)) {
+      alert("약관에 동의해주세요.");
+      return;
+    }
+
+    navigate("/signup");
+  };
+
+  useEffect(() => {
+    scrollToTop();
+  }, []);
+
   return (
     <Base>
       <h1 className="agreement-title">이용약관 및 개인정보 처리 방침</h1>
       <h2 className="agreement-subtitle">이용약관</h2>
       <div className="agreement-text">{FAKE_AGREEMENT}</div>
       <div className="div checkbox-wrapper">
-        <Checkbox />
+        <Checkbox onChange={onChangeTerms} />
         <p className="checkbox-text-wrapper">
           <span className="checkbox-text-required">[필수] </span>
           <span className="checkbox-text">이용약관에 동의합니다.</span>
@@ -80,7 +108,7 @@ const Agreement: React.FC = () => {
       <h2 className="agreement-subtitle">개인정보 수집 이용 동의</h2>
       <div className="agreement-text">{FAKE_AGREEMENT}</div>
       <div className="div checkbox-wrapper">
-        <Checkbox />
+        <Checkbox onChange={onChangePolicy} />
         <p className="checkbox-text-wrapper">
           <span className="checkbox-text-required">[필수] </span>
           <span className="checkbox-text">
@@ -89,7 +117,9 @@ const Agreement: React.FC = () => {
         </p>
       </div>
       <div className="agreement-button-wrapper">
-        <Button variant="contained">다음</Button>
+        <Button variant="contained" onClick={onClickNextButton}>
+          다음
+        </Button>
       </div>
     </Base>
   );

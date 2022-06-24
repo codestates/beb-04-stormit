@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useCallback, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import { useOutsideClick } from "../hooks/useOutsideClick";
 import { useDispatch } from "../store";
 import { modalActions } from "../store/modalSlice";
 import palette from "../styles/palette";
@@ -50,26 +51,32 @@ const MenuModal: React.FC = () => {
 
   const navigate = useNavigate();
 
-  // 페이지 이동 후 모달을 닫습니다
-  const moveTo = (url: string) => {
-    navigate(url);
-    dispatch(modalActions.closeAllModal());
+  const modalRef = useRef<HTMLDivElement | null>(null);
+
+  const closeMenuModal = () => {
+    dispatch(modalActions.closeMenuModal());
   };
 
+  useOutsideClick(modalRef, closeMenuModal);
+
   return (
-    <Base>
+    <Base ref={modalRef}>
       <div
         className="menu-modal-title-wrapper"
-        onClick={() => moveTo("/communities")}
+        onClick={() => navigate("/communities")}
       >
         <p className="menu-modal-title">커뮤니티</p>
         <p className="menu-modal-subtitle">다양한 커뮤니티를 찾아보세요</p>
       </div>
-      <ListItem onClick={() => moveTo("/community/notice")}>공지사항</ListItem>
-      <ListItem onClick={() => moveTo("/community/talk")}>사는얘기</ListItem>
-      <ListItem onClick={() => moveTo("/community/forum")}>포럼</ListItem>
-      <ListItem onClick={() => moveTo("/community/it")}>IT 행사</ListItem>
-      <ListItem onClick={() => moveTo("/community/qa")}>Q&amp;A</ListItem>
+      <ListItem onClick={() => navigate("/community/blockchain")}>
+        블록체인
+      </ListItem>
+      <ListItem onClick={() => navigate("/community/webdev")}>웹개발</ListItem>
+      <ListItem onClick={() => navigate("/community/beb")}>BEB</ListItem>
+      <ListItem onClick={() => navigate("/community/bitcoin")}>
+        비트코인
+      </ListItem>
+      <ListItem onClick={() => navigate("/community/qa")}>Q&amp;A</ListItem>
     </Base>
   );
 };

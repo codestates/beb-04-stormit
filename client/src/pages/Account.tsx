@@ -62,11 +62,6 @@ const Base = styled.div`
     margin: 1rem auto;
     max-width: 37.5rem; // 600px
   }
-
-  // 1240px
-  @media screen and (min-width: 77.5rem) {
-    max-width: 25rem; // 400px
-  }
 `;
 
 const Account: React.FC = () => {
@@ -93,7 +88,10 @@ const Account: React.FC = () => {
   };
 
   const onClickSubmit = async () => {
-    // 밸리데이션 로직 작성 필요
+    if (password !== passwordConfirm) {
+      alert("비밀번호를 확인해주세요.");
+      return;
+    }
 
     const body = {
       user_id: userId,

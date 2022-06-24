@@ -3,6 +3,7 @@ import styled from "styled-components";
 import NavigationRail from "../components/NavigationRail";
 import { useLocation, useNavigate } from "react-router-dom";
 import {
+  FAKE_ARRAY,
   getLastPathname,
   parseDate,
   translateCommunityName,
@@ -14,6 +15,8 @@ import { getAllPostAPI } from "../lib/api/post";
 import Input from "../components/common/Input";
 import IconButton from "../components/common/IconButton";
 import SearchIcon from "@mui/icons-material/Search";
+import { useDispatch } from "../store";
+import { communityActions } from "../store/communitySlice";
 
 const Base = styled.div`
   display: flex;
@@ -78,6 +81,8 @@ const Base = styled.div`
 const Community: React.FC = () => {
   const [postList, setPostList] = useState<GetAllPostsResponseType>([]);
 
+  const dispatch = useDispatch();
+
   const location = useLocation();
 
   const navigate = useNavigate();
@@ -96,6 +101,10 @@ const Community: React.FC = () => {
 
     fetchPosts();
   }, []);
+
+  useEffect(() => {
+    dispatch(communityActions.setCurrentCommunity(communityName));
+  }, [communityName, dispatch]);
 
   return (
     <Base>
@@ -121,34 +130,15 @@ const Community: React.FC = () => {
               createdAt={post.created_at}
             />
           ))}
-          <CommunityPostCard
-            postId={1}
-            title="랜덤 게시물"
-            commentCount={3}
-            nickname="닉네임"
-            createdAt={parseDate(new Date())}
-          />
-          <CommunityPostCard
-            postId={1}
-            title="랜덤 게시물"
-            commentCount={3}
-            nickname="닉네임"
-            createdAt={parseDate(new Date())}
-          />
-          <CommunityPostCard
-            postId={1}
-            title="랜덤 게시물"
-            commentCount={3}
-            nickname="닉네임"
-            createdAt={parseDate(new Date())}
-          />
-          <CommunityPostCard
-            postId={1}
-            title="랜덤 게시물"
-            commentCount={3}
-            nickname="닉네임"
-            createdAt={parseDate(new Date())}
-          />
+          {FAKE_ARRAY.map(() => (
+            <CommunityPostCard
+              postId={1}
+              title="랜덤 게시물"
+              commentCount={3}
+              nickname="닉네임"
+              createdAt={parseDate(new Date())}
+            />
+          ))}
         </ul>
         <div className="pagination-wrapper">
           <Pagination />

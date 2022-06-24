@@ -268,7 +268,7 @@ const PostDetail: React.FC = () => {
     };
 
     fetchPost();
-  }, [postId]);
+  }, [postId, navigate]);
 
   return (
     <Base vote={vote}>

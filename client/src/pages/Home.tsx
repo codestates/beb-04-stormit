@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import FloatingIconButton from "../components/common/FloatingIconButton";
 import CreateIcon from "@mui/icons-material/Create";
@@ -11,7 +11,6 @@ import Button from "../components/common/Button";
 import { useSelector } from "../store";
 import MovetoPost from "../components/MovetoPost";
 import { getAllPostAPI } from "../lib/api/post";
-import LoadingSpinner from "../components/common/LoadingSpinner";
 import PersonIcon from "@mui/icons-material/Person";
 import { FAKE_ARRAY, parseDate, shortenPostContents } from "../lib/utils";
 import IconButton from "../components/common/IconButton";
@@ -28,7 +27,6 @@ const Base = styled.div`
     align-items: center;
     flex-direction: column;
     gap: 0.5rem; // 8px
-    padding: 2rem 0; // 32px 0
   }
 
   .contents {
@@ -40,6 +38,7 @@ const Base = styled.div`
     font-weight: 500;
     color: ${theme.primary};
     padding-bottom: 1rem;
+    padding-top: 2rem;
   }
 
   .stormit-subtitle {
@@ -77,7 +76,7 @@ const Base = styled.div`
   .more-button-wrapper {
     display: flex;
     justify-content: center;
-    margin-top: 1rem;
+    margin: 1rem 0;
   }
 
   .observer {
@@ -133,30 +132,32 @@ const Home: React.FC = () => {
     }, 3000);
   };
 
-  // useEffect(() => {
-  //   const fetchPosts = async () => {
-  //     try {
-  //       setLoading(true);
-  //       const response = await getAllPostAPI();
-  //       setPostList(response.data);
-  //     } catch (error) {
-  //       console.log(error);
-  //     } finally {
-  //       setLoading(false);
-  //     }
-  //   };
+  useEffect(() => {
+    const fetchPosts = async () => {
+      try {
+        setLoading(true);
+        const response = await getAllPostAPI();
+        setPostList(response.data);
 
-  //   fetchPosts();
-  // }, []);
+        console.log(response.data);
+      } catch (error) {
+        console.log(error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchPosts();
+  }, []);
 
   return (
     <Base>
       <NavigationRail />
       <section className="contents">
         <div className="contents-top">
-          <h1 className="stormit">Stormit.</h1>
           {!isLoggedIn && (
             <>
+              <h1 className="stormit">Stormit.</h1>
               <h2 className="stormit-subtitle">
                 스톰잇은 ERC-20 기반의 온라인 커뮤니티로, 누구나 자유롭게 이용할
                 수 있습니다.
@@ -183,7 +184,7 @@ const Home: React.FC = () => {
             </>
           )}
         </div>
-        <MovetoPost />
+        {isLoggedIn && <MovetoPost />}
         <h2 className="section-title">전체 글 보기</h2>
         <ul className="posts-wrapper">
           {postList.map((post) => (

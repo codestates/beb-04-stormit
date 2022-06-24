@@ -1,5 +1,5 @@
 import { Divider } from "@mui/material";
-import React from "react";
+import React, { useRef } from "react";
 import styled from "styled-components";
 import palette from "../styles/palette";
 import LogoutIcon from "@mui/icons-material/Logout";
@@ -13,6 +13,7 @@ import { userActions } from "../store/userSlice";
 import PersonIcon from "@mui/icons-material/Person";
 import SettingsIcon from "@mui/icons-material/Settings";
 import { removeCookie } from "../lib/utils";
+import { useOutsideClick } from "../hooks/useOutsideClick";
 
 const Base = styled.div`
   position: absolute;
@@ -88,10 +89,13 @@ const Base = styled.div`
 const ProfileModal: React.FC = () => {
   const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
   const isDarkMode = useSelector((state) => state.theme.isDarkMode);
+  const nickname = useSelector((state) => state.user.nickname);
 
   const navigate = useNavigate();
 
   const dispatch = useDispatch();
+
+  const modalRef = useRef<HTMLDivElement | null>(null);
 
   const toggleDarkMode = () => {
     dispatch(themeActions.toggleDarkMode());
@@ -134,8 +138,10 @@ const ProfileModal: React.FC = () => {
     navigate("/");
   };
 
+  useOutsideClick(modalRef, () => dispatch(modalActions.closeProfileModal()));
+
   return (
-    <Base>
+    <Base ref={modalRef}>
       {!isLoggedIn && (
         <>
           <div className="profile-modal-item" onClick={onClickLoginButton}>
@@ -155,7 +161,7 @@ const ProfileModal: React.FC = () => {
               src="/profile-image.png"
               alt=""
             />
-            <div className="profile-modal-username">스톰잇닉네임</div>
+            <div className="profile-modal-username">{nickname}</div>
           </div>
           <Divider />
           <div className="profile-modal-item" onClick={onClickMyPageButton}>
