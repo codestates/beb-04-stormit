@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import Button from "../components/common/Button";
@@ -49,7 +49,6 @@ const Post: React.FC = () => {
   const [contents, setContents] = useState("");
 
   const email = useSelector((state) => state.user.email);
-  const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
 
   const navigate = useNavigate();
 
@@ -90,12 +89,6 @@ const Post: React.FC = () => {
       console.log(error);
     }
   };
-
-  useEffect(() => {
-    if (!isLoggedIn) {
-      navigate("/login");
-    }
-  }, [isLoggedIn, navigate]);
 
   return (
     <Base>

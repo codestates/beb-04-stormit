@@ -60,12 +60,12 @@ const Communities: React.FC = () => {
         <Divider />
         <CommunityCard
           title="비트코인"
-          description="커뮤니티에 대한 설명을 적어주세요.커뮤니티에 대한 설명을 적어주세요.커뮤니티에 대한 설명을 적어주세요.커뮤니티에 대한 설명을 적어주세요."
+          description="커뮤니티에 대한 설명을 적어주세요."
           image="/profile-image.png"
         />
         <CommunityCard
           title="Q&amp;A"
-          description="커뮤니티에 대한 설명을 적어주세요.커뮤니티에 대한 설명을 적어주세요.커뮤니티에 대한 설명을 적어주세요.커뮤니티에 대한 설명을 적어주세요."
+          description="커뮤니티에 대한 설명을 적어주세요."
           image="/profile-image.png"
         />
       </section>

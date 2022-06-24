@@ -124,10 +124,6 @@ const Edit: React.FC = () => {
         <Chip>Tag</Chip>
         <Chip>Community</Chip>
         <Chip>Long Community Name</Chip>
-        <Chip>Random</Chip>
-        <Chip>Select</Chip>
-        <Chip>One</Chip>
-        <Chip>Community</Chip>
       </div>
       <div className="post-button-wrapper">
         <Button variant="outlined" onClick={onClickCancelButton}>

@@ -132,21 +132,23 @@ const Home: React.FC = () => {
     }, 3000);
   };
 
-  // useEffect(() => {
-  //   const fetchPosts = async () => {
-  //     try {
-  //       setLoading(true);
-  //       const response = await getAllPostAPI();
-  //       setPostList(response.data);
-  //     } catch (error) {
-  //       console.log(error);
-  //     } finally {
-  //       setLoading(false);
-  //     }
-  //   };
+  useEffect(() => {
+    const fetchPosts = async () => {
+      try {
+        setLoading(true);
+        const response = await getAllPostAPI();
+        setPostList(response.data);
 
-  //   fetchPosts();
-  // }, []);
+        console.log(response.data);
+      } catch (error) {
+        console.log(error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchPosts();
+  }, []);
 
   return (
     <Base>
