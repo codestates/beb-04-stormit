@@ -26,6 +26,7 @@ import { userActions } from "./store/userSlice";
 import { parseCookie } from "./lib/utils";
 import ErrorPage from "./pages/ErrorPage";
 import DeletedPost from "./pages/DeletedPost";
+import SignUp from "./pages/SignUp";
 
 const App: React.FC = () => {
   const menuModalOpen = useSelector((state) => state.modal.menuModalOpen);
@@ -108,6 +109,7 @@ const App: React.FC = () => {
         <Route path="/test" element={<Test />} />
         <Route path="/mypage" element={<MyPage />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<SignUp />} />
         <Route path="/account" element={<Account />} />
         <Route path="/post" element={<Post />} />
         <Route path="/agreement" element={<Agreement />} />
