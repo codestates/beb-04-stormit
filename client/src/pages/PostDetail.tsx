@@ -263,12 +263,12 @@ const PostDetail: React.FC = () => {
           ])
         );
       } catch (error) {
-        console.log(error);
+        navigate("/deleted");
       }
     };
 
     fetchPost();
-  }, [postId]);
+  }, [postId, navigate]);
 
   return (
     <Base vote={vote}>

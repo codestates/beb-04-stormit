@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 import Divider from "../components/common/Divider";
 import CommunityCard from "../components/CommunityCard";
@@ -40,34 +41,44 @@ const Communities: React.FC = () => {
       <NavigationRail />
       <section className="contents">
         <h1 className="communities-title">전체 커뮤니티</h1>
-        <CommunityCard
-          title="블록체인"
-          description="커뮤니티에 대한 설명을 적어주세요."
-          image="/profile-image.png"
-        />
+        <Link to="/community/blockchain">
+          <CommunityCard
+            title="블록체인"
+            description="커뮤니티에 대한 설명을 적어주세요."
+            image="/profile-image.png"
+          />
+        </Link>
         <Divider />
-        <CommunityCard
-          title="웹개발"
-          description="커뮤니티에 대한 설명을 적어주세요."
-          image="/profile-image.png"
-        />
+        <Link to="/community/webdev">
+          <CommunityCard
+            title="웹개발"
+            description="커뮤니티에 대한 설명을 적어주세요."
+            image="/profile-image.png"
+          />
+        </Link>
         <Divider />
-        <CommunityCard
-          title="BEB"
-          description="커뮤니티에 대한 설명을 적어주세요"
-          image="/profile-image.png"
-        />
+        <Link to="/community/beb">
+          <CommunityCard
+            title="BEB"
+            description="커뮤니티에 대한 설명을 적어주세요"
+            image="/profile-image.png"
+          />
+        </Link>
         <Divider />
-        <CommunityCard
-          title="비트코인"
-          description="커뮤니티에 대한 설명을 적어주세요."
-          image="/profile-image.png"
-        />
-        <CommunityCard
-          title="Q&amp;A"
-          description="커뮤니티에 대한 설명을 적어주세요."
-          image="/profile-image.png"
-        />
+        <Link to="/community/bitcoin">
+          <CommunityCard
+            title="비트코인"
+            description="커뮤니티에 대한 설명을 적어주세요."
+            image="/profile-image.png"
+          />
+        </Link>
+        <Link to="/community/qa">
+          <CommunityCard
+            title="Q&amp;A"
+            description="커뮤니티에 대한 설명을 적어주세요."
+            image="/profile-image.png"
+          />
+        </Link>
       </section>
     </Base>
   );

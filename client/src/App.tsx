@@ -24,6 +24,8 @@ import Communities from "./pages/Communities";
 import { authenticateAPI } from "./lib/api/user";
 import { userActions } from "./store/userSlice";
 import { parseCookie } from "./lib/utils";
+import ErrorPage from "./pages/ErrorPage";
+import DeletedPost from "./pages/DeletedPost";
 
 const App: React.FC = () => {
   const menuModalOpen = useSelector((state) => state.modal.menuModalOpen);
@@ -113,6 +115,8 @@ const App: React.FC = () => {
         <Route path="/post/:id" element={<PostDetail />} />
         <Route path="/edit/:id" element={<Edit />} />
         <Route path="/communities" element={<Communities />} />
+        <Route path="/deleted" element={<DeletedPost />} />
+        <Route path="/*" element={<ErrorPage />} />
       </Routes>
     </ThemeProvider>
   );
