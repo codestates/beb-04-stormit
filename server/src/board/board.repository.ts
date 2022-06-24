@@ -8,7 +8,7 @@ export class BoardRepository extends Repository<Board> {
   private logger = new Logger('BoardRepository');
 
   async getBoardById(id: string) {
-    const found = await this.findOne(id);
+    const found = await this.findOne(id, { relations: ['contents'] });
     this.logger.debug(`getBoardById() : ${JSON.stringify(found)}`);
     if (!found) {
       throw new NotFoundException(`Can't find Board with id ${id}`);
