@@ -19,11 +19,14 @@ export class AuthController {
     async login(@Body() userDTO: UserDTO, @Res() res:Response ): Promise<any> {
         const jwt=await this.authService.validateUser(userDTO);
         res.setHeader('Authorization', 'Bearer '+jwt.accessToken)
-        res.cookie('jwt', jwt.accessToken,{
-            httpOnly: true,
-            maxAge: 24* 60 * 60 * 1000 // 1day
-        })
+        // res.cookie('jwt', jwt.accessToken,{
+        //     httpOnly: true,
+        //     maxAge: 24* 60 * 60 * 1000 // 1day
+        // })
         return res.json(jwt);
+        // return res.send({
+        //     success : true
+        // })
 
     }
 
@@ -34,13 +37,6 @@ export class AuthController {
     isAuthtenticated(@Req() req: Request): any {
         const user: any= req.user;
         return user;
-    }
-
-
-    // 사용자 프로필 가져오기
-    @Get('/:username')
-    getContentById(@Param ('username') username: string): Promise<any> {
-        return this.authService.getInfoById(username);
     }
 
 
@@ -56,7 +52,7 @@ export class AuthController {
             maxAge: 0
         });
         return res.send({
-            message : 'success'
+            success : true
         })
     }
     @Delete('/:id')
@@ -69,6 +65,10 @@ export class AuthController {
         }
 
     }
-    
+    // 사용자 프로필 가져오기
+    @Get('/:username')
+    getContentById(@Param ('username') username: string): Promise<any> {
+        return this.authService.getInfoById(username);
+    }
 
 }
