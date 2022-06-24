@@ -29,10 +29,33 @@ export class UserService {
     return this.userRepository.deleteUser(user_id)
   }
 
-  
+  async updateHashedRt(user_id:number, hash:any): Promise<any>{
+    return this.userRepository.update({user_id: user_id}, {hashedRt: hash })
+    
+  }
 
   async transformPassword(user: UserDTO): Promise<void> {
     user.password = await bcrypt.hash(user.password, 10);
     return Promise.resolve();
   }
+
+
+
+  async getUserIfRefreshTokenMatches(refresh_token: string, id:number): Promise<any>{
+    const user = await this.findByFields({where :{ user_id : id} })
+    const isRefreshTokenMatching = await bcrypt.compare(
+      refresh_token,user.hashedRt
+    )
+
+    if(isRefreshTokenMatching){
+      return user;
+    }
+  }
+
+
+
+  async removeRefreshToken(user_id: number): Promise<any> {
+    return this.userRepository.update({user_id:user_id},{hashedRt: null});
+
+}
 }

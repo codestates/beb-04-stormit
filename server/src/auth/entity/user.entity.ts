@@ -1,5 +1,5 @@
 import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
-
+import {Exclude} from 'class-transformer'
 @Entity('user')
 export class User {
     @PrimaryGeneratedColumn()
@@ -13,4 +13,8 @@ export class User {
 
     @Column()
     nickname?: string;
+
+    @Column({nullable:true})
+    @Exclude({ toPlainOnly: true })
+    hashedRt?: string;
 }

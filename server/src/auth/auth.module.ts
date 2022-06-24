@@ -7,17 +7,20 @@ import { AuthService } from './auth.service';
 import { UserRepository } from './user.repository';
 import { UserService } from './user.service';
 import { JwtStrategy } from './security/passport.jwt.strategy';
+import { JwtRefreshStrategy } from './security/jwt-refresh.strategy';
+import { jwtConstants } from './security/constants';
+
 
 @Module({
   imports: [TypeOrmModule.forFeature([UserRepository]),
   JwtModule.register({
-    secret: 'SECRET_KEY',
-    signOptions : {expiresIn : '400s'}
+    secret: jwtConstants.JWT_ACCESS_TOKEN_SECRET,
+    signOptions : {expiresIn: `${jwtConstants.JWT_ACCESS_TOKEN_EXPIRATION_TIME}s`}
   })  ,
   PassportModule
 ],
-  exports: [TypeOrmModule],
+  exports: [TypeOrmModule, JwtModule],
   controllers: [AuthController],
-  providers: [AuthService, UserService, JwtStrategy]
+  providers: [AuthService, UserService, JwtStrategy, JwtRefreshStrategy]
 })
 export class AuthModule {}

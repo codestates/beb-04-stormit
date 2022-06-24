@@ -3,6 +3,9 @@ import { Request,Response} from 'express';
 import { AuthService } from './auth.service';
 import { UserDTO } from './dto/user.dto';
 import { AuthGuard } from './security/auth.guard';
+import { JwtRefreshGuard } from './security/jwt-refresh.guard';
+import { LocalAuthGuard } from './security/local-auth.guard';
+import { UserService } from './user.service';
 
 @Controller('user')
 export class AuthController {
@@ -14,24 +17,25 @@ export class AuthController {
         const data = await this.authService.registerUser(UserDTO)
         return {success: true, data};
     }
+    
 
     @Post('/login')
     async login(@Body() userDTO: UserDTO, @Res() res:Response ): Promise<any> {
         const jwt=await this.authService.validateUser(userDTO);
-        res.setHeader('Authorization', 'Bearer '+jwt.accessToken)
-        // res.cookie('jwt', jwt.accessToken,{
-        //     httpOnly: true,
-        //     maxAge: 24* 60 * 60 * 1000 // 1day
-        // })
-        return res.json(jwt);
+        res.setHeader('Authorization', 'Bearer '+jwt.access_token)
+        res.cookie('refresh_token', jwt.refresh_token,{
+            httpOnly: true,
+            maxAge: 7*24* 60 * 60 * 1000 // 7day
+    })
+
+
+        return res.json({"access_token": jwt.access_token});
         // return res.send({
         //     success : true
         // })
 
     }
 
-
-    
     @Get('/authenticate')
     @UseGuards(AuthGuard)
     isAuthtenticated(@Req() req: Request): any {
@@ -40,21 +44,37 @@ export class AuthController {
     }
 
 
+    @Get('/refresh/:id')
+    @UseGuards(JwtRefreshGuard)
+    refresh(@Param('id') user_id, @Res() res: Response) {
+        const accessToken = this.authService.getJwtAccessToken(user_id);
+        
+        return res.send({"accessToken" : accessToken});
+      }
+
+
     @Get('/cookies')
     getCookies(@Req() req:Request, @Res() res:Response): any{
         const jwt= req.cookies['jwt'];
         return res.send(jwt);
     }
 
-    @Post('/logout')
-    logout(@Res() res: Response): any{
-        res.cookie('jwt', '', {
+    @UseGuards(AuthGuard)
+    @Post('/logout/:id')
+    async logout(@Param('id') user_id: number, @Req() req , @Res() res: Response): Promise<any>{
+        
+        // await this.UserService.removeRefreshToken(req.user.id)
+        res.cookie('refresh_token', '', {
             maxAge: 0
         });
+
+        await this.authService.removeRefreshToken(user_id);
+
         return res.send({
             success : true
         })
     }
+    @UseGuards(AuthGuard)
     @Delete('/:id')
     async deleteuser(@Param ('id') user_id: number, @Res() res: Response): Promise<any>{
         const result = await this.authService.deleteUser (user_id);
