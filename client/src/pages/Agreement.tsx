@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import Button from "../components/common/Button";
 import Checkbox from "../components/common/Checkbox";
 import { FAKE_AGREEMENT } from "../lib/dummyData";
+import { scrollToTop } from "../lib/utils";
 import palette from "../styles/palette";
 import theme from "../styles/theme";
 
@@ -87,6 +88,10 @@ const Agreement: React.FC = () => {
 
     navigate("/signup");
   };
+
+  useEffect(() => {
+    scrollToTop();
+  }, []);
 
   return (
     <Base>

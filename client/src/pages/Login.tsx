@@ -52,7 +52,7 @@ const LoginForm = styled.form`
   height: 100%;
   width: 100%;
   padding: 20px;
-  border-radius: 1rem;
+
   box-shadow: 0 1rem 20px rgba(0, 0, 0, 0.1);
 
   .inputBox {

@@ -36,6 +36,8 @@ export const translateCommunityName = (communityName: string) => {
   if (communityName === "beb") return "BEB";
   if (communityName === "bitcoin") return "비트코인";
   if (communityName === "qa") return "Q&A";
+
+  return "없음";
 };
 
 // document.cookie를 객체 형태로 바꿔줍니다 - nonon
@@ -67,4 +69,8 @@ export const setCookie = (cookie: string, value: string) => {
 // 쿠키를 제거합니다 - nonon
 export const removeCookie = (cookie: string) => {
   document.cookie = `${cookie}=; expires=Thu, 01 Jan 1999 00:00:10 GMT;`;
+};
+
+export const scrollToTop = () => {
+  window.scrollTo(0, 0);
 };

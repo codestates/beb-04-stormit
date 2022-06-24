@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { signUpAPI } from "../lib/api/user";
 import Divider from "../components/common/Divider";
@@ -7,6 +7,7 @@ import Button from "../components/common/Button";
 import { useNavigate } from "react-router-dom";
 import palette from "../styles/palette";
 import ErrorIcon from "@mui/icons-material/Error";
+import { scrollToTop } from "../lib/utils";
 
 const Base = styled.div`
   display: flex;
@@ -82,7 +83,7 @@ const SignUp: React.FC = () => {
   };
 
   const validatePassword = (password: string) => {
-    const regExp = /^(?=.*[a-z])(?=.*[$@!%*#?&])[a-z0-9$@!%*#?&]{8,}$/;
+    const regExp = /^(?=.*[a-z])(?=.*[$@!%*#?&])[a-z0-9$@!%*#?&]{8,20}$/;
     setPasswordValid(regExp.test(password));
   };
 
@@ -121,6 +122,10 @@ const SignUp: React.FC = () => {
       console.log(error);
     }
   };
+
+  useEffect(() => {
+    scrollToTop();
+  }, []);
 
   return (
     <Base>
@@ -161,7 +166,7 @@ const SignUp: React.FC = () => {
       </div>
       {emailValid && (
         <p className="signup-input-message">
-          메일주소는 비밀번호 변경이나 찾기 등에 사용됩니다.
+          이메일 주소는 로그인이나 비밀번호 변경 등에 사용됩니다.
         </p>
       )}
       {!emailValid && (

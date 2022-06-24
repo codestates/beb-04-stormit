@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import Button from "../components/common/Button";
@@ -9,14 +9,13 @@ import Textarea from "../components/common/Textarea";
 import PostOptionCard from "../components/PostOptionCard";
 import { submitPostAPI } from "../lib/api/post";
 import { boardList } from "../lib/staticData";
+import { translateCommunityName } from "../lib/utils";
 import { useSelector } from "../store";
 
 const Base = styled.div`
   display: flex;
   flex-direction: column;
   gap: 1rem; // 16px
-
-  height: 100vh;
   margin: 2rem 1rem; // 32px 16px
 
   .post-heading {
@@ -49,6 +48,9 @@ const Post: React.FC = () => {
   const [contents, setContents] = useState("");
 
   const email = useSelector((state) => state.user.email);
+  const currentCommunity = useSelector(
+    (state) => state.community.currentCommunity
+  );
 
   const navigate = useNavigate();
 
@@ -90,13 +92,18 @@ const Post: React.FC = () => {
     }
   };
 
+  // 특정 게시판에서 글쓰기를 누르면 해당하는 게시판이 초기값으로 선택되도록 합니다
+  useEffect(() => {
+    if (currentCommunity) setCommunity(currentCommunity);
+  }, [currentCommunity]);
+
   return (
     <Base>
       <p className="post-heading">새 글 등록</p>
       <Select value={community} onChange={onChangeCommunity}>
         {boardList.map((board, index) => (
           <option key={index} value={board}>
-            {board}
+            {translateCommunityName(board)}
           </option>
         ))}
       </Select>

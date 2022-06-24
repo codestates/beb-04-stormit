@@ -10,7 +10,7 @@ const Base = styled.div`
   padding-bottom: 2rem;
   .Intro {
     display: flex;
-    border-radius: 1rem;
+
     .profileBtn {
       padding: 0;
       margin-right: 1rem;
