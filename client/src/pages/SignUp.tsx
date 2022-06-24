@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { signUpAPI } from "../lib/api/user";
 import Divider from "../components/common/Divider";
@@ -7,6 +7,7 @@ import Button from "../components/common/Button";
 import { useNavigate } from "react-router-dom";
 import palette from "../styles/palette";
 import ErrorIcon from "@mui/icons-material/Error";
+import { scrollToTop } from "../lib/utils";
 
 const Base = styled.div`
   display: flex;
@@ -121,6 +122,10 @@ const SignUp: React.FC = () => {
       console.log(error);
     }
   };
+
+  useEffect(() => {
+    scrollToTop();
+  }, []);
 
   return (
     <Base>

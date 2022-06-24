@@ -68,3 +68,7 @@ export const setCookie = (cookie: string, value: string) => {
 export const removeCookie = (cookie: string) => {
   document.cookie = `${cookie}=; expires=Thu, 01 Jan 1999 00:00:10 GMT;`;
 };
+
+export const scrollToTop = () => {
+  window.scrollTo(0, 0);
+};
