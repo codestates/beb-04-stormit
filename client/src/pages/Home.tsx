@@ -11,7 +11,6 @@ import Button from "../components/common/Button";
 import { useSelector } from "../store";
 import MovetoPost from "../components/MovetoPost";
 import { getAllPostAPI } from "../lib/api/post";
-import LoadingSpinner from "../components/common/LoadingSpinner";
 import PersonIcon from "@mui/icons-material/Person";
 import { FAKE_ARRAY, parseDate, shortenPostContents } from "../lib/utils";
 import IconButton from "../components/common/IconButton";
@@ -133,21 +132,23 @@ const Home: React.FC = () => {
     }, 3000);
   };
 
-  // useEffect(() => {
-  //   const fetchPosts = async () => {
-  //     try {
-  //       setLoading(true);
-  //       const response = await getAllPostAPI();
-  //       setPostList(response.data);
-  //     } catch (error) {
-  //       console.log(error);
-  //     } finally {
-  //       setLoading(false);
-  //     }
-  //   };
+  useEffect(() => {
+    const fetchPosts = async () => {
+      try {
+        setLoading(true);
+        const response = await getAllPostAPI();
+        setPostList(response.data);
 
-  //   fetchPosts();
-  // }, []);
+        console.log(response.data);
+      } catch (error) {
+        console.log(error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchPosts();
+  }, []);
 
   return (
     <Base>

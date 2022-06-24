@@ -2,6 +2,10 @@ import React from "react";
 import styled, { css } from "styled-components";
 import palette from "../../styles/palette";
 
+interface BaseProps {
+  validated?: boolean;
+}
+
 const Base = styled.input<BaseProps>`
   height: 2.5rem; // 40px
   border: 1px solid ${palette.gray[200]};
@@ -23,9 +27,5 @@ interface Props extends React.InputHTMLAttributes<HTMLInputElement> {
 const Input: React.FC<Props> = ({ validated = true, ...props }) => {
   return <Base validated={validated} {...props} />;
 };
-
-interface BaseProps {
-  validated?: boolean;
-}
 
 export default Input;

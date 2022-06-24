@@ -24,6 +24,8 @@ import Communities from "./pages/Communities";
 import { authenticateAPI } from "./lib/api/user";
 import { userActions } from "./store/userSlice";
 import { parseCookie } from "./lib/utils";
+import ErrorPage from "./pages/ErrorPage";
+import DeletedPost from "./pages/DeletedPost";
 
 const App: React.FC = () => {
   const menuModalOpen = useSelector((state) => state.modal.menuModalOpen);
@@ -35,8 +37,6 @@ const App: React.FC = () => {
 
   document.cookie = "test=123";
   document.cookie = "test2=456";
-
-  const cookies = parseCookie(document.cookie);
 
   const dispatch = useDispatch();
 
@@ -51,10 +51,12 @@ const App: React.FC = () => {
   // 새로고침 시 로그인
   useEffect(() => {
     const authenticate = async () => {
-      if (!cookies.access_token) return;
+      const accessToken = parseCookie(document.cookie).access_token;
+
+      if (!accessToken) return;
 
       try {
-        const response = await authenticateAPI(cookies.access_token);
+        const response = await authenticateAPI(accessToken);
 
         if (response.status !== 200) return;
 
@@ -83,7 +85,7 @@ const App: React.FC = () => {
     };
 
     authenticate();
-  }, [cookies, dispatch]);
+  }, [dispatch]);
 
   return (
     <ThemeProvider theme={isDarkMode ? darkTheme : theme}>
@@ -113,6 +115,8 @@ const App: React.FC = () => {
         <Route path="/post/:id" element={<PostDetail />} />
         <Route path="/edit/:id" element={<Edit />} />
         <Route path="/communities" element={<Communities />} />
+        <Route path="/deleted" element={<DeletedPost />} />
+        <Route path="/*" element={<ErrorPage />} />
       </Routes>
     </ThemeProvider>
   );

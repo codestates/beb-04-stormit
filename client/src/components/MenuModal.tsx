@@ -65,10 +65,12 @@ const MenuModal: React.FC = () => {
         <p className="menu-modal-title">커뮤니티</p>
         <p className="menu-modal-subtitle">다양한 커뮤니티를 찾아보세요</p>
       </div>
-      <ListItem onClick={() => moveTo("/community/notice")}>공지사항</ListItem>
-      <ListItem onClick={() => moveTo("/community/talk")}>사는얘기</ListItem>
-      <ListItem onClick={() => moveTo("/community/forum")}>포럼</ListItem>
-      <ListItem onClick={() => moveTo("/community/it")}>IT 행사</ListItem>
+      <ListItem onClick={() => moveTo("/community/blockchain")}>
+        블록체인
+      </ListItem>
+      <ListItem onClick={() => moveTo("/community/webdev")}>웹개발</ListItem>
+      <ListItem onClick={() => moveTo("/community/beb")}>BEB</ListItem>
+      <ListItem onClick={() => moveTo("/community/bitcoin")}>비트코인</ListItem>
       <ListItem onClick={() => moveTo("/community/qa")}>Q&amp;A</ListItem>
     </Base>
   );

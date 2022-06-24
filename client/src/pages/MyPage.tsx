@@ -129,6 +129,7 @@ const Mypage: React.FC = () => {
   const [editMode, setEditMode] = useState(false);
 
   const userId = useSelector((state) => state.user.userId);
+  const nickname = useSelector((state) => state.user.nickname);
   const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
 
   const navigate = useNavigate();
@@ -176,7 +177,7 @@ const Mypage: React.FC = () => {
           <div className="profile-nickname-wrapper">
             {!editMode && (
               <>
-                <p className="profile-nickname">스톰잇닉네임</p>
+                <p className="profile-nickname">{nickname}</p>
                 <IconButton>
                   <EditIcon onClick={onClickEditButton} />
                 </IconButton>
