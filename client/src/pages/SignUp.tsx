@@ -82,7 +82,7 @@ const SignUp: React.FC = () => {
   };
 
   const validatePassword = (password: string) => {
-    const regExp = /^(?=.*\d)(?=.*[@$!%*#?&]).{6,20}$/;
+    const regExp = /^(?=.*[a-z])(?=.*[$@!%*#?&])[a-z0-9$@!%*#?&]{8,}$/;
     setPasswordValid(regExp.test(password));
   };
 
@@ -179,16 +179,17 @@ const SignUp: React.FC = () => {
           validated={passwordValid}
           width="100%"
         />
+
         {!passwordValid && <ErrorIcon className="signup-error-icon" />}
       </div>
       {passwordValid && (
         <p className="signup-input-message">
-          비밀번호는 6~20자 이내이고, 하나 이상의 특수문자를 포함해야 합니다.
+          비밀번호는 8~20자 이내이고, 하나 이상의 특수문자를 포함해야 합니다.
         </p>
       )}
       {!passwordValid && (
         <p className="signup-input-error-message">
-          비밀번호는 6~20자 이내이고, 하나 이상의 특수문자를 포함해야 합니다.
+          비밀번호는 8~20자 이내이고, 하나 이상의 특수문자를 포함해야 합니다.
         </p>
       )}
       <div className="signup-submit-button-wrapper">
