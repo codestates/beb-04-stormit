@@ -12,6 +12,7 @@ import {
 
 import { User } from 'src/auth/entity/user.entity';
 import { Board } from 'src/board/entity/board.entity';
+import { IsEmail } from 'class-validator';
 //CREATE TABLE content{}
 @Entity() //
 export class Content extends BaseEntity {
@@ -24,14 +25,14 @@ export class Content extends BaseEntity {
   @ManyToOne(() => User, (user) => user.id)
   user: User;
 
+  @IsEmail({ nullable: true })
+  email: string;
+
   @Column({ nullable: true })
   post_title: string;
 
   @Column({ nullable: true })
   post_content: string;
-
-  @Column({ nullable: true })
-  board_id: string;
 
   @CreateDateColumn()
   created_at: Date;

@@ -28,12 +28,16 @@ export class BoardController {
 
   // 게시판 하나에 대한 게시글 가져오기
   @Get('/:id')
-  getBoardById(@Param('id') id: string): Promise<Board> {
+  getBoardById(@Param('id') id: number): Promise<Board> {
     return this.boardsService.getBoardById(id);
   }
 
+  @Post('')
+  getBoardByTitle(@Param('board_title') board_title: string): Promise<Board> {
+    return this.boardsService.getBoardByTitle(board_title);
+  }
   // 게시판 생성
-  @Post()
+  @Post('create')
   @UsePipes(ValidationPipe)
   createBoard(@Body() createBoardDto: CreateBoardDto): Promise<Board> {
     this.logger.log(

@@ -9,6 +9,7 @@ import { Board } from './entity/board.entity';
 @Injectable()
 export class BoardService {
   constructor(
+    private contentRepository: ContentRepository,
     @InjectRepository(BoardRepository)
     private boardRepository: BoardRepository,
   ) {}
@@ -18,8 +19,13 @@ export class BoardService {
     this.logger.debug(`getAllBoards()`);
     return this.boardRepository.find();
   }
-
-  getBoardById(id: string): Promise<Board> {
+  getBoardByTitle(board_title): Promise<Board> {
+    // Body
+    // board_title : 자유게시판
+    // console.log(this.contentRepository)
+    return this.boardRepository.getBoardByTitle(board_title);
+  }
+  getBoardById(id: number): Promise<Board> {
     return this.boardRepository.getBoardById(id);
   }
   createBoard(createBoardDto: CreateBoardDto): Promise<Board> {

@@ -1,5 +1,6 @@
 import { Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { identity } from 'rxjs';
 import { BoardRepository } from 'src/board/board.repository';
 import { BoardService } from 'src/board/board.service';
 import { Board } from 'src/board/entity/board.entity';
@@ -36,7 +37,15 @@ export class ContentService {
     return found;
   }
   async createContent(createContentDto: CreateContentDto): Promise<string> {
-    const { board_id } = createContentDto;
+    const { board_title } = createContentDto;
+    let board_id = 1;
+    if (board_title === '강아지게시판') {
+      board_id = 2;
+    } else if (board_title === '고양이게시판') {
+      board_id = 3;
+    } else {
+      board_id = 1;
+    }
     const board = await this.boardService.getBoardById(board_id);
     return this.contentRepository.createContent(createContentDto, board); // repository 패턴
   }

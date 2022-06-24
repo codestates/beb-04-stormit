@@ -28,6 +28,7 @@ const dbConfig = config.get('db');
       database: dbConfig.database,
       entities: [User, Content, Board, Comment],
       synchronize: true,
+      timezone: 'KST',
     }),
     BoardModule,
     AuthModule,

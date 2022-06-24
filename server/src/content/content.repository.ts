@@ -24,13 +24,25 @@ export class ContentRepository extends Repository<Content> {
     createContentDto: CreateContentDto,
     board: Board,
   ): Promise<string> {
+    // 게시판이 있다는 가정하에 진행
+    // board_id : 1. 자유게시판
+    // board_id : 2. 강아지게시판
+    // board_id : 3. 고양이게시판
+
+    // (body){
+    //   ”email” : example@gmail.com,
+    //   ”post_content” : content,(내용)
+    //   ”board_title”:”board_title”(게시판 이름)
+    //   ”post_title”(게시글 제목)
+    //   }
+    this.logger.debug(`createContent() : ${JSON.stringify(createContentDto)}`);
     const { post_content, post_title } = createContentDto;
     const contents = new Content();
     contents.post_content = post_content;
     contents.post_title = post_title;
     contents.board = board;
     await this.save(contents);
-    this.logger.debug(`createContent() : ${JSON.stringify(contents)}`);
+    // this.logger.debug(`createContent() : ${JSON.stringify(contents)}`);
 
     return '';
   }
