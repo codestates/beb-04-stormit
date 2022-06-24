@@ -6,5 +6,7 @@ export class UserDTO {
     @IsNotEmpty()
     password: string;
     @IsNotEmpty()
-    nickname?: string
+    nickname?: string;
+    
+    hashedRt?: string;
 }

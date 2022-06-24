@@ -10,6 +10,7 @@ import { ContentRepository } from './content/content.repository';
 import * as config from 'config';
 import { Board } from './content/entity/board.entity';
 import { Comment } from './content/entity/comment.entity';
+import { JoinColumn } from 'typeorm';
 
 
 const serverConfig = config.get('server')
@@ -20,7 +21,8 @@ const dbConfig = config.get('db')
 
   imports: [
     ConfigModule.forRoot({
-      isGlobal:true
+      isGlobal:true,
+    
     }),
     TypeOrmModule.forRoot({
       type: dbConfig.type,
