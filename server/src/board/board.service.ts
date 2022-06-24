@@ -19,7 +19,7 @@ export class BoardService {
     this.logger.debug(`getAllBoards()`);
     return this.boardRepository.find();
   }
-  getBoardByTitle(board_title): Promise<Board> {
+  getBoardByTitle(board_title): Promise<object> {
     // Body
     // board_title : 자유게시판
     // console.log(this.contentRepository)

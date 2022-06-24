@@ -33,7 +33,7 @@ export class BoardController {
   }
 
   @Post('')
-  getBoardByTitle(@Param('board_title') board_title: string): Promise<Board> {
+  getBoardByTitle(@Param('board_title') board_title: string): Promise<object> {
     return this.boardsService.getBoardByTitle(board_title);
   }
   // 게시판 생성

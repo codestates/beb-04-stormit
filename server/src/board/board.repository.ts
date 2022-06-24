@@ -16,21 +16,10 @@ export class BoardRepository extends Repository<Board> {
       return found;
     }
   }
-  async getBoardByTitle(_board_title: string): Promise<Board> {
-    //     [”post_title”, “nickname”, “created_at, comment_count]
-    // * created_at 형식:0000년 00월 00일 00:00:00
-    // this.logger.debug(`getBoardByTitle () : ${_board_title}`);
+  async getBoardByTitle(_board_title: string): Promise<object> {
     const temp = await this.findOne(_board_title, {
       relations: ['contents'],
     });
-    this.logger.debug(`getBoardByTitle () : ${JSON.stringify(temp)}`);
-    const {
-      board_title,
-      contents: [{ post_title, post_content, created_at }],
-    } = await this.findOne(_board_title, {
-      relations: ['contents'],
-    });
-
     const en_month = {
       Jan: 1,
       Feb: 2,
@@ -55,9 +44,6 @@ export class BoardRepository extends Repository<Board> {
         const result_time = `${_day[3]}년${en_month[_day[1]]}월 ${
           _day[2]
         }일 ${hour}시 ${time[1]}분 ${time[2]}초`;
-
-        //2022-06-25T02:16:52.723Z
-
         const obj = {
           post_title: post_title,
           post_content: post_content,
@@ -66,13 +52,12 @@ export class BoardRepository extends Repository<Board> {
         return obj;
       },
     );
-    console.log(temp2);
-
-    return temp;
+    this.logger.debug(`getBoardByTitle () : ${JSON.stringify(temp2)}`);
+    return temp2;
   }
   async createBoard(createBoardDto: CreateBoardDto): Promise<Board> {
     const { board_title } = createBoardDto;
-    // this.logger.debug(`createBoard() : ${createBoardDto}`);
+
     const board = this.create({
       board_title,
     });
