@@ -6,6 +6,8 @@
 
 
 
+
+---
 ### 게시판 삭제하기
 method: DELETE
 URL: http://localhost:3000/board/1
