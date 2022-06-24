@@ -17,7 +17,7 @@ const Cover = styled.div`
   .createAccount-section {
     z-index: 999;
     position: absolute;
-    max-height: 24rem;
+    max-height: 30rem;
     max-width: 22rem;
     height: 100%;
     width: 100%;
@@ -48,6 +48,11 @@ const Cover = styled.div`
       display: flex;
       flex-direction: column;
       justify-content: center;
+      Input {
+        &:focus {
+          border: 1px solid ${palette.blue[500]};
+        }
+      }
       .submit {
         margin: 1.5rem 5rem;
         font-size: 1.2rem;
@@ -67,30 +72,96 @@ const Cover = styled.div`
   }
 `;
 
+const InputExplain = styled.span`
+  font-size: 0.8rem;
+  color: ${(props) => props.color};
+`;
+
 const CreateAccount: React.FC = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [nickname, setNickname] = useState("");
+  // input value를 담는 state
+  const [userinfo, setUserinfo] = useState({
+    email: "",
+    password: "",
+    nickname: "",
+  });
+
+  const [validate, setValidate] = useState({
+    email: false,
+    password: false,
+    nickname: false,
+  });
+
   const dispatch = useDispatch();
 
-  const onSetEmail = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setEmail(e.target.value);
-  };
+  // nickname 유효성 검사
+  // issue: 문자와 특수문자 조합시 그대로 유효성 통과됨.
+  function validateNickname(nickname: string) {
+    var re = /^(?=.*[a-zA-Z0-9ㄱ-ㅎㅏ-ㅣ가-힣]).{2,8}$/;
+    return re.test(nickname);
+  }
 
-  const onSetPassword = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setPassword(e.target.value);
-  };
+  // email 유효성 검사
+  // '@' 포함여부와 대문자,소문자를 구분하지않게 표현식끝에 i 사용
+  function validateEmail(email: string) {
+    var re =
+      /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
+    return re.test(email);
+  }
 
-  const onSetNickname = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setNickname(e.target.value);
-  };
+  // password 유효성 검사
+  // issue: 조건 충족시 문자 삽입해도 통과됨.
+  function validatePassword(password: string) {
+    var re = /^(?=.*\d)(?=.*[@$!%*#?&]).{6,20}$/;
+    return re.test(password);
+  }
 
+  // inputvaule 감지 및 state 전송 함수
+  const handleInputValue =
+    (key: string) => (e: React.ChangeEvent<HTMLInputElement>) => {
+      const value = e.target.value;
+      if (key == "email") {
+        if (validateEmail(value)) {
+          setValidate({ ...validate, [key]: true });
+        } else {
+          setValidate({ ...validate, [key]: false });
+        }
+      } else if (key == "nickname") {
+        if (validateNickname(value)) {
+          setValidate({ ...validate, [key]: true });
+        } else {
+          setValidate({ ...validate, [key]: false });
+        }
+      } else if (key == "password") {
+        if (validatePassword(value)) {
+          setValidate({ ...validate, [key]: true });
+        } else {
+          setValidate({ ...validate, [key]: false });
+        }
+      }
+      setUserinfo({ ...userinfo, [key]: value });
+    };
+
+  // 모달창 닫는 함수
   const onCreateAccountCloseBtn = () => {
     dispatch(modalActions.closeCreateAccountModal());
   };
 
+  // 가입하기 버튼 클릭
   const onClickCreateBtn = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
+    const { email, password, nickname } = userinfo;
+    if (!validateNickname(nickname)) {
+      alert("pls check your nickname");
+      return;
+    }
+    if (!validateEmail(email)) {
+      alert("pls check your email");
+      return;
+    }
+    if (!validatePassword(password)) {
+      alert("pls check your password");
+      return;
+    }
     const body = {
       username: email,
       password: password,
@@ -103,6 +174,7 @@ const CreateAccount: React.FC = () => {
     }
     onCreateAccountCloseBtn();
   };
+
   return (
     <Cover>
       <Dialog className="createAccount-section">
@@ -120,21 +192,27 @@ const CreateAccount: React.FC = () => {
           <Input
             type="text"
             placeholder="닉네임"
-            value={nickname}
-            onChange={onSetNickname}
+            onChange={handleInputValue("nickname")}
           />
+          <InputExplain color={validate.nickname ? "blue" : "tomato"}>
+            최소2자 최대8자, 특수문자 제외
+          </InputExplain>
           <Input
             type="text"
             placeholder="새 이메일"
-            value={email}
-            onChange={onSetEmail}
+            onChange={handleInputValue("email")}
           />
+          <InputExplain color={validate.email ? "blue" : "tomato"}>
+            올바른 이메일 주소를 입력하세요
+          </InputExplain>
           <Input
             type="password"
             placeholder="새 비밀번호"
-            value={password}
-            onChange={onSetPassword}
+            onChange={handleInputValue("password")}
           />
+          <InputExplain color={validate.password ? "blue" : "tomato"}>
+            최소6자 최대20자, 하나 이상의 특수문자 사용
+          </InputExplain>
           <Button className="submit" onClick={onClickCreateBtn}>
             가입하기
           </Button>
