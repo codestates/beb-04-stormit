@@ -54,12 +54,14 @@ JSON:
 	"board_id": "1"
 
 }
+```
 
 ---
 ### 게시물 수정
 method: PATCH
 URL: http://localhost:3000/board/post/1
 JSON:
+```
 {
 	"email" : "abcd112@naver.com",
 	"board_name": "spefkap1ㅈㄷㄹㄴㅇㅈㄷㄹㅈㄷㄹㄹㄴㅇㄹ23",
