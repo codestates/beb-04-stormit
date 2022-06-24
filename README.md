@@ -8,9 +8,11 @@ URL: http://localhost:3000/board/1
 method: POST
 URL: http://localhost:3000/board/
 JSON: 
+```
 {
 	"board_title" : "자유게시판"
 }
+```
 
 ---
 ### 게시판에 등록된 글 가져오기 
@@ -42,6 +44,7 @@ URL: http://localhost:3000/board/post/1
 method: POST
 URL: http://localhost:3000/board/post
 JSON:
+```
 {
 	"email" : "abcd112@naver.com",
 	"post_title": "31234",
@@ -63,4 +66,4 @@ JSON:
 	"post_name" : "gi",
 	"content":"내용임sss"
 }
-
+```
