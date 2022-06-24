@@ -8,6 +8,7 @@ import Select from "../components/common/Select";
 import Textarea from "../components/common/Textarea";
 import PostOptionCard from "../components/PostOptionCard";
 import { submitPostAPI } from "../lib/api/post";
+import { boardList } from "../lib/staticData";
 import { useSelector } from "../store";
 
 const Base = styled.div`
@@ -43,7 +44,7 @@ const Base = styled.div`
 `;
 
 const Post: React.FC = () => {
-  const [community, setCommunity] = useState("공지사항");
+  const [community, setCommunity] = useState(boardList[0]);
   const [title, setTitle] = useState("");
   const [contents, setContents] = useState("");
 
@@ -100,9 +101,11 @@ const Post: React.FC = () => {
     <Base>
       <p className="post-heading">새 글 등록</p>
       <Select value={community} onChange={onChangeCommunity}>
-        <option value="공지사항">공지사항</option>
-        <option value="커뮤니티">커뮤니티</option>
-        <option value="사는얘기">사는얘기</option>
+        {boardList.map((board, index) => (
+          <option key={index} value={board}>
+            {board}
+          </option>
+        ))}
       </Select>
       <Input placeholder="제목" value={title} onChange={onChangeTitle} />
       <PostOptionCard />

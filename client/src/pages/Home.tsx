@@ -11,7 +11,6 @@ import Button from "../components/common/Button";
 import { useSelector } from "../store";
 import MovetoPost from "../components/MovetoPost";
 import { getAllPostAPI } from "../lib/api/post";
-import LoadingSpinner from "../components/common/LoadingSpinner";
 import PersonIcon from "@mui/icons-material/Person";
 import { FAKE_ARRAY, parseDate, shortenPostContents } from "../lib/utils";
 import IconButton from "../components/common/IconButton";

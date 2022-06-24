@@ -14,6 +14,7 @@ import { snackbarActions } from "../store/snackbarSlice";
 // login API
 import { authenticateAPI, loginAPI } from "../lib/api/user";
 import { setCookie } from "../lib/utils";
+import Input from "../components/common/Input";
 
 const Base = styled.div`
   display: flex;
@@ -62,6 +63,10 @@ const LoginForm = styled.form`
     ::placeholder {
       color: ${palette.gray[300]};
     }
+  }
+
+  .validation-text {
+    color: ${palette.red[500]};
   }
 
   .login-btn {
@@ -117,17 +122,20 @@ const LoginForm = styled.form`
 `;
 
 const Login: React.FC = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("test@gmail.com");
+  const [password, setPassword] = useState("123123123");
+  const [validated, setValidated] = useState(true);
 
   const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
 
   // e: 이건 타입스크립트에서 event의 타입을 지정해주는것이다.
   const onChangeEmail = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setValidated(true);
     setEmail(e.target.value);
   };
 
   const onChangePassword = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setValidated(true);
     setPassword(e.target.value);
   };
   // 계정생성 클릭 시 모달창 생성
@@ -153,10 +161,9 @@ const Login: React.FC = () => {
 
       const { accessToken } = loginAPIResponse.data;
 
-      // 실패하면 UI 피드백
-      if (loginAPIResponse.status !== 201) return;
-
       setCookie("access_token", accessToken);
+
+      if (loginAPIResponse.status !== 201) return;
 
       const authAPIResponse = await authenticateAPI(accessToken);
 
@@ -182,7 +189,7 @@ const Login: React.FC = () => {
       dispatch(snackbarActions.openLoginSnackbar());
       navigate("/");
     } catch (error) {
-      console.log(error);
+      setValidated(false);
     }
   };
 
@@ -197,20 +204,23 @@ const Login: React.FC = () => {
     <Base className={createAccountOpen ? "Backdrop" : ""}>
       <Logo className={createAccountOpen ? "Backlogo" : ""}>Stormit</Logo>
       <LoginForm className={createAccountOpen ? "BackForm" : ""}>
-        <input
-          className="inputBox"
+        <Input
           type="text"
           placeholder="이메일"
           value={email}
           onChange={onChangeEmail}
         />
-        <input
-          className="inputBox"
+        <Input
           type="password"
           placeholder="비밀번호"
           value={password}
           onChange={onChangePassword}
         />
+        {!validated && (
+          <p className="validation-text">
+            이메일 또는 비밀번호가 잘못되었습니다.
+          </p>
+        )}
         <button className="login-btn" onClick={onClickLoginButton}>
           로그인
         </button>

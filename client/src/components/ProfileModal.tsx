@@ -88,6 +88,7 @@ const Base = styled.div`
 const ProfileModal: React.FC = () => {
   const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
   const isDarkMode = useSelector((state) => state.theme.isDarkMode);
+  const nickname = useSelector((state) => state.user.nickname);
 
   const navigate = useNavigate();
 
@@ -155,7 +156,7 @@ const ProfileModal: React.FC = () => {
               src="/profile-image.png"
               alt=""
             />
-            <div className="profile-modal-username">스톰잇닉네임</div>
+            <div className="profile-modal-username">{nickname}</div>
           </div>
           <Divider />
           <div className="profile-modal-item" onClick={onClickMyPageButton}>

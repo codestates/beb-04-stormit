@@ -36,8 +36,6 @@ const App: React.FC = () => {
   document.cookie = "test=123";
   document.cookie = "test2=456";
 
-  const cookies = parseCookie(document.cookie);
-
   const dispatch = useDispatch();
 
   if (localStorage.getItem("darkMode") === "on") {
@@ -51,10 +49,12 @@ const App: React.FC = () => {
   // 새로고침 시 로그인
   useEffect(() => {
     const authenticate = async () => {
-      if (!cookies.access_token) return;
+      const accessToken = parseCookie(document.cookie).access_token;
+
+      if (!accessToken) return;
 
       try {
-        const response = await authenticateAPI(cookies.access_token);
+        const response = await authenticateAPI(accessToken);
 
         if (response.status !== 200) return;
 
@@ -83,7 +83,7 @@ const App: React.FC = () => {
     };
 
     authenticate();
-  }, [cookies, dispatch]);
+  }, [dispatch]);
 
   return (
     <ThemeProvider theme={isDarkMode ? darkTheme : theme}>

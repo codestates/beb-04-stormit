@@ -41,26 +41,31 @@ const Communities: React.FC = () => {
       <section className="contents">
         <h1 className="communities-title">전체 커뮤니티</h1>
         <CommunityCard
-          title="리그 오브 레전드"
+          title="블록체인"
           description="커뮤니티에 대한 설명을 적어주세요."
           image="/profile-image.png"
         />
         <Divider />
         <CommunityCard
-          title="비트코인"
+          title="웹개발"
           description="커뮤니티에 대한 설명을 적어주세요."
           image="/profile-image.png"
         />
         <Divider />
         <CommunityCard
-          title="유머"
+          title="BEB"
           description="커뮤니티에 대한 설명을 적어주세요"
           image="/profile-image.png"
         />
         <Divider />
         <CommunityCard
-          title="해외축구"
-          description="커뮤니티에 대한 설명을 적어주세요."
+          title="비트코인"
+          description="커뮤니티에 대한 설명을 적어주세요.커뮤니티에 대한 설명을 적어주세요.커뮤니티에 대한 설명을 적어주세요.커뮤니티에 대한 설명을 적어주세요."
+          image="/profile-image.png"
+        />
+        <CommunityCard
+          title="Q&amp;A"
+          description="커뮤니티에 대한 설명을 적어주세요.커뮤니티에 대한 설명을 적어주세요.커뮤니티에 대한 설명을 적어주세요.커뮤니티에 대한 설명을 적어주세요."
           image="/profile-image.png"
         />
       </section>
