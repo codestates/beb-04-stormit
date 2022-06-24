@@ -12,6 +12,7 @@ import { modalActions } from "../store/modalSlice";
 import { userActions } from "../store/userSlice";
 import PersonIcon from "@mui/icons-material/Person";
 import SettingsIcon from "@mui/icons-material/Settings";
+import { removeCookie } from "../lib/utils";
 
 const Base = styled.div`
   position: absolute;
@@ -129,6 +130,7 @@ const ProfileModal: React.FC = () => {
   const onClickLogOutButton = () => {
     closeModal();
     dispatch(userActions.setLoggedOut());
+    removeCookie("access_token");
     navigate("/");
   };
 

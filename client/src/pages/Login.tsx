@@ -13,6 +13,7 @@ import { useNavigate } from "react-router-dom";
 import { snackbarActions } from "../store/snackbarSlice";
 // login API
 import { authenticateAPI, loginAPI } from "../lib/api/user";
+import { setCookie } from "../lib/utils";
 
 const Base = styled.div`
   display: flex;
@@ -155,7 +156,7 @@ const Login: React.FC = () => {
       // 실패하면 UI 피드백
       if (loginAPIResponse.status !== 201) return;
 
-      document.cookie = `access_token=${accessToken}`;
+      setCookie("access_token", accessToken);
 
       const authAPIResponse = await authenticateAPI(accessToken);
 

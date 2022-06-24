@@ -58,3 +58,13 @@ export const parseCookie = (cookieString: string) => {
 
   return cookieObject;
 };
+
+// 쿠키를 설정합니다 - nonon
+export const setCookie = (cookie: string, value: string) => {
+  document.cookie = `${cookie}=${value}`;
+};
+
+// 쿠키를 제거합니다 - nonon
+export const removeCookie = (cookie: string) => {
+  document.cookie = `${cookie}=; expires=Thu, 01 Jan 1999 00:00:10 GMT;`;
+};
