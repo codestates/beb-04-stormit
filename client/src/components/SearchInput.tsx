@@ -4,6 +4,7 @@ import SearchIcon from "@mui/icons-material/Search";
 import CloseIcon from "@mui/icons-material/Close";
 import { useDispatch } from "../store";
 import { modalActions } from "../store/modalSlice";
+import { useOutsideClick } from "../hooks/useOutsideClick";
 
 const Base = styled.div`
   display: flex;
@@ -18,6 +19,8 @@ const Base = styled.div`
   width: 100%;
   height: 3.5rem; // 56px
   color: black;
+
+  z-index: 999;
 
   .search-input-left {
     display: flex;
@@ -49,6 +52,7 @@ const SearchInput: React.FC = () => {
   };
 
   const inputRef = useRef<HTMLInputElement | null>(null);
+  const inputModalRef = useRef<HTMLDivElement | null>(null);
 
   const onEnter = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === "Enter") {
@@ -60,8 +64,10 @@ const SearchInput: React.FC = () => {
     inputRef.current?.focus();
   }, []);
 
+  useOutsideClick(inputModalRef, closeSearchInputModal);
+
   return (
-    <Base onKeyDown={onEnter}>
+    <Base onKeyDown={onEnter} ref={inputModalRef}>
       <div className="search-input-left">
         <SearchIcon />
         <input

@@ -69,7 +69,6 @@ const Base = styled.div<BaseProps>`
     width: 2rem; // 32px
     height: 2rem; // 32px
     border-radius: 50%;
-    background-color: ${palette.gray[300]};
   }
 
   .post-detail-author-name {
@@ -240,7 +239,7 @@ const PostDetail: React.FC = () => {
           post_content,
           nickname,
           created_at,
-          board_name,
+          board_title,
           comments,
         } = response.data;
 
@@ -249,7 +248,7 @@ const PostDetail: React.FC = () => {
           postContents: post_content,
           nickname: nickname,
           createdAt: created_at,
-          community: board_name,
+          community: board_title,
         });
 
         comments.map((comment) =>
@@ -269,7 +268,7 @@ const PostDetail: React.FC = () => {
     };
 
     fetchPost();
-  }, [postId]);
+  }, [postId, navigate]);
 
   return (
     <Base vote={vote}>
@@ -284,7 +283,11 @@ const PostDetail: React.FC = () => {
           </p>
           <div className="post-detail-metadata">
             <div className="post-detail-metadata-left-area">
-              <div className="post-detail-author-profile-image" />
+              <img
+                className="post-detail-author-profile-image"
+                src="/profile-image.png"
+                alt=""
+              />
               <span className="post-detail-author-name">
                 {postData.nickname || "노논"}
               </span>

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import Button from "../components/common/Button";
@@ -8,14 +8,14 @@ import Select from "../components/common/Select";
 import Textarea from "../components/common/Textarea";
 import PostOptionCard from "../components/PostOptionCard";
 import { submitPostAPI } from "../lib/api/post";
+import { boardList } from "../lib/staticData";
+import { translateCommunityName } from "../lib/utils";
 import { useSelector } from "../store";
 
 const Base = styled.div`
   display: flex;
   flex-direction: column;
   gap: 1rem; // 16px
-
-  height: 100vh;
   margin: 2rem 1rem; // 32px 16px
 
   .post-heading {
@@ -43,11 +43,14 @@ const Base = styled.div`
 `;
 
 const Post: React.FC = () => {
-  const [community, setCommunity] = useState("공지사항");
+  const [community, setCommunity] = useState(boardList[0]);
   const [title, setTitle] = useState("");
   const [contents, setContents] = useState("");
 
   const email = useSelector((state) => state.user.email);
+  const currentCommunity = useSelector(
+    (state) => state.community.currentCommunity
+  );
 
   const navigate = useNavigate();
 
@@ -68,11 +71,17 @@ const Post: React.FC = () => {
   };
 
   const onClickSubmitButton = async () => {
+    // 밸리데이션 피드백
+    if (!(title && contents)) {
+      alert("필수 항목을 입력해주세요");
+      return;
+    }
+
     const body = {
-      email: email,
+      username: email,
       post_content: contents,
       post_title: title,
-      board_name: community,
+      board_title: community,
     };
 
     try {
@@ -83,13 +92,20 @@ const Post: React.FC = () => {
     }
   };
 
+  // 특정 게시판에서 글쓰기를 누르면 해당하는 게시판이 초기값으로 선택되도록 합니다
+  useEffect(() => {
+    if (currentCommunity) setCommunity(currentCommunity);
+  }, [currentCommunity]);
+
   return (
     <Base>
       <p className="post-heading">새 글 등록</p>
       <Select value={community} onChange={onChangeCommunity}>
-        <option value="공지사항">공지사항</option>
-        <option value="커뮤니티">커뮤니티</option>
-        <option value="사는얘기">사는얘기</option>
+        {boardList.map((board, index) => (
+          <option key={index} value={board}>
+            {translateCommunityName(board)}
+          </option>
+        ))}
       </Select>
       <Input placeholder="제목" value={title} onChange={onChangeTitle} />
       <PostOptionCard />
@@ -103,10 +119,6 @@ const Post: React.FC = () => {
         <Chip>Tag</Chip>
         <Chip>Community</Chip>
         <Chip>Long Community Name</Chip>
-        <Chip>Random</Chip>
-        <Chip>Select</Chip>
-        <Chip>One</Chip>
-        <Chip>Community</Chip>
       </div>
       <div className="post-button-wrapper">
         <Button variant="outlined" onClick={onClickCancelButton}>

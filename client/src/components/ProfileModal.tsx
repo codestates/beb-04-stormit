@@ -1,10 +1,10 @@
 import { Divider } from "@mui/material";
-import React from "react";
+import React, { useRef } from "react";
 import styled from "styled-components";
 import palette from "../styles/palette";
 import LogoutIcon from "@mui/icons-material/Logout";
 import { useDispatch, useSelector } from "../store";
-import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import DarkModeIcon from "@mui/icons-material/DarkMode";
 import ToggleButton from "./common/ToggleButton";
 import { themeActions } from "../store/themeSlice";
@@ -12,12 +12,16 @@ import { modalActions } from "../store/modalSlice";
 import { userActions } from "../store/userSlice";
 import PersonIcon from "@mui/icons-material/Person";
 import SettingsIcon from "@mui/icons-material/Settings";
+import { removeCookie } from "../lib/utils";
+import { useOutsideClick } from "../hooks/useOutsideClick";
+import { logoutAPI } from "../lib/api/user";
 
 const Base = styled.div`
   position: absolute;
   width: 16rem; // 256px
   top: 3.5rem; // 56px // 헤더의 높이만큼 아래로
   right: 0;
+  min-height: 40rem; // 640px
   height: calc(100vh - 3.5rem); // top이 3.5rem이기 때문에
   background-color: white;
   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1), 0px 16px 32px rgba(0, 0, 0, 0.2);
@@ -36,7 +40,6 @@ const Base = styled.div`
   .profile-modal-image {
     width: 6.25rem; // 100px
     height: 6.25rem; // 100px
-    background-color: ${palette.gray[200]};
     border-radius: 50%;
   }
 
@@ -88,10 +91,11 @@ const Base = styled.div`
 const ProfileModal: React.FC = () => {
   const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
   const isDarkMode = useSelector((state) => state.theme.isDarkMode);
-
-  const navigate = useNavigate();
+  const nickname = useSelector((state) => state.user.nickname);
 
   const dispatch = useDispatch();
+
+  const modalRef = useRef<HTMLDivElement | null>(null);
 
   const toggleDarkMode = () => {
     dispatch(themeActions.toggleDarkMode());
@@ -107,61 +111,60 @@ const ProfileModal: React.FC = () => {
     dispatch(modalActions.closeAllModal());
   };
 
-  const onClickMyPageButton = () => {
-    closeModal();
-    navigate("/mypage");
+  const onClickLogOutButton = async () => {
+    try {
+      await logoutAPI();
+      closeModal();
+      dispatch(userActions.setLoggedOut());
+      removeCookie("access_token");
+    } catch (error) {
+      console.log(error);
+    }
   };
 
-  const onClickAccountButton = () => {
-    closeModal();
-    navigate("/account");
-  };
-
-  const onClickLoginButton = () => {
-    closeModal();
-    navigate("/login");
-  };
-
-  const onClickSignUpButton = () => {
-    closeModal();
-    navigate("/signup");
-  };
-
-  const onClickLogOutButton = () => {
-    closeModal();
-    dispatch(userActions.setLoggedOut());
-    navigate("/");
-  };
+  useOutsideClick(modalRef, () => dispatch(modalActions.closeProfileModal()));
 
   return (
-    <Base>
+    <Base ref={modalRef}>
       {!isLoggedIn && (
         <>
-          <div className="profile-modal-item" onClick={onClickLoginButton}>
-            로그인
-          </div>
+          <Link to="/login">
+            <div className="profile-modal-item" onClick={closeModal}>
+              로그인
+            </div>
+          </Link>
           <Divider />
-          <div className="profile-modal-item" onClick={onClickSignUpButton}>
-            회원가입
-          </div>
+          <Link to="/agreement">
+            <div className="profile-modal-item" onClick={closeModal}>
+              회원가입
+            </div>
+          </Link>
         </>
       )}
       {isLoggedIn && (
         <>
           <div className="profile-modal-image-wrapper">
-            <div className="profile-modal-image" />
-            <div className="profile-modal-username">스톰잇닉네임</div>
+            <img
+              className="profile-modal-image"
+              src="/profile-image.png"
+              alt=""
+            />
+            <div className="profile-modal-username">{nickname}</div>
           </div>
           <Divider />
-          <div className="profile-modal-item" onClick={onClickMyPageButton}>
-            <PersonIcon />
-            마이페이지
-          </div>
+          <Link to="/mypage">
+            <div className="profile-modal-item" onClick={closeModal}>
+              <PersonIcon />
+              마이페이지
+            </div>
+          </Link>
           <Divider />
-          <div className="profile-modal-item" onClick={onClickAccountButton}>
-            <SettingsIcon />
-            개인정보 설정
-          </div>
+          <Link to="/account">
+            <div className="profile-modal-item" onClick={closeModal}>
+              <SettingsIcon />
+              개인정보 설정
+            </div>
+          </Link>
           <Divider />
           <div className="profile-modal-item" onClick={onClickLogOutButton}>
             <LogoutIcon />

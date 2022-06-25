@@ -1,5 +1,0 @@
-db:
-  host: 'localhost'
-  username: 'root'
-  password: '0410'
-  synchronize: true

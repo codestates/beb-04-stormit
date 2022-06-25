@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import IconButton from "../components/common/IconButton";
 import CommunityPostCard from "../components/CommunityPostCard";
@@ -8,10 +8,11 @@ import palette from "../styles/palette";
 import EditIcon from "@mui/icons-material/Edit";
 import Input from "../components/common/Input";
 import { updateNameAPI } from "../lib/api/user";
-import { useSelector } from "../store";
+import { useDispatch, useSelector } from "../store";
 import CheckIcon from "@mui/icons-material/Check";
 import CloseIcon from "@mui/icons-material/Close";
-import { useNavigate } from "react-router-dom";
+import CameraAltIcon from "@mui/icons-material/CameraAlt";
+import { userActions } from "../store/userSlice";
 
 const Base = styled.div`
   display: flex;
@@ -41,15 +42,36 @@ const Base = styled.div`
     gap: 1rem; // 16px
   }
 
-  .profile-image {
+  .profile-image-wrapper {
     position: absolute;
-    width: 8rem;
-    height: 8rem;
     top: 7rem;
     left: 2rem;
-
+    width: 8rem;
+    height: 8rem;
     border-radius: 50%;
-    background-color: ${palette.gray[300]};
+    cursor: pointer;
+
+    &:hover {
+      opacity: 0.7;
+
+      .profile-image-edit-button {
+        display: block;
+      }
+    }
+  }
+
+  .profile-image {
+    border-radius: 50%;
+    width: 100%;
+    height: 100%;
+  }
+
+  .profile-image-edit-button {
+    color: ${palette.gray[900]};
+    position: absolute;
+    top: 3.7rem;
+    left: 3.3rem;
+    display: none;
   }
 
   .contents {
@@ -106,11 +128,9 @@ const Mypage: React.FC = () => {
   const [input, setInput] = useState("");
   const [editMode, setEditMode] = useState(false);
 
-  const email = useSelector((state) => state.user.email);
-  const user_id = useSelector((state) => state.user.userId);
-  const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
+  const nickname = useSelector((state) => state.user.nickname);
 
-  const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const onChangeInput = (event: React.ChangeEvent<HTMLInputElement>) => {
     setInput(event.target.value);
@@ -120,35 +140,41 @@ const Mypage: React.FC = () => {
     setEditMode(true);
   };
 
-  const onClickSubmitButton = async () => {
-    const body = { nickname: input, user_id: user_id };
+  const submitNickname = async () => {
+    const body = { nickname: input };
 
     try {
-      await updateNameAPI(email, body);
+      await updateNameAPI(body);
+      setEditMode(false);
+      dispatch(userActions.setNickname(input));
     } catch (error) {
       console.log(error);
     }
   };
 
-  // 로그인 되어있지 않으면 로그인 페이지로 이동함
-  useEffect(() => {
-    if (!isLoggedIn) {
-      navigate("/login");
-    }
-  }, [isLoggedIn, navigate]);
+  const onEnterNickname = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === "Enter") submitNickname();
+  };
+
+  const onClickProfileImage = () => {
+    alert("현재 프로필 변경은 지원하지 않습니다.");
+  };
 
   return (
     <Base>
       <NavigationRail className="navigation-rail" />
       <section className="contents">
         <div className="profile-legend">
-          <div className="profile-image" />
+          <div className="profile-image-wrapper" onClick={onClickProfileImage}>
+            <img className="profile-image" src="/profile-image.png" alt="" />
+            <CameraAltIcon className="profile-image-edit-button" />
+          </div>
         </div>
         <div className="contents-area">
           <div className="profile-nickname-wrapper">
             {!editMode && (
               <>
-                <p className="profile-nickname">스톰잇닉네임</p>
+                <p className="profile-nickname">{nickname}</p>
                 <IconButton>
                   <EditIcon onClick={onClickEditButton} />
                 </IconButton>
@@ -160,8 +186,9 @@ const Mypage: React.FC = () => {
                   className="profile-nickname-input"
                   value={input}
                   onChange={onChangeInput}
+                  onKeyDown={onEnterNickname}
                 />
-                <IconButton variant="contained" onClick={onClickSubmitButton}>
+                <IconButton variant="contained" onClick={submitNickname}>
                   <CheckIcon />
                 </IconButton>
                 <IconButton onClick={() => setEditMode(false)}>

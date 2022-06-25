@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
-import CommentCard from "../components/CommentCard";
+import Button from "../components/common/Button";
+import Tooltip from "../components/common/Tooltip";
 
 const Base = styled.section`
   display: flex;
@@ -20,30 +21,9 @@ const Base = styled.section`
 const Test: React.FC = () => {
   return (
     <Base>
-      <CommentCard
-        nickname="노논"
-        createdAt="0000년 00월 00일 00:00:00"
-        commentContents="댓글 아무거나 입력해"
-        commentId={2}
-      />
-      <CommentCard
-        nickname="노논"
-        createdAt="0000년 00월 00일 00:00:00"
-        commentContents="댓글 아무거나 입력해"
-        commentId={2}
-      />
-      <CommentCard
-        nickname="노논"
-        createdAt="0000년 00월 00일 00:00:00"
-        commentContents="댓글 아무거나 입력해"
-        commentId={2}
-      />
-      <CommentCard
-        nickname="노논"
-        createdAt="0000년 00월 00일 00:00:00"
-        commentContents="댓글 아무거나 입력해"
-        commentId={2}
-      />
+      <Tooltip text="커뮤니티">
+        <Button>버튼</Button>
+      </Tooltip>
     </Base>
   );
 };

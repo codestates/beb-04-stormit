@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import NavigationRail from "../components/NavigationRail";
-import { useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import {
+  FAKE_ARRAY,
   getLastPathname,
   parseDate,
   translateCommunityName,
@@ -10,10 +11,12 @@ import {
 import Pagination from "../components/Pagination";
 import Button from "../components/common/Button";
 import CommunityPostCard from "../components/CommunityPostCard";
-import { getAllPostAPI } from "../lib/api/post";
+import { getAllPostAPI, getPostsByBoardAPI } from "../lib/api/post";
 import Input from "../components/common/Input";
 import IconButton from "../components/common/IconButton";
 import SearchIcon from "@mui/icons-material/Search";
+import { useDispatch } from "../store";
+import { communityActions } from "../store/communitySlice";
 
 const Base = styled.div`
   display: flex;
@@ -52,6 +55,7 @@ const Base = styled.div`
     display: flex;
     justify-content: center;
     gap: 0.5rem; // 8px
+    margin-bottom: 2rem; // 32px
   }
 
   .community-search-input {
@@ -76,18 +80,19 @@ const Base = styled.div`
 `;
 
 const Community: React.FC = () => {
-  const [postList, setPostList] = useState<GetAllPostsResponseType>([]);
+  const [postList, setPostList] = useState<GetPostsByBoardResponseType>([]);
+
+  const dispatch = useDispatch();
 
   const location = useLocation();
-
-  const navigate = useNavigate();
 
   const communityName = getLastPathname(location.pathname);
 
   useEffect(() => {
     const fetchPosts = async () => {
       try {
-        const response = await getAllPostAPI();
+        const body = { board_title: communityName };
+        const response = await getPostsByBoardAPI(body);
         setPostList(response.data);
       } catch (error) {
         console.log(error);
@@ -95,7 +100,11 @@ const Community: React.FC = () => {
     };
 
     fetchPosts();
-  }, []);
+  }, [communityName]);
+
+  useEffect(() => {
+    dispatch(communityActions.setCurrentCommunity(communityName));
+  }, [communityName, dispatch]);
 
   return (
     <Base>
@@ -106,9 +115,9 @@ const Community: React.FC = () => {
             <p className="community-title">
               {translateCommunityName(communityName)}
             </p>
-            <Button variant="contained" onClick={() => navigate("/post")}>
-              글쓰기
-            </Button>
+            <Link to="/post">
+              <Button variant="contained">글쓰기</Button>
+            </Link>
           </div>
         </div>
         <ul className="posts-wrapper">
@@ -121,34 +130,16 @@ const Community: React.FC = () => {
               createdAt={post.created_at}
             />
           ))}
-          <CommunityPostCard
-            postId={1}
-            title="랜덤 게시물"
-            commentCount={3}
-            nickname="닉네임"
-            createdAt={parseDate(new Date())}
-          />
-          <CommunityPostCard
-            postId={1}
-            title="랜덤 게시물"
-            commentCount={3}
-            nickname="닉네임"
-            createdAt={parseDate(new Date())}
-          />
-          <CommunityPostCard
-            postId={1}
-            title="랜덤 게시물"
-            commentCount={3}
-            nickname="닉네임"
-            createdAt={parseDate(new Date())}
-          />
-          <CommunityPostCard
-            postId={1}
-            title="랜덤 게시물"
-            commentCount={3}
-            nickname="닉네임"
-            createdAt={parseDate(new Date())}
-          />
+          {FAKE_ARRAY.map((_, index) => (
+            <CommunityPostCard
+              key={index}
+              postId={1}
+              title="랜덤 게시물"
+              commentCount={3}
+              nickname="닉네임"
+              createdAt={parseDate(new Date())}
+            />
+          ))}
         </ul>
         <div className="pagination-wrapper">
           <Pagination />

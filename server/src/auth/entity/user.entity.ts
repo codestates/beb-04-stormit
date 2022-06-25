@@ -1,23 +1,24 @@
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { Exclude } from 'class-transformer';
 import { Content } from 'src/content/entity/content.entity';
-import {
-  BaseEntity,
-  Column,
-  Entity,
-  OneToMany,
-  PrimaryGeneratedColumn,
-} from 'typeorm';
-
 @Entity('user')
-export class User extends BaseEntity {
+export class User {
   @PrimaryGeneratedColumn()
-  id: number;
+  user_id: number;
 
   @Column()
   username: string;
 
+  @OneToMany(() => Content, (content) => content.user)
+  contents: Content[];
+
   @Column()
   password: string;
 
-  @OneToMany(() => Content, (content) => content.user)
-  contents: Content[];
+  @Column()
+  nickname?: string;
+
+  @Column({ nullable: true })
+  @Exclude({ toPlainOnly: true })
+  hashedRt?: string;
 }

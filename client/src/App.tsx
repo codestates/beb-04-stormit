@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Route, Routes } from "react-router-dom";
 import Home from "./pages/Home";
 import Test from "./pages/Test";
@@ -19,21 +19,26 @@ import { darkTheme, theme } from "./styles/theme";
 import { themeActions } from "./store/themeSlice";
 import Snackbar from "./components/common/Snackbar";
 import { snackbarActions } from "./store/snackbarSlice";
+import Agreement from "./pages/Agreement";
+import Communities from "./pages/Communities";
+import { authenticateAPI } from "./lib/api/user";
+import { userActions } from "./store/userSlice";
+import { parseCookie } from "./lib/utils";
+import ErrorPage from "./pages/404";
+import DeletedPost from "./pages/DeletedPost";
+import SignUp from "./pages/SignUp";
 
 const App: React.FC = () => {
+  console.log("@@@ app render @@@");
   const menuModalOpen = useSelector((state) => state.modal.menuModalOpen);
   const profileModalOpen = useSelector((state) => state.modal.profileModalOpen);
   const isDarkMode = useSelector((state) => state.theme.isDarkMode);
   const loginSnackbarOpen = useSelector(
     (state) => state.snackbar.loginSnackbarOpen
   );
+  const userId = useSelector((state) => state.user.userId);
 
   const dispatch = useDispatch();
-
-  document.cookie = "test=123";
-  document.cookie = "test2=2222";
-
-  console.log(document.cookie);
 
   if (localStorage.getItem("darkMode") === "on") {
     dispatch(themeActions.setDarkMode(true));
@@ -42,6 +47,41 @@ const App: React.FC = () => {
   const closeLoginSnackbar = () => {
     dispatch(snackbarActions.closeLoginSnackbar());
   };
+
+  // 새로고침 시 로그인
+  useEffect(() => {
+    const authenticate = async () => {
+      const accessToken = parseCookie(document.cookie).access_token;
+
+      try {
+        const response = await authenticateAPI(accessToken);
+
+        // interceptor가 트리거되는 시점
+
+        console.log("@@@ authenticate API response @@@");
+        console.log(response);
+
+        // userId가 클라이언트에 저장되는 시점
+        const { user_id: userId, username: email, nickname } = response.data;
+
+        dispatch(userActions.setLoggedIn());
+
+        dispatch(
+          userActions.setUserInfo({
+            email: email,
+            nickname: nickname,
+            userId: userId,
+          })
+        );
+
+        console.log("logged in");
+      } catch (error: any) {
+        dispatch(userActions.setLoggedOut());
+      }
+    };
+
+    authenticate();
+  }, [dispatch, userId]);
 
   return (
     <ThemeProvider theme={isDarkMode ? darkTheme : theme}>
@@ -64,11 +104,16 @@ const App: React.FC = () => {
         <Route path="/test" element={<Test />} />
         <Route path="/mypage" element={<MyPage />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<SignUp />} />
         <Route path="/account" element={<Account />} />
         <Route path="/post" element={<Post />} />
+        <Route path="/agreement" element={<Agreement />} />
         <Route path="/community/:name" element={<Community />} />
         <Route path="/post/:id" element={<PostDetail />} />
         <Route path="/edit/:id" element={<Edit />} />
+        <Route path="/communities" element={<Communities />} />
+        <Route path="/deleted" element={<DeletedPost />} />
+        <Route path="/*" element={<ErrorPage />} />
       </Routes>
     </ThemeProvider>
   );

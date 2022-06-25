@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import Button from "../components/common/Button";
@@ -8,6 +8,7 @@ import { updatePasswordAPI, withdrawalAPI } from "../lib/api/user";
 import { useDispatch, useSelector } from "../store";
 import { userActions } from "../store/userSlice";
 import palette from "../styles/palette";
+import ErrorIcon from "@mui/icons-material/Error";
 
 const Base = styled.div`
   display: flex;
@@ -57,57 +58,74 @@ const Base = styled.div`
     cursor: pointer;
   }
 
+  .password-error-message {
+    font-size: 0.875rem;
+    color: ${palette.red[500]};
+  }
+
+  .password-input-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 1rem; // 16px
+  }
+
+  .password-error-icon {
+    color: ${palette.red[500]};
+  }
+
   // 600px
   @media screen and (min-width: 37.5rem) {
     margin: 1rem auto;
     max-width: 37.5rem; // 600px
   }
-
-  // 1240px
-  @media screen and (min-width: 77.5rem) {
-    max-width: 25rem; // 400px
-  }
 `;
 
 const Account: React.FC = () => {
-  const [password, setPassword] = useState("");
-  const [passwordConfirm, setPasswordConfirm] = useState("");
+  const [currentPassword, setCurrentPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [passwordError, setPasswordError] = useState(false);
+  const [newPasswordValid, setNewPasswordValid] = useState(true);
 
-  const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
   const email = useSelector((state) => state.user.email);
   const userId = useSelector((state) => state.user.userId);
-  const passwordHash = useSelector((state) => state.user.passwordHash);
 
   const navigate = useNavigate();
 
   const dispatch = useDispatch();
 
-  const onChangePassword = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setPassword(event.target.value);
+  const validateNewPassword = (password: string) => {
+    const regExp = /^(?=.*[a-z])(?=.*[$@!%*#?&])[a-z0-9$@!%*#?&]{8,20}$/;
+    setNewPasswordValid(regExp.test(password));
   };
 
-  const onChangePasswordConfirm = (
+  const onChangeCurrentPassword = (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
-    setPasswordConfirm(event.target.value);
+    setCurrentPassword(event.target.value);
+  };
+
+  const onChangeNewPassword = (event: React.ChangeEvent<HTMLInputElement>) => {
+    validateNewPassword(event.target.value);
+    setNewPassword(event.target.value);
   };
 
   const onClickSubmit = async () => {
-    // 밸리데이션 로직 작성 필요
-
     const body = {
       user_id: userId,
-      current_password: passwordHash,
-      new_password: password,
+      current_password: currentPassword,
+      new_password: newPassword,
     };
 
     try {
-      await updatePasswordAPI(email, body);
+      await updatePasswordAPI(body);
+
+      setCurrentPassword("");
+      setNewPassword("");
+      alert("변경되었습니다.");
     } catch (error) {
       console.log(error);
+      setPasswordError(true);
     }
-
-    navigate("/");
   };
 
   const onClickWithdrawalButton = async () => {
@@ -115,7 +133,8 @@ const Account: React.FC = () => {
       window.confirm("한 번 탈퇴하면 되돌릴 수 없습니다. 탈퇴하시겠습니까?")
     ) {
       try {
-        await withdrawalAPI(email);
+        const response = await withdrawalAPI();
+        console.log(response);
         dispatch(userActions.setLoggedOut());
         navigate("/");
       } catch (error) {
@@ -123,13 +142,6 @@ const Account: React.FC = () => {
       }
     }
   };
-
-  // 로그인 되어있지 않으면 로그인 페이지로 이동함
-  useEffect(() => {
-    if (!isLoggedIn) {
-      navigate("/login");
-    }
-  }, [isLoggedIn, navigate]);
 
   return (
     <Base>
@@ -148,18 +160,34 @@ const Account: React.FC = () => {
             anewafkv-ajfnzkvkx1123-dffnwkfsd-sfwefl
           </span>
         </div>
-        <label className="password-label">비밀번호 변경</label>
+        <label className="password-label">현재 비밀번호</label>
+        <div className="password-input-wrapper">
+          <Input
+            type="password"
+            placeholder="현재 비밀번호를 입력해주세요"
+            value={currentPassword}
+            onChange={onChangeCurrentPassword}
+            validated={!passwordError}
+            width="100%"
+          />
+          {passwordError && <ErrorIcon className="password-error-icon" />}
+        </div>
+        {passwordError && (
+          <p className="password-error-message">비밀번호가 잘못되었습니다.</p>
+        )}
+        <label className="password-label">변경할 비밀번호</label>
         <Input
-          placeholder="변경할 비밀번호"
-          value={password}
-          onChange={onChangePassword}
+          type="password"
+          placeholder="변경할 비밀번호를 입력해주세요"
+          value={newPassword}
+          onChange={onChangeNewPassword}
+          validated={newPasswordValid}
         />
-        <label className="password-label">비밀번호 확인</label>
-        <Input
-          placeholder="한번 더 입력해주세요"
-          value={passwordConfirm}
-          onChange={onChangePasswordConfirm}
-        />
+        {!newPasswordValid && (
+          <p className="password-error-message">
+            비밀번호는 8~20자 이내이고, 하나 이상의 특수문자를 포함해야 합니다.
+          </p>
+        )}
         <div className="account-button-wrapper">
           <Button variant="contained" onClick={onClickSubmit}>
             저장하기

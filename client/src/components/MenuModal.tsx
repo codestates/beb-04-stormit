@@ -1,6 +1,7 @@
-import React from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useRef } from "react";
+import { Link } from "react-router-dom";
 import styled from "styled-components";
+import { useOutsideClick } from "../hooks/useOutsideClick";
 import { useDispatch } from "../store";
 import { modalActions } from "../store/modalSlice";
 import palette from "../styles/palette";
@@ -22,6 +23,7 @@ const Base = styled.div`
     gap: 0.5rem;
 
     padding: 1rem;
+    cursor: pointer;
 
     .menu-modal-title {
       font-size: 1.25rem; // 20px
@@ -47,25 +49,37 @@ const Base = styled.div`
 const MenuModal: React.FC = () => {
   const dispatch = useDispatch();
 
-  const navigate = useNavigate();
+  const modalRef = useRef<HTMLDivElement | null>(null);
 
-  // 페이지 이동 후 모달을 닫습니다
-  const moveTo = (url: string) => {
-    navigate(url);
-    dispatch(modalActions.closeAllModal());
+  const closeMenuModal = () => {
+    dispatch(modalActions.closeMenuModal());
   };
 
+  useOutsideClick(modalRef, closeMenuModal);
+
   return (
-    <Base>
-      <div className="menu-modal-title-wrapper">
-        <p className="menu-modal-title">커뮤니티</p>
-        <p className="menu-modal-subtitle">다양한 커뮤니티를 찾아보세요</p>
-      </div>
-      <ListItem onClick={() => moveTo("/community/notice")}>공지사항</ListItem>
-      <ListItem onClick={() => moveTo("/community/talk")}>사는얘기</ListItem>
-      <ListItem onClick={() => moveTo("/community/forum")}>포럼</ListItem>
-      <ListItem onClick={() => moveTo("/community/it")}>IT 행사</ListItem>
-      <ListItem onClick={() => moveTo("/community/qa")}>Q&amp;A</ListItem>
+    <Base ref={modalRef} onClick={closeMenuModal}>
+      <Link to="/communities">
+        <div className="menu-modal-title-wrapper">
+          <p className="menu-modal-title">커뮤니티</p>
+          <p className="menu-modal-subtitle">다양한 커뮤니티를 찾아보세요</p>
+        </div>
+      </Link>
+      <Link to="/community/blockchain">
+        <ListItem>블록체인</ListItem>
+      </Link>
+      <Link to="/community/webdev">
+        <ListItem>웹개발</ListItem>
+      </Link>
+      <Link to="/community/beb">
+        <ListItem>BEB</ListItem>
+      </Link>
+      <Link to="/community/bitcoin">
+        <ListItem>비트코인</ListItem>
+      </Link>
+      <Link to="/community/qa">
+        <ListItem>Q&amp;A</ListItem>
+      </Link>
     </Base>
   );
 };

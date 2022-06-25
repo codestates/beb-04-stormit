@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
 import palette from "../styles/palette";
 import CreateAccount from "../components/CreateAccount";
@@ -12,7 +12,9 @@ import { useSelector, useDispatch } from "../store";
 import { useNavigate } from "react-router-dom";
 import { snackbarActions } from "../store/snackbarSlice";
 // login API
-import { loginAPI } from "../lib/api/user";
+import { authenticateAPI, loginAPI } from "../lib/api/user";
+import { setCookie } from "../lib/utils";
+import Input from "../components/common/Input";
 
 const Base = styled.div`
   display: flex;
@@ -50,7 +52,7 @@ const LoginForm = styled.form`
   height: 100%;
   width: 100%;
   padding: 20px;
-  border-radius: 1rem;
+
   box-shadow: 0 1rem 20px rgba(0, 0, 0, 0.1);
 
   .inputBox {
@@ -61,6 +63,10 @@ const LoginForm = styled.form`
     ::placeholder {
       color: ${palette.gray[300]};
     }
+  }
+
+  .validation-text {
+    color: ${palette.red[500]};
   }
 
   .login-btn {
@@ -116,14 +122,20 @@ const LoginForm = styled.form`
 `;
 
 const Login: React.FC = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("nonon@gmail.com");
+  const [password, setPassword] = useState("asdasdasd!");
+  const [validated, setValidated] = useState(true);
+
+  const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
+
   // e: 이건 타입스크립트에서 event의 타입을 지정해주는것이다.
   const onChangeEmail = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setValidated(true);
     setEmail(e.target.value);
   };
 
   const onChangePassword = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setValidated(true);
     setPassword(e.target.value);
   };
   // 계정생성 클릭 시 모달창 생성
@@ -141,47 +153,77 @@ const Login: React.FC = () => {
   ) => {
     event.preventDefault();
     const body = {
-      email: email,
+      username: email,
       password: password,
     };
     try {
-      const response = await loginAPI(body);
+      const loginAPIResponse = await loginAPI(body);
 
-      const { userId, nickname, passwordHash, email } = response.data;
+      console.log("login API response");
+      console.log(loginAPIResponse.data);
 
+      const { access_token } = loginAPIResponse.data;
+
+      setCookie("access_token", access_token, "10");
+
+      if (loginAPIResponse.status !== 201) return;
+
+      console.log("@@@ login auth API @@@");
+      console.log(access_token);
+      const authAPIResponse = await authenticateAPI(access_token);
+
+      const {
+        user_id: userId,
+        username: email,
+        nickname,
+      } = authAPIResponse.data;
+
+      if (authAPIResponse.status !== 200) return;
+
+      dispatch(userActions.setLoggedIn());
       dispatch(
         userActions.setUserInfo({
-          userId: userId,
-          nickname: nickname,
           email: email,
-          passwordHash: passwordHash,
+          nickname: nickname,
+          userId: userId,
         })
       );
+
+      dispatch(snackbarActions.openLoginSnackbar());
+      navigate("/");
     } catch (error) {
-      console.log(error);
+      setValidated(false);
     }
-    dispatch(userActions.setLoggedIn());
-    dispatch(snackbarActions.openLoginSnackbar());
-    navigate("/");
   };
+
+  // 로그인 되어있으면 리다이렉트
+  useEffect(() => {
+    if (isLoggedIn) {
+      navigate("/");
+    }
+  }, [isLoggedIn, navigate]);
+
   return (
     <Base className={createAccountOpen ? "Backdrop" : ""}>
       <Logo className={createAccountOpen ? "Backlogo" : ""}>Stormit</Logo>
       <LoginForm className={createAccountOpen ? "BackForm" : ""}>
-        <input
-          className="inputBox"
+        <Input
           type="text"
           placeholder="이메일"
           value={email}
           onChange={onChangeEmail}
         />
-        <input
-          className="inputBox"
+        <Input
           type="password"
           placeholder="비밀번호"
           value={password}
           onChange={onChangePassword}
         />
+        {!validated && (
+          <p className="validation-text">
+            이메일 또는 비밀번호가 잘못되었습니다.
+          </p>
+        )}
         <button className="login-btn" onClick={onClickLoginButton}>
           로그인
         </button>

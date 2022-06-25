@@ -31,13 +31,49 @@ export const getLastPathname = (path: string) => {
 
 // path에서 가져온 커뮤니티 이름을 한글로 변환합니다 - nonon
 export const translateCommunityName = (communityName: string) => {
-  if (communityName === "notice") return "공지사항";
-  if (communityName === "talk") return "사는얘기";
-  if (communityName === "forum") return "포럼";
-  if (communityName === "it") return "IT 행사";
+  if (communityName === "blockchain") return "블록체인";
+  if (communityName === "webdev") return "웹개발";
+  if (communityName === "beb") return "BEB";
+  if (communityName === "bitcoin") return "비트코인";
   if (communityName === "qa") return "Q&A";
+
+  return "없음";
 };
 
-export const getCookie = (cookieString: string) => {
-  cookieString.split(";");
+// document.cookie를 객체 형태로 바꿔줍니다 - nonon
+export const parseCookie = (cookieString: string) => {
+  const cookieArray = cookieString.split(";");
+
+  const cookieObject: any = {};
+
+  cookieArray.forEach((cookie) => {
+    if (cookie.startsWith(" ")) {
+      const slicedCookie = cookie.slice(1);
+
+      const cookieNameValue = slicedCookie.split("=");
+      cookieObject[cookieNameValue[0]] = cookieNameValue[1];
+    } else {
+      const cookieNameValue = cookie.split("=");
+      cookieObject[cookieNameValue[0]] = cookieNameValue[1];
+    }
+  });
+
+  return cookieObject;
+};
+
+// 쿠키를 설정합니다 - nonon
+export const setCookie = (cookie: string, value: string, maxAge?: string) => {
+  let cookieString = `${cookie}=${value}; path=/;`;
+  if (maxAge) cookieString = cookieString + ` max-age=${maxAge}`;
+  document.cookie = cookieString;
+};
+
+// 쿠키를 제거합니다 - nonon
+export const removeCookie = (cookie: string) => {
+  document.cookie = `${cookie}=; expires=Thu, 01 Jan 1999 00:00:10 GMT;`;
+};
+
+// 맨 위로 이동합니다 - nonon
+export const scrollToTop = () => {
+  window.scrollTo(0, 0);
 };
