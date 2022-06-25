@@ -144,7 +144,7 @@ const Mypage: React.FC = () => {
     try {
       await updateNameAPI(body);
       alert("변경되었습니다.");
-      setEditMode(false);
+      window.location.reload();
     } catch (error) {
       console.log(error);
     }
