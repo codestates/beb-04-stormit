@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import IconButton from "../components/common/IconButton";
 import CommunityPostCard from "../components/CommunityPostCard";
@@ -8,11 +8,11 @@ import palette from "../styles/palette";
 import EditIcon from "@mui/icons-material/Edit";
 import Input from "../components/common/Input";
 import { updateNameAPI } from "../lib/api/user";
-import { useSelector } from "../store";
+import { useDispatch, useSelector } from "../store";
 import CheckIcon from "@mui/icons-material/Check";
 import CloseIcon from "@mui/icons-material/Close";
-import { useNavigate } from "react-router-dom";
 import CameraAltIcon from "@mui/icons-material/CameraAlt";
+import { userActions } from "../store/userSlice";
 
 const Base = styled.div`
   display: flex;
@@ -130,6 +130,8 @@ const Mypage: React.FC = () => {
 
   const nickname = useSelector((state) => state.user.nickname);
 
+  const dispatch = useDispatch();
+
   const onChangeInput = (event: React.ChangeEvent<HTMLInputElement>) => {
     setInput(event.target.value);
   };
@@ -138,16 +140,20 @@ const Mypage: React.FC = () => {
     setEditMode(true);
   };
 
-  const onClickSubmitButton = async () => {
+  const submitNickname = async () => {
     const body = { nickname: input };
 
     try {
       await updateNameAPI(body);
-      alert("변경되었습니다.");
-      window.location.reload();
+      setEditMode(false);
+      dispatch(userActions.setNickname(input));
     } catch (error) {
       console.log(error);
     }
+  };
+
+  const onEnterNickname = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === "Enter") submitNickname();
   };
 
   const onClickProfileImage = () => {
@@ -180,8 +186,9 @@ const Mypage: React.FC = () => {
                   className="profile-nickname-input"
                   value={input}
                   onChange={onChangeInput}
+                  onKeyDown={onEnterNickname}
                 />
-                <IconButton variant="contained" onClick={onClickSubmitButton}>
+                <IconButton variant="contained" onClick={submitNickname}>
                   <CheckIcon />
                 </IconButton>
                 <IconButton onClick={() => setEditMode(false)}>

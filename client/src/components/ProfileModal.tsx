@@ -21,6 +21,7 @@ const Base = styled.div`
   width: 16rem; // 256px
   top: 3.5rem; // 56px // 헤더의 높이만큼 아래로
   right: 0;
+  min-height: 40rem; // 640px
   height: calc(100vh - 3.5rem); // top이 3.5rem이기 때문에
   background-color: white;
   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1), 0px 16px 32px rgba(0, 0, 0, 0.2);

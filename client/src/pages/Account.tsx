@@ -8,6 +8,7 @@ import { updatePasswordAPI, withdrawalAPI } from "../lib/api/user";
 import { useDispatch, useSelector } from "../store";
 import { userActions } from "../store/userSlice";
 import palette from "../styles/palette";
+import ErrorIcon from "@mui/icons-material/Error";
 
 const Base = styled.div`
   display: flex;
@@ -57,6 +58,21 @@ const Base = styled.div`
     cursor: pointer;
   }
 
+  .password-error-message {
+    font-size: 0.875rem;
+    color: ${palette.red[500]};
+  }
+
+  .password-input-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 1rem; // 16px
+  }
+
+  .password-error-icon {
+    color: ${palette.red[500]};
+  }
+
   // 600px
   @media screen and (min-width: 37.5rem) {
     margin: 1rem auto;
@@ -67,6 +83,8 @@ const Base = styled.div`
 const Account: React.FC = () => {
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
+  const [passwordError, setPasswordError] = useState(false);
+  const [newPasswordValid, setNewPasswordValid] = useState(true);
 
   const email = useSelector((state) => state.user.email);
   const userId = useSelector((state) => state.user.userId);
@@ -75,6 +93,11 @@ const Account: React.FC = () => {
 
   const dispatch = useDispatch();
 
+  const validateNewPassword = (password: string) => {
+    const regExp = /^(?=.*[a-z])(?=.*[$@!%*#?&])[a-z0-9$@!%*#?&]{8,20}$/;
+    setNewPasswordValid(regExp.test(password));
+  };
+
   const onChangeCurrentPassword = (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
@@ -82,6 +105,7 @@ const Account: React.FC = () => {
   };
 
   const onChangeNewPassword = (event: React.ChangeEvent<HTMLInputElement>) => {
+    validateNewPassword(event.target.value);
     setNewPassword(event.target.value);
   };
 
@@ -100,7 +124,7 @@ const Account: React.FC = () => {
       alert("변경되었습니다.");
     } catch (error) {
       console.log(error);
-      alert("비밀번호가 잘못되었습니다.");
+      setPasswordError(true);
     }
   };
 
@@ -137,19 +161,33 @@ const Account: React.FC = () => {
           </span>
         </div>
         <label className="password-label">현재 비밀번호</label>
-        <Input
-          type="password"
-          placeholder="현재 비밀번호를 입력해주세요"
-          value={currentPassword}
-          onChange={onChangeCurrentPassword}
-        />
+        <div className="password-input-wrapper">
+          <Input
+            type="password"
+            placeholder="현재 비밀번호를 입력해주세요"
+            value={currentPassword}
+            onChange={onChangeCurrentPassword}
+            validated={!passwordError}
+            width="100%"
+          />
+          {passwordError && <ErrorIcon className="password-error-icon" />}
+        </div>
+        {passwordError && (
+          <p className="password-error-message">비밀번호가 잘못되었습니다.</p>
+        )}
         <label className="password-label">변경할 비밀번호</label>
         <Input
           type="password"
           placeholder="변경할 비밀번호를 입력해주세요"
           value={newPassword}
           onChange={onChangeNewPassword}
+          validated={newPasswordValid}
         />
+        {!newPasswordValid && (
+          <p className="password-error-message">
+            비밀번호는 8~20자 이내이고, 하나 이상의 특수문자를 포함해야 합니다.
+          </p>
+        )}
         <div className="account-button-wrapper">
           <Button variant="contained" onClick={onClickSubmit}>
             저장하기

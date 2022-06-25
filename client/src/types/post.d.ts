@@ -20,6 +20,7 @@ type GetPostsByBoardBodyType = {
 };
 
 type GetPostsByBoardResponseType = {
+  post_id: number;
   post_title: string;
   nickname: string;
   created_at: string;

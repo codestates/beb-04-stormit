@@ -11,7 +11,7 @@ import {
 import Pagination from "../components/Pagination";
 import Button from "../components/common/Button";
 import CommunityPostCard from "../components/CommunityPostCard";
-import { getAllPostAPI } from "../lib/api/post";
+import { getAllPostAPI, getPostsByBoardAPI } from "../lib/api/post";
 import Input from "../components/common/Input";
 import IconButton from "../components/common/IconButton";
 import SearchIcon from "@mui/icons-material/Search";
@@ -55,6 +55,7 @@ const Base = styled.div`
     display: flex;
     justify-content: center;
     gap: 0.5rem; // 8px
+    margin-bottom: 2rem; // 32px
   }
 
   .community-search-input {
@@ -79,7 +80,7 @@ const Base = styled.div`
 `;
 
 const Community: React.FC = () => {
-  const [postList, setPostList] = useState<GetAllPostsResponseType>([]);
+  const [postList, setPostList] = useState<GetPostsByBoardResponseType>([]);
 
   const dispatch = useDispatch();
 
@@ -90,7 +91,8 @@ const Community: React.FC = () => {
   useEffect(() => {
     const fetchPosts = async () => {
       try {
-        const response = await getAllPostAPI();
+        const body = { board_title: communityName };
+        const response = await getPostsByBoardAPI(body);
         setPostList(response.data);
       } catch (error) {
         console.log(error);
@@ -98,7 +100,7 @@ const Community: React.FC = () => {
     };
 
     fetchPosts();
-  }, []);
+  }, [communityName]);
 
   useEffect(() => {
     dispatch(communityActions.setCurrentCommunity(communityName));
