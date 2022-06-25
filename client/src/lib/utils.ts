@@ -63,8 +63,8 @@ export const parseCookie = (cookieString: string) => {
 
 // 쿠키를 설정합니다 - nonon
 export const setCookie = (cookie: string, value: string, maxAge?: string) => {
-  let cookieString = `${cookie}=${value}`;
-  if (maxAge) cookieString = cookieString + `; max-age=${maxAge}`;
+  let cookieString = `${cookie}=${value}; path=/;`;
+  if (maxAge) cookieString = cookieString + ` max-age=${maxAge}`;
   document.cookie = cookieString;
 };
 

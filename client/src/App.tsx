@@ -29,6 +29,7 @@ import DeletedPost from "./pages/DeletedPost";
 import SignUp from "./pages/SignUp";
 
 const App: React.FC = () => {
+  console.log("@@@ app render @@@");
   const menuModalOpen = useSelector((state) => state.modal.menuModalOpen);
   const profileModalOpen = useSelector((state) => state.modal.profileModalOpen);
   const isDarkMode = useSelector((state) => state.theme.isDarkMode);
@@ -55,9 +56,12 @@ const App: React.FC = () => {
       try {
         const response = await authenticateAPI(accessToken);
 
+        // interceptor가 트리거되는 시점
+
         console.log("@@@ authenticate API response @@@");
         console.log(response);
 
+        // userId가 클라이언트에 저장되는 시점
         const {
           user_id: userId,
           username: email,
@@ -78,6 +82,45 @@ const App: React.FC = () => {
 
         console.log("logged in");
       } catch (error: any) {
+        // silent refresh trggier
+        // console.log(error.response.data.message);
+
+        // if (error.response.data.message === "token expired") {
+        //   const response = await refreshAccessTokenAPI(userId);
+
+        //   const { accessToken } = response.data;
+
+        //   setCookie("access_token", accessToken, "10");
+
+        //   console.log("@@@ refresh API response @@@");
+        //   console.log(response);
+
+        //   const authResponse = await authenticateAPI(accessToken);
+
+        //   console.log("@@@ auth response @@@");
+        //   console.log(authResponse);
+
+        //   const {
+        //     user_id: responseUserId,
+        //     username: responseEmail,
+        //     password: responsePasswordHash,
+        //     nickname: responseNickname,
+        //   } = authResponse.data;
+
+        //   dispatch(userActions.setLoggedIn());
+
+        //   dispatch(
+        //     userActions.setUserInfo({
+        //       email: responseEmail,
+        //       nickname: responseNickname,
+        //       passwordHash: responsePasswordHash,
+        //       userId: responseUserId,
+        //     })
+        //   );
+
+        //   return;
+        // }
+
         dispatch(userActions.setLoggedOut());
       }
     };

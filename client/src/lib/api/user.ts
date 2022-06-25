@@ -8,7 +8,8 @@ export const loginAPI = (body: LoginAPIBodyType) =>
   axios.post<LoginAPIResponseType>("/user/login", body);
 
 // 로그아웃
-export const logoutAPI = () => axios.post("/user/logout");
+export const logoutAPI = (userId: number) =>
+  axios.post(`/user/logout/${userId}`);
 
 // 프로필 정보
 export const getProfileAPI = (userId: number) =>
@@ -39,5 +40,5 @@ export const authenticateAPI = (accessToken: string) =>
   });
 
 // 리프레쉬 토큰으로 액세스 토큰 재발급
-export const refreshAccessTokenAPI = (userId: number) =>
-  axios.get<RefreshAccessTokenResponseType>(`/user/refresh/${userId}`);
+export const refreshAccessTokenAPI = () =>
+  axios.get<RefreshAccessTokenResponseType>(`/user/refresh`);

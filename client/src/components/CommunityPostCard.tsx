@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import palette from "../styles/palette";
 import Divider from "./common/Divider";
-import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import theme from "../styles/theme";
 
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
@@ -90,20 +90,14 @@ const CommunityPostCard: React.FC<Props> = ({
   nickname,
   createdAt,
 }) => {
-  const navigate = useNavigate();
-
-  const onClickPostTitle = () => {
-    navigate(`/post/${postId}`);
-  };
-
   return (
     <>
       <Base>
         <div className="post-title-area-wrapper">
           <div className="post-title-wrapper">
-            <p className="post-title" onClick={onClickPostTitle}>
-              {title}
-            </p>
+            <Link to={`/post/${postId}`}>
+              <p className="post-title">{title}</p>
+            </Link>
             <span className="post-comments">[{commentCount}]</span>
           </div>
           <div className="post-vote-wrapper">

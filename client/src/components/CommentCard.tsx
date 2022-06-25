@@ -82,8 +82,7 @@ const CommentCard: React.FC<Props> = ({
 
   const loggedUserNickname = useSelector((state) => state.user.nickname);
 
-  // const isMyComment = loggedUserNickname === nickname;
-  const isMyComment = true;
+  const isMyComment = loggedUserNickname === nickname;
 
   const onChangeEditText = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     setEditText(event.target.value);
