@@ -75,11 +75,16 @@ interface Props {
 const Tooltip: React.FC<Props> = ({ children, text, position }) => {
   const [showTooltip, setShowTooltip] = useState(false);
 
+  let timer: any;
+
   const onMouseEnter = () => {
-    setShowTooltip(true);
+    timer = setTimeout(() => {
+      setShowTooltip(true);
+    }, 500);
   };
 
   const onMouseLeave = () => {
+    clearTimeout(timer);
     setShowTooltip(false);
   };
 
