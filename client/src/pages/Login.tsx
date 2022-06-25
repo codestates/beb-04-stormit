@@ -49,21 +49,10 @@ const LoginForm = styled.form`
   gap: 1rem;
   max-height: 26rem;
   max-width: 22rem;
-  height: 100%;
   width: 100%;
   padding: 20px;
 
   box-shadow: 0 1rem 20px rgba(0, 0, 0, 0.1);
-
-  .inputBox {
-    font-size: 1.2rem;
-    padding: 0.7rem;
-    border-radius: 0.3rem;
-    border: 1px solid ${palette.gray[300]};
-    ::placeholder {
-      color: ${palette.gray[300]};
-    }
-  }
 
   .validation-text {
     color: ${palette.red[500]};
@@ -99,12 +88,13 @@ const LoginForm = styled.form`
   }
 
   .google-login-button {
-    width: 2rem;
-    height: 2rem;
+    width: 1.5rem;
+    height: 1.5rem;
   }
 
   .google-login-text {
-    color: ${palette.gray[500]};
+    font-weight: 500;
+    color: ${palette.gray[400]};
   }
 
   .forgot-pw {
