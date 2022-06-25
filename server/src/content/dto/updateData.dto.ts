@@ -1,14 +1,13 @@
-import { IsEmail, IsNumber, IsString } from 'class-validator';
+import { IsNumber, IsString } from 'class-validator';
 
 export class UpdateDataDto {
-  @IsEmail()
-  readonly email: string;
+  @IsString()
+  readonly nickname: string;
+  @IsString()
+  readonly board_title: string;
 
   @IsString()
-  readonly board_name: string;
-
-  @IsString()
-  readonly post_name: string;
+  readonly post_title: string;
 
   @IsString()
   readonly post_content: string;

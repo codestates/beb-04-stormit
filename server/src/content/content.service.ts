@@ -36,7 +36,7 @@ export class ContentService {
 
     return found;
   }
-  async createContent(createContentDto: CreateContentDto): Promise<string> {
+  async createContent(createContentDto: CreateContentDto): Promise<object> {
     const { board_title } = createContentDto;
     let board_id = 1;
     if (board_title === '강아지게시판') {
@@ -58,7 +58,17 @@ export class ContentService {
     id: number,
     updateDataDto: UpdateDataDto,
   ): Promise<Content> {
-    return this.contentRepository.updateContent(id, updateDataDto);
+    const { board_title } = updateDataDto;
+    let board_id = 1;
+    if (board_title === '강아지게시판') {
+      board_id = 2;
+    } else if (board_title === '고양이게시판') {
+      board_id = 3;
+    } else {
+      board_id = 1;
+    }
+    const board = await this.boardService.getBoardById(board_id);
+    return this.contentRepository.updateContent(id, updateDataDto, board);
   }
 }
 

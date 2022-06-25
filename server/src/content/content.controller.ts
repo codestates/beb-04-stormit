@@ -43,7 +43,7 @@ export class ContentController {
   @UsePipes(ValidationPipe)
   async cretaeContent(
     @Body() createContentDto: CreateContentDto,
-  ): Promise<string> {
+  ): Promise<object> {
     this.logger.verbose(
       `User $$$ creating a new content. \nPayload: ${JSON.stringify(
         createContentDto,
