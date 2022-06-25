@@ -39,4 +39,5 @@ export const authenticateAPI = (accessToken: string) =>
   });
 
 // 리프레쉬 토큰으로 액세스 토큰 재발급
-export const refreshAccessTokenAPI = () => axios.get("/refresh");
+export const refreshAccessTokenAPI = (userId: number) =>
+  axios.get<RefreshAccessTokenResponseType>(`/user/refresh/${userId}`);

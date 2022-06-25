@@ -147,7 +147,7 @@ const Home: React.FC = () => {
       }
     };
 
-    fetchPosts();
+    // fetchPosts();
   }, []);
 
   return (

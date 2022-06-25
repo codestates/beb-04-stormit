@@ -21,9 +21,9 @@ import Snackbar from "./components/common/Snackbar";
 import { snackbarActions } from "./store/snackbarSlice";
 import Agreement from "./pages/Agreement";
 import Communities from "./pages/Communities";
-import { authenticateAPI } from "./lib/api/user";
+import { authenticateAPI, refreshAccessTokenAPI } from "./lib/api/user";
 import { userActions } from "./store/userSlice";
-import { parseCookie } from "./lib/utils";
+import { parseCookie, setCookie } from "./lib/utils";
 import ErrorPage from "./pages/404";
 import DeletedPost from "./pages/DeletedPost";
 import SignUp from "./pages/SignUp";
@@ -35,9 +35,7 @@ const App: React.FC = () => {
   const loginSnackbarOpen = useSelector(
     (state) => state.snackbar.loginSnackbarOpen
   );
-
-  document.cookie = "test=123";
-  document.cookie = "test2=456";
+  const userId = useSelector((state) => state.user.userId);
 
   const dispatch = useDispatch();
 
@@ -54,12 +52,11 @@ const App: React.FC = () => {
     const authenticate = async () => {
       const accessToken = parseCookie(document.cookie).access_token;
 
-      if (!accessToken) return;
-
       try {
         const response = await authenticateAPI(accessToken);
 
-        if (response.status !== 200) return;
+        console.log("@@@ authenticate API response @@@");
+        console.log(response);
 
         const {
           user_id: userId,
@@ -80,13 +77,13 @@ const App: React.FC = () => {
         );
 
         console.log("logged in");
-      } catch (error) {
-        console.log(error);
+      } catch (error: any) {
+        dispatch(userActions.setLoggedOut());
       }
     };
 
     authenticate();
-  }, [dispatch]);
+  }, [dispatch, userId]);
 
   return (
     <ThemeProvider theme={isDarkMode ? darkTheme : theme}>

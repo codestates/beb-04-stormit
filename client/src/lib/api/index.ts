@@ -1,5 +1,7 @@
 import axiosInstance from "axios";
 import { refreshAccessTokenAPI } from "./user";
+import { store } from "../../store";
+import { setCookie } from "../utils";
 
 const axios = axiosInstance.create({
   withCredentials: true,
@@ -10,22 +12,19 @@ axios.interceptors.response.use(
     return response;
   },
   async (error) => {
-    console.log("@@@ error response @@@");
-    console.log(error.response);
-
-    console.log("@@@ error config @@@");
-    console.log(error.config);
-
     if (
       error.response.status === 401 &&
-      error.response.statusText === "token expired"
+      error.response.data.message === "token expired"
     ) {
       const originalRequest = error.config;
-      console.log(originalRequest);
-      const response = await refreshAccessTokenAPI();
-      const access_token = response.data;
+      const userId = store.getState().user.userId;
+      const response = await refreshAccessTokenAPI(userId);
+      // access_token으로 변경
+      const { accessToken } = response.data;
 
-      originalRequest.headers["Authorization"] = `Bearer ${access_token}`;
+      setCookie("access_token", accessToken, "10");
+
+      originalRequest.headers["Authorization"] = `Bearer ${accessToken}`;
 
       return axios(originalRequest);
     }
