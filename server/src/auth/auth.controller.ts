@@ -103,9 +103,9 @@ export class AuthController {
     }
 
     @UseGuards(AuthGuard)
-    @Delete('/:id')
-    async deleteuser(@Param ('id') user_id: number, @Res() res: Response): Promise<any>{
-        const result = await this.authService.deleteUser (user_id);
+    @Delete()
+    async deleteuser(@Req() req, @Res() res: Response): Promise<any>{
+        const result = await this.authService.deleteUser (req.user.user_id);
         if(result.affected===1){
             return res.send({
                 success: true
