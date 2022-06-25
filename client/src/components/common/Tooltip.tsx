@@ -94,6 +94,8 @@ const Tooltip: React.FC<Props> = ({ children, text, position }) => {
         className="target"
         onMouseEnter={onMouseEnter}
         onMouseLeave={onMouseLeave}
+        onFocus={() => setShowTooltip(true)}
+        onBlur={() => setShowTooltip(false)}
       >
         {children}
         {showTooltip && <div className="tooltip">{text}</div>}

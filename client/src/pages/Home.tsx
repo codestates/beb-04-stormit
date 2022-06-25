@@ -215,11 +215,13 @@ const Home: React.FC = () => {
                 <Skeleton width="100%" height="4rem" />
               </div>
             ))}
-        <div className="more-button-wrapper" onClick={onClickMorePosts}>
-          <IconButton>
-            <KeyboardDoubleArrowDownIcon />
-          </IconButton>
-        </div>
+        {!loading && (
+          <div className="more-button-wrapper" onClick={onClickMorePosts}>
+            <IconButton>
+              <KeyboardDoubleArrowDownIcon />
+            </IconButton>
+          </div>
+        )}
         <div className="fab-wrapper">
           {isLoggedIn && (
             <Link to="/post">

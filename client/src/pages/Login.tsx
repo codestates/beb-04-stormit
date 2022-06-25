@@ -122,8 +122,8 @@ const LoginForm = styled.form`
 `;
 
 const Login: React.FC = () => {
-  const [email, setEmail] = useState("test@gmail.com");
-  const [password, setPassword] = useState("123123123");
+  const [email, setEmail] = useState("nonon@gmail.com");
+  const [password, setPassword] = useState("asdasdasd!");
   const [validated, setValidated] = useState(true);
 
   const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
@@ -175,7 +175,6 @@ const Login: React.FC = () => {
       const {
         user_id: userId,
         username: email,
-        password: passwordHash,
         nickname,
       } = authAPIResponse.data;
 
@@ -186,7 +185,6 @@ const Login: React.FC = () => {
         userActions.setUserInfo({
           email: email,
           nickname: nickname,
-          passwordHash: passwordHash,
           userId: userId,
         })
       );

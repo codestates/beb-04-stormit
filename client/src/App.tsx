@@ -21,9 +21,9 @@ import Snackbar from "./components/common/Snackbar";
 import { snackbarActions } from "./store/snackbarSlice";
 import Agreement from "./pages/Agreement";
 import Communities from "./pages/Communities";
-import { authenticateAPI, refreshAccessTokenAPI } from "./lib/api/user";
+import { authenticateAPI } from "./lib/api/user";
 import { userActions } from "./store/userSlice";
-import { parseCookie, setCookie } from "./lib/utils";
+import { parseCookie } from "./lib/utils";
 import ErrorPage from "./pages/404";
 import DeletedPost from "./pages/DeletedPost";
 import SignUp from "./pages/SignUp";
@@ -62,12 +62,7 @@ const App: React.FC = () => {
         console.log(response);
 
         // userId가 클라이언트에 저장되는 시점
-        const {
-          user_id: userId,
-          username: email,
-          password: passwordHash,
-          nickname,
-        } = response.data;
+        const { user_id: userId, username: email, nickname } = response.data;
 
         dispatch(userActions.setLoggedIn());
 
@@ -75,52 +70,12 @@ const App: React.FC = () => {
           userActions.setUserInfo({
             email: email,
             nickname: nickname,
-            passwordHash: passwordHash,
             userId: userId,
           })
         );
 
         console.log("logged in");
       } catch (error: any) {
-        // silent refresh trggier
-        // console.log(error.response.data.message);
-
-        // if (error.response.data.message === "token expired") {
-        //   const response = await refreshAccessTokenAPI(userId);
-
-        //   const { accessToken } = response.data;
-
-        //   setCookie("access_token", accessToken, "10");
-
-        //   console.log("@@@ refresh API response @@@");
-        //   console.log(response);
-
-        //   const authResponse = await authenticateAPI(accessToken);
-
-        //   console.log("@@@ auth response @@@");
-        //   console.log(authResponse);
-
-        //   const {
-        //     user_id: responseUserId,
-        //     username: responseEmail,
-        //     password: responsePasswordHash,
-        //     nickname: responseNickname,
-        //   } = authResponse.data;
-
-        //   dispatch(userActions.setLoggedIn());
-
-        //   dispatch(
-        //     userActions.setUserInfo({
-        //       email: responseEmail,
-        //       nickname: responseNickname,
-        //       passwordHash: responsePasswordHash,
-        //       userId: responseUserId,
-        //     })
-        //   );
-
-        //   return;
-        // }
-
         dispatch(userActions.setLoggedOut());
       }
     };

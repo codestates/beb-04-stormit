@@ -91,7 +91,6 @@ const ProfileModal: React.FC = () => {
   const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
   const isDarkMode = useSelector((state) => state.theme.isDarkMode);
   const nickname = useSelector((state) => state.user.nickname);
-  const userId = useSelector((state) => state.user.userId);
 
   const dispatch = useDispatch();
 
@@ -113,7 +112,7 @@ const ProfileModal: React.FC = () => {
 
   const onClickLogOutButton = async () => {
     try {
-      await logoutAPI(userId);
+      await logoutAPI();
       closeModal();
       dispatch(userActions.setLoggedOut());
       removeCookie("access_token");

@@ -128,11 +128,7 @@ const Mypage: React.FC = () => {
   const [input, setInput] = useState("");
   const [editMode, setEditMode] = useState(false);
 
-  const userId = useSelector((state) => state.user.userId);
   const nickname = useSelector((state) => state.user.nickname);
-  const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
-
-  const navigate = useNavigate();
 
   const onChangeInput = (event: React.ChangeEvent<HTMLInputElement>) => {
     setInput(event.target.value);
@@ -143,10 +139,12 @@ const Mypage: React.FC = () => {
   };
 
   const onClickSubmitButton = async () => {
-    const body = { nickname: input, user_id: userId };
+    const body = { nickname: input };
 
     try {
-      await updateNameAPI(userId, body);
+      await updateNameAPI(body);
+      alert("변경되었습니다.");
+      setEditMode(false);
     } catch (error) {
       console.log(error);
     }
@@ -155,13 +153,6 @@ const Mypage: React.FC = () => {
   const onClickProfileImage = () => {
     alert("현재 프로필 변경은 지원하지 않습니다.");
   };
-
-  // 로그인 되어있지 않으면 로그인 페이지로 이동함
-  useEffect(() => {
-    if (!isLoggedIn) {
-      navigate("/login");
-    }
-  }, [isLoggedIn, navigate]);
 
   return (
     <Base>

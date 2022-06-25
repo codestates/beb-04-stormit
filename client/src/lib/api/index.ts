@@ -1,9 +1,12 @@
 import axiosInstance from "axios";
 import { refreshAccessTokenAPI } from "./user";
-import { setCookie } from "../utils";
+import { parseCookie, setCookie } from "../utils";
 
 const axios = axiosInstance.create({
   withCredentials: true,
+  headers: {
+    Authorization: `Bearer ${parseCookie(document.cookie).access_token}`,
+  },
 });
 
 // 액세스 토큰이 만료되었다는 응답을 받으면 액세스 토큰을 새로 재발급받고 다시 요청합니다.
@@ -21,11 +24,11 @@ axios.interceptors.response.use(
       try {
         const response = await refreshAccessTokenAPI();
         // access_token으로 변경
-        const { accessToken } = response.data;
+        const { access_token } = response.data;
 
-        setCookie("access_token", accessToken, "10");
+        setCookie("access_token", access_token, "10");
 
-        originalRequest.headers["Authorization"] = `Bearer ${accessToken}`;
+        originalRequest.headers["Authorization"] = `Bearer ${access_token}`;
 
         return axios(originalRequest);
       } catch (error) {

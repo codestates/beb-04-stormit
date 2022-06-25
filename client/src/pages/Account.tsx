@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import Button from "../components/common/Button";
@@ -65,47 +65,43 @@ const Base = styled.div`
 `;
 
 const Account: React.FC = () => {
-  const [password, setPassword] = useState("");
-  const [passwordConfirm, setPasswordConfirm] = useState("");
+  const [currentPassword, setCurrentPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
 
-  const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
   const email = useSelector((state) => state.user.email);
   const userId = useSelector((state) => state.user.userId);
-  const passwordHash = useSelector((state) => state.user.passwordHash);
 
   const navigate = useNavigate();
 
   const dispatch = useDispatch();
 
-  const onChangePassword = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setPassword(event.target.value);
-  };
-
-  const onChangePasswordConfirm = (
+  const onChangeCurrentPassword = (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
-    setPasswordConfirm(event.target.value);
+    setCurrentPassword(event.target.value);
+  };
+
+  const onChangeNewPassword = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setNewPassword(event.target.value);
   };
 
   const onClickSubmit = async () => {
-    if (password !== passwordConfirm) {
-      alert("비밀번호를 확인해주세요.");
-      return;
-    }
-
     const body = {
       user_id: userId,
-      current_password: passwordHash,
-      new_password: password,
+      current_password: currentPassword,
+      new_password: newPassword,
     };
 
     try {
-      await updatePasswordAPI(userId, body);
+      await updatePasswordAPI(body);
+
+      setCurrentPassword("");
+      setNewPassword("");
+      alert("변경되었습니다.");
     } catch (error) {
       console.log(error);
+      alert("비밀번호가 잘못되었습니다.");
     }
-
-    navigate("/");
   };
 
   const onClickWithdrawalButton = async () => {
@@ -113,7 +109,7 @@ const Account: React.FC = () => {
       window.confirm("한 번 탈퇴하면 되돌릴 수 없습니다. 탈퇴하시겠습니까?")
     ) {
       try {
-        const response = await withdrawalAPI(userId);
+        const response = await withdrawalAPI();
         console.log(response);
         dispatch(userActions.setLoggedOut());
         navigate("/");
@@ -122,13 +118,6 @@ const Account: React.FC = () => {
       }
     }
   };
-
-  // 로그인 되어있지 않으면 로그인 페이지로 이동함
-  useEffect(() => {
-    if (!isLoggedIn) {
-      navigate("/login");
-    }
-  }, [isLoggedIn, navigate]);
 
   return (
     <Base>
@@ -147,17 +136,19 @@ const Account: React.FC = () => {
             anewafkv-ajfnzkvkx1123-dffnwkfsd-sfwefl
           </span>
         </div>
-        <label className="password-label">비밀번호 변경</label>
+        <label className="password-label">현재 비밀번호</label>
         <Input
-          placeholder="변경할 비밀번호"
-          value={password}
-          onChange={onChangePassword}
+          type="password"
+          placeholder="현재 비밀번호를 입력해주세요"
+          value={currentPassword}
+          onChange={onChangeCurrentPassword}
         />
-        <label className="password-label">비밀번호 확인</label>
+        <label className="password-label">변경할 비밀번호</label>
         <Input
-          placeholder="한번 더 입력해주세요"
-          value={passwordConfirm}
-          onChange={onChangePasswordConfirm}
+          type="password"
+          placeholder="변경할 비밀번호를 입력해주세요"
+          value={newPassword}
+          onChange={onChangeNewPassword}
         />
         <div className="account-button-wrapper">
           <Button variant="contained" onClick={onClickSubmit}>
