@@ -1,5 +1,5 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 import Button from "../components/common/Button";
 import Divider from "../components/common/Divider";
@@ -32,16 +32,14 @@ const Base = styled.div`
 `;
 
 const ErrorPage: React.FC = () => {
-  const navigate = useNavigate();
-
   return (
     <Base>
       <h1 className="error-page-header">404</h1>
       <Divider />
       <p className="error-page-description">페이지를 찾을 수 없습니다.</p>
-      <Button variant="contained" onClick={() => navigate("/")}>
-        홈으로
-      </Button>
+      <Link to="/">
+        <Button variant="contained">홈으로</Button>
+      </Link>
     </Base>
   );
 };

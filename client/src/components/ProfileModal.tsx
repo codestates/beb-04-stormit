@@ -4,7 +4,7 @@ import styled from "styled-components";
 import palette from "../styles/palette";
 import LogoutIcon from "@mui/icons-material/Logout";
 import { useDispatch, useSelector } from "../store";
-import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import DarkModeIcon from "@mui/icons-material/DarkMode";
 import ToggleButton from "./common/ToggleButton";
 import { themeActions } from "../store/themeSlice";
@@ -14,6 +14,7 @@ import PersonIcon from "@mui/icons-material/Person";
 import SettingsIcon from "@mui/icons-material/Settings";
 import { removeCookie } from "../lib/utils";
 import { useOutsideClick } from "../hooks/useOutsideClick";
+import { logoutAPI } from "../lib/api/user";
 
 const Base = styled.div`
   position: absolute;
@@ -90,8 +91,7 @@ const ProfileModal: React.FC = () => {
   const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
   const isDarkMode = useSelector((state) => state.theme.isDarkMode);
   const nickname = useSelector((state) => state.user.nickname);
-
-  const navigate = useNavigate();
+  const userId = useSelector((state) => state.user.userId);
 
   const dispatch = useDispatch();
 
@@ -111,31 +111,15 @@ const ProfileModal: React.FC = () => {
     dispatch(modalActions.closeAllModal());
   };
 
-  const onClickMyPageButton = () => {
-    closeModal();
-    navigate("/mypage");
-  };
-
-  const onClickAccountButton = () => {
-    closeModal();
-    navigate("/account");
-  };
-
-  const onClickLoginButton = () => {
-    closeModal();
-    navigate("/login");
-  };
-
-  const onClickSignUpButton = () => {
-    closeModal();
-    navigate("/agreement");
-  };
-
-  const onClickLogOutButton = () => {
-    closeModal();
-    dispatch(userActions.setLoggedOut());
-    removeCookie("access_token");
-    navigate("/");
+  const onClickLogOutButton = async () => {
+    try {
+      await logoutAPI(userId);
+      closeModal();
+      dispatch(userActions.setLoggedOut());
+      removeCookie("access_token");
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   useOutsideClick(modalRef, () => dispatch(modalActions.closeProfileModal()));
@@ -144,13 +128,17 @@ const ProfileModal: React.FC = () => {
     <Base ref={modalRef}>
       {!isLoggedIn && (
         <>
-          <div className="profile-modal-item" onClick={onClickLoginButton}>
-            로그인
-          </div>
+          <Link to="/login">
+            <div className="profile-modal-item" onClick={closeModal}>
+              로그인
+            </div>
+          </Link>
           <Divider />
-          <div className="profile-modal-item" onClick={onClickSignUpButton}>
-            회원가입
-          </div>
+          <Link to="/agreement">
+            <div className="profile-modal-item" onClick={closeModal}>
+              회원가입
+            </div>
+          </Link>
         </>
       )}
       {isLoggedIn && (
@@ -164,15 +152,19 @@ const ProfileModal: React.FC = () => {
             <div className="profile-modal-username">{nickname}</div>
           </div>
           <Divider />
-          <div className="profile-modal-item" onClick={onClickMyPageButton}>
-            <PersonIcon />
-            마이페이지
-          </div>
+          <Link to="/mypage">
+            <div className="profile-modal-item" onClick={closeModal}>
+              <PersonIcon />
+              마이페이지
+            </div>
+          </Link>
           <Divider />
-          <div className="profile-modal-item" onClick={onClickAccountButton}>
-            <SettingsIcon />
-            개인정보 설정
-          </div>
+          <Link to="/account">
+            <div className="profile-modal-item" onClick={closeModal}>
+              <SettingsIcon />
+              개인정보 설정
+            </div>
+          </Link>
           <Divider />
           <div className="profile-modal-item" onClick={onClickLogOutButton}>
             <LogoutIcon />

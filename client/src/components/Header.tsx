@@ -9,7 +9,7 @@ import LoginIcon from "@mui/icons-material/Login";
 import { useDispatch, useSelector } from "../store";
 import { modalActions } from "../store/modalSlice";
 import SearchInput from "./SearchInput";
-import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import NavigationBar from "./NavigationBar";
 
 const Base = styled.header`
@@ -40,14 +40,6 @@ const Base = styled.header`
     align-items: center;
     gap: 1rem; // 16px
 
-    .header-logo {
-      background-color: white;
-      border-radius: 50%;
-      width: 2rem; // 32px
-      height: 2rem; // 32px
-      cursor: pointer;
-    }
-
     .header-text {
       font-size: 1.25rem;
       cursor: pointer;
@@ -75,8 +67,6 @@ const Header: React.FC = () => {
     (state) => state.modal.searchInputModalOpen
   );
   const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
-
-  const navigate = useNavigate();
 
   const dispatch = useDispatch();
 
@@ -106,15 +96,14 @@ const Header: React.FC = () => {
       <div className="header-left">
         {menuModalOpen && <CloseIcon onClick={closeMenuModal} />}
         {!menuModalOpen && <MenuIcon onClick={openMenuModal} />}
-        <span className="header-text" onClick={() => navigate("/")}>
-          Stormit
-        </span>
+        <Link to="/">
+          <span className="header-text">Stormit</span>
+        </Link>
       </div>
       <div className="header-left-desktop">
-        {/* <div className="header-logo" /> */}
-        <span className="header-text" onClick={() => navigate("/")}>
-          Stormit
-        </span>
+        <Link to="/">
+          <span className="header-text">Stormit</span>
+        </Link>
         <NavigationBar />
       </div>
       <div className="header-right">
