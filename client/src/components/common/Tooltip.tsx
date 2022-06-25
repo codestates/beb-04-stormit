@@ -31,7 +31,7 @@ const Base = styled.div<BaseProps>`
 
     width: 4rem;
     height: 2rem;
-    background-color: ${palette.blue[500]};
+    background-color: ${palette.gray[600]};
     color: white;
     border-radius: 0.25rem;
     font-size: 0.875rem;

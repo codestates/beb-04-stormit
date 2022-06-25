@@ -20,6 +20,8 @@ const Base = styled.div`
   height: 3.5rem; // 56px
   color: black;
 
+  z-index: 999;
+
   .search-input-left {
     display: flex;
     justify-content: center;
