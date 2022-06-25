@@ -47,7 +47,7 @@ const LoginForm = styled.form`
   flex-direction: column;
   border: 1px solid ${palette.gray[300]};
   gap: 1rem;
-  max-height: 24rem;
+  max-height: 26rem;
   max-width: 22rem;
   height: 100%;
   width: 100%;
@@ -85,6 +85,26 @@ const LoginForm = styled.form`
     :active {
       transform: scale(0.9);
     }
+  }
+
+  .google-login-button-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 3rem;
+    gap: 0.5rem;
+    border-radius: 0.25rem;
+    border: 1px solid ${palette.gray[200]};
+    cursor: pointer;
+  }
+
+  .google-login-button {
+    width: 2rem;
+    height: 2rem;
+  }
+
+  .google-login-text {
+    color: ${palette.gray[500]};
   }
 
   .forgot-pw {
@@ -233,6 +253,10 @@ const Login: React.FC = () => {
           <div className="createAccount-btn" onClick={onCreateAccountBtn}>
             새 계정 만들기
           </div>
+        </div>
+        <div className="google-login-button-wrapper">
+          <img className="google-login-button" src="/google-logo.png" alt="" />
+          <div className="google-login-text">구글 계정으로 계속하기</div>
         </div>
       </LoginForm>
       {createAccountOpen ? <CreateAccount /> : ""}
