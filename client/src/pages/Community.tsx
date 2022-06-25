@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import NavigationRail from "../components/NavigationRail";
-import { useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import {
   FAKE_ARRAY,
   getLastPathname,
@@ -85,8 +85,6 @@ const Community: React.FC = () => {
 
   const location = useLocation();
 
-  const navigate = useNavigate();
-
   const communityName = getLastPathname(location.pathname);
 
   useEffect(() => {
@@ -115,9 +113,9 @@ const Community: React.FC = () => {
             <p className="community-title">
               {translateCommunityName(communityName)}
             </p>
-            <Button variant="contained" onClick={() => navigate("/post")}>
-              글쓰기
-            </Button>
+            <Link to="/post">
+              <Button variant="contained">글쓰기</Button>
+            </Link>
           </div>
         </div>
         <ul className="posts-wrapper">
@@ -130,8 +128,9 @@ const Community: React.FC = () => {
               createdAt={post.created_at}
             />
           ))}
-          {FAKE_ARRAY.map(() => (
+          {FAKE_ARRAY.map((_, index) => (
             <CommunityPostCard
+              key={index}
               postId={1}
               title="랜덤 게시물"
               commentCount={3}

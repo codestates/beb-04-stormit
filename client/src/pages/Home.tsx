@@ -4,7 +4,7 @@ import FloatingIconButton from "../components/common/FloatingIconButton";
 import CreateIcon from "@mui/icons-material/Create";
 import PostCard from "../components/PostCard";
 import NavigationRail from "../components/NavigationRail";
-import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import theme from "../styles/theme";
 import palette from "../styles/palette";
 import Button from "../components/common/Button";
@@ -122,8 +122,6 @@ const Home: React.FC = () => {
 
   const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
 
-  const navigate = useNavigate();
-
   const onClickMorePosts = () => {
     setLoading(true);
     setTimeout(() => {
@@ -166,20 +164,16 @@ const Home: React.FC = () => {
                 지금 바로 새 글을 작성하고 토큰을 지급받으세요!
               </h2>
               <div className="home-cta-wrapper">
-                <Button
-                  className="home-cta"
-                  variant="contained"
-                  onClick={() => navigate("/agreement")}
-                >
-                  시작하기
-                </Button>
-                <Button
-                  className="home-cta-sub"
-                  variant="outlined"
-                  onClick={() => navigate("/login")}
-                >
-                  로그인
-                </Button>
+                <Link to="/agreement">
+                  <Button className="home-cta" variant="contained">
+                    시작하기
+                  </Button>
+                </Link>
+                <Link to="/login">
+                  <Button className="home-cta-sub" variant="outlined">
+                    로그인
+                  </Button>
+                </Link>
               </div>
             </>
           )}
@@ -228,14 +222,18 @@ const Home: React.FC = () => {
         </div>
         <div className="fab-wrapper">
           {isLoggedIn && (
-            <FloatingIconButton onClick={() => navigate("/post")}>
-              <CreateIcon />
-            </FloatingIconButton>
+            <Link to="/post">
+              <FloatingIconButton>
+                <CreateIcon />
+              </FloatingIconButton>
+            </Link>
           )}
           {!isLoggedIn && (
-            <FloatingIconButton onClick={() => navigate("/login")}>
-              <PersonIcon />
-            </FloatingIconButton>
+            <Link to="/login">
+              <FloatingIconButton>
+                <PersonIcon />
+              </FloatingIconButton>
+            </Link>
           )}
         </div>
       </section>

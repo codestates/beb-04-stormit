@@ -198,7 +198,9 @@ const SignUp: React.FC = () => {
         </p>
       )}
       <div className="signup-submit-button-wrapper">
-        <Button variant="outlined">돌아가기</Button>
+        <Button variant="outlined" onClick={() => navigate(-2)}>
+          돌아가기
+        </Button>
         <Button variant="contained" onClick={onClickSubmitButton}>
           가입하기
         </Button>

@@ -62,8 +62,10 @@ export const parseCookie = (cookieString: string) => {
 };
 
 // 쿠키를 설정합니다 - nonon
-export const setCookie = (cookie: string, value: string) => {
-  document.cookie = `${cookie}=${value}`;
+export const setCookie = (cookie: string, value: string, maxAge?: string) => {
+  let cookieString = `${cookie}=${value}; path=/;`;
+  if (maxAge) cookieString = cookieString + ` max-age=${maxAge}`;
+  document.cookie = cookieString;
 };
 
 // 쿠키를 제거합니다 - nonon
@@ -71,6 +73,7 @@ export const removeCookie = (cookie: string) => {
   document.cookie = `${cookie}=; expires=Thu, 01 Jan 1999 00:00:10 GMT;`;
 };
 
+// 맨 위로 이동합니다 - nonon
 export const scrollToTop = () => {
   window.scrollTo(0, 0);
 };

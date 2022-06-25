@@ -6,12 +6,13 @@ import CreateIcon from "@mui/icons-material/Create";
 import ArrowLeftIcon from "@mui/icons-material/ArrowLeft";
 import ArrowRightIcon from "@mui/icons-material/ArrowRight";
 import MenuIcon from "@mui/icons-material/Menu";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "../store";
 import { modalActions } from "../store/modalSlice";
 import IconButton from "./common/IconButton";
 import SettingsIcon from "@mui/icons-material/Settings";
 import PersonIcon from "@mui/icons-material/Person";
+import Tooltip from "./common/Tooltip";
 
 const Base = styled.aside`
   display: none;
@@ -85,7 +86,9 @@ const NavigationRail: React.FC<Props> = ({ ...props }) => {
         {!menuModalOpen && (
           <>
             <ArrowRightIcon />
-            <MenuIcon onClick={openMenuModal} />
+            <Tooltip text="메뉴" position="right">
+              <MenuIcon onClick={openMenuModal} />
+            </Tooltip>
           </>
         )}
         {menuModalOpen && (
@@ -95,18 +98,36 @@ const NavigationRail: React.FC<Props> = ({ ...props }) => {
           </>
         )}
       </div>
-      <FloatingIconButton onClick={onClickFloatingButton}>
-        {isLoggedIn && <CreateIcon />}
-        {!isLoggedIn && <PersonIcon />}
-      </FloatingIconButton>
+      {isLoggedIn && (
+        <Tooltip text="로그인" position="right">
+          <FloatingIconButton onClick={onClickFloatingButton}>
+            <PersonIcon />
+          </FloatingIconButton>
+        </Tooltip>
+      )}
+      {!isLoggedIn && (
+        <Tooltip text="글쓰기" position="right">
+          <FloatingIconButton onClick={onClickFloatingButton}>
+            <CreateIcon />
+          </FloatingIconButton>
+        </Tooltip>
+      )}
       {isLoggedIn && (
         <>
-          <IconButton onClick={() => navigate("/mypage")}>
-            <PersonIcon />
-          </IconButton>
-          <IconButton onClick={() => navigate("/account")}>
-            <SettingsIcon />
-          </IconButton>
+          <Tooltip text="내정보" position="right">
+            <Link to="/mypage">
+              <IconButton>
+                <PersonIcon />
+              </IconButton>
+            </Link>
+          </Tooltip>
+          <Tooltip text="설정" position="right">
+            <Link to="/account">
+              <IconButton>
+                <SettingsIcon />
+              </IconButton>
+            </Link>
+          </Tooltip>
         </>
       )}
     </Base>

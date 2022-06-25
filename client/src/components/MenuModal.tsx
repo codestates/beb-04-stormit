@@ -1,5 +1,5 @@
-import React, { useCallback, useEffect, useRef } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useRef } from "react";
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { useOutsideClick } from "../hooks/useOutsideClick";
 import { useDispatch } from "../store";
@@ -49,8 +49,6 @@ const Base = styled.div`
 const MenuModal: React.FC = () => {
   const dispatch = useDispatch();
 
-  const navigate = useNavigate();
-
   const modalRef = useRef<HTMLDivElement | null>(null);
 
   const closeMenuModal = () => {
@@ -60,23 +58,28 @@ const MenuModal: React.FC = () => {
   useOutsideClick(modalRef, closeMenuModal);
 
   return (
-    <Base ref={modalRef}>
-      <div
-        className="menu-modal-title-wrapper"
-        onClick={() => navigate("/communities")}
-      >
-        <p className="menu-modal-title">커뮤니티</p>
-        <p className="menu-modal-subtitle">다양한 커뮤니티를 찾아보세요</p>
-      </div>
-      <ListItem onClick={() => navigate("/community/blockchain")}>
-        블록체인
-      </ListItem>
-      <ListItem onClick={() => navigate("/community/webdev")}>웹개발</ListItem>
-      <ListItem onClick={() => navigate("/community/beb")}>BEB</ListItem>
-      <ListItem onClick={() => navigate("/community/bitcoin")}>
-        비트코인
-      </ListItem>
-      <ListItem onClick={() => navigate("/community/qa")}>Q&amp;A</ListItem>
+    <Base ref={modalRef} onClick={closeMenuModal}>
+      <Link to="/communities">
+        <div className="menu-modal-title-wrapper">
+          <p className="menu-modal-title">커뮤니티</p>
+          <p className="menu-modal-subtitle">다양한 커뮤니티를 찾아보세요</p>
+        </div>
+      </Link>
+      <Link to="/community/blockchain">
+        <ListItem>블록체인</ListItem>
+      </Link>
+      <Link to="/community/webdev">
+        <ListItem>웹개발</ListItem>
+      </Link>
+      <Link to="/community/beb">
+        <ListItem>BEB</ListItem>
+      </Link>
+      <Link to="/community/bitcoin">
+        <ListItem>비트코인</ListItem>
+      </Link>
+      <Link to="/community/qa">
+        <ListItem>Q&amp;A</ListItem>
+      </Link>
     </Base>
   );
 };

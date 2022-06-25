@@ -159,13 +159,18 @@ const Login: React.FC = () => {
     try {
       const loginAPIResponse = await loginAPI(body);
 
-      const { accessToken } = loginAPIResponse.data;
+      console.log("login API response");
+      console.log(loginAPIResponse.data);
 
-      setCookie("access_token", accessToken);
+      const { access_token } = loginAPIResponse.data;
+
+      setCookie("access_token", access_token, "10");
 
       if (loginAPIResponse.status !== 201) return;
 
-      const authAPIResponse = await authenticateAPI(accessToken);
+      console.log("@@@ login auth API @@@");
+      console.log(access_token);
+      const authAPIResponse = await authenticateAPI(access_token);
 
       const {
         user_id: userId,
