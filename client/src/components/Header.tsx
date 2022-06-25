@@ -11,6 +11,7 @@ import { modalActions } from "../store/modalSlice";
 import SearchInput from "./SearchInput";
 import { Link } from "react-router-dom";
 import NavigationBar from "./NavigationBar";
+import Tooltip from "./common/Tooltip";
 
 const Base = styled.header`
   display: flex;
@@ -107,13 +108,19 @@ const Header: React.FC = () => {
         <NavigationBar />
       </div>
       <div className="header-right">
-        <SearchIcon onClick={openSearchInputModal} />
+        <Tooltip text="검색" position="bottom">
+          <SearchIcon onClick={openSearchInputModal} />
+        </Tooltip>
         {profileModalOpen && <CloseIcon onClick={closeProfileModal} />}
         {!profileModalOpen && isLoggedIn && (
-          <PermIdentityIcon onClick={openProfileModal} />
+          <Tooltip text="프로필" position="bottom">
+            <PermIdentityIcon onClick={openProfileModal} />
+          </Tooltip>
         )}
         {!profileModalOpen && !isLoggedIn && (
-          <LoginIcon onClick={openProfileModal} />
+          <Tooltip text="로그인" position="bottom">
+            <LoginIcon onClick={openProfileModal} />
+          </Tooltip>
         )}
       </div>
     </Base>

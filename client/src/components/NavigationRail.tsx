@@ -12,6 +12,7 @@ import { modalActions } from "../store/modalSlice";
 import IconButton from "./common/IconButton";
 import SettingsIcon from "@mui/icons-material/Settings";
 import PersonIcon from "@mui/icons-material/Person";
+import Tooltip from "./common/Tooltip";
 
 const Base = styled.aside`
   display: none;
@@ -85,7 +86,9 @@ const NavigationRail: React.FC<Props> = ({ ...props }) => {
         {!menuModalOpen && (
           <>
             <ArrowRightIcon />
-            <MenuIcon onClick={openMenuModal} />
+            <Tooltip text="메뉴" position="right">
+              <MenuIcon onClick={openMenuModal} />
+            </Tooltip>
           </>
         )}
         {menuModalOpen && (
@@ -95,10 +98,21 @@ const NavigationRail: React.FC<Props> = ({ ...props }) => {
           </>
         )}
       </div>
-      <FloatingIconButton onClick={onClickFloatingButton}>
-        {isLoggedIn && <CreateIcon />}
-        {!isLoggedIn && <PersonIcon />}
-      </FloatingIconButton>
+      {isLoggedIn && (
+        <Tooltip text="로그인" position="right">
+          <FloatingIconButton onClick={onClickFloatingButton}>
+            <PersonIcon />
+          </FloatingIconButton>
+        </Tooltip>
+      )}
+      {!isLoggedIn && (
+        <Tooltip text="로그인" position="right">
+          <FloatingIconButton onClick={onClickFloatingButton}>
+            <CreateIcon />
+          </FloatingIconButton>
+        </Tooltip>
+      )}
+
       {isLoggedIn && (
         <>
           <IconButton onClick={() => navigate("/mypage")}>
