@@ -34,20 +34,22 @@ export class UserService {
     
   }
 
-  async updateNickname(user_id:number, nickname:string): Promise<any>{
-    return this.userRepository.update({user_id: user_id}, {nickname: nickname })
+  async updateNickname(user_id:number, body:any): Promise<any>{
+    return this.userRepository.update({user_id: user_id}, {nickname: body.nickname })
     
   }
 
-  async updatePassword(user_id:number, curPassword:string, newPassword:string): Promise<any>{
-    return this.userRepository.update({user_id: user_id}, {password:newPassword})
+  async updatePassword(userDTO:UserDTO, new_password:string): Promise<any>{
+    userDTO.password = new_password;
+    // await this.userRepository.update({username: userDTO.username}, {password:new_password})
+    await this.transformPassword(userDTO);
+    return this.userRepository.update({username:userDTO.username},{password:userDTO.password} );
   }
 
   async transformPassword(user: UserDTO): Promise<void> {
     user.password = await bcrypt.hash(user.password, 10);
     return Promise.resolve();
   }
-
 
 
   async getUserIfRefreshTokenMatches(refresh_token: string, id:number): Promise<any>{

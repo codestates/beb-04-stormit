@@ -39,18 +39,21 @@ export class AuthController {
 
     @Get('/authenticate')
     @UseGuards(AuthGuard)
-    isAuthtenticated(@Req() req: Request): any {
+    async isAuthtenticated(@Req() req: Request): Promise<any> {
         const user: any= req.user;
-        return user;
+        const {password, hashedRt, ...result} = await this.authService.getInfoById(user.user_id)
+        
+        return result;
     }
 
 
-    @Get('/refresh/:id')
+    @Get('/refresh')
     @UseGuards(JwtRefreshGuard)
-    refresh(@Param('id') user_id, @Res() res: Response) {
-        const accessToken = this.authService.getJwtAccessToken(user_id);
+    refresh(@Req() req: any, @Res() res: Response) {
+
+        const accessToken = this.authService.getJwtAccessToken(req.user.user_id);
         
-        return res.send({"accessToken" : accessToken});
+        return res.send({"access_token" : accessToken});
       }
 
 
@@ -61,15 +64,15 @@ export class AuthController {
     }
 
     @UseGuards(AuthGuard)
-    @Post('/logout/:id')
-    async logout(@Param('id') user_id: number, @Req() req , @Res() res: Response): Promise<any>{
-        
+    @Post('/logout')
+    async logout(@Req() req , @Res() res: Response): Promise<any>{
+        console.log(req.user.user_id)
         // await this.UserService.removeRefreshToken(req.user.id)
         res.cookie('refresh_token', '', {
             maxAge: 0
         });
 
-        await this.authService.removeRefreshToken(user_id);
+        await this.authService.removeRefreshToken(req.user.user_id);
 
         return res.send({
             success : true
@@ -77,16 +80,26 @@ export class AuthController {
     }
 
     @UseGuards(AuthGuard)
-    @Patch('/:id')
-    async changeNickname(@Param('id') user_id: number, @Req() req, @Res() res: Response): Promise<any>{
-        
-        //const result = await this.userService.updateNickname(user_id,nickname);
+    @Patch('/nickname')
+    async changeNickname(@Body() body, @Req() req, @Res() res: Response): Promise<any>{
+        console.log(body.nickname)
+        const result = await this.userService.updateNickname(req.user.user_id,body);
+        if(result.affected===1){
+            return res.send({
+                success: true
+            })
+        }
     }
 
     @UseGuards(AuthGuard)
-    @Patch('/password/:id')
-    async changePassword(@Param('id') user_id: number, @Req() req, @Res() res: Response): Promise<any>{
-        // const result = await this.userService.updateNickname(user_id);
+    @Patch('/password')
+    async changePassword(@Body() body, @Req() req, @Res() res: Response): Promise<any>{
+        const result = await this.authService.verifyPassword(req.user.user_id,body);
+        if(result.affected===1){
+            return res.send({
+                success: true
+            })
+        }
     }
 
     @UseGuards(AuthGuard)
@@ -100,10 +113,10 @@ export class AuthController {
         }
 
     }
-    // 사용자 프로필 가져오기
-    @Get('/:username')
-    getContentById(@Param ('username') username: string): Promise<any> {
-        return this.authService.getInfoById(username);
-    }
+    // // 사용자 프로필 가져오기
+    // @Get('/:username')
+    // getContentById(@Param ('username') username: string): Promise<any> {
+    //     return this.authService.getInfoById(username);
+    // }
 
 }

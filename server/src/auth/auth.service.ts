@@ -29,6 +29,25 @@ export class AuthService {
         return await this.userService.save(newUser);
     }
 
+    async verifyPassword(user_id:number, body:any ):Promise <any>{
+        let userFind: User = await this.userService.findByFields({
+            where: {user_id: user_id}
+        });
+        
+        if(!userFind){
+            throw new UnauthorizedException();
+        }
+
+        const validatePassword = await bcrypt.compare(body.current_password, userFind.password);
+
+        if(!validatePassword){
+            throw new UnauthorizedException();
+        }else{
+            const result = await this.userService.updatePassword(userFind,body.new_password);
+            return result;
+        }
+    }
+
     async validateUser(userDTO: UserDTO): Promise<any>{
         let userFind: User = await this.userService.findByFields({
             where: {username: userDTO.username}
@@ -94,14 +113,14 @@ export class AuthService {
         })
     }
 
-    async getInfoById(username : string): Promise<UserDTO | undefined>{
+    async getInfoById(user_id : number): Promise<UserDTO | undefined>{
 
 
         const found = await this.userService.findByFields({
-            where : {username: username}
+            where : {user_id: user_id}
         });
         if (!found) {
-            throw new NotFoundException(`Can't find Content with id ${username}`);
+            throw new NotFoundException(`Can't find Content with id ${user_id}`);
           } else {
             return found;
             }
@@ -117,9 +136,9 @@ export class AuthService {
             return token
           }
         
-          removeRefreshToken(user_id:number): Promise<any>{
-              return this.userService.removeRefreshToken(user_id)
-          }
+        removeRefreshToken(user_id:number): Promise<any>{
+            return this.userService.removeRefreshToken(user_id)
+        }
     
 
 
