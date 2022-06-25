@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, Req, Res, UseGuards, UsePipes, ValidationPipe, Param, Delete } from '@nestjs/common';
+import { Body, Controller, Get, Post, Req, Res, UseGuards, UsePipes, ValidationPipe, Param, Delete, Patch } from '@nestjs/common';
 import { Request,Response} from 'express';
 import { AuthService } from './auth.service';
 import { UserDTO } from './dto/user.dto';
@@ -9,7 +9,8 @@ import { UserService } from './user.service';
 
 @Controller('user')
 export class AuthController {
-    constructor(private authService: AuthService){}
+    constructor(private authService: AuthService,
+        private userService: UserService){}
 
     @Post()
     @UsePipes(ValidationPipe)
@@ -74,6 +75,20 @@ export class AuthController {
             success : true
         })
     }
+
+    @UseGuards(AuthGuard)
+    @Patch('/:id')
+    async changeNickname(@Param('id') user_id: number, @Req() req, @Res() res: Response): Promise<any>{
+        
+        //const result = await this.userService.updateNickname(user_id,nickname);
+    }
+
+    @UseGuards(AuthGuard)
+    @Patch('/password/:id')
+    async changePassword(@Param('id') user_id: number, @Req() req, @Res() res: Response): Promise<any>{
+        // const result = await this.userService.updateNickname(user_id);
+    }
+
     @UseGuards(AuthGuard)
     @Delete('/:id')
     async deleteuser(@Param ('id') user_id: number, @Res() res: Response): Promise<any>{

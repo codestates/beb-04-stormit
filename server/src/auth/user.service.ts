@@ -34,6 +34,15 @@ export class UserService {
     
   }
 
+  async updateNickname(user_id:number, nickname:string): Promise<any>{
+    return this.userRepository.update({user_id: user_id}, {nickname: nickname })
+    
+  }
+
+  async updatePassword(user_id:number, curPassword:string, newPassword:string): Promise<any>{
+    return this.userRepository.update({user_id: user_id}, {password:newPassword})
+  }
+
   async transformPassword(user: UserDTO): Promise<void> {
     user.password = await bcrypt.hash(user.password, 10);
     return Promise.resolve();

@@ -43,7 +43,10 @@ export class AuthGuard extends NestAuthGuard('jwt'){
     
             case 'jwt expired':
               throw new HttpException('token expired', 401);
-    
+            
+            case 'jwt malformed':
+                throw new HttpException('token expired', 401);
+                
             default:
               throw new HttpException('서버 오류입니다.', 500);
           }
