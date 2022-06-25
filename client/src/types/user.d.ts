@@ -5,7 +5,7 @@ type SignUpAPIBodyType = {
 };
 
 type LoginAPIResponseType = {
-  accessToken: string;
+  access_token: string;
 };
 
 type LoginAPIBodyType = {
@@ -22,6 +22,10 @@ type UpdatePasswordAPIBodyType = {
   user_id: number;
   current_password: string;
   new_password: string;
+};
+
+type RefreshAccessTokenResponseType = {
+  accessToken: string;
 };
 
 type AuthenticateAPIResponseType = {
