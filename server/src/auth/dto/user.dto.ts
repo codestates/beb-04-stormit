@@ -1,12 +1,12 @@
-import { IsNotEmpty } from "class-validator";
+import { IsNotEmpty } from 'class-validator';
 
 export class UserDTO {
-    @IsNotEmpty()
-    username?: string;
-    @IsNotEmpty()
-    password?: string;
-    @IsNotEmpty()
-    nickname?: string;
+  @IsNotEmpty()
+  username?: string;
+  @IsNotEmpty()
+  password?: string;
+  @IsNotEmpty()
+  nickname?: string;
 
-    hashedRt?: string;
+  hashedRt?: string;
 }

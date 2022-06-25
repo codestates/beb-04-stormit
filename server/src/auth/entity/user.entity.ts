@@ -1,20 +1,24 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
-import {Exclude} from 'class-transformer'
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { Exclude } from 'class-transformer';
+import { Content } from 'src/content/entity/content.entity';
 @Entity('user')
 export class User {
-    @PrimaryGeneratedColumn()
-    user_id: number;
+  @PrimaryGeneratedColumn()
+  user_id: number;
 
-    @Column()
-    username: string;
+  @Column()
+  username: string;
 
-    @Column()
-    password: string;
+  @OneToMany(() => Content, (content) => content.user)
+  contents: Content[];
 
-    @Column()
-    nickname?: string;
+  @Column()
+  password: string;
 
-    @Column({nullable:true})
-    @Exclude({ toPlainOnly: true })
-    hashedRt?: string;
+  @Column()
+  nickname?: string;
+
+  @Column({ nullable: true })
+  @Exclude({ toPlainOnly: true })
+  hashedRt?: string;
 }
