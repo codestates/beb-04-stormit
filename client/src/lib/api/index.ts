@@ -6,6 +6,7 @@ const axios = axiosInstance.create({
   withCredentials: true,
 });
 
+// 액세스 토큰이 만료되었다는 응답을 받으면 액세스 토큰을 새로 재발급받고 다시 요청합니다.
 axios.interceptors.response.use(
   async (response) => {
     return response;

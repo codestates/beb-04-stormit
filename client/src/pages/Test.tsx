@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React from "react";
 import styled from "styled-components";
 import Button from "../components/common/Button";
 import Tooltip from "../components/common/Tooltip";
@@ -19,9 +19,13 @@ const Base = styled.section`
 `;
 
 const Test: React.FC = () => {
-  const buttonRef = useRef<any>(null);
-
-  return <Base></Base>;
+  return (
+    <Base>
+      <Tooltip text="커뮤니티">
+        <Button>버튼</Button>
+      </Tooltip>
+    </Base>
+  );
 };
 
 export default Test;
