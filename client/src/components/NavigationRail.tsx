@@ -6,7 +6,7 @@ import CreateIcon from "@mui/icons-material/Create";
 import ArrowLeftIcon from "@mui/icons-material/ArrowLeft";
 import ArrowRightIcon from "@mui/icons-material/ArrowRight";
 import MenuIcon from "@mui/icons-material/Menu";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "../store";
 import { modalActions } from "../store/modalSlice";
 import IconButton from "./common/IconButton";
@@ -112,15 +112,22 @@ const NavigationRail: React.FC<Props> = ({ ...props }) => {
           </FloatingIconButton>
         </Tooltip>
       )}
-
       {isLoggedIn && (
         <>
-          <IconButton onClick={() => navigate("/mypage")}>
-            <PersonIcon />
-          </IconButton>
-          <IconButton onClick={() => navigate("/account")}>
-            <SettingsIcon />
-          </IconButton>
+          <Tooltip text="내정보" position="right">
+            <Link to="/mypage">
+              <IconButton>
+                <PersonIcon />
+              </IconButton>
+            </Link>
+          </Tooltip>
+          <Tooltip text="설정" position="right">
+            <Link to="/account">
+              <IconButton>
+                <SettingsIcon />
+              </IconButton>
+            </Link>
+          </Tooltip>
         </>
       )}
     </Base>
