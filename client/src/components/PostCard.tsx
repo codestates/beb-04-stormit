@@ -111,11 +111,13 @@ const PostCard: React.FC<Props> = ({
   community,
 }) => {
   return (
-    <Link to={`/post/${postId}`}>
+    <>
       <Base commentCount={commentCount}>
         <div className="post-title-area-wrapper">
           <div className="post-title-wrapper">
-            <p className="post-title">{title}</p>
+            <Link to={`/post/${postId}`}>
+              <p className="post-title">{title}</p>
+            </Link>
             <span className="post-comments">[{commentCount}]</span>
             <Chip size="small">{community}</Chip>
             {commentCount > 10 && <Chip size="small">인기글</Chip>}
@@ -136,7 +138,7 @@ const PostCard: React.FC<Props> = ({
         </div>
       </Base>
       <Divider />
-    </Link>
+    </>
   );
 };
 
