@@ -17,6 +17,9 @@ import IconButton from "../components/common/IconButton";
 import SearchIcon from "@mui/icons-material/Search";
 import { useDispatch } from "../store";
 import { communityActions } from "../store/communitySlice";
+import Divider from "../components/common/Divider";
+import ChevronRightIcon from "@mui/icons-material/ChevronRight";
+import palette from "../styles/palette";
 
 const Base = styled.div`
   display: flex;
@@ -51,6 +54,16 @@ const Base = styled.div`
     padding: 1rem; // 16px
   }
 
+  .community-breadcrumb {
+    display: flex;
+    align-items: center;
+    color: ${palette.gray[400]};
+  }
+
+  .community-breadcrumb-current {
+    color: ${palette.gray[700]};
+  }
+
   .community-search-input-wrapper {
     display: flex;
     justify-content: center;
@@ -83,13 +96,6 @@ const Community: React.FC = () => {
   const [postList, setPostList] = useState<any>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [currentPostList, setCurrentPostList] = useState(postList.slice(0, 10));
-
-  // const currentPostList = postList.slice(
-  //   currentPage * 10 - 9,
-  //   currentPage * 10
-  // );
-
-  console.log(currentPostList);
 
   const dispatch = useDispatch();
 
@@ -131,6 +137,19 @@ const Community: React.FC = () => {
       <NavigationRail />
       <div className="contents">
         <div className="contents-top">
+          <div className="community-breadcrumb">
+            <Link to="/">
+              <span>홈</span>
+            </Link>
+            <ChevronRightIcon />
+            <Link to="/communities">
+              <span>커뮤니티</span>
+            </Link>
+            <ChevronRightIcon />
+            <span className="community-breadcrumb-current">
+              {translateCommunityName(communityName)}
+            </span>
+          </div>
           <div className="community-title-area">
             <Link to={`/community/${communityName}`}>
               <p className="community-title">
@@ -142,6 +161,7 @@ const Community: React.FC = () => {
             </Link>
           </div>
         </div>
+        <Divider />
         <ul className="posts-wrapper">
           {/* {postList.map((post) => (
             <CommunityPostCard
