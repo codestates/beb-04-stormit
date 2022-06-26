@@ -11,7 +11,11 @@ const Base = styled.li`
   display: flex;
   flex-direction: column;
   gap: 0.5rem; // 8px
-  padding-top: 0.5rem; // 8px
+  padding: 0.5rem 1rem; // 8px
+
+  &:hover {
+    background-color: ${palette.gray[100]};
+  }
 
   .post-metadata-area {
     display: flex;
@@ -47,10 +51,6 @@ const Base = styled.li`
   .post-title {
     color: ${palette.gray[600]};
     cursor: pointer;
-
-    &:hover {
-      opacity: 0.7;
-    }
   }
 
   .post-vote-wrapper {
@@ -91,13 +91,11 @@ const CommunityPostCard: React.FC<Props> = ({
   createdAt,
 }) => {
   return (
-    <>
+    <Link to={`/post/${postId}`}>
       <Base>
         <div className="post-title-area-wrapper">
           <div className="post-title-wrapper">
-            <Link to={`/post/${postId}`}>
-              <p className="post-title">{title}</p>
-            </Link>
+            <p className="post-title">{title}</p>
             <span className="post-comments">[{commentCount}]</span>
           </div>
           <div className="post-vote-wrapper">
@@ -113,9 +111,9 @@ const CommunityPostCard: React.FC<Props> = ({
             <span className="post-views">조회수 0</span>
           </p>
         </div>
-        <Divider />
       </Base>
-    </>
+      <Divider />
+    </Link>
   );
 };
 

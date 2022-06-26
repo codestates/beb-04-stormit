@@ -1,12 +1,16 @@
+import { useCallback } from "react";
 import { authenticateAPI } from "../lib/api/user";
 import { parseCookie } from "../lib/utils";
 import { useDispatch } from "../store";
 import { userActions } from "../store/userSlice";
+import useAxiosIntercept from "./useAxiosIntercept";
 
 const useAuthenticate = () => {
   const dispatch = useDispatch();
 
-  const authenticate = async () => {
+  useAxiosIntercept();
+
+  const authenticate = useCallback(async () => {
     const accessToken = parseCookie(document.cookie).access_token;
 
     try {
@@ -27,7 +31,7 @@ const useAuthenticate = () => {
     } catch (error) {
       dispatch(userActions.setLoggedOut());
     }
-  };
+  }, [dispatch]);
 
   return authenticate;
 };

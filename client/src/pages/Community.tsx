@@ -24,14 +24,14 @@ const Base = styled.div`
   height: 100vh;
 
   .contents {
-    margin: 1rem;
+    margin: 1rem 0;
   }
 
   .contents-top {
     display: flex;
     flex-direction: column;
     gap: 0.5rem; // 8px
-    margin: 1rem 0; // 16px
+    margin: 1rem; // 16px
   }
 
   .community-title-area {

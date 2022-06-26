@@ -77,3 +77,18 @@ export const removeCookie = (cookie: string) => {
 export const scrollToTop = () => {
   window.scrollTo(0, 0);
 };
+
+// 함수에 디바운스를 적용합니다 - nonon
+export const debounce = (func: any, wait = 166) => {
+  let timeout: NodeJS.Timeout | null;
+  return (...args: any) => {
+    const context = this;
+    if (timeout) clearTimeout(timeout);
+    timeout = setTimeout(() => {
+      timeout = null;
+      func.apply(context, args);
+    }, wait);
+  };
+};
+
+export default debounce;
