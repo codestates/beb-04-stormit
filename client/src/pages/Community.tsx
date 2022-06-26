@@ -174,7 +174,6 @@ const Community: React.FC = () => {
               commentCount={post}
               nickname="닉네임"
               createdAt={parseDate(new Date())}
-              isPopular={post > 10}
             />
           ))}
         </ul>

@@ -118,7 +118,7 @@ const PostCard: React.FC<Props> = ({
             <p className="post-title">{title}</p>
             <span className="post-comments">[{commentCount}]</span>
             <Chip size="small">{community}</Chip>
-            {commentCount > 5 && <Chip size="small">인기글</Chip>}
+            {commentCount > 10 && <Chip size="small">인기글</Chip>}
           </div>
           <div className="post-vote-wrapper">
             <KeyboardArrowUpIcon className="post-vote-icon" />

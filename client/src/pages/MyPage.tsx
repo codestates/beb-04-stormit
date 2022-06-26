@@ -13,6 +13,7 @@ import CheckIcon from "@mui/icons-material/Check";
 import CloseIcon from "@mui/icons-material/Close";
 import CameraAltIcon from "@mui/icons-material/CameraAlt";
 import { userActions } from "../store/userSlice";
+import Divider from "../components/common/Divider";
 
 const Base = styled.div`
   display: flex;
@@ -23,32 +24,21 @@ const Base = styled.div`
     display: none;
   }
 
-  .profile-legend {
-    position: relative;
-    background-color: ${palette.gray[100]};
-    height: 12.5rem; // 200px
-    margin-bottom: 4rem; // 32px
-  }
-
-  .body {
+  .profile-image-area {
     display: flex;
-  }
-
-  .contents-area {
-    margin: 1rem; // 16px
-
-    display: flex;
-    flex-direction: column;
-    gap: 1rem; // 16px
+    align-items: center;
+    gap: 1rem;
+    margin: 4rem 1rem;
   }
 
   .profile-image-wrapper {
-    position: absolute;
-    top: 7rem;
-    left: 2rem;
-    width: 8rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     height: 8rem;
+    width: 8rem;
     border-radius: 50%;
+    margin-right: 1rem;
     cursor: pointer;
 
     &:hover {
@@ -67,10 +57,8 @@ const Base = styled.div`
   }
 
   .profile-image-edit-button {
-    color: ${palette.gray[900]};
     position: absolute;
-    top: 3.7rem;
-    left: 3.3rem;
+    color: ${palette.gray[900]};
     display: none;
   }
 
@@ -82,14 +70,15 @@ const Base = styled.div`
 
   .my-posts {
     font-weight: 500;
+    font-size: 1.25rem;
+    margin: 1rem;
+    margin-top: 2rem;
   }
 
   .profile-nickname-wrapper {
     display: flex;
     align-items: center;
     gap: 0.5rem; // 8px
-
-    margin-bottom: 3rem; // 48px
   }
 
   .profile-nickname {
@@ -117,9 +106,6 @@ const Base = styled.div`
 
     .navigation-rail {
       display: flex;
-    }
-
-    .profile-image {
     }
   }
 `;
@@ -164,69 +150,66 @@ const Mypage: React.FC = () => {
     <Base>
       <NavigationRail className="navigation-rail" />
       <section className="contents">
-        <div className="profile-legend">
+        <div className="profile-image-area">
           <div className="profile-image-wrapper" onClick={onClickProfileImage}>
             <img className="profile-image" src="/profile-image.png" alt="" />
             <CameraAltIcon className="profile-image-edit-button" />
           </div>
+          {!editMode && (
+            <>
+              <p className="profile-nickname">{nickname}</p>
+              <IconButton>
+                <EditIcon onClick={onClickEditButton} />
+              </IconButton>
+            </>
+          )}
+          {editMode && (
+            <>
+              <Input
+                className="profile-nickname-input"
+                value={input}
+                onChange={onChangeInput}
+                onKeyDown={onEnterNickname}
+              />
+              <IconButton variant="contained" onClick={submitNickname}>
+                <CheckIcon />
+              </IconButton>
+              <IconButton onClick={() => setEditMode(false)}>
+                <CloseIcon />
+              </IconButton>
+            </>
+          )}
         </div>
-        <div className="contents-area">
-          <div className="profile-nickname-wrapper">
-            {!editMode && (
-              <>
-                <p className="profile-nickname">{nickname}</p>
-                <IconButton>
-                  <EditIcon onClick={onClickEditButton} />
-                </IconButton>
-              </>
-            )}
-            {editMode && (
-              <>
-                <Input
-                  className="profile-nickname-input"
-                  value={input}
-                  onChange={onChangeInput}
-                  onKeyDown={onEnterNickname}
-                />
-                <IconButton variant="contained" onClick={submitNickname}>
-                  <CheckIcon />
-                </IconButton>
-                <IconButton onClick={() => setEditMode(false)}>
-                  <CloseIcon />
-                </IconButton>
-              </>
-            )}
-          </div>
-          <p className="my-posts">내가 작성한 게시글</p>
-          <CommunityPostCard
-            postId={1}
-            title="나의 글"
-            commentCount={2}
-            nickname="노논"
-            createdAt={parseDate(new Date())}
-          />
-          <CommunityPostCard
-            postId={1}
-            title="나의 글"
-            commentCount={2}
-            nickname="노논"
-            createdAt={parseDate(new Date())}
-          />
-          <CommunityPostCard
-            postId={1}
-            title="나의 글"
-            commentCount={2}
-            nickname="노논"
-            createdAt={parseDate(new Date())}
-          />
-          <CommunityPostCard
-            postId={1}
-            title="나의 글"
-            commentCount={2}
-            nickname="노논"
-            createdAt={parseDate(new Date())}
-          />
-        </div>
+        <Divider />
+        <p className="my-posts">내가 작성한 게시글</p>
+        <CommunityPostCard
+          postId={1}
+          title="나의 글"
+          commentCount={2}
+          nickname="노논"
+          createdAt={parseDate(new Date())}
+        />
+        <CommunityPostCard
+          postId={1}
+          title="나의 글"
+          commentCount={2}
+          nickname="노논"
+          createdAt={parseDate(new Date())}
+        />
+        <CommunityPostCard
+          postId={1}
+          title="나의 글"
+          commentCount={2}
+          nickname="노논"
+          createdAt={parseDate(new Date())}
+        />
+        <CommunityPostCard
+          postId={1}
+          title="나의 글"
+          commentCount={2}
+          nickname="노논"
+          createdAt={parseDate(new Date())}
+        />
       </section>
     </Base>
   );
