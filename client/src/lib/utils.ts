@@ -20,7 +20,9 @@ export const parseDate = (date: Date) => {
 };
 
 // 게시글 배열 더미데이터 - nonon
-export const FAKE_ARRAY = Array(10).fill(0);
+export const FAKE_ARRAY = Array(105)
+  .fill(0)
+  .map((_, index) => index + 1);
 
 // URL 경로의 마지막 부분만 잘라줍니다 - nonon
 // ex) 'localhost:3000/community/talk' -> 'talk'

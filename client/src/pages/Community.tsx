@@ -80,7 +80,16 @@ const Base = styled.div`
 `;
 
 const Community: React.FC = () => {
-  const [postList, setPostList] = useState<GetPostsByBoardResponseType>([]);
+  const [postList, setPostList] = useState<any>([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [currentPostList, setCurrentPostList] = useState(postList.slice(0, 10));
+
+  // const currentPostList = postList.slice(
+  //   currentPage * 10 - 9,
+  //   currentPage * 10
+  // );
+
+  console.log(currentPostList);
 
   const dispatch = useDispatch();
 
@@ -88,19 +97,30 @@ const Community: React.FC = () => {
 
   const communityName = getLastPathname(location.pathname);
 
+  // useEffect(() => {
+  //   const fetchPosts = async () => {
+  //     try {
+  //       const body = { board_title: communityName };
+  //       const response = await getPostsByBoardAPI(body);
+  //       setPostList(response.data);
+  //     } catch (error) {
+  //       console.log(error);
+  //     }
+  //   };
+
+  //   fetchPosts();
+  // }, [communityName]);
+
   useEffect(() => {
-    const fetchPosts = async () => {
-      try {
-        const body = { board_title: communityName };
-        const response = await getPostsByBoardAPI(body);
-        setPostList(response.data);
-      } catch (error) {
-        console.log(error);
-      }
+    const simulateFetchPosts = () => {
+      setPostList(FAKE_ARRAY);
+      setCurrentPostList(
+        postList.slice(currentPage * 10 - 10, currentPage * 10)
+      );
     };
 
-    fetchPosts();
-  }, [communityName]);
+    simulateFetchPosts();
+  }, [currentPage, postList]);
 
   useEffect(() => {
     dispatch(communityActions.setCurrentCommunity(communityName));
@@ -121,7 +141,7 @@ const Community: React.FC = () => {
           </div>
         </div>
         <ul className="posts-wrapper">
-          {postList.map((post) => (
+          {/* {postList.map((post) => (
             <CommunityPostCard
               postId={post.post_id}
               title={post.post_title}
@@ -129,20 +149,24 @@ const Community: React.FC = () => {
               nickname={post.nickname}
               createdAt={post.created_at}
             />
-          ))}
-          {FAKE_ARRAY.map((_, index) => (
+          ))} */}
+          {currentPostList.map((post: number, index: number) => (
             <CommunityPostCard
               key={index}
               postId={1}
               title="랜덤 게시물"
-              commentCount={3}
+              commentCount={post}
               nickname="닉네임"
               createdAt={parseDate(new Date())}
             />
           ))}
         </ul>
         <div className="pagination-wrapper">
-          <Pagination />
+          <Pagination
+            totalPosts={postList.length || 100}
+            currentPage={currentPage}
+            setCurrentPage={setCurrentPage}
+          />
         </div>
         <div className="community-search-input-wrapper">
           <Input className="community-search-input" />
