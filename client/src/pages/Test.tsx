@@ -1,7 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
-import Button from "../components/common/Button";
-import Tooltip from "../components/common/Tooltip";
+import Tab from "../components/common/Tab";
+import Tabs from "../components/common/Tabs";
 
 const Base = styled.section`
   display: flex;
@@ -19,11 +19,15 @@ const Base = styled.section`
 `;
 
 const Test: React.FC = () => {
+  const [tabIndex, setTabIndex] = useState(0);
+
   return (
     <Base>
-      <Tooltip text="커뮤니티">
-        <Button>버튼</Button>
-      </Tooltip>
+      <Tabs>
+        <Tab label="ONE" value="one" />
+        <Tab label="ONE" value="two" />
+        <Tab label="ONE" value="three" />
+      </Tabs>
     </Base>
   );
 };

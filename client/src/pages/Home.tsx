@@ -181,7 +181,7 @@ const Home: React.FC = () => {
         {isLoggedIn && <MovetoPost />}
         <h2 className="section-title">전체 글 보기</h2>
         <ul className="posts-wrapper">
-          {postList.map((post) => (
+          {/* {postList.map((post) => (
             <PostCard
               key={post.post_id}
               postId={post.post_id}
@@ -192,7 +192,7 @@ const Home: React.FC = () => {
               contents={shortenPostContents(post.post_content)}
               nickname="노논"
             />
-          ))}
+          ))} */}
           {fakePostList.map((_, index) => (
             <PostCard
               key={index}

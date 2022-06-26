@@ -11,7 +11,7 @@ import {
 import Pagination from "../components/Pagination";
 import Button from "../components/common/Button";
 import CommunityPostCard from "../components/CommunityPostCard";
-import { getAllPostAPI, getPostsByBoardAPI } from "../lib/api/post";
+import { getPostsByBoardAPI } from "../lib/api/post";
 import Input from "../components/common/Input";
 import IconButton from "../components/common/IconButton";
 import SearchIcon from "@mui/icons-material/Search";

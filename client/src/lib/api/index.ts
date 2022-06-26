@@ -1,6 +1,6 @@
 import axiosInstance from "axios";
-import { refreshAccessTokenAPI } from "./user";
-import { parseCookie, setCookie } from "../utils";
+import { parseCookie } from "../utils";
+import useRefreshToken from "../../hooks/useRefreshToken";
 
 const axios = axiosInstance.create({
   withCredentials: true,
@@ -21,20 +21,13 @@ axios.interceptors.response.use(
     ) {
       const originalRequest = error.config;
 
-      try {
-        const response = await refreshAccessTokenAPI();
-        // access_token으로 변경
-        const { access_token } = response.data;
+      const refreshAccessToken = useRefreshToken();
 
-        setCookie("access_token", access_token, "10");
+      const accessToken = await refreshAccessToken();
 
-        originalRequest.headers["Authorization"] = `Bearer ${access_token}`;
+      originalRequest.headers["Authorization"] = `Bearer ${accessToken}`;
 
-        return axios(originalRequest);
-      } catch (error) {
-        // refreshAPI의 에러
-        return Promise.reject(error);
-      }
+      return axios(originalRequest);
     }
     // originalRequest의 에러
     return Promise.reject(error);

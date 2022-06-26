@@ -12,7 +12,7 @@ async function bootstrap() {
 
   // const port = serverConfig.port; // port configuration
   app.use(cookieParser());
-  await app.listen(3000);
-  console.log(`Server listening on port ${3000}`);
+  await app.listen(4000);
+  console.log(`Server listening on port ${4000}`);
 }
 bootstrap();

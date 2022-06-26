@@ -56,6 +56,7 @@ const LoginForm = styled.form`
 
   .validation-text {
     color: ${palette.red[500]};
+    font-size: 0.875rem; // 14px
   }
 
   .login-btn {
@@ -102,6 +103,7 @@ const LoginForm = styled.form`
     color: ${palette.blue[500]};
     font-size: 0.8rem;
     font-weight: 500;
+    cursor: pointer;
 
     :hover {
       text-decoration: underline;

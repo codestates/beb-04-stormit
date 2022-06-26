@@ -157,7 +157,7 @@ const Mypage: React.FC = () => {
   };
 
   const onClickProfileImage = () => {
-    alert("현재 프로필 변경은 지원하지 않습니다.");
+    alert("현재 프로필 이미지 변경은 지원하지 않습니다.");
   };
 
   return (

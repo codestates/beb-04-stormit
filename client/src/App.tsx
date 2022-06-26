@@ -1,32 +1,30 @@
-import React, { useEffect } from "react";
-import { Route, Routes } from "react-router-dom";
-import Home from "./pages/Home";
-import Test from "./pages/Test";
-import MyPage from "./pages/MyPage";
-import Login from "./pages/Login";
+import { snackbarActions } from "./store/snackbarSlice";
+import useAuthenticate from "./hooks/useAuthenticate";
+import ProfileModal from "./components/ProfileModal";
+import Snackbar from "./components/common/Snackbar";
 import { useDispatch, useSelector } from "./store";
+import { ThemeProvider } from "styled-components";
+import { themeActions } from "./store/themeSlice";
+import { darkTheme, theme } from "./styles/theme";
+import { Route, Routes } from "react-router-dom";
 import GlobalStyle from "./styles/GlobalStyle";
 import MenuModal from "./components/MenuModal";
-import ProfileModal from "./components/ProfileModal";
-import Account from "./pages/Account";
-import Header from "./components/Header";
-import Post from "./pages/Post";
-import Community from "./pages/Community";
-import PostDetail from "./pages/PostDetail";
-import Edit from "./pages/Edit";
-import { ThemeProvider } from "styled-components";
-import { darkTheme, theme } from "./styles/theme";
-import { themeActions } from "./store/themeSlice";
-import Snackbar from "./components/common/Snackbar";
-import { snackbarActions } from "./store/snackbarSlice";
-import Agreement from "./pages/Agreement";
-import Communities from "./pages/Communities";
-import { authenticateAPI } from "./lib/api/user";
-import { userActions } from "./store/userSlice";
-import { parseCookie } from "./lib/utils";
-import ErrorPage from "./pages/404";
 import DeletedPost from "./pages/DeletedPost";
+import Communities from "./pages/Communities";
+import PostDetail from "./pages/PostDetail";
+import Community from "./pages/Community";
+import Agreement from "./pages/Agreement";
+import React, { useEffect } from "react";
+import Header from "./components/Header";
+import Account from "./pages/Account";
 import SignUp from "./pages/SignUp";
+import ErrorPage from "./pages/404";
+import MyPage from "./pages/MyPage";
+import Login from "./pages/Login";
+import Home from "./pages/Home";
+import Test from "./pages/Test";
+import Post from "./pages/Post";
+import Edit from "./pages/Edit";
 
 const App: React.FC = () => {
   console.log("@@@ app render @@@");
@@ -36,9 +34,10 @@ const App: React.FC = () => {
   const loginSnackbarOpen = useSelector(
     (state) => state.snackbar.loginSnackbarOpen
   );
-  const userId = useSelector((state) => state.user.userId);
 
   const dispatch = useDispatch();
+
+  const authenticate = useAuthenticate();
 
   if (localStorage.getItem("darkMode") === "on") {
     dispatch(themeActions.setDarkMode(true));
@@ -50,38 +49,8 @@ const App: React.FC = () => {
 
   // 새로고침 시 로그인
   useEffect(() => {
-    const authenticate = async () => {
-      const accessToken = parseCookie(document.cookie).access_token;
-
-      try {
-        const response = await authenticateAPI(accessToken);
-
-        // interceptor가 트리거되는 시점
-
-        console.log("@@@ authenticate API response @@@");
-        console.log(response);
-
-        // userId가 클라이언트에 저장되는 시점
-        const { user_id: userId, username: email, nickname } = response.data;
-
-        dispatch(userActions.setLoggedIn());
-
-        dispatch(
-          userActions.setUserInfo({
-            email: email,
-            nickname: nickname,
-            userId: userId,
-          })
-        );
-
-        console.log("logged in");
-      } catch (error: any) {
-        dispatch(userActions.setLoggedOut());
-      }
-    };
-
     authenticate();
-  }, [dispatch, userId]);
+  }, [authenticate]);
 
   return (
     <ThemeProvider theme={isDarkMode ? darkTheme : theme}>

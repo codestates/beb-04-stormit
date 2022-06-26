@@ -20,8 +20,8 @@ import { Board } from './board/entity/board.entity';
       host: 'localhost',
       port: 3306,
       username: 'root',
-      password: '0410',
-      database: 'stormit_test',
+      password: 'nononmysql123',
+      database: 'stormit',
 
       entities: [User, Content, Board, Comment],
       // entities: [__dirname + '../**/*.entity{.ts,.js}'],
