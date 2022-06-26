@@ -3,12 +3,12 @@ import styled, { css } from "styled-components";
 import palette from "../styles/palette";
 import Divider from "./common/Divider";
 import { Link } from "react-router-dom";
-import theme from "../styles/theme";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import Chip from "./common/Chip";
 
 interface BaseProps {
-  isPopular: boolean;
+  isPopular?: boolean;
+  viewed?: boolean;
 }
 
 const Base = styled.li<BaseProps>`
@@ -20,15 +20,6 @@ const Base = styled.li<BaseProps>`
   &:hover {
     background-color: ${palette.gray[100]};
   }
-
-  ${({ isPopular }) =>
-    isPopular &&
-    css`
-      background-color: ${palette.blue[50]};
-      &:hover {
-        background-color: ${palette.blue[100]};
-      }
-    `}
 
   .post-metadata-area {
     display: flex;
@@ -76,16 +67,36 @@ const Base = styled.li<BaseProps>`
   }
 
   .post-vote {
-    color: ${theme.primary};
+    color: ${palette.blue[500]};
   }
 
   .post-comments {
-    color: ${theme.primary};
+    color: ${palette.blue[500]};
   }
 
   .post-author {
     font-size: 0.875rem; // 14px
   }
+
+  ${({ isPopular }) =>
+    isPopular &&
+    css`
+      background-color: ${palette.blue[50]};
+      &:hover {
+        background-color: ${palette.blue[100]};
+      }
+    `}
+
+  ${({ viewed }) =>
+    viewed &&
+    css`
+      .post-title {
+        color: ${palette.gray[100]};
+      }
+      .post-comments {
+        color: ${palette.blue[200]};
+      }
+    `}
 `;
 
 interface Props {
@@ -95,6 +106,7 @@ interface Props {
   nickname: string;
   createdAt: string;
   isPopular?: boolean;
+  viewed?: boolean;
 }
 
 const CommunityPostCard: React.FC<Props> = ({
@@ -104,10 +116,11 @@ const CommunityPostCard: React.FC<Props> = ({
   nickname,
   createdAt,
   isPopular,
+  viewed,
 }) => {
   return (
     <Link to={`/post/${postId}`}>
-      <Base isPopular={isPopular || false}>
+      <Base isPopular={isPopular} viewed={viewed}>
         <div className="post-title-area-wrapper">
           <div className="post-title-wrapper">
             {isPopular && <Chip size="small">인기</Chip>}

@@ -24,8 +24,21 @@ const Base = styled.div`
     height: 1rem; // 16px
   }
 
+  .comment-profile-image-wrapper {
+    border-radius: 50%;
+    width: 1.5rem;
+    height: 1.5rem;
+  }
+
+  .comment-profile-image {
+    border-radius: 50%;
+    width: 100%;
+    height: 100%;
+  }
+
   .comment-metadata-left-area {
     display: flex;
+    align-items: center;
     gap: 0.5rem; // 8px
   }
 
@@ -120,6 +133,13 @@ const CommentCard: React.FC<Props> = ({
       <Divider />
       <div className="comment-metadata">
         <div className="comment-metadata-left-area">
+          <div className="comment-profile-image-wrapper">
+            <img
+              className="comment-profile-image"
+              src="/profile-image.png"
+              alt=""
+            />
+          </div>
           <p className="comment-author">{nickname}</p>
           <Divider orientation="vertical" />
           <p className="comment-date">{createdAt}</p>

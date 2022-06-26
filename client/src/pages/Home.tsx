@@ -12,10 +12,17 @@ import { useSelector } from "../store";
 import MovetoPost from "../components/MovetoPost";
 import { getAllPostAPI } from "../lib/api/post";
 import PersonIcon from "@mui/icons-material/Person";
-import { FAKE_ARRAY, parseDate, shortenPostContents } from "../lib/utils";
+import {
+  FAKE_ARRAY,
+  parseDate,
+  shortenPostContents,
+  translateCommunityName,
+} from "../lib/utils";
 import IconButton from "../components/common/IconButton";
 import KeyboardDoubleArrowDownIcon from "@mui/icons-material/KeyboardDoubleArrowDown";
 import Skeleton from "../components/common/Skeleton";
+import Chip from "../components/common/Chip";
+import { boardList } from "../lib/staticData";
 
 const Base = styled.div`
   display: flex;
@@ -30,7 +37,11 @@ const Base = styled.div`
     margin: 1rem;
   }
 
-  .contents {
+  .board-list-wrapper {
+    display: flex;
+    margin: 0 1rem;
+    margin-bottom: 2rem;
+    gap: 0.5rem;
   }
 
   .stormit {
@@ -178,6 +189,16 @@ const Home: React.FC = () => {
             </>
           )}
         </div>
+        {/* <Link to="/communities">
+          <h2 className="section-title">커뮤니티</h2>
+        </Link>
+        <div className="board-list-wrapper">
+          {boardList.map((community) => (
+            <Link to={`/community/${community}`}>
+              <Chip size="large">{translateCommunityName(community)}</Chip>
+            </Link>
+          ))}
+        </div> */}
         {isLoggedIn && <MovetoPost />}
         <h2 className="section-title">전체 글 보기</h2>
         <ul className="posts-wrapper">

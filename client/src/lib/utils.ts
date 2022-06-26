@@ -93,4 +93,20 @@ export const debounce = (func: any, wait = 166) => {
   };
 };
 
-export default debounce;
+// 로컬스토리지에 조회한 글을 저장합니다 - nonon
+export const setViewed = (postId: number) => {
+  const viewedList = localStorage.getItem("viewed")?.split("&");
+  if (!viewedList) {
+    localStorage.setItem("viewed", String(postId));
+  } else {
+    localStorage.setItem("viewed", viewedList.join("&"));
+  }
+};
+
+// 글을 조회한 적이 있는지 확인합니다 - nonon
+export const isViewed = (postId: number) => {
+  const viewedList = localStorage.getItem("viewed")?.split("&");
+  if (!viewedList) return false;
+
+  return viewedList.includes(String(postId)) ? true : false;
+};
