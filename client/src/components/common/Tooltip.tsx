@@ -40,6 +40,8 @@ const Base = styled.div<BaseProps>`
     opacity: 0;
     animation: visible 0.2s;
 
+    z-index: 999;
+
     ${({ position }) => getTooltipPosition(position)};
   }
 

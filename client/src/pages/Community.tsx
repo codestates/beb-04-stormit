@@ -132,9 +132,11 @@ const Community: React.FC = () => {
       <div className="contents">
         <div className="contents-top">
           <div className="community-title-area">
-            <p className="community-title">
-              {translateCommunityName(communityName)}
-            </p>
+            <Link to={`/community/${communityName}`}>
+              <p className="community-title">
+                {translateCommunityName(communityName)}
+              </p>
+            </Link>
             <Link to="/post">
               <Button variant="contained">글쓰기</Button>
             </Link>
@@ -150,6 +152,20 @@ const Community: React.FC = () => {
               createdAt={post.created_at}
             />
           ))} */}
+          {postList
+            .filter((post: number) => post > 10)
+            .slice(0, 3)
+            .map((post: number, index: number) => (
+              <CommunityPostCard
+                key={index}
+                postId={1}
+                title="인기 게시물"
+                commentCount={post}
+                nickname="닉네임"
+                createdAt={parseDate(new Date())}
+                isPopular
+              />
+            ))}
           {currentPostList.map((post: number, index: number) => (
             <CommunityPostCard
               key={index}
@@ -158,6 +174,7 @@ const Community: React.FC = () => {
               commentCount={post}
               nickname="닉네임"
               createdAt={parseDate(new Date())}
+              isPopular={post > 10}
             />
           ))}
         </ul>

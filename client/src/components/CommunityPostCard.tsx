@@ -1,13 +1,17 @@
 import React from "react";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import palette from "../styles/palette";
 import Divider from "./common/Divider";
 import { Link } from "react-router-dom";
 import theme from "../styles/theme";
-
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
+import Chip from "./common/Chip";
 
-const Base = styled.li`
+interface BaseProps {
+  isPopular: boolean;
+}
+
+const Base = styled.li<BaseProps>`
   display: flex;
   flex-direction: column;
   gap: 0.5rem; // 8px
@@ -16,6 +20,15 @@ const Base = styled.li`
   &:hover {
     background-color: ${palette.gray[100]};
   }
+
+  ${({ isPopular }) =>
+    isPopular &&
+    css`
+      background-color: ${palette.blue[50]};
+      &:hover {
+        background-color: ${palette.blue[100]};
+      }
+    `}
 
   .post-metadata-area {
     display: flex;
@@ -81,6 +94,7 @@ interface Props {
   commentCount: number;
   nickname: string;
   createdAt: string;
+  isPopular?: boolean;
 }
 
 const CommunityPostCard: React.FC<Props> = ({
@@ -89,12 +103,14 @@ const CommunityPostCard: React.FC<Props> = ({
   commentCount,
   nickname,
   createdAt,
+  isPopular,
 }) => {
   return (
     <Link to={`/post/${postId}`}>
-      <Base>
+      <Base isPopular={isPopular || false}>
         <div className="post-title-area-wrapper">
           <div className="post-title-wrapper">
+            {isPopular && <Chip size="small">인기</Chip>}
             <p className="post-title">{title}</p>
             <span className="post-comments">[{commentCount}]</span>
           </div>

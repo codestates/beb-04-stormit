@@ -27,10 +27,10 @@ const Base = styled.div`
     align-items: center;
     flex-direction: column;
     gap: 0.5rem; // 8px
+    margin: 1rem;
   }
 
   .contents {
-    margin: 1rem; // 16px
   }
 
   .stormit {
@@ -57,7 +57,7 @@ const Base = styled.div`
   .section-title {
     font-size: 1.5rem; // 24px
     font-weight: 500;
-    padding: 1rem 0; // 16px 0
+    padding: 1rem; // 16px
   }
 
   .fab-wrapper {

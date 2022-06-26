@@ -1,17 +1,27 @@
 import React from "react";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import palette from "../styles/palette";
 import Divider from "./common/Divider";
-import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import theme from "../styles/theme";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import Chip from "./common/Chip";
 
-const Base = styled.li`
+interface BaseProps {
+  commentCount: number;
+}
+
+const Base = styled.li<BaseProps>`
   display: flex;
   flex-direction: column;
   gap: 0.5rem; // 8px
-  padding-top: 0.5rem; // 8px
+  padding: 0.5rem 1rem;
+
+  ${({ commentCount }) =>
+    commentCount > 10 &&
+    css`
+      background-color: ${palette.blue[50]};
+    `}
 
   .post-metadata-area {
     display: flex;
@@ -100,22 +110,15 @@ const PostCard: React.FC<Props> = ({
   createdAt,
   community,
 }) => {
-  const navigate = useNavigate();
-
-  const onClickPostTitle = () => {
-    navigate(`/post/${postId}`);
-  };
-
   return (
-    <>
-      <Base>
+    <Link to={`/post/${postId}`}>
+      <Base commentCount={commentCount}>
         <div className="post-title-area-wrapper">
           <div className="post-title-wrapper">
-            <p className="post-title" onClick={onClickPostTitle}>
-              {title}
-            </p>
+            <p className="post-title">{title}</p>
             <span className="post-comments">[{commentCount}]</span>
             <Chip size="small">{community}</Chip>
+            {commentCount > 5 && <Chip size="small">인기글</Chip>}
           </div>
           <div className="post-vote-wrapper">
             <KeyboardArrowUpIcon className="post-vote-icon" />
@@ -131,9 +134,9 @@ const PostCard: React.FC<Props> = ({
             <span className="post-views">조회수 0</span>
           </p>
         </div>
-        <Divider />
       </Base>
-    </>
+      <Divider />
+    </Link>
   );
 };
 
