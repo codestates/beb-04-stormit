@@ -1,26 +1,39 @@
-import React, { useState } from "react";
-import styled from "styled-components";
+import React from "react";
+import styled, { css } from "styled-components";
+import palette from "../../styles/palette";
 
-const Base = styled.div`
+interface BaseProps {
+  active?: boolean;
+}
+
+const Base = styled.div<BaseProps>`
+  display: flex;
+  align-items: center;
+  justify-content: center;
   padding: 1rem;
   background-color: white;
-  outline: none;
+  cursor: pointer;
+  font-weight: 400;
+
+  min-width: 6rem;
+
+  ${({ active }) =>
+    active &&
+    css`
+      border-bottom: 3px solid ${palette.blue[500]};
+      font-weight: 500;
+    `}
 `;
 
 interface Props extends React.HTMLAttributes<HTMLDivElement> {
   label: string;
-  value: string;
+  active?: boolean;
 }
 
-const Tab: React.FC<Props> = ({ label, value, ...props }) => {
-  const [open, setOpen] = useState();
-
-  const [tabValue, setTabValue] = useState(value);
-
+const Tab: React.FC<Props> = ({ label, active, ...props }) => {
   return (
-    <Base {...props}>
+    <Base active={active} {...props}>
       {label}
-      <span className="tabs-indicator" />
     </Base>
   );
 };

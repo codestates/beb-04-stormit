@@ -14,6 +14,9 @@ import CloseIcon from "@mui/icons-material/Close";
 import CameraAltIcon from "@mui/icons-material/CameraAlt";
 import { userActions } from "../store/userSlice";
 import Divider from "../components/common/Divider";
+import Tabs from "../components/common/Tabs";
+import Tab from "../components/common/Tab";
+import ManageSearchIcon from "@mui/icons-material/ManageSearch";
 
 const Base = styled.div`
   display: flex;
@@ -75,6 +78,21 @@ const Base = styled.div`
     margin-top: 2rem;
   }
 
+  .empty-content {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    justify-content: center;
+    align-items: center;
+    height: 8rem;
+    color: ${palette.gray[400]};
+  }
+
+  .empty-content-icon {
+    width: 4rem;
+    height: 4rem;
+  }
+
   .profile-nickname-wrapper {
     display: flex;
     align-items: center;
@@ -113,6 +131,7 @@ const Base = styled.div`
 const Mypage: React.FC = () => {
   const [input, setInput] = useState("");
   const [editMode, setEditMode] = useState(false);
+  const [activeTab, setActiveTab] = useState("나의 글");
 
   const nickname = useSelector((state) => state.user.nickname);
 
@@ -180,36 +199,62 @@ const Mypage: React.FC = () => {
             </>
           )}
         </div>
+        <Tabs>
+          <Tab
+            label="내 게시글"
+            active={activeTab === "나의 글"}
+            onClick={() => setActiveTab("나의 글")}
+          />
+          <Tab
+            label="내 댓글"
+            active={activeTab === "나의 댓글"}
+            onClick={() => setActiveTab("나의 댓글")}
+          />
+        </Tabs>
         <Divider />
-        <p className="my-posts">내가 작성한 게시글</p>
-        <CommunityPostCard
-          postId={1}
-          title="나의 글"
-          commentCount={2}
-          nickname="노논"
-          createdAt={parseDate(new Date())}
-        />
-        <CommunityPostCard
-          postId={1}
-          title="나의 글"
-          commentCount={2}
-          nickname="노논"
-          createdAt={parseDate(new Date())}
-        />
-        <CommunityPostCard
-          postId={1}
-          title="나의 글"
-          commentCount={2}
-          nickname="노논"
-          createdAt={parseDate(new Date())}
-        />
-        <CommunityPostCard
-          postId={1}
-          title="나의 글"
-          commentCount={2}
-          nickname="노논"
-          createdAt={parseDate(new Date())}
-        />
+        {activeTab === "나의 글" && (
+          <>
+            <p className="my-posts">내가 작성한 게시글</p>
+            <CommunityPostCard
+              postId={1}
+              title="나의 글"
+              commentCount={2}
+              nickname="노논"
+              createdAt={parseDate(new Date())}
+            />
+            <CommunityPostCard
+              postId={1}
+              title="나의 글"
+              commentCount={2}
+              nickname="노논"
+              createdAt={parseDate(new Date())}
+            />
+            <CommunityPostCard
+              postId={1}
+              title="나의 글"
+              commentCount={2}
+              nickname="노논"
+              createdAt={parseDate(new Date())}
+            />
+            <CommunityPostCard
+              postId={1}
+              title="나의 글"
+              commentCount={2}
+              nickname="노논"
+              createdAt={parseDate(new Date())}
+            />
+          </>
+        )}
+        {activeTab === "나의 댓글" && (
+          <>
+            <p className="my-posts">내가 작성한 댓글</p>
+
+            <div className="empty-content">
+              <ManageSearchIcon className="empty-content-icon" />
+              <p>작성한 댓글이 없습니다.</p>
+            </div>
+          </>
+        )}
       </section>
     </Base>
   );

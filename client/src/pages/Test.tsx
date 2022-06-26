@@ -19,14 +19,12 @@ const Base = styled.section`
 `;
 
 const Test: React.FC = () => {
-  const [tabIndex, setTabIndex] = useState(0);
-
   return (
     <Base>
       <Tabs>
-        <Tab label="ONE" value="one" />
-        <Tab label="ONE" value="two" />
-        <Tab label="ONE" value="three" />
+        <Tab label="ONE" active={true} />
+        <Tab label="ONE" active={false} />
+        <Tab label="ONE" active={false} />
       </Tabs>
     </Base>
   );
