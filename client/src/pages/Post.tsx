@@ -5,12 +5,12 @@ import Button from "../components/common/Button";
 import Chip from "../components/common/Chip";
 import Input from "../components/common/Input";
 import Select from "../components/common/Select";
-import Textarea from "../components/common/Textarea";
-import PostOptionCard from "../components/PostOptionCard";
 import { submitPostAPI } from "../lib/api/post";
 import { boardList } from "../lib/staticData";
 import { translateCommunityName } from "../lib/utils";
 import { useSelector } from "../store";
+import { CKEditor } from "@ckeditor/ckeditor5-react";
+import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 
 const Base = styled.div`
   display: flex;
@@ -33,6 +33,10 @@ const Base = styled.div`
     display: flex;
     justify-content: flex-end;
     gap: 1rem;
+  }
+
+  .ck.ck-editor__editable:not(.ck-editor__nested-editable) {
+    height: 25rem;
   }
 
   // 1240px
@@ -60,10 +64,6 @@ const Post: React.FC = () => {
 
   const onChangeTitle = (event: React.ChangeEvent<HTMLInputElement>) => {
     setTitle(event.target.value);
-  };
-
-  const onChangeContents = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setContents(event.target.value);
   };
 
   const onClickCancelButton = () => {
@@ -108,12 +108,16 @@ const Post: React.FC = () => {
         ))}
       </Select>
       <Input placeholder="제목" value={title} onChange={onChangeTitle} />
-      <PostOptionCard />
-      <Textarea
-        height="25rem"
-        placeholder="내용을 입력해주세요."
-        value={contents}
-        onChange={onChangeContents}
+      <CKEditor
+        config={{
+          placeholder: "내용을 입력하세요.",
+        }}
+        editor={ClassicEditor}
+        data={contents}
+        onChange={(event: any, editor: any) => {
+          const data = editor.getData();
+          setContents(data);
+        }}
       />
       <div className="community-wrapper">
         <Chip>Tag</Chip>

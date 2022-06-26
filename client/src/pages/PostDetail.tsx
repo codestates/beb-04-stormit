@@ -16,6 +16,7 @@ import { deletePostByIdAPI, getPostByIdAPI } from "../lib/api/post";
 import { useLocation, useNavigate } from "react-router-dom";
 import { getLastPathname, parseDate } from "../lib/utils";
 import { postActions } from "../store/postSlice";
+import parse from "html-react-parser";
 
 interface BaseProps {
   vote: number;
@@ -313,7 +314,7 @@ const PostDetail: React.FC = () => {
         </div>
         <Divider />
         <p className="post-detail-contents">
-          {postData.postContents || FAKE_POST_CONTENTS}
+          {parse(postData.postContents) || FAKE_POST_CONTENTS}
         </p>
         <div className="post-detail-chip-wrapper">
           <Chip>태그</Chip>
