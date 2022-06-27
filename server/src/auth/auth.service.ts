@@ -1,4 +1,4 @@
-import { HttpException, HttpStatus, Injectable, UnauthorizedException, NotFoundException } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable, UnauthorizedException, NotFoundException, InternalServerErrorException } from '@nestjs/common';
 import { UserDTO } from './dto/user.dto';
 import { UserService } from './user.service';
 import { User } from './entity/user.entity';
@@ -9,6 +9,14 @@ import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 import * as argon from 'argon2';
 import { jwtConstants } from './security/constants'
+import { sign } from 'jsonwebtoken';
+
+
+
+export enum Provider
+{
+    GOOGLE = 'google'
+}
 
 @Injectable()
 export class AuthService {
@@ -17,6 +25,46 @@ export class AuthService {
         private jwtService: JwtService,
         private config: ConfigService
     ){}
+    
+    async validateOAuthLogin(thirdPartyId: string, provider: Provider): Promise<string>
+    {
+        try 
+        {
+            // You can add some registration logic here, 
+            // to register the user using their thirdPartyId (in this case their googleId)
+            // let user: IUser = await this.usersService.findOneByThirdPartyId(thirdPartyId, provider);
+            
+            // if (!user)
+                // user = await this.usersService.registerOAuthUser(thirdPartyId, provider);
+                let userFind: UserDTO = await this.userService.findByFields({ 
+                    where: { username: thirdPartyId }
+                });
+        
+                if(userFind) {
+                    throw new HttpException('duplicated email', HttpStatus.BAD_REQUEST);
+                }
+
+                // let newUser: UserDTO = UserDTO(
+                //     "username" : thirdPartyId
+                // )
+                // return await this.userService.save(newUser);
+
+
+            const payload = {
+                thirdPartyId,
+                provider
+            }
+
+            const jwt: string = sign(payload, jwtConstants.JWT_ACCESS_TOKEN_SECRET, { expiresIn: 3600 });
+            return jwt;
+        }
+        catch (err)
+        {
+            throw new InternalServerErrorException('validateOAuthLogin', err.message);
+        }
+    }
+
+
 
     async registerUser(newUser: UserDTO): Promise<UserDTO> {
         let userFind: UserDTO = await this.userService.findByFields({ 
@@ -64,9 +112,9 @@ export class AuthService {
         }
         // const { password, ...result} = userFind;
         // return result;
-        const tokens = await this.getTokens(userFind.user_id, userFind.username);
-        await this.updateRtHash(userFind.user_id, tokens.refresh_token);
-        return tokens;
+        // const tokens = await this.getTokens(userFind.user_id, userFind.username);
+        // await this.updateRtHash(userFind.user_id, tokens.refresh_token);
+        return userFind;
         
         
         // const payload: Payload = { user_id: userFind.user_id, username: userFind.username }

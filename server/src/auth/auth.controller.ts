@@ -2,10 +2,11 @@ import { Body, Controller, Get, Post, Req, Res, UseGuards, UsePipes, ValidationP
 import { Request,Response} from 'express';
 import { AuthService } from './auth.service';
 import { UserDTO } from './dto/user.dto';
-import { AuthGuard } from './security/auth.guard';
-import { JwtRefreshGuard } from './security/jwt-refresh.guard';
-import { LocalAuthGuard } from './security/local-auth.guard';
+import { AuthGuard } from './security/guard/auth.guard';
+import { JwtRefreshGuard } from './security/guard/jwt-refresh.guard';
+import { LocalAuthGuard } from './security/guard/local-auth.guard';
 import { UserService } from './user.service';
+import { GoogleAuthGuard } from './security/guard/google-auth-guard';
 
 @Controller('user')
 export class AuthController {
@@ -18,11 +19,32 @@ export class AuthController {
         const data = await this.authService.registerUser(UserDTO)
         return {success: true, data};
     }
-    
+    @Get('google')
+    @UseGuards(GoogleAuthGuard)
+    googleLogin()
+    {
+        // initiates the Google OAuth2 login flow
+    }
+
+    @Get('google/callback')
+    @UseGuards(GoogleAuthGuard)
+    googleLoginCallback(@Req() req, @Res() res)
+    {
+        // handles the Google OAuth2 callback
+        const jwt: string = req.user.jwt;
+        if (jwt)
+            res.redirect('http://localhost:3000/login/succes/' + jwt);
+        else 
+            res.redirect('http://localhost:3000/login/failure');
+    }
+
+
 
     @Post('/login')
     async login(@Body() userDTO: UserDTO, @Res() res:Response ): Promise<any> {
-        const jwt=await this.authService.validateUser(userDTO);
+        const user=await this.authService.validateUser(userDTO);
+        const jwt=await this.authService.getTokens(user.user_id, user.username);
+        await this.authService.updateRtHash(user.user_id, jwt.refresh_token)
         res.setHeader('Authorization', 'Bearer '+jwt.access_token)
         res.cookie('refresh_token', jwt.refresh_token,{
             httpOnly: true,
@@ -82,7 +104,6 @@ export class AuthController {
     @UseGuards(AuthGuard)
     @Patch('/nickname')
     async changeNickname(@Body() body, @Req() req, @Res() res: Response): Promise<any>{
-        console.log(body.nickname)
         const result = await this.userService.updateNickname(req.user.user_id,body);
         if(result.affected===1){
             return res.send({
