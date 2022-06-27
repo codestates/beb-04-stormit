@@ -10,7 +10,7 @@ const useAxiosIntercept = () => {
       async (response) => response,
       async (error) => {
         if (
-          error.response.status === 401 &&
+          error.response.status === 1000 &&
           error.response.data.message === "token expired"
         ) {
           const originalRequest = error.config;
