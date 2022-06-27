@@ -8,7 +8,7 @@ import { Content } from './content/entity/content.entity';
 import { ContentModule } from './content/content.module';
 import { ContentRepository } from './content/content.repository';
 import * as config from 'config';
-import { Board } from './board/entity/board.entity';
+import { Board } from './content/entity/board.entity';
 import { Comment } from './content/entity/comment.entity';
 import { JoinColumn } from 'typeorm';
 
