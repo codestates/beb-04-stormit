@@ -11,6 +11,13 @@ async function bootstrap() {
   // const serverConfig = config.get('server');
 
   // const port = serverConfig.port; // port configuration
+
+  const options = {
+    origin: 'http://localhost:3000',
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    credentials: true,
+  };
+  app.enableCors(options);
   app.use(cookieParser());
   await app.listen(4000);
   console.log(`Server listening on port ${4000}`);
