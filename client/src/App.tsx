@@ -25,6 +25,7 @@ import Home from "./pages/Home";
 import Test from "./pages/Test";
 import Post from "./pages/Post";
 import Edit from "./pages/Edit";
+import GoogleSuccess from "./pages/GoogleSuccess";
 
 const App: React.FC = () => {
   console.log("@@@ app render @@@");
@@ -83,6 +84,7 @@ const App: React.FC = () => {
         <Route path="/edit/:id" element={<Edit />} />
         <Route path="/communities" element={<Communities />} />
         <Route path="/deleted" element={<DeletedPost />} />
+        <Route path="/google/success" element={<GoogleSuccess />} />
         <Route path="/*" element={<ErrorPage />} />
       </Routes>
     </ThemeProvider>

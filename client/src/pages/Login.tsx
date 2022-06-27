@@ -140,6 +140,10 @@ const Login: React.FC = () => {
 
   const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
 
+  const onClickGoogleButton = () => {
+    window.location.assign("http://localhost:4000/user/google");
+  };
+
   // e: 이건 타입스크립트에서 event의 타입을 지정해주는것이다.
   const onChangeEmail = (e: React.ChangeEvent<HTMLInputElement>) => {
     setValidated(true);
@@ -150,6 +154,7 @@ const Login: React.FC = () => {
     setValidated(true);
     setPassword(e.target.value);
   };
+
   // 계정생성 클릭 시 모달창 생성
   const createAccountOpen = useSelector(
     (state) => state.modal.createAccountOpen
@@ -158,17 +163,6 @@ const Login: React.FC = () => {
   const dispatch = useDispatch();
   const onCreateAccountBtn = () => {
     dispatch(modalActions.openCreateAccountModal());
-  };
-
-  const onClickGoogleButton = async () => {
-    try {
-      // const response = await googleLoginAPI();
-      // console.log(response);
-      await googleLoginAPI();
-      
-    } catch (error) {
-      console.log(error);
-    }
   };
 
   const onClickLoginButton = async (
@@ -260,7 +254,7 @@ const Login: React.FC = () => {
         <div className="google-login-button-wrapper">
           <img className="google-login-button" src="/google-logo.png" alt="" />
           <div className="google-login-text" onClick={onClickGoogleButton}>
-            구글 계정으로 계속하기
+            구글 계정으로 로그인
           </div>
         </div>
       </LoginForm>
