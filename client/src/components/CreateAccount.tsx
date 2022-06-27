@@ -99,36 +99,36 @@ const CreateAccount: React.FC = () => {
   // nickname 유효성 검사
   // issue: 문자와 특수문자 조합시 그대로 유효성 통과됨.
   // solve : 특수문자만 확인하는 special 변수를 만들어서 먼저 통과가 안될시 false
-  function validateNickname(nickname: string) {
-    var special = /[`~!@#$%^&*|\\\'\";:\/?]/gi;
-    var re = /^(?=.*[a-zA-Z0-9ㄱ-ㅎㅏ-ㅣ가-힣]).{2,8}$/;
+  const validateNickname = (nickname: string) => {
+    const special = /[`~!@#$%^&*|\\\'\";:\/?]/gi;
+    const re = /^(?=.*[a-zA-Z0-9ㄱ-ㅎㅏ-ㅣ가-힣]).{2,8}$/;
     if (special.test(nickname)) {
       return false;
     }
     return re.test(nickname);
-  }
+  };
 
   // email 유효성 검사
   // '@' 포함여부와 대문자,소문자를 구분하지않게 표현식끝에 i 사용
-  function validateEmail(email: string) {
+  const validateEmail = (email: string) => {
     var re =
       /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
     return re.test(email);
-  }
+  };
 
   // password 유효성 검사
   // issue: 조건 충족시 문자 삽입해도 통과됨.
   // solve: nickname과 마찬가지로 문자 확인 변수 생성해서 먼저 통과가 안될시 false
   // 참고 https://regexr.com/
-  function validatePassword(password: string) {
+  const validatePassword = (password: string) => {
     // gi -> global serch, ignore case
-    var engcheck = /[a-z]/gi;
-    var re = /^(?=.*[0-9$@!%*#?&]).{8,20}$/;
+    const engcheck = /[a-z]/gi;
+    const re = /^(?=.*[0-9$@!%*#?&]).{8,20}$/;
     if (engcheck.test(password)) {
       return false;
     }
     return re.test(password);
-  }
+  };
 
   // inputvaule 감지 및 state 전송 함수
   const handleInputValue =
