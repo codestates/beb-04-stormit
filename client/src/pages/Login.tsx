@@ -162,8 +162,10 @@ const Login: React.FC = () => {
 
   const onClickGoogleButton = async () => {
     try {
-      const response = await googleLoginAPI();
-      console.log(response);
+      // const response = await googleLoginAPI();
+      // console.log(response);
+      await googleLoginAPI();
+      
     } catch (error) {
       console.log(error);
     }
