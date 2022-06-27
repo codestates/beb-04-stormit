@@ -11,17 +11,20 @@ import { JwtRefreshStrategy } from './security/strategy/jwt-refresh.strategy';
 import { jwtConstants } from './security/constants';
 import { GoogleStrategy } from './security/strategy/google.strategy';
 
-
 @Module({
-  imports: [TypeOrmModule.forFeature([UserRepository]),
-  JwtModule.register({
-    secret: jwtConstants.JWT_ACCESS_TOKEN_SECRET,
-    signOptions : {expiresIn: `${jwtConstants.JWT_ACCESS_TOKEN_EXPIRATION_TIME}s`}
-  })  ,
-  PassportModule
-],
+  imports: [
+    TypeOrmModule.forFeature([UserRepository]),
+    JwtModule.register({
+      secret: jwtConstants.JWT_ACCESS_TOKEN_SECRET,
+      signOptions: {
+        expiresIn: `${jwtConstants.JWT_ACCESS_TOKEN_EXPIRATION_TIME}s`,
+      },
+    }),
+    PassportModule,
+  ],
   exports: [TypeOrmModule, JwtModule],
   controllers: [AuthController],
   providers: [GoogleStrategy, AuthService, UserService, JwtStrategy, JwtRefreshStrategy]
+
 })
 export class AuthModule {}

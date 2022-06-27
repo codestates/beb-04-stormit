@@ -8,26 +8,22 @@ export const loginAPI = (body: LoginAPIBodyType) =>
   axios.post<LoginAPIResponseType>("/user/login", body);
 
 // 로그아웃
-export const logoutAPI = (userId: number) =>
-  axios.post(`/user/logout/${userId}`);
+export const logoutAPI = () => axios.post(`/user/logout`);
 
 // 프로필 정보
 export const getProfileAPI = (userId: number) =>
   axios.get<GetProfileAPIResponseType>(`/user/${userId}`);
 
 // 닉네임 변경
-export const updateNameAPI = (userId: number, body: UpdateNameAPIBodyType) =>
-  axios.patch(`/user/${userId}`, body);
+export const updateNameAPI = (body: UpdateNameAPIBodyType) =>
+  axios.patch("/user/nickname", body);
 
 // 비밀번호 변경
-export const updatePasswordAPI = (
-  userId: number,
-  body: UpdatePasswordAPIBodyType
-) => axios.patch(`/user/${userId}`, body);
+export const updatePasswordAPI = (body: UpdatePasswordAPIBodyType) =>
+  axios.patch("/user/password", body);
 
 // 회원탈퇴
-export const withdrawalAPI = (userId: number) =>
-  axios.delete(`/user/${userId}`);
+export const withdrawalAPI = () => axios.delete("/user");
 
 /* ------------------------ 인증 관련 API ------------------------ */
 
@@ -42,3 +38,6 @@ export const authenticateAPI = (accessToken: string) =>
 // 리프레쉬 토큰으로 액세스 토큰 재발급
 export const refreshAccessTokenAPI = () =>
   axios.get<RefreshAccessTokenResponseType>(`/user/refresh`);
+
+// 구글 로그인
+export const googleLoginAPI = () => axios.get("/user/google");

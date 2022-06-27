@@ -20,7 +20,9 @@ export const parseDate = (date: Date) => {
 };
 
 // 게시글 배열 더미데이터 - nonon
-export const FAKE_ARRAY = Array(10).fill(0);
+export const FAKE_ARRAY = Array(105)
+  .fill(0)
+  .map((_, index) => index + 1);
 
 // URL 경로의 마지막 부분만 잘라줍니다 - nonon
 // ex) 'localhost:3000/community/talk' -> 'talk'
@@ -31,11 +33,11 @@ export const getLastPathname = (path: string) => {
 
 // path에서 가져온 커뮤니티 이름을 한글로 변환합니다 - nonon
 export const translateCommunityName = (communityName: string) => {
-  if (communityName === "blockchain") return "블록체인";
-  if (communityName === "webdev") return "웹개발";
-  if (communityName === "beb") return "BEB";
   if (communityName === "bitcoin") return "비트코인";
-  if (communityName === "qa") return "Q&A";
+  if (communityName === "ethereum") return "이더리움";
+  if (communityName === "solana") return "솔라나";
+  if (communityName === "dogecoin") return "도지코인";
+  if (communityName === "decentraland") return "디센트럴랜드";
 
   return "없음";
 };
@@ -76,4 +78,35 @@ export const removeCookie = (cookie: string) => {
 // 맨 위로 이동합니다 - nonon
 export const scrollToTop = () => {
   window.scrollTo(0, 0);
+};
+
+// 함수에 디바운스를 적용합니다 - nonon
+export const debounce = (func: any, wait = 166) => {
+  let timeout: NodeJS.Timeout | null;
+  return (...args: any) => {
+    const context = this;
+    if (timeout) clearTimeout(timeout);
+    timeout = setTimeout(() => {
+      timeout = null;
+      func.apply(context, args);
+    }, wait);
+  };
+};
+
+// 로컬스토리지에 조회한 글을 저장합니다 - nonon
+export const setViewed = (postId: number) => {
+  const viewedList = localStorage.getItem("viewed")?.split("&");
+  if (!viewedList) {
+    localStorage.setItem("viewed", String(postId));
+  } else {
+    localStorage.setItem("viewed", viewedList.join("&"));
+  }
+};
+
+// 글을 조회한 적이 있는지 확인합니다 - nonon
+export const isViewed = (postId: number) => {
+  const viewedList = localStorage.getItem("viewed")?.split("&");
+  if (!viewedList) return false;
+
+  return viewedList.includes(String(postId)) ? true : false;
 };

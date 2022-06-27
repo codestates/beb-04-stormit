@@ -2,6 +2,8 @@ import React, { useRef } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { useOutsideClick } from "../hooks/useOutsideClick";
+import { staticCommunityList } from "../lib/staticData";
+import { translateCommunityName } from "../lib/utils";
 import { useDispatch } from "../store";
 import { modalActions } from "../store/modalSlice";
 import palette from "../styles/palette";
@@ -65,21 +67,11 @@ const MenuModal: React.FC = () => {
           <p className="menu-modal-subtitle">다양한 커뮤니티를 찾아보세요</p>
         </div>
       </Link>
-      <Link to="/community/blockchain">
-        <ListItem>블록체인</ListItem>
-      </Link>
-      <Link to="/community/webdev">
-        <ListItem>웹개발</ListItem>
-      </Link>
-      <Link to="/community/beb">
-        <ListItem>BEB</ListItem>
-      </Link>
-      <Link to="/community/bitcoin">
-        <ListItem>비트코인</ListItem>
-      </Link>
-      <Link to="/community/qa">
-        <ListItem>Q&amp;A</ListItem>
-      </Link>
+      {staticCommunityList.map((community, index) => (
+        <Link key={index} to={`/community/${community}`}>
+          <ListItem>{translateCommunityName(community)}</ListItem>
+        </Link>
+      ))}
     </Base>
   );
 };

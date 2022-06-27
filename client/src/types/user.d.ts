@@ -14,7 +14,6 @@ type LoginAPIBodyType = {
 };
 
 type UpdateNameAPIBodyType = {
-  user_id: number;
   nickname: string;
 };
 
@@ -25,7 +24,7 @@ type UpdatePasswordAPIBodyType = {
 };
 
 type RefreshAccessTokenResponseType = {
-  accessToken: string;
+  access_token: string;
 };
 
 type AuthenticateAPIResponseType = {

@@ -1,17 +1,25 @@
 import React from "react";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import palette from "../styles/palette";
 import Divider from "./common/Divider";
 import { Link } from "react-router-dom";
-import theme from "../styles/theme";
-
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
+import Chip from "./common/Chip";
 
-const Base = styled.li`
+interface BaseProps {
+  isPopular?: boolean;
+  viewed?: boolean;
+}
+
+const Base = styled.li<BaseProps>`
   display: flex;
   flex-direction: column;
   gap: 0.5rem; // 8px
-  padding-top: 0.5rem; // 8px
+  padding: 0.5rem 1rem; // 8px
+
+  &:hover {
+    background-color: ${palette.gray[100]};
+  }
 
   .post-metadata-area {
     display: flex;
@@ -47,10 +55,6 @@ const Base = styled.li`
   .post-title {
     color: ${palette.gray[600]};
     cursor: pointer;
-
-    &:hover {
-      opacity: 0.7;
-    }
   }
 
   .post-vote-wrapper {
@@ -63,16 +67,36 @@ const Base = styled.li`
   }
 
   .post-vote {
-    color: ${theme.primary};
+    color: ${palette.blue[500]};
   }
 
   .post-comments {
-    color: ${theme.primary};
+    color: ${palette.blue[500]};
   }
 
   .post-author {
     font-size: 0.875rem; // 14px
   }
+
+  ${({ isPopular }) =>
+    isPopular &&
+    css`
+      background-color: ${palette.blue[50]};
+      &:hover {
+        background-color: ${palette.blue[100]};
+      }
+    `}
+
+  ${({ viewed }) =>
+    viewed &&
+    css`
+      .post-title {
+        color: ${palette.gray[100]};
+      }
+      .post-comments {
+        color: ${palette.blue[200]};
+      }
+    `}
 `;
 
 interface Props {
@@ -81,6 +105,8 @@ interface Props {
   commentCount: number;
   nickname: string;
   createdAt: string;
+  isPopular?: boolean;
+  viewed?: boolean;
 }
 
 const CommunityPostCard: React.FC<Props> = ({
@@ -89,15 +115,16 @@ const CommunityPostCard: React.FC<Props> = ({
   commentCount,
   nickname,
   createdAt,
+  isPopular,
+  viewed,
 }) => {
   return (
-    <>
-      <Base>
+    <Link to={`/post/${postId}`}>
+      <Base isPopular={isPopular} viewed={viewed}>
         <div className="post-title-area-wrapper">
           <div className="post-title-wrapper">
-            <Link to={`/post/${postId}`}>
-              <p className="post-title">{title}</p>
-            </Link>
+            {isPopular && <Chip size="small">인기</Chip>}
+            <p className="post-title">{title}</p>
             <span className="post-comments">[{commentCount}]</span>
           </div>
           <div className="post-vote-wrapper">
@@ -113,9 +140,9 @@ const CommunityPostCard: React.FC<Props> = ({
             <span className="post-views">조회수 0</span>
           </p>
         </div>
-        <Divider />
       </Base>
-    </>
+      <Divider />
+    </Link>
   );
 };
 

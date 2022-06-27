@@ -1,5 +1,18 @@
-import { Body, Controller, Get, Post, Req, Res, UseGuards, UsePipes, ValidationPipe, Param, Delete, Patch } from '@nestjs/common';
-import { Request,Response} from 'express';
+import {
+  Body,
+  Controller,
+  Get,
+  Post,
+  Req,
+  Res,
+  UseGuards,
+  UsePipes,
+  ValidationPipe,
+  Param,
+  Delete,
+  Patch,
+} from '@nestjs/common';
+import { Request, Response } from 'express';
 import { AuthService } from './auth.service';
 import { UserDTO } from './dto/user.dto';
 import { AuthGuard } from './security/guard/auth.guard';
@@ -122,22 +135,21 @@ export class AuthController {
             })
         }
     }
+  
 
-    @UseGuards(AuthGuard)
-    @Delete()
-    async deleteuser(@Req() req, @Res() res: Response): Promise<any>{
-        const result = await this.authService.deleteUser (req.user.user_id);
-        if(result.affected===1){
-            return res.send({
-                success: true
-            })
-        }
-
+  @UseGuards(AuthGuard)
+  @Delete()
+  async deleteuser(@Req() req, @Res() res: Response): Promise<any> {
+    const result = await this.authService.deleteUser(req.user.user_id);
+    if (result.affected === 1) {
+      return res.send({
+        success: true,
+      });
     }
-    // // 사용자 프로필 가져오기
-    // @Get('/:username')
-    // getContentById(@Param ('username') username: string): Promise<any> {
-    //     return this.authService.getInfoById(username);
-    // }
-
+  }
+  // // 사용자 프로필 가져오기
+  // @Get('/:username')
+  // getContentById(@Param ('username') username: string): Promise<any> {
+  //     return this.authService.getInfoById(username);
+  // }
 }

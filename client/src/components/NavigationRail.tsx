@@ -98,14 +98,14 @@ const NavigationRail: React.FC<Props> = ({ ...props }) => {
           </>
         )}
       </div>
-      {isLoggedIn && (
+      {!isLoggedIn && (
         <Tooltip text="로그인" position="right">
           <FloatingIconButton onClick={onClickFloatingButton}>
             <PersonIcon />
           </FloatingIconButton>
         </Tooltip>
       )}
-      {!isLoggedIn && (
+      {isLoggedIn && (
         <Tooltip text="글쓰기" position="right">
           <FloatingIconButton onClick={onClickFloatingButton}>
             <CreateIcon />

@@ -16,6 +16,10 @@ import { deletePostByIdAPI, getPostByIdAPI } from "../lib/api/post";
 import { useLocation, useNavigate } from "react-router-dom";
 import { getLastPathname, parseDate } from "../lib/utils";
 import { postActions } from "../store/postSlice";
+import parse from "html-react-parser";
+import MoreVertIcon from "@mui/icons-material/MoreVert";
+import Menu from "../components/common/Menu";
+import MenuItem from "../components/common/MenuItem";
 
 interface BaseProps {
   vote: number;
@@ -131,6 +135,15 @@ const Base = styled.div<BaseProps>`
     cursor: pointer;
   }
 
+  .post-detail-dropdown-icon-wrapper {
+    position: relative;
+  }
+
+  .post-detail-dropdown {
+    top: 2.8rem;
+    right: 0rem;
+  }
+
   .comment-title {
     font-size: 1.5rem; // 24px
     padding-top: 1rem; // 16px
@@ -151,22 +164,23 @@ const Base = styled.div<BaseProps>`
   @media screen and (min-width: 37.5rem) {
     .contents {
       margin: 1rem auto;
-      max-width: 37.5rem; // 600px
+      width: 37.5rem; // 600px
     }
   }
 
   // 1240px
   @media screen and (min-width: 77.5rem) {
     .contents {
-      max-width: 52.5rem; // 840px
+      width: 52.5rem; // 840px
     }
   }
 `;
 
 const FAKE_POST_CONTENTS =
-  "들어 피가 목숨이 우리의 아니다. 하였으며, 안고, 천지는 이상 사랑의 그리하였는가? 수 어디 타오르고 시들어 피부가 부패뿐이다. 남는 끓는 오아이스도 노년에게서 안고, 관현악이며, 얼마나 황금시대를 놀이 있는가? 천자만홍이 장식하는 가치를 위하여, 인생에 못할 것은 힘있다. 피어나는 이상의 지혜는 피가 주는 찬미를 불러 그러므로 군영과 위하여서. 거친 하였으며, 위하여 인간은 이상은 부패를 꽃이 청춘의 그들은 아니다. 청춘 피가 싹이 주는 이상은 것은 석가는 넣는 끝에 피다. 찾아 몸이 살았으며, 사막이다.";
+  "<h2><strong>CK 에디터</strong></h2><p>&nbsp;</p><p>마크다운 문법으로 글을 작성할 수 있습니다.</p><p>&nbsp;</p><p><i>기울이기</i></p><p>&nbsp;</p><p><strong>굵은 글씨체</strong></p>";
 
 const PostDetail: React.FC = () => {
+  const [dropdownOpen, setDropdownOpen] = useState(false);
   const [postData, setPostData] = useState({
     postTitle: "",
     postContents: "",
@@ -196,6 +210,10 @@ const PostDetail: React.FC = () => {
   const postId = Number(getLastPathname(location.pathname));
 
   const isMyPost = postData.nickname === nickname;
+
+  const toggleDropdownMenu = () => {
+    setDropdownOpen((dropdownOpen) => !dropdownOpen);
+  };
 
   const onClickEditButton = () => {
     dispatch(
@@ -308,12 +326,33 @@ const PostDetail: React.FC = () => {
                   </p>
                 </>
               )}
+              {!isMyPost && (
+                <div className="post-detail-dropdown-icon-wrapper">
+                  <IconButton onClick={toggleDropdownMenu}>
+                    <MoreVertIcon />
+                  </IconButton>
+                  {dropdownOpen && (
+                    <Menu
+                      className="post-detail-dropdown"
+                      onClose={() => setDropdownOpen(false)}
+                    >
+                      <MenuItem
+                        label="신고"
+                        onClick={() =>
+                          alert("안타깝지만 신고 기능은 없습니다.")
+                        }
+                      />
+                    </Menu>
+                  )}
+                </div>
+              )}
             </div>
           </div>
         </div>
         <Divider />
         <p className="post-detail-contents">
-          {postData.postContents || FAKE_POST_CONTENTS}
+          {parse(postData.postContents)}
+          {parse(FAKE_POST_CONTENTS)}
         </p>
         <div className="post-detail-chip-wrapper">
           <Chip>태그</Chip>

@@ -1,6 +1,6 @@
 import { Content } from 'src/content/entity/content.entity';
 import * as config from 'config';
-import { Board } from 'src/content/entity/board.entity';
+import { Board } from 'src/board/entity/board.entity';
 import { Comment } from 'src/content/entity/comment.entity';
 const dbConfig = config.get('db');
 
@@ -33,14 +33,6 @@ function typeORMConfig(): TypeOrmModuleOptions {
   };
 
   return ormconfig;
-  // type: 'mysql',
-  // host: 'localhost',
-  // port: 3306,
-  // username: 'root',
-  // password: 'mypassword',
-  // database: 'STORMIT_DB',
-  // entities: [__dirname + '/../**/*.entity.{js,ts}'],
-  // synchronize: true,
 }
 
 export { typeORMConfig };

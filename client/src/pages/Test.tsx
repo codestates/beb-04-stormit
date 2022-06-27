@@ -1,7 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
-import Button from "../components/common/Button";
-import Tooltip from "../components/common/Tooltip";
+import Menu from "../components/common/Menu";
+import MenuItem from "../components/common/MenuItem";
+import Tab from "../components/common/Tab";
+import Tabs from "../components/common/Tabs";
 
 const Base = styled.section`
   display: flex;
@@ -19,13 +21,7 @@ const Base = styled.section`
 `;
 
 const Test: React.FC = () => {
-  return (
-    <Base>
-      <Tooltip text="커뮤니티">
-        <Button>버튼</Button>
-      </Tooltip>
-    </Base>
-  );
+  return <Base></Base>;
 };
 
 export default Test;

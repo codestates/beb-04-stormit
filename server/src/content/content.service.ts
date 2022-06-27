@@ -1,5 +1,9 @@
 import { Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { identity } from 'rxjs';
+import { BoardRepository } from 'src/board/board.repository';
+import { BoardService } from 'src/board/board.service';
+import { Board } from 'src/board/entity/board.entity';
 
 import { ContentRepository } from './content.repository';
 import { CreateContentDto } from './dto/create-content.dto';
@@ -9,41 +13,41 @@ import { Content } from './entity/content.entity';
 @Injectable()
 export class ContentService {
   constructor(
+    // private boardRepository: BoardRepository,
+    private boardService: BoardService,
     @InjectRepository(ContentRepository)
     private contentRepository: ContentRepository,
   ) {}
+  // private readonly boardsService: BoardService,
   private logger = new Logger('ContentService');
+
   async getAllContents(): Promise<Content[]> {
     return this.contentRepository.find();
   }
 
   async getContentById(id: number): Promise<Content> {
+    // console.log(await this.boardService.getBoardById('2'));
     const found = await this.contentRepository.findOne(id);
     if (!found) {
       throw new NotFoundException(`Can't find Content with id ${id}`);
     } else {
       this.logger.log(JSON.stringify(found));
-      const { post_title, post_content, created_at } = found;
-      const nickname = 'fdongfdong';
-      const comment_nickname = 'comment_nickname';
-      const comment_content = '댓글입니다.';
-      const comment_id = 1;
-      const result = {
-        post_title,
-        post_content,
-        created_at,
-        nickname,
-        comment: { comment_nickname, comment_content, comment_id },
-      };
-      this.logger.log(JSON.stringify(result));
-      // {"id":1,"user_id":1,"board_id":1,"post_title":"spefkap1ㅈㄷㄹㄴㅇㅈㄷㄹㅈㄷㄹㄹㄴㅇㄹ23","post_content":"내용임","created_at":"2022-06-22T17:50:19.849Z"}
-      // return result 하고 싶은데... entity에 정의된 값들이 아니라 리턴을 못함.. 리턴을하려면?
     }
 
     return found;
   }
-  createContent(createContentDto: CreateContentDto): Promise<string> {
-    return this.contentRepository.createContent(createContentDto); // repository 패턴
+  async createContent(createContentDto: CreateContentDto): Promise<object> {
+    const { board_title } = createContentDto;
+    let board_id = 1;
+    if (board_title === '강아지게시판') {
+      board_id = 2;
+    } else if (board_title === '고양이게시판') {
+      board_id = 3;
+    } else {
+      board_id = 1;
+    }
+    const board = await this.boardService.getBoardById(board_id);
+    return this.contentRepository.createContent(createContentDto, board); // repository 패턴
   }
 
   async deleteContent(id: number): Promise<void> {
@@ -54,7 +58,17 @@ export class ContentService {
     id: number,
     updateDataDto: UpdateDataDto,
   ): Promise<Content> {
-    return this.contentRepository.updateContent(id, updateDataDto);
+    const { board_title } = updateDataDto;
+    let board_id = 1;
+    if (board_title === '강아지게시판') {
+      board_id = 2;
+    } else if (board_title === '고양이게시판') {
+      board_id = 3;
+    } else {
+      board_id = 1;
+    }
+    const board = await this.boardService.getBoardById(board_id);
+    return this.contentRepository.updateContent(id, updateDataDto, board);
   }
 }
 

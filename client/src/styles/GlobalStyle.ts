@@ -1,5 +1,4 @@
 import { createGlobalStyle, css } from "styled-components";
-import reset from "styled-reset";
 
 interface GlobalStyleProps {
   menuModalOpen: boolean;
@@ -7,10 +6,12 @@ interface GlobalStyleProps {
 }
 
 const globalStyle = css<GlobalStyleProps>`
-  ${reset}
   * {
     box-sizing: border-box;
     font-family: "Roboto", "Noto Sans KR", sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
   }
 
   *,

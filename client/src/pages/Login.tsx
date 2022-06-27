@@ -12,7 +12,7 @@ import { useSelector, useDispatch } from "../store";
 import { useNavigate } from "react-router-dom";
 import { snackbarActions } from "../store/snackbarSlice";
 // login API
-import { authenticateAPI, loginAPI } from "../lib/api/user";
+import { authenticateAPI, googleLoginAPI, loginAPI } from "../lib/api/user";
 import { setCookie } from "../lib/utils";
 import Input from "../components/common/Input";
 
@@ -47,26 +47,16 @@ const LoginForm = styled.form`
   flex-direction: column;
   border: 1px solid ${palette.gray[300]};
   gap: 1rem;
-  max-height: 24rem;
+  max-height: 26rem;
   max-width: 22rem;
-  height: 100%;
   width: 100%;
   padding: 20px;
 
   box-shadow: 0 1rem 20px rgba(0, 0, 0, 0.1);
 
-  .inputBox {
-    font-size: 1.2rem;
-    padding: 0.7rem;
-    border-radius: 0.3rem;
-    border: 1px solid ${palette.gray[300]};
-    ::placeholder {
-      color: ${palette.gray[300]};
-    }
-  }
-
   .validation-text {
     color: ${palette.red[500]};
+    font-size: 0.875rem; // 14px
   }
 
   .login-btn {
@@ -87,11 +77,33 @@ const LoginForm = styled.form`
     }
   }
 
+  .google-login-button-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 3rem;
+    gap: 0.5rem;
+    border-radius: 0.25rem;
+    border: 1px solid ${palette.gray[200]};
+    cursor: pointer;
+  }
+
+  .google-login-button {
+    width: 1.5rem;
+    height: 1.5rem;
+  }
+
+  .google-login-text {
+    font-weight: 500;
+    color: ${palette.gray[400]};
+  }
+
   .forgot-pw {
     text-align: center;
     color: ${palette.blue[500]};
     font-size: 0.8rem;
     font-weight: 500;
+    cursor: pointer;
 
     :hover {
       text-decoration: underline;
@@ -122,8 +134,8 @@ const LoginForm = styled.form`
 `;
 
 const Login: React.FC = () => {
-  const [email, setEmail] = useState("test@gmail.com");
-  const [password, setPassword] = useState("123123123");
+  const [email, setEmail] = useState("nonon@gmail.com");
+  const [password, setPassword] = useState("asdasdasd!");
   const [validated, setValidated] = useState(true);
 
   const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
@@ -148,6 +160,15 @@ const Login: React.FC = () => {
     dispatch(modalActions.openCreateAccountModal());
   };
 
+  const onClickGoogleButton = async () => {
+    try {
+      const response = await googleLoginAPI();
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const onClickLoginButton = async (
     event: React.MouseEvent<HTMLButtonElement>
   ) => {
@@ -164,7 +185,7 @@ const Login: React.FC = () => {
 
       const { access_token } = loginAPIResponse.data;
 
-      setCookie("access_token", access_token, "10");
+      setCookie("access_token", access_token, "7200");
 
       if (loginAPIResponse.status !== 201) return;
 
@@ -175,7 +196,6 @@ const Login: React.FC = () => {
       const {
         user_id: userId,
         username: email,
-        password: passwordHash,
         nickname,
       } = authAPIResponse.data;
 
@@ -186,7 +206,6 @@ const Login: React.FC = () => {
         userActions.setUserInfo({
           email: email,
           nickname: nickname,
-          passwordHash: passwordHash,
           userId: userId,
         })
       );
@@ -234,6 +253,12 @@ const Login: React.FC = () => {
         <div className="createAccount-btn-container">
           <div className="createAccount-btn" onClick={onCreateAccountBtn}>
             새 계정 만들기
+          </div>
+        </div>
+        <div className="google-login-button-wrapper">
+          <img className="google-login-button" src="/google-logo.png" alt="" />
+          <div className="google-login-text" onClick={onClickGoogleButton}>
+            구글 계정으로 계속하기
           </div>
         </div>
       </LoginForm>

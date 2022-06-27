@@ -40,6 +40,8 @@ const Base = styled.div<BaseProps>`
     opacity: 0;
     animation: visible 0.2s;
 
+    z-index: 999;
+
     ${({ position }) => getTooltipPosition(position)};
   }
 
@@ -75,25 +77,14 @@ interface Props {
 const Tooltip: React.FC<Props> = ({ children, text, position }) => {
   const [showTooltip, setShowTooltip] = useState(false);
 
-  let timer: any;
-
-  const onMouseEnter = () => {
-    timer = setTimeout(() => {
-      setShowTooltip(true);
-    }, 500);
-  };
-
-  const onMouseLeave = () => {
-    clearTimeout(timer);
-    setShowTooltip(false);
-  };
-
   return (
     <Base showTooltip={showTooltip} position={position}>
       <div
         className="target"
-        onMouseEnter={onMouseEnter}
-        onMouseLeave={onMouseLeave}
+        onMouseEnter={() => setShowTooltip(true)}
+        onMouseLeave={() => setShowTooltip(false)}
+        onFocus={() => setShowTooltip(true)}
+        onBlur={() => setShowTooltip(false)}
       >
         {children}
         {showTooltip && <div className="tooltip">{text}</div>}

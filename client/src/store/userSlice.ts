@@ -1,11 +1,10 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 interface userState {
-  isLoggedIn: boolean;
+  isLoggedIn: true | false | "no";
   userId: number;
   nickname: string;
   email: string;
-  passwordHash: string;
 }
 
 const initialState: userState = {
@@ -13,7 +12,6 @@ const initialState: userState = {
   userId: 0,
   nickname: "",
   email: "",
-  passwordHash: "",
 };
 
 export const userSlice = createSlice({
@@ -32,7 +30,6 @@ export const userSlice = createSlice({
       state.nickname = "";
       state.email = "";
       state.userId = 0;
-      state.passwordHash = "";
     },
     // 로그인 시 같이 호출해야함
     setUserInfo(
@@ -40,14 +37,12 @@ export const userSlice = createSlice({
       action: PayloadAction<{
         email: string;
         nickname: string;
-        passwordHash: string;
         userId: number;
       }>
     ) {
       state.userId = action.payload.userId;
       state.email = action.payload.email;
       state.nickname = action.payload.nickname;
-      state.passwordHash = action.payload.passwordHash;
     },
   },
 });
