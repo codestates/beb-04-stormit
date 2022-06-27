@@ -17,7 +17,12 @@ export class BoardService {
 
   async getAllBoards(): Promise<Board[]> {
     this.logger.debug(`getAllBoards()`);
-    return this.boardRepository.find();
+    const result = this.boardRepository.find();
+    if (result) {
+      return result;
+    } else {
+      throw new NotFoundException('');
+    }
   }
   getBoardByTitle(board_title): Promise<object> {
     // Body

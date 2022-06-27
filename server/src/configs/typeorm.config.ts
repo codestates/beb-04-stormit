@@ -1,8 +1,7 @@
 import { Content } from 'src/content/entity/content.entity';
-import * as config from 'config';
+
 import { Board } from 'src/board/entity/board.entity';
 import { Comment } from 'src/content/entity/comment.entity';
-const dbConfig = config.get('db');
 
 import { TypeOrmModuleOptions, TypeOrmModule } from '@nestjs/typeorm';
 

@@ -7,6 +7,9 @@ import { Board } from '../board/entity/board.entity';
 import { Content } from './entity/content.entity';
 import { Logger } from '@nestjs/common';
 import { BoardRepository } from 'src/board/board.repository';
+import { UserService } from 'src/auth/user.service';
+import { UserRepository } from 'src/auth/user.repository';
+import e from 'express';
 
 @EntityRepository(Content)
 export class ContentRepository extends Repository<Content> {
@@ -23,25 +26,41 @@ export class ContentRepository extends Repository<Content> {
   async createContent(
     createContentDto: CreateContentDto,
     board: Board,
+    user: UserRepository,
   ): Promise<object> {
     // 게시판이 있다는 가정하에 진행
     // board_id : 1. 자유게시판
-    // board_id : 2. 강아지게시판
-    // board_id : 3. 고양이게시판
+    // board_id : 2. 일간게시판
+    // board_id : 3. 주간게시판
     this.logger.debug(`createContent() : ${JSON.stringify(createContentDto)}`);
-    const { post_content, post_title } = createContentDto;
-    const contents = new Content();
-    contents.post_content = post_content;
-    contents.post_title = post_title;
-    contents.board = board;
-    await this.save(contents);
-    const id = { post_id: contents.id };
-    return id;
+
+    const { post_content, post_title, user_id } = createContentDto;
+    const user_result = await user.getUserById(user_id);
+    if (user_result) {
+      const contents = new Content();
+      if (contents) {
+        contents.post_content = post_content;
+        contents.post_title = post_title;
+        contents.board = board;
+        contents.user = user_result;
+        await this.save(contents);
+        const id = { post_id: contents.id };
+        return id;
+      } else {
+        throw new NotFoundException(
+          `Can't Create Post with id ${createContentDto}`,
+        );
+      }
+    } else {
+      throw new NotFoundException(
+        `Can't Create Post with id ${createContentDto}`,
+      );
+    }
   }
   async deleteContent(id: number): Promise<void> {
     const result = await this.delete(id);
     if (result.affected === 0) {
-      throw new NotFoundException(`Can't find Post with id ${id}`);
+      throw new NotFoundException(`Can't delete Post with id ${id}`);
     }
     console.log('result', result);
   }
@@ -50,15 +69,19 @@ export class ContentRepository extends Repository<Content> {
     updateDataDto: UpdateDataDto,
     board,
   ): Promise<Content> {
-    const { nickname, post_title, post_content } = updateDataDto;
+    const { post_title, post_content } = updateDataDto;
 
-    this.logger.verbose(nickname, post_title, post_content);
+    this.logger.verbose(post_title, post_content);
     // console.log(`content id: ${}\nparam : ${content}`);
     let content = await this.findOne(id);
-    content.post_title = post_title;
-    content.post_content = post_content;
-    await this.save(content);
-    console.log(content);
-    return;
+    if (content) {
+      content.post_title = post_title;
+      content.post_content = post_content;
+      await this.save(content);
+      console.log(content);
+      return;
+    } else {
+      throw new NotFoundException(`Can't update `);
+    }
   }
 }

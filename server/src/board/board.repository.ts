@@ -38,6 +38,13 @@ export class BoardRepository extends Repository<Board> {
     const temp2 = temp.contents.map(
       ({ post_content, post_title, created_at }) => {
         const _date = created_at.toString();
+        const temp = created_at.toLocaleTimeString();
+        console.log(`create_at : ${created_at}`);
+        console.log(`created_at.toString() : ${created_at.toString()}`);
+        console.log(
+          `created_at.toLocaleTimeString() : ${created_at.toLocaleTimeString()}`,
+        );
+
         const _day = _date.split(' ');
         const time = _day[4].split(':');
         const hour = parseInt(time[0]) - 9;

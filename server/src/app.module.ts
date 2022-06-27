@@ -5,7 +5,7 @@ import { AuthModule } from './auth/auth.module';
 import { User } from './auth/entity/user.entity';
 import { Content } from './content/entity/content.entity';
 import { ContentModule } from './content/content.module';
-import * as config from 'config';
+
 import { Comment } from './content/entity/comment.entity';
 import { BoardModule } from './board/board.module';
 import { Board } from './board/entity/board.entity';
@@ -26,7 +26,7 @@ import { Board } from './board/entity/board.entity';
       entities: [User, Content, Board, Comment],
       // entities: [__dirname + '../**/*.entity{.ts,.js}'],
       synchronize: true,
-      timezone: 'KST',
+      // timezone: 'KST',
     }),
     BoardModule,
     AuthModule,

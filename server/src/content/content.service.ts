@@ -1,9 +1,15 @@
-import { Injectable, Logger, NotFoundException } from '@nestjs/common';
+import {
+  forwardRef,
+  Inject,
+  Injectable,
+  Logger,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { identity } from 'rxjs';
-import { BoardRepository } from 'src/board/board.repository';
+
+import { UserRepository } from 'src/auth/user.repository';
+
 import { BoardService } from 'src/board/board.service';
-import { Board } from 'src/board/entity/board.entity';
 
 import { ContentRepository } from './content.repository';
 import { CreateContentDto } from './dto/create-content.dto';
@@ -14,6 +20,7 @@ import { Content } from './entity/content.entity';
 export class ContentService {
   constructor(
     // private boardRepository: BoardRepository,
+
     private boardService: BoardService,
     @InjectRepository(ContentRepository)
     private contentRepository: ContentRepository,
@@ -25,29 +32,79 @@ export class ContentService {
     return this.contentRepository.find();
   }
 
-  async getContentById(id: number): Promise<Content> {
-    // console.log(await this.boardService.getBoardById('2'));
-    const found = await this.contentRepository.findOne(id);
-    if (!found) {
+  async getContentById(
+    id: number,
+    userRepository: UserRepository,
+  ): Promise<object> {
+    const en_month = {
+      Jan: 1,
+      Feb: 2,
+      Mar: 3,
+      Apr: 4,
+      May: 5,
+      Jun: 6,
+      Jul: 7,
+      Aug: 8,
+      Sep: 9,
+      Oct: 10,
+      Nov: 11,
+      Dec: 12,
+    };
+
+    const found_content = await this.contentRepository.findOne(id);
+
+    if (!found_content) {
       throw new NotFoundException(`Can't find Content with id ${id}`);
     } else {
-      this.logger.log(JSON.stringify(found));
-    }
+      // 닉네임을 받았음 -> 닉네임으로 유저 검색해서 해당 유저를 가져와야함
 
-    return found;
+      const { post_title, post_content, created_at, nickname } = found_content;
+      console.log(nickname);
+      const user = await userRepository.getUserByNickname(nickname);
+      if (user) {
+        const temp = user.nickname;
+        console.log(temp);
+        const _date = created_at.toString();
+        const _day = _date.split(' ');
+        const time = _day[4].split(':');
+        const hour = parseInt(time[0]);
+        const result_time = `${_day[3]}년${en_month[_day[1]]}월 ${
+          _day[2]
+        }일 ${hour}시 ${time[1]}분 ${time[2]}초`;
+        const obj = {
+          post_title: post_title,
+          post_content: post_content,
+          temp_date: result_time,
+          nickname: temp,
+        };
+
+        console.log(obj);
+        this.logger.log(`${JSON.stringify(obj)}`);
+        return obj;
+      } else {
+        throw new NotFoundException(``);
+      }
+    }
   }
-  async createContent(createContentDto: CreateContentDto): Promise<object> {
+  async createContent(
+    createContentDto: CreateContentDto,
+    userRepository: UserRepository,
+  ): Promise<object> {
     const { board_title } = createContentDto;
     let board_id = 1;
-    if (board_title === '강아지게시판') {
+    if (board_title === '일간게시판') {
       board_id = 2;
-    } else if (board_title === '고양이게시판') {
+    } else if (board_title === '주간게시판') {
       board_id = 3;
     } else {
       board_id = 1;
     }
     const board = await this.boardService.getBoardById(board_id);
-    return this.contentRepository.createContent(createContentDto, board); // repository 패턴
+    return this.contentRepository.createContent(
+      createContentDto,
+      board,
+      userRepository,
+    ); // repository 패턴
   }
 
   async deleteContent(id: number): Promise<void> {
@@ -60,9 +117,9 @@ export class ContentService {
   ): Promise<Content> {
     const { board_title } = updateDataDto;
     let board_id = 1;
-    if (board_title === '강아지게시판') {
+    if (board_title === '일간게시판') {
       board_id = 2;
-    } else if (board_title === '고양이게시판') {
+    } else if (board_title === '주간게시판') {
       board_id = 3;
     } else {
       board_id = 1;

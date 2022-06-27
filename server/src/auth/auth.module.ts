@@ -9,6 +9,7 @@ import { UserService } from './user.service';
 import { JwtStrategy } from './security/passport.jwt.strategy';
 import { JwtRefreshStrategy } from './security/jwt-refresh.strategy';
 import { jwtConstants } from './security/constants';
+import { ContentService } from 'src/content/content.service';
 
 @Module({
   imports: [
@@ -21,7 +22,7 @@ import { jwtConstants } from './security/constants';
     }),
     PassportModule,
   ],
-  exports: [TypeOrmModule, JwtModule],
+  exports: [TypeOrmModule, JwtModule, UserService],
   controllers: [AuthController],
   providers: [AuthService, UserService, JwtStrategy, JwtRefreshStrategy],
 })

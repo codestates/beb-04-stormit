@@ -16,8 +16,8 @@ export class CreateContentDto {
   @IsString()
   readonly post_content: string;
 
-  @IsEmail()
-  readonly email: string;
+  @IsNumber()
+  readonly user_id: number;
 
   @IsString()
   readonly board_title: string;
