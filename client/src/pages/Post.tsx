@@ -6,7 +6,7 @@ import Chip from "../components/common/Chip";
 import Input from "../components/common/Input";
 import Select from "../components/common/Select";
 import { submitPostAPI } from "../lib/api/post";
-import { boardList } from "../lib/staticData";
+import { staticCommunityList } from "../lib/staticData";
 import { translateCommunityName } from "../lib/utils";
 import { useSelector } from "../store";
 import { CKEditor } from "@ckeditor/ckeditor5-react";
@@ -47,7 +47,7 @@ const Base = styled.div`
 `;
 
 const Post: React.FC = () => {
-  const [community, setCommunity] = useState(boardList[0]);
+  const [community, setCommunity] = useState(staticCommunityList[0]);
   const [title, setTitle] = useState("");
   const [contents, setContents] = useState("");
 
@@ -101,9 +101,9 @@ const Post: React.FC = () => {
     <Base>
       <p className="post-heading">새 글 등록</p>
       <Select value={community} onChange={onChangeCommunity}>
-        {boardList.map((board, index) => (
-          <option key={index} value={board}>
-            {translateCommunityName(board)}
+        {staticCommunityList.map((community, index) => (
+          <option key={index} value={community}>
+            {translateCommunityName(community)}
           </option>
         ))}
       </Select>
@@ -116,6 +116,7 @@ const Post: React.FC = () => {
         data={contents}
         onChange={(event: any, editor: any) => {
           const data = editor.getData();
+          console.log(data);
           setContents(data);
         }}
       />

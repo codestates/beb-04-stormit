@@ -22,7 +22,7 @@ import IconButton from "../components/common/IconButton";
 import KeyboardDoubleArrowDownIcon from "@mui/icons-material/KeyboardDoubleArrowDown";
 import Skeleton from "../components/common/Skeleton";
 import Chip from "../components/common/Chip";
-import { boardList } from "../lib/staticData";
+import { staticCommunityList } from "../lib/staticData";
 
 const Base = styled.div`
   display: flex;
@@ -164,30 +164,7 @@ const Home: React.FC = () => {
       <NavigationRail />
       <section className="contents">
         <div className="contents-top">
-          {!isLoggedIn && (
-            <>
-              <h1 className="stormit">Stormit.</h1>
-              <h2 className="stormit-subtitle">
-                스톰잇은 ERC-20 기반의 온라인 커뮤니티로, 누구나 자유롭게 이용할
-                수 있습니다.
-              </h2>
-              <h2 className="stormit-subtitle">
-                지금 바로 새 글을 작성하고 토큰을 지급받으세요!
-              </h2>
-              <div className="home-cta-wrapper">
-                <Link to="/agreement">
-                  <Button className="home-cta" variant="contained">
-                    시작하기
-                  </Button>
-                </Link>
-                <Link to="/login">
-                  <Button className="home-cta-sub" variant="outlined">
-                    로그인
-                  </Button>
-                </Link>
-              </div>
-            </>
-          )}
+          <h1 className="stormit">Stormit.</h1>
         </div>
         {/* <Link to="/communities">
           <h2 className="section-title">커뮤니티</h2>

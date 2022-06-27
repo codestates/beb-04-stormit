@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import IconButton from "../components/common/IconButton";
 import CommunityPostCard from "../components/CommunityPostCard";
@@ -17,6 +17,8 @@ import Divider from "../components/common/Divider";
 import Tabs from "../components/common/Tabs";
 import Tab from "../components/common/Tab";
 import ManageSearchIcon from "@mui/icons-material/ManageSearch";
+import useAuthenticate from "../hooks/useAuthenticate";
+import { useNavigate } from "react-router-dom";
 
 const Base = styled.div`
   display: flex;
@@ -134,8 +136,15 @@ const Mypage: React.FC = () => {
   const [activeTab, setActiveTab] = useState("나의 글");
 
   const nickname = useSelector((state) => state.user.nickname);
+  const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
+  console.log("@@ isLoggedIn @@");
+  console.log(isLoggedIn);
 
   const dispatch = useDispatch();
+
+  const authenticate = useAuthenticate();
+
+  const navigate = useNavigate();
 
   const onChangeInput = (event: React.ChangeEvent<HTMLInputElement>) => {
     setInput(event.target.value);
@@ -164,6 +173,15 @@ const Mypage: React.FC = () => {
   const onClickProfileImage = () => {
     alert("현재 프로필 이미지 변경은 지원하지 않습니다.");
   };
+
+  useEffect(() => {
+    console.log("@@@ mypage authenticate @@@");
+    try {
+      authenticate();
+    } catch (error) {
+      navigate("/login");
+    }
+  }, [authenticate, navigate]);
 
   return (
     <Base>

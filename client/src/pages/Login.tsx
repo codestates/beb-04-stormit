@@ -176,7 +176,7 @@ const Login: React.FC = () => {
 
       const { access_token } = loginAPIResponse.data;
 
-      setCookie("access_token", access_token, "10");
+      setCookie("access_token", access_token, "7200");
 
       if (loginAPIResponse.status !== 201) return;
 

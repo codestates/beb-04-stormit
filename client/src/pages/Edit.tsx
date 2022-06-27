@@ -6,7 +6,7 @@ import Chip from "../components/common/Chip";
 import Input from "../components/common/Input";
 import Select from "../components/common/Select";
 import { updatePostAPI } from "../lib/api/post";
-import { boardList } from "../lib/staticData";
+import { staticCommunityList } from "../lib/staticData";
 import { getLastPathname } from "../lib/utils";
 import { useSelector } from "../store";
 import { CKEditor } from "@ckeditor/ckeditor5-react";
@@ -106,9 +106,9 @@ const Edit: React.FC = () => {
     <Base>
       <p className="post-heading">수정하기</p>
       <Select value={community} onChange={onChangeCommunity}>
-        {boardList.map((board, index) => (
-          <option key={index} value={board}>
-            {board}
+        {staticCommunityList.map((community, index) => (
+          <option key={index} value={community}>
+            {community}
           </option>
         ))}
       </Select>

@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
+import Menu from "../components/common/Menu";
+import MenuItem from "../components/common/MenuItem";
 import Tab from "../components/common/Tab";
 import Tabs from "../components/common/Tabs";
 
@@ -19,15 +21,7 @@ const Base = styled.section`
 `;
 
 const Test: React.FC = () => {
-  return (
-    <Base>
-      <Tabs>
-        <Tab label="ONE" active={true} />
-        <Tab label="ONE" active={false} />
-        <Tab label="ONE" active={false} />
-      </Tabs>
-    </Base>
-  );
+  return <Base></Base>;
 };
 
 export default Test;

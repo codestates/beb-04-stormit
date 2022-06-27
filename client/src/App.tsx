@@ -49,6 +49,7 @@ const App: React.FC = () => {
 
   // 새로고침 시 로그인
   useEffect(() => {
+    console.log("@@@ authenticating @@@");
     authenticate();
   }, [authenticate]);
 

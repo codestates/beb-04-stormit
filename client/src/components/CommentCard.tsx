@@ -5,7 +5,11 @@ import { useSelector } from "../store";
 import palette from "../styles/palette";
 import Button from "./common/Button";
 import Divider from "./common/Divider";
+import IconButton from "./common/IconButton";
 import Textarea from "./common/Textarea";
+import MoreVertIcon from "@mui/icons-material/MoreVert";
+import Menu from "./common/Menu";
+import MenuItem from "./common/MenuItem";
 
 const Base = styled.div`
   display: flex;
@@ -75,6 +79,15 @@ const Base = styled.div`
     display: flex;
     justify-content: flex-end;
   }
+
+  .comment-dropdown-wrapper {
+    position: relative;
+  }
+
+  .comment-dropdown {
+    top: 2.8rem;
+    right: 0;
+  }
 `;
 
 interface Props {
@@ -92,10 +105,15 @@ const CommentCard: React.FC<Props> = ({
 }) => {
   const [editMode, setEditMode] = useState(false);
   const [editText, setEditText] = useState(commentContents);
+  const [dropdownOpen, setDropdownOpen] = useState(false);
 
   const loggedUserNickname = useSelector((state) => state.user.nickname);
 
   const isMyComment = loggedUserNickname === nickname;
+
+  const toggleDropdownMenu = () => {
+    setDropdownOpen((dropdownOpen) => !dropdownOpen);
+  };
 
   const onChangeEditText = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     setEditText(event.target.value);
@@ -155,6 +173,24 @@ const CommentCard: React.FC<Props> = ({
                 삭제
               </p>
             </>
+          )}
+          {!isMyComment && (
+            <div className="comment-dropdown-wrapper">
+              <IconButton onClick={toggleDropdownMenu}>
+                <MoreVertIcon />
+              </IconButton>
+              {dropdownOpen && (
+                <Menu
+                  className="comment-dropdown"
+                  onClose={() => setDropdownOpen(false)}
+                >
+                  <MenuItem
+                    label="신고"
+                    onClick={() => alert("안타깝지만 신고 기능은 없습니다.")}
+                  />
+                </Menu>
+              )}
+            </div>
           )}
         </div>
       </div>

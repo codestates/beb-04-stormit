@@ -111,7 +111,7 @@ const CreateAccount: React.FC = () => {
   // email 유효성 검사
   // '@' 포함여부와 대문자,소문자를 구분하지않게 표현식끝에 i 사용
   const validateEmail = (email: string) => {
-    var re =
+    const re =
       /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
     return re.test(email);
   };
@@ -191,6 +191,7 @@ const CreateAccount: React.FC = () => {
     try {
       await signUpAPI(body);
     } catch (error) {
+      // 피드백 (중복된 닉네임 등)
       console.log(error);
     }
     onCreateAccountCloseBtn();

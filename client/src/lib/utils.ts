@@ -33,11 +33,11 @@ export const getLastPathname = (path: string) => {
 
 // path에서 가져온 커뮤니티 이름을 한글로 변환합니다 - nonon
 export const translateCommunityName = (communityName: string) => {
-  if (communityName === "blockchain") return "블록체인";
-  if (communityName === "webdev") return "웹개발";
-  if (communityName === "beb") return "BEB";
   if (communityName === "bitcoin") return "비트코인";
-  if (communityName === "qa") return "Q&A";
+  if (communityName === "ethereum") return "이더리움";
+  if (communityName === "solana") return "솔라나";
+  if (communityName === "dogecoin") return "도지코인";
+  if (communityName === "decentraland") return "디센트럴랜드";
 
   return "없음";
 };
