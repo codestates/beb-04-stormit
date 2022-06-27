@@ -152,14 +152,14 @@ const Base = styled.div<BaseProps>`
   @media screen and (min-width: 37.5rem) {
     .contents {
       margin: 1rem auto;
-      max-width: 37.5rem; // 600px
+      width: 37.5rem; // 600px
     }
   }
 
   // 1240px
   @media screen and (min-width: 77.5rem) {
     .contents {
-      max-width: 52.5rem; // 840px
+      width: 52.5rem; // 840px
     }
   }
 `;

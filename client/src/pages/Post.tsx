@@ -36,7 +36,7 @@ const Base = styled.div`
   }
 
   .ck.ck-editor__editable:not(.ck-editor__nested-editable) {
-    height: 25rem;
+    height: 400px;
   }
 
   // 1240px
