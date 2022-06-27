@@ -38,3 +38,6 @@ export const authenticateAPI = (accessToken: string) =>
 // 리프레쉬 토큰으로 액세스 토큰 재발급
 export const refreshAccessTokenAPI = () =>
   axios.get<RefreshAccessTokenResponseType>(`/user/refresh`);
+
+// 구글 로그인
+export const googleLoginAPI = () => axios.get("/user/google");

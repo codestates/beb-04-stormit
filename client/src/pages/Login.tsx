@@ -12,7 +12,7 @@ import { useSelector, useDispatch } from "../store";
 import { useNavigate } from "react-router-dom";
 import { snackbarActions } from "../store/snackbarSlice";
 // login API
-import { authenticateAPI, loginAPI } from "../lib/api/user";
+import { authenticateAPI, googleLoginAPI, loginAPI } from "../lib/api/user";
 import { setCookie } from "../lib/utils";
 import Input from "../components/common/Input";
 
@@ -160,6 +160,15 @@ const Login: React.FC = () => {
     dispatch(modalActions.openCreateAccountModal());
   };
 
+  const onClickGoogleButton = async () => {
+    try {
+      const response = await googleLoginAPI();
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const onClickLoginButton = async (
     event: React.MouseEvent<HTMLButtonElement>
   ) => {
@@ -248,7 +257,9 @@ const Login: React.FC = () => {
         </div>
         <div className="google-login-button-wrapper">
           <img className="google-login-button" src="/google-logo.png" alt="" />
-          <div className="google-login-text">구글 계정으로 계속하기</div>
+          <div className="google-login-text" onClick={onClickGoogleButton}>
+            구글 계정으로 계속하기
+          </div>
         </div>
       </LoginForm>
       {createAccountOpen ? <CreateAccount /> : ""}
