@@ -118,7 +118,9 @@ const PostCard: React.FC<Props> = ({
             <Link to={`/post/${postId}`}>
               <p className="post-title">{title}</p>
             </Link>
-            <span className="post-comments">[{commentCount}]</span>
+            {commentCount && (
+              <span className="post-comments">[{commentCount}]</span>
+            )}
             <Chip size="small">{community}</Chip>
             {commentCount > 10 && <Chip size="small">인기글</Chip>}
           </div>

@@ -176,9 +176,6 @@ const Base = styled.div<BaseProps>`
   }
 `;
 
-const FAKE_POST_CONTENTS =
-  "<h2><strong>CK 에디터</strong></h2><p>&nbsp;</p><p>마크다운 문법으로 글을 작성할 수 있습니다.</p><p>&nbsp;</p><p><i>기울이기</i></p><p>&nbsp;</p><p><strong>굵은 글씨체</strong></p>";
-
 const PostDetail: React.FC = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [postData, setPostData] = useState({
@@ -252,6 +249,8 @@ const PostDetail: React.FC = () => {
     const fetchPost = async () => {
       try {
         const response = await getPostByIdAPI(postId);
+
+        console.log(response.data);
         const {
           post_title,
           post_content,
@@ -269,17 +268,18 @@ const PostDetail: React.FC = () => {
           community: board_title,
         });
 
-        comments.map((comment) =>
-          setCommentsData((commentsData) => [
-            ...commentsData,
-            {
-              nickname: comment.nickname,
-              commentContent: comment.comment_content,
-              commentId: comment.comment_id,
-              createdAt: comment.created_at,
-            },
-          ])
-        );
+        comments &&
+          comments.map((comment) =>
+            setCommentsData((commentsData) => [
+              ...commentsData,
+              {
+                nickname: comment.nickname,
+                commentContent: comment.comment_content,
+                commentId: comment.comment_id,
+                createdAt: comment.created_at,
+              },
+            ])
+          );
       } catch (error) {
         console.log(error);
       }
@@ -293,12 +293,8 @@ const PostDetail: React.FC = () => {
       <NavigationRail />
       <div className="contents">
         <div className="contents-top">
-          <p className="post-detail-community">
-            # {postData.community || "블록체인"}
-          </p>
-          <p className="post-detail-title">
-            {postData.postTitle || "해당하는 글이 아무것도 없습니다"}
-          </p>
+          <p className="post-detail-community"># {postData.community}</p>
+          <p className="post-detail-title">{postData.postTitle}</p>
           <div className="post-detail-metadata">
             <div className="post-detail-metadata-left-area">
               <img
@@ -307,7 +303,7 @@ const PostDetail: React.FC = () => {
                 alt=""
               />
               <span className="post-detail-author-name">
-                {postData.nickname || "노논"}
+                {postData.nickname}
               </span>
               <span className="post-detail-views">조회수 0</span>
             </div>
@@ -350,10 +346,9 @@ const PostDetail: React.FC = () => {
           </div>
         </div>
         <Divider />
-        <p className="post-detail-contents">
+        <div className="post-detail-contents">
           {parse(postData.postContents)}
-          {parse(FAKE_POST_CONTENTS)}
-        </p>
+        </div>
         <div className="post-detail-chip-wrapper">
           <Chip>태그</Chip>
           <Chip>커뮤니티</Chip>
@@ -368,14 +363,15 @@ const PostDetail: React.FC = () => {
           </IconButton>
         </div>
         <p className="comment-title">댓글 {commentsData.length || "3"}개</p>
-        {commentsData.map((comment) => (
-          <CommentCard
-            nickname={comment.nickname}
-            createdAt={comment.createdAt}
-            commentContents={comment.commentContent}
-            commentId={comment.commentId}
-          />
-        ))}
+        {commentsData &&
+          commentsData.map((comment) => (
+            <CommentCard
+              nickname={comment.nickname}
+              createdAt={comment.createdAt}
+              commentContents={comment.commentContent}
+              commentId={comment.commentId}
+            />
+          ))}
         <CommentCard
           nickname="너구리"
           createdAt={parseDate(new Date())}

@@ -125,7 +125,9 @@ const CommunityPostCard: React.FC<Props> = ({
           <div className="post-title-wrapper">
             {isPopular && <Chip size="small">인기</Chip>}
             <p className="post-title">{title}</p>
-            <span className="post-comments">[{commentCount}]</span>
+            {commentCount && (
+              <span className="post-comments">[{commentCount}]</span>
+            )}
           </div>
           <div className="post-vote-wrapper">
             <KeyboardArrowUpIcon className="post-vote-icon" />

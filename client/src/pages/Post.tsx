@@ -51,7 +51,7 @@ const Post: React.FC = () => {
   const [title, setTitle] = useState("");
   const [contents, setContents] = useState("");
 
-  const email = useSelector((state) => state.user.email);
+  const userId = useSelector((state) => state.user.userId);
   const currentCommunity = useSelector(
     (state) => state.community.currentCommunity
   );
@@ -78,11 +78,13 @@ const Post: React.FC = () => {
     }
 
     const body = {
-      username: email,
+      user_id: userId,
       post_content: contents,
       post_title: title,
       board_title: community,
     };
+
+    console.log(body);
 
     try {
       await submitPostAPI(body);

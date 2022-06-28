@@ -1,5 +1,7 @@
 // 게시물의 내용이 120자보다 길면 120자만큼으로 줄입니다 - nonon
 export const shortenPostContents = (contents: string) => {
+  if (!contents) return;
+
   if (contents.length > 120) {
     return `${contents.slice(0, 120)}...`;
   } else {

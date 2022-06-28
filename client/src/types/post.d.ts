@@ -1,5 +1,5 @@
 type SubmitPostAPIBodyType = {
-  username: string;
+  user_id: number;
   post_content: string;
   post_title: string;
   board_title: string;

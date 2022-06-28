@@ -138,7 +138,7 @@ const Home: React.FC = () => {
     setTimeout(() => {
       setFakePostList((fakePostList) => [...fakePostList, ...FAKE_ARRAY]);
       setLoading(false);
-    }, 3000);
+    }, 500);
   };
 
   useEffect(() => {
@@ -148,7 +148,8 @@ const Home: React.FC = () => {
         const response = await getAllPostAPI();
         setPostList(response.data);
 
-        console.log(response.data);
+        console.log("@@@ fetch post response @@@");
+        console.log(response);
       } catch (error) {
         console.log(error);
       } finally {
@@ -179,19 +180,21 @@ const Home: React.FC = () => {
         {isLoggedIn && <MovetoPost />}
         <h2 className="section-title">전체 글 보기</h2>
         <ul className="posts-wrapper">
-          {/* {postList.map((post) => (
-            <PostCard
-              key={post.post_id}
-              postId={post.post_id}
-              title={post.post_title}
-              commentCount={post.comment_count}
-              community={post.board_title}
-              createdAt={post.created_at}
-              contents={shortenPostContents(post.post_content)}
-              nickname="노논"
-            />
-          ))} */}
-          {fakePostList.map((_, index) => (
+          {postList &&
+            postList.map((post) => (
+              <PostCard
+                key={post.post_id}
+                postId={post.post_id}
+                title={post.post_title}
+                commentCount={post.comment_count}
+                community={translateCommunityName(post.board_title)}
+                createdAt={post.created_at}
+                contents={shortenPostContents(post.post_content) || ""}
+                nickname="노논"
+              />
+            ))}
+          {!postList && <p>글이 없습니다.</p>}
+          {/* {fakePostList.map((_, index) => (
             <PostCard
               key={index}
               postId={0}
@@ -202,13 +205,13 @@ const Home: React.FC = () => {
               contents="이건 그냥 글 내용임 이건 그냥 글 내용임 이건 그냥 글 내용임 이건 그냥 글 내용임 이건 그냥 글 내용임 이건 그냥 글 내용임 이건 그냥 글 내용임 이건 그냥 글 내용임..."
               nickname="노논"
             />
-          ))}
+          ))} */}
         </ul>
         {loading &&
           Array(5)
             .fill(0)
             .map((_, index) => (
-              <div key={index} className="loading-skeleton-wrapper">
+              <div key={index}>
                 <Skeleton width="40%" variant="text" />
                 <Skeleton width="100%" height="4rem" />
               </div>
