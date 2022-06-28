@@ -119,9 +119,9 @@ export class ContentService {
   ): Promise<object> {
     const { board_title } = updateDataDto;
     let board_id = 1;
-    if (board_title === 'Ethereum') {
+    if (board_title === 'ethereum') {
       board_id = 2;
-    } else if (board_title === 'Solana') {
+    } else if (board_title === 'solana') {
       board_id = 3;
     } else {
       board_id = 0;

@@ -20,7 +20,7 @@ export class BoardRepository extends Repository<Board> {
     Nov: 11,
     Dec: 12,
   };
-  private coinList = ['Bitcoint', 'Ethereum', 'Solana'];
+  private coinList = ['bitcoin', 'ethereum', 'solana'];
   async getBoardById(id: number) {
     const found = await this.findOne(id, { relations: ['contents'] });
     this.logger.debug(`getBoardById() : ${JSON.stringify(found)}`);
