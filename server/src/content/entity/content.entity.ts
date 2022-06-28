@@ -26,7 +26,7 @@ export class Content extends BaseEntity {
   user: User;
 
   @IsEmail({ nullable: true })
-  email: string;
+  nickname: string;
 
   @Column({ nullable: true })
   post_title: string;

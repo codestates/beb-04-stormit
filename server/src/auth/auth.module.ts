@@ -22,9 +22,14 @@ import { GoogleStrategy } from './security/strategy/google.strategy';
     }),
     PassportModule,
   ],
-  exports: [TypeOrmModule, JwtModule],
+  exports: [TypeOrmModule, JwtModule, UserService],
   controllers: [AuthController],
-  providers: [GoogleStrategy, AuthService, UserService, JwtStrategy, JwtRefreshStrategy]
-
+  providers: [
+    GoogleStrategy,
+    AuthService,
+    UserService,
+    JwtStrategy,
+    JwtRefreshStrategy,
+  ],
 })
 export class AuthModule {}
