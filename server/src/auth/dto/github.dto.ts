@@ -1,6 +1,6 @@
 import { IsString } from 'class-validator';
 
 export class GithubDto {
-    @IsString()
-    readonly code: string
+  @IsString()
+  readonly code: string;
 }

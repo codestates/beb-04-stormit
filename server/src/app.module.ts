@@ -8,21 +8,16 @@ import { Content } from './content/entity/content.entity';
 import { ContentModule } from './content/content.module';
 import { ContentRepository } from './content/content.repository';
 import * as config from 'config';
-import { Comment } from './content/entity/comment.entity';
 import { JoinColumn } from 'typeorm';
 import { Board } from './board/entity/board.entity';
 
-
-const serverConfig = config.get('server')
-const dbConfig = config.get('db')
-
+const serverConfig = config.get('server');
+const dbConfig = config.get('db');
 
 @Module({
-
   imports: [
     ConfigModule.forRoot({
-      isGlobal:true,
-    
+      isGlobal: true,
     }),
     TypeOrmModule.forRoot({
       type: dbConfig.type,
@@ -31,14 +26,12 @@ const dbConfig = config.get('db')
       username: dbConfig.username,
       password: dbConfig.password,
       database: dbConfig.database,
-      entities: [User,Content, Board, Comment],
+      entities: [User, Content, Board, Comment],
       // entities: [__dirname + '../**/*.entity{.ts,.js}'],
       synchronize: dbConfig.synchronize,
     }),
     // TypeOrmModule.forRootAsync({useFactory: typeORMConfig}),
-    AuthModule
-
+    AuthModule,
   ],
-
 })
 export class AppModule {}

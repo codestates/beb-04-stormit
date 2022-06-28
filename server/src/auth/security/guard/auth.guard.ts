@@ -1,7 +1,11 @@
-
 import { jwtConstants } from '../constants';
-import { ExecutionContext, Injectable, HttpException, HttpStatus } from '@nestjs/common';
-import { AuthGuard as NestAuthGuard } from "@nestjs/passport"
+import {
+  ExecutionContext,
+  Injectable,
+  HttpException,
+  HttpStatus,
+} from '@nestjs/common';
+import { AuthGuard as NestAuthGuard } from '@nestjs/passport';
 
 import { Observable } from 'rxjs';
 import { JwtService } from '@nestjs/jwt';

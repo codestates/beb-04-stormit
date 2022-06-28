@@ -2,16 +2,16 @@ import { NotFoundException } from '@nestjs/common';
 import { EntityRepository, Repository } from 'typeorm';
 import { CreateContentDto } from './dto/create-content.dto';
 import { UpdateDataDto } from './dto/updateData.dto';
-
 import { Board } from '../board/entity/board.entity';
 import { Content } from './entity/content.entity';
 import { Logger } from '@nestjs/common';
-import { BoardRepository } from 'src/board/board.repository';
+import { UserService } from 'src/auth/user.service';
 
 @EntityRepository(Content)
 export class ContentRepository extends Repository<Content> {
   private logger = new Logger('ContentRepository');
 
+  // 글 상세정보 가져오기
   async getContentById(id: number): Promise<object> {
     const found = await this.findOne(id);
     if (!found) {
@@ -20,45 +20,65 @@ export class ContentRepository extends Repository<Content> {
     return found;
   }
 
+  // 글 쓰기
   async createContent(
     createContentDto: CreateContentDto,
-    board: Board,
+    userService: UserService,
+    foundBoard: Board,
   ): Promise<object> {
     // 게시판이 있다는 가정하에 진행
-    // board_id : 1. 자유게시판
-    // board_id : 2. 강아지게시판
-    // board_id : 3. 고양이게시판
     this.logger.debug(`createContent() : ${JSON.stringify(createContentDto)}`);
-    const { post_content, post_title } = createContentDto;
-    const contents = new Content();
-    contents.post_content = post_content;
-    contents.post_title = post_title;
-    contents.board = board;
-    await this.save(contents);
-    const id = { post_id: contents.id };
-    return id;
+    const { post_content, post_title, user_id } = createContentDto;
+    const foundUser = await userService.getUserById(user_id);
+    if (foundUser) {
+      const contents = new Content();
+      if (contents) {
+        contents.post_content = post_content;
+        contents.post_title = post_title;
+        contents.board = foundBoard;
+        contents.user = foundUser;
+        await this.save(contents);
+        const id = { success: true, post_id: contents.id };
+        return id;
+      } else {
+        throw new NotFoundException(
+          `Please check the input value ${createContentDto}`,
+        );
+      }
+    } else {
+      throw new NotFoundException(
+        `Please check the input value ${createContentDto}`,
+      );
+    }
   }
-  async deleteContent(id: number): Promise<void> {
+
+  // 글 삭제
+  async deleteContent(id: number): Promise<object> {
     const result = await this.delete(id);
     if (result.affected === 0) {
-      throw new NotFoundException(`Can't find Post with id ${id}`);
+      throw new NotFoundException(`Can't delete Post with id ${id}`);
+    } else {
+      return { success: true };
     }
-    console.log('result', result);
   }
+
+  //글 수정
   async updateContent(
     id: number,
     updateDataDto: UpdateDataDto,
-    board,
-  ): Promise<Content> {
-    const { nickname, post_title, post_content } = updateDataDto;
+  ): Promise<object> {
+    const { post_title, post_content } = updateDataDto;
+    this.logger.log(`updateContent() : ${updateDataDto}`);
 
-    this.logger.verbose(nickname, post_title, post_content);
-    // console.log(`content id: ${}\nparam : ${content}`);
     let content = await this.findOne(id);
-    content.post_title = post_title;
-    content.post_content = post_content;
-    await this.save(content);
-    console.log(content);
-    return;
+    if (content) {
+      content.post_title = post_title;
+      content.post_content = post_content;
+      await this.save(content);
+
+      return { success: true };
+    } else {
+      throw new NotFoundException(`ID not found ${id}`);
+    }
   }
 }

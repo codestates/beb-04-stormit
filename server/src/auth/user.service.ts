@@ -73,4 +73,7 @@ export class UserService {
   async removeRefreshToken(user_id: number): Promise<any> {
     return this.userRepository.update({ user_id: user_id }, { hashedRt: null });
   }
+  async getUserByNickname(userNickname: string): Promise<User> {
+    return this.userRepository.getUserByNickname(userNickname);
+  }
 }

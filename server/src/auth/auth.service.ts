@@ -48,7 +48,7 @@ export class AuthService {
       });
       if (!userFind) {
         const userDTO = new UserDTO();
-        userDTO.username = profile.emails[0].value;
+        userDTO.username = 'email';
         userDTO.password = thirdPartyId;
         userDTO.nickname = profile.displayName;
         userDTO.thirdPartyId = thirdPartyId;

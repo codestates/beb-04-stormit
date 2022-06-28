@@ -40,5 +40,5 @@ export const refreshAccessTokenAPI = () =>
   axios.get<RefreshAccessTokenResponseType>(`/user/refresh`);
 
 // 구글 로그인
-export const googleLoginAPI = (body: GoogleLoginAPIBodyType) =>
-  axios.post("/user/google/login", body);
+export const googleLoginAPI = (googleToken: string) =>
+  axios.post(`/user/google/success/${googleToken}`);
