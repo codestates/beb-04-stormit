@@ -126,16 +126,16 @@ export class AuthController {
     return res.send(jwt);
   }
 
-  @UseGuards(AuthGuard)
+//   @UseGuards(AuthGuard)
   @Post('/logout')
   async logout(@Req() req, @Res() res: Response): Promise<any> {
-    console.log(req.user.user_id);
+
     // await this.UserService.removeRefreshToken(req.user.id)
     res.cookie('refresh_token', '', {
       maxAge: 0,
     });
 
-    await this.authService.removeRefreshToken(req.user.user_id);
+    // await this.authService.removeRefreshToken(req.user.user_id);
 
     return res.send({
       success: true,

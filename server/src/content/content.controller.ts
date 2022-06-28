@@ -31,12 +31,6 @@ export class ContentController {
   ) {}
   private logger = new Logger('ContentController');
 
-  // @Get()
-  // @UseGuards(AuthGuard())
-  // test(@GetUser() user : User) {
-  // console.log(user) / B
-  // }
-  // 전체 글 가져오기
   @Get('/total')
   getAllContents(): Promise<Content[]> {
     this.logger.debug(`getAllContents()`);
@@ -44,14 +38,10 @@ export class ContentController {
   }
 
   // 글 상세정보 가져오기
-  @Get(':id')
+  @Get('/:id')
   getContentById(@Param('id') id: number): Promise<object> {
     this.logger.debug(`getContentById() : ${id}`);
-    return this.contentsService.getContentById(
-      id,
-      this.userService,
-      this.boardService,
-    );
+    return this.contentsService.getContentById(id, this.userService);
   }
 
   // 글 쓰기
@@ -69,14 +59,14 @@ export class ContentController {
   }
 
   // 글 삭제
-  @Delete(':id')
+  @Delete('/:id')
   deleteContent(@Param('id', ParseIntPipe) id): Promise<object> {
     this.logger.debug(`deleteContent()`);
     return this.contentsService.deleteContent(id);
   }
 
   //글 수정
-  @Patch(':id')
+  @Patch('/:id')
   @UsePipes(ValidationPipe)
   path(
     @Param('id') id: number,
