@@ -12,7 +12,11 @@ import IconButton from "../components/common/IconButton";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import theme from "../styles/theme";
-import { deletePostByIdAPI, getPostByIdAPI } from "../lib/api/post";
+import {
+  deletePostByIdAPI,
+  getPostByIdAPI,
+  submitCommentAPI,
+} from "../lib/api/post";
 import { useLocation, useNavigate } from "react-router-dom";
 import {
   getLastPathname,
@@ -197,10 +201,12 @@ const PostDetail: React.FC = () => {
       createdAt: string;
     }[]
   >([]);
+  const [commentContent, setCommentContent] = useState("");
 
   const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
   const nickname = useSelector((state) => state.user.nickname);
   const vote = useSelector((state) => state.post.vote);
+  const userId = useSelector((state) => state.user.userId);
 
   const dispatch = useDispatch();
 
@@ -214,6 +220,12 @@ const PostDetail: React.FC = () => {
 
   const toggleDropdownMenu = () => {
     setDropdownOpen((dropdownOpen) => !dropdownOpen);
+  };
+
+  const onChangeCommentContent = (
+    event: React.ChangeEvent<HTMLTextAreaElement>
+  ) => {
+    setCommentContent(event.target.value);
   };
 
   const onClickEditButton = () => {
@@ -236,8 +248,13 @@ const PostDetail: React.FC = () => {
 
   const onClickDeleteButton = async () => {
     if (window.confirm("삭제하시겠습니까?")) {
-      await deletePostByIdAPI(postId);
-      navigate(-1);
+      try {
+        await deletePostByIdAPI(postId);
+        alert("삭제되었습니다.");
+        navigate(-1);
+      } catch (error) {
+        console.log(error);
+      }
     }
   };
 
@@ -247,6 +264,21 @@ const PostDetail: React.FC = () => {
 
   const onClickVoteDownButton = () => {
     dispatch(postActions.setVoteDown());
+  };
+
+  const submitComment = async () => {
+    const body = {
+      user_id: userId,
+      post_id: postId,
+      comment_content: commentContent,
+    };
+
+    console.log(body);
+    try {
+      await submitCommentAPI(body);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   useEffect(() => {
@@ -380,7 +412,7 @@ const PostDetail: React.FC = () => {
               commentId={comment.commentId}
             />
           ))}
-        <CommentCard
+        {/* <CommentCard
           nickname="너구리"
           createdAt={parseDate(new Date())}
           commentContents="와"
@@ -397,13 +429,20 @@ const PostDetail: React.FC = () => {
           createdAt={parseDate(new Date())}
           commentContents="와"
           commentId={0}
-        />
+        /> */}
         {isLoggedIn && (
           <>
             <p className="comment-submit-title">댓글 쓰기</p>
-            <Textarea placeholder="댓글을 남겨보세요" height="6rem" />
+            <Textarea
+              value={commentContent}
+              onChange={onChangeCommentContent}
+              placeholder="댓글을 남겨보세요"
+              height="6rem"
+            />
             <div className="comment-submit-button-wrapper">
-              <Button variant="contained">등록</Button>
+              <Button variant="contained" onClick={submitComment}>
+                등록
+              </Button>
             </div>
           </>
         )}

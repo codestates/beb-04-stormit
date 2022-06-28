@@ -135,7 +135,7 @@ const LoginForm = styled.form`
 
 const Login: React.FC = () => {
   const [email, setEmail] = useState("nonon@gmail.com");
-  const [password, setPassword] = useState("asdasdasd!");
+  const [password, setPassword] = useState("1234!@#$");
   const [validated, setValidated] = useState(true);
 
   const isLoggedIn = useSelector((state) => state.user.isLoggedIn);

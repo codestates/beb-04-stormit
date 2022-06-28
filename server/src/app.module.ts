@@ -11,6 +11,8 @@ import * as config from 'config';
 import { JoinColumn } from 'typeorm';
 import { Board } from './board/entity/board.entity';
 import { BoardModule } from './board/board.module';
+import { Comment } from './comment/entity/comment.entity';
+import { CommentModule } from './comment/comment.module';
 
 const serverConfig = config.get('server');
 const dbConfig = config.get('db');
@@ -27,7 +29,7 @@ const dbConfig = config.get('db');
       username: dbConfig.username,
       password: dbConfig.password,
       database: dbConfig.database,
-      entities: [Content, User, Board],
+      entities: [Content, User, Board, Comment],
       // entities: [__dirname + '../**/*.entity{.ts,.js}'],
       synchronize: dbConfig.synchronize,
     }),
@@ -35,6 +37,7 @@ const dbConfig = config.get('db');
     AuthModule,
     ContentModule,
     BoardModule,
+    CommentModule,
   ],
 })
 export class AppModule {}

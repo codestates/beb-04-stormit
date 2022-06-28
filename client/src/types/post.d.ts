@@ -49,7 +49,7 @@ type UpdatePostAPIBodyType = {
 };
 
 type SubmitCommentAPIBodyType = {
-  username: string;
+  user_id: number;
   post_id: number;
   comment_content: string;
 };
