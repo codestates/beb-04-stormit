@@ -6,7 +6,6 @@ import { ContentRepository } from './content.repository';
 import { CreateContentDto } from './dto/create-content.dto';
 import { UpdateDataDto } from './dto/updateData.dto';
 import { Content } from './entity/content.entity';
-
 @Injectable()
 export class ContentService {
   constructor(
