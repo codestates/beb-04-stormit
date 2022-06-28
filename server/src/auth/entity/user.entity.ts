@@ -23,5 +23,5 @@ export class User {
   hashedRt?: string;
 
   @Column({ nullable: true })
-  thirdPartyId? :string;
+  thirdPartyId?: string;
 }
