@@ -6,7 +6,21 @@ import { Board } from './entity/board.entity';
 @EntityRepository(Board)
 export class BoardRepository extends Repository<Board> {
   private logger = new Logger('BoardRepository');
-
+  private en_month = {
+    Jan: 1,
+    Feb: 2,
+    Mar: 3,
+    Apr: 4,
+    May: 5,
+    Jun: 6,
+    Jul: 7,
+    Aug: 8,
+    Sep: 9,
+    Oct: 10,
+    Nov: 11,
+    Dec: 12,
+  };
+  private coinList = ['Bitcoint', 'Ethereum', 'Solana'];
   async getBoardById(id: number) {
     const found = await this.findOne(id, { relations: ['contents'] });
     this.logger.debug(`getBoardById() : ${JSON.stringify(found)}`);
@@ -16,51 +30,45 @@ export class BoardRepository extends Repository<Board> {
       return found;
     }
   }
+
+  async setBoardTitle() {
+    this.coinList.map((value) => {
+      const title = this.create({ board_title: value });
+      this.save(title);
+    });
+  }
+  getTime(_date: string): string {
+    const _day = _date.split(' ');
+    const time = _day[4].split(':');
+    const hour = parseInt(time[0]);
+    const result_time = `${_day[3]}년 ${this.en_month[_day[1]]}월 ${
+      _day[2]
+    }일 ${hour}시 ${time[1]}분 ${time[2]}초`;
+    return result_time;
+  }
   async getBoardByTitle(_board_title: string): Promise<object> {
-    const temp = await this.findOne(_board_title, {
+    const found = await this.findOne(_board_title, {
       relations: ['contents'],
     });
-    const en_month = {
-      Jan: 1,
-      Feb: 2,
-      Mar: 3,
-      Apr: 4,
-      May: 5,
-      Jun: 6,
-      Jul: 7,
-      Aug: 8,
-      Sep: 9,
-      Oct: 10,
-      Nov: 11,
-      Dec: 12,
-    };
 
-    const temp2 = temp.contents.map(
-      ({ post_content, post_title, created_at }) => {
-        const _date = created_at.toString();
-        const temp = created_at.toLocaleTimeString();
-        console.log(`create_at : ${created_at}`);
-        console.log(`created_at.toString() : ${created_at.toString()}`);
-        console.log(
-          `created_at.toLocaleTimeString() : ${created_at.toLocaleTimeString()}`,
-        );
-
-        const _day = _date.split(' ');
-        const time = _day[4].split(':');
-        const hour = parseInt(time[0]) - 9;
-        const result_time = `${_day[3]}년${en_month[_day[1]]}월 ${
-          _day[2]
-        }일 ${hour}시 ${time[1]}분 ${time[2]}초`;
-        const obj = {
-          post_title: post_title,
-          post_content: post_content,
-          temp_date: result_time,
-        };
-        return obj;
-      },
-    );
-    this.logger.debug(`getBoardByTitle () : ${JSON.stringify(temp2)}`);
-    return temp2;
+    if (found) {
+      const result = found.contents.map(
+        ({ post_content, post_title, created_at }) => {
+          const _date = created_at.toString();
+          const time = this.getTime(_date);
+          const obj = {
+            post_title: post_title,
+            post_content: post_content,
+            created_at: time,
+          };
+          return obj;
+        },
+      );
+      this.logger.debug(`getBoardByTitle () : ${JSON.stringify(result)}`);
+      return result;
+    } else {
+      throw new NotFoundException('ID not found ');
+    }
   }
   async createBoard(createBoardDto: CreateBoardDto): Promise<Board> {
     const { board_title } = createBoardDto;
@@ -69,8 +77,8 @@ export class BoardRepository extends Repository<Board> {
       board_title,
     });
     this.logger.debug(`createBoard() : ${board_title}`);
-    await this.save(board);
-    return board;
+    const result = await this.save(board);
+    return result;
   }
   async deleteBoard(id: number): Promise<void> {
     const result = await this.delete(id);

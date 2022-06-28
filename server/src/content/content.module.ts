@@ -9,14 +9,18 @@ import { UserService } from 'src/auth/user.service';
 import { UserRepository } from 'src/auth/user.repository';
 import { AuthModule } from 'src/auth/auth.module';
 import { Content } from './entity/content.entity';
+import { BoardModule } from 'src/board/board.module';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([ContentRepository, BoardRepository]),
+    TypeOrmModule.forFeature([ContentRepository]),
     AuthModule,
+    BoardModule,
   ],
   controllers: [ContentController],
-  providers: [ContentService, BoardService, UserService],
+  providers: [ContentService],
+
+  //이거
   exports: [ContentService],
 })
 export class ContentModule {}
