@@ -36,7 +36,8 @@ export class BoardController {
 
   // 게시판별 글 가져오기
   @Post('')
-  getBoardByTitle(@Param('board_title') board_title: string): Promise<object> {
+  getBoardByTitle(@Body('board_title') board_title: string): Promise<object> {
+    console.log(board_title);
     return this.boardsService.getBoardByTitle(board_title);
   }
   // 게시판 생성

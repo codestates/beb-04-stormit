@@ -47,10 +47,17 @@ export class BoardRepository extends Repository<Board> {
     return result_time;
   }
   async getBoardByTitle(_board_title: string): Promise<object> {
-    const found = await this.findOne(_board_title, {
-      relations: ['contents'],
-    });
+    const found = await this.findOne(
+      {
+        board_title: _board_title,
+      },
+      {
+        relations: ['contents'],
+      },
+    );
 
+    this.logger.debug(`getBoardByTitle () : ${JSON.stringify(_board_title)}`);
+    this.logger.debug(`getBoardByTitle () : ${JSON.stringify(found)}`);
     if (found) {
       const result = found.contents.map(
         ({ post_content, post_title, created_at }) => {
@@ -67,7 +74,7 @@ export class BoardRepository extends Repository<Board> {
       this.logger.debug(`getBoardByTitle () : ${JSON.stringify(result)}`);
       return result;
     } else {
-      throw new NotFoundException('ID not found ');
+      throw new NotFoundException(`Board not found : ${_board_title} `);
     }
   }
   async createBoard(createBoardDto: CreateBoardDto): Promise<Board> {
