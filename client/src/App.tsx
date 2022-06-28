@@ -28,7 +28,6 @@ import Edit from "./pages/Edit";
 import GoogleSuccess from "./pages/GoogleSuccess";
 
 const App: React.FC = () => {
-  console.log("@@@ app render @@@");
   const menuModalOpen = useSelector((state) => state.modal.menuModalOpen);
   const profileModalOpen = useSelector((state) => state.modal.profileModalOpen);
   const isDarkMode = useSelector((state) => state.theme.isDarkMode);
