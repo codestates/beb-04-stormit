@@ -76,4 +76,7 @@ export class UserService {
   async getUserByNickname(userNickname: string): Promise<User> {
     return this.userRepository.getUserByNickname(userNickname);
   }
+  async getUserById(user_id: number): Promise<User> {
+    return this.userRepository.getUserById(user_id);
+  }
 }

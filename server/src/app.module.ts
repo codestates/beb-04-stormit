@@ -26,7 +26,7 @@ const dbConfig = config.get('db');
       username: dbConfig.username,
       password: dbConfig.password,
       database: dbConfig.database,
-      entities: [User, Content, Board, Comment],
+      entities: [User, Content, Board],
       // entities: [__dirname + '../**/*.entity{.ts,.js}'],
       synchronize: dbConfig.synchronize,
     }),
