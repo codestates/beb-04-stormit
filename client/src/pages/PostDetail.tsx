@@ -249,6 +249,8 @@ const PostDetail: React.FC = () => {
     const fetchPost = async () => {
       try {
         const response = await getPostByIdAPI(postId);
+
+        console.log(response.data);
         const {
           post_title,
           post_content,
@@ -361,14 +363,15 @@ const PostDetail: React.FC = () => {
           </IconButton>
         </div>
         <p className="comment-title">댓글 {commentsData.length || "3"}개</p>
-        {commentsData.map((comment) => (
-          <CommentCard
-            nickname={comment.nickname}
-            createdAt={comment.createdAt}
-            commentContents={comment.commentContent}
-            commentId={comment.commentId}
-          />
-        ))}
+        {commentsData &&
+          commentsData.map((comment) => (
+            <CommentCard
+              nickname={comment.nickname}
+              createdAt={comment.createdAt}
+              commentContents={comment.commentContent}
+              commentId={comment.commentId}
+            />
+          ))}
         <CommentCard
           nickname="너구리"
           createdAt={parseDate(new Date())}
