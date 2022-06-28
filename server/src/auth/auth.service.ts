@@ -30,16 +30,20 @@ export class AuthService {
     private config: ConfigService,
   ) {}
 
-  async validateOAuthLogin(profile: any, thirdPartyId: string, provider: Provider): Promise<string> {
+  async validateOAuthLogin(
+    profile: any,
+    thirdPartyId: string,
+    provider: Provider,
+  ): Promise<string> {
     try {
       // You can add some registration logic here,
       // to register the user using their thirdPartyId (in this case their googleId)
       // let user: IUser = await this.usersService.findOneByThirdPartyId(thirdPartyId, provider);
-  
-      console.log(thirdPartyId)
+
+      console.log(thirdPartyId);
       // if (!user)
       // user = await this.usersService.registerOAuthUser(thirdPartyId, provider);
-      let userFind: UserDTO = await this.userService.findByFields({
+      const userFind: UserDTO = await this.userService.findByFields({
         where: { thirdPartyId: thirdPartyId },
       });
       if (!userFind) {
@@ -62,7 +66,7 @@ export class AuthService {
 
       const payload = {
         thirdPartyId,
-        provider
+        provider,
       };
 
       const jwt: string = sign(payload, jwtConstants.JWT_ACCESS_TOKEN_SECRET, {
@@ -75,7 +79,7 @@ export class AuthService {
   }
 
   async registerUser(newUser: UserDTO): Promise<UserDTO> {
-    let userFind: UserDTO = await this.userService.findByFields({
+    const userFind: UserDTO = await this.userService.findByFields({
       where: { username: newUser.username },
     });
 
@@ -92,7 +96,7 @@ export class AuthService {
   }
 
   async validateUser(userDTO: UserDTO): Promise<any> {
-    let userFind: User = await this.userService.findByFields({
+    const userFind: User = await this.userService.findByFields({
       where: { username: userDTO.username },
     });
 
