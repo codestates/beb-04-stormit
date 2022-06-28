@@ -47,32 +47,42 @@ export class AuthController {
   @UseGuards(GoogleAuthGuard)
   googleLoginCallback(@Req() req, @Res() res) {
     // handles the Google OAuth2 callback
+    // console.log(req.user);
     const jwt: string = req.user.jwt;
     if (jwt)
       res.redirect('http://localhost:3000/user/google/success?jwt=' + jwt);
     else res.redirect('http://localhost:3000/login/failure');
   }
+
   @Post('google/success/:token')
   async googleLoginPost(
     @Req() req: Request,
     @Param('token') token: string,
     @Res() res: Response,
   ): Promise<any> {
-    console.log(req);
-    console.log(token);
-    //     const user=await this.authService.validateUser(userDTO);
-    //     const jwt=await this.authService.getTokens(user.user_id, user.username);
-    //     await this.authService.updateRtHash(user.user_id, jwt.refresh_token)
-    //     res.setHeader('Authorization', 'Bearer '+jwt.access_token)
-    //     res.cookie('refresh_token', jwt.refresh_token,{
-    //         httpOnly: true,
-    //         maxAge: 7*24* 60 * 60 * 1000 // 7day
-    // })
+    const userDTO: UserDTO = await this.userService.findByFields({
+      where: { thirdPartyToken: token },
+    });
 
-    //     return res.json({"access_token": jwt.access_token});
-    // return res.send({
-    //     success : true
-    // })
+    const user = await this.authService.validateThirdPartyUser(
+      userDTO,
+      userDTO.thirdPartyId,
+    );
+
+    const jwt = await this.authService.getTokens(user.user_id, user.username);
+    console.log(user);
+    console.log(jwt);
+    await this.authService.updateRtHash(user.user_id, jwt.refresh_token);
+    res.setHeader('Authorization', 'Bearer ' + jwt.access_token);
+    res.cookie('refresh_token', jwt.refresh_token, {
+      httpOnly: true,
+      maxAge: 7 * 24 * 60 * 60 * 1000, // 7day
+    });
+
+    return res.json({ access_token: jwt.access_token });
+    return res.send({
+      success: true,
+    });
   }
 
   @Post('/login')
