@@ -76,7 +76,9 @@ export class ContentRepository extends Repository<Content> {
       content.post_content = post_content;
       await this.save(content);
 
-      return { success: true };
+      return {
+        success: true,
+      };
     } else {
       throw new NotFoundException(`ID not found ${id}`);
     }
