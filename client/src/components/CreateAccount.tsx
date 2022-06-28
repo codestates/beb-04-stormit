@@ -213,7 +213,7 @@ const CreateAccount: React.FC = () => {
         <form className="createAccount-form" onSubmit={onSubmitBtn}>
           <Input
             type="text"
-            placeholder="닉네임"
+            placeholder="닉네임을 입력해주세요"
             onChange={handleInputValue("nickname")}
           />
           {validate.nickname === "pass" ? (
@@ -229,7 +229,7 @@ const CreateAccount: React.FC = () => {
           )}
           <Input
             type="text"
-            placeholder="새 이메일"
+            placeholder="이메일을 입력해주세요"
             onChange={handleInputValue("email")}
           />
 
@@ -244,7 +244,7 @@ const CreateAccount: React.FC = () => {
           )}
           <Input
             type="password"
-            placeholder="새 비밀번호"
+            placeholder="비밀번호를 입력해주세요"
             onChange={handleInputValue("password")}
           />
           {validate.password === "pass" ? (
