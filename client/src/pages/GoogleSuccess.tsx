@@ -17,43 +17,44 @@ const GoogleSuccess: React.FC = () => {
 
   const params = new URLSearchParams(search);
 
-  const googleToken = params.get("google_token");
+  const googleToken = params.get("jwt");
+  console.log(googleToken);
 
   useEffect(() => {
     const googleLogin = async () => {
       if (!googleToken) return;
-      const body = { google_token: googleToken };
-      const loginAPIResponse = await googleLoginAPI(body);
 
-      console.log(loginAPIResponse);
+      try {
+        console.log("googleLoginAPI");
+        const response = await googleLoginAPI(googleToken);
+        const { access_token } = response.data;
 
-      const { access_token } = loginAPIResponse.data;
+        console.log("access_token");
+        console.log(access_token);
 
-      setCookie("access_token", access_token, "7200");
+        setCookie("access_token", access_token, "7200");
+      } catch (error) {
+        console.log(error);
+      }
 
-      console.log("@@@ google login @@@");
-      console.log(access_token);
-      const authAPIResponse = await authenticateAPI(access_token);
+      // const {
+      //   user_id: userId,
+      //   username: email,
+      //   nickname,
+      // } = authAPIResponse.data;
 
-      const {
-        user_id: userId,
-        username: email,
-        nickname,
-      } = authAPIResponse.data;
+      // if (authAPIResponse.status !== 200) return;
 
-      if (authAPIResponse.status !== 200) return;
+      // dispatch(userActions.setLoggedIn());
+      // dispatch(
+      //   userActions.setUserInfo({
+      //     email: email,
+      //     nickname: nickname,
+      //     userId: userId,
+      //   })
+      // );
 
-      dispatch(userActions.setLoggedIn());
-      dispatch(
-        userActions.setUserInfo({
-          email: email,
-          nickname: nickname,
-          userId: userId,
-        })
-      );
-
-      dispatch(snackbarActions.openLoginSnackbar());
-      navigate("/");
+      // dispatch(snackbarActions.openLoginSnackbar());
     };
 
     googleLogin();

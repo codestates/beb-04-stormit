@@ -49,10 +49,10 @@ const App: React.FC = () => {
   };
 
   // 새로고침 시 로그인
-  useEffect(() => {
-    console.log("@@@ authenticating @@@");
-    authenticate();
-  }, [authenticate]);
+  // useEffect(() => {
+  //   console.log("@@@ authenticating @@@");
+  //   authenticate();
+  // }, [authenticate]);
 
   return (
     <ThemeProvider theme={isDarkMode ? darkTheme : theme}>
@@ -84,7 +84,7 @@ const App: React.FC = () => {
         <Route path="/edit/:id" element={<Edit />} />
         <Route path="/communities" element={<Communities />} />
         <Route path="/deleted" element={<DeletedPost />} />
-        <Route path="/google/success" element={<GoogleSuccess />} />
+        <Route path="user/google/success" element={<GoogleSuccess />} />
         <Route path="/*" element={<ErrorPage />} />
       </Routes>
     </ThemeProvider>
