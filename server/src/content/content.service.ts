@@ -44,10 +44,15 @@ export class ContentService {
   }
 
   // 글 상세정보 가져오기
-  async getContentById(id: number, userService: UserService): Promise<object> {
+  async getContentById(
+    id: number,
+    userService: UserService,
+    boardService: BoardService,
+  ): Promise<object> {
     const found_content = await this.contentRepository.findOne(id, {
-      relations: ['user'],
+      relations: ['user', 'board'],
     });
+    console.log(found_content);
     if (!found_content) {
       throw new NotFoundException(`Can't find Content with id ${id}`);
     }
@@ -56,6 +61,7 @@ export class ContentService {
       post_content,
       created_at,
       user: { nickname },
+      board: { board_title },
     } = found_content;
     const user = await userService.getUserByNickname(nickname);
     if (user) {
@@ -63,6 +69,7 @@ export class ContentService {
       const _date = created_at.toString();
       const time = this.getTime(_date);
       const obj = {
+        board_title: board_title,
         post_title: post_title,
         post_content: post_content,
         created_at: time,

@@ -47,7 +47,11 @@ export class ContentController {
   @Get(':id')
   getContentById(@Param('id') id: number): Promise<object> {
     this.logger.debug(`getContentById() : ${id}`);
-    return this.contentsService.getContentById(id, this.userService);
+    return this.contentsService.getContentById(
+      id,
+      this.userService,
+      this.boardService,
+    );
   }
 
   // 글 쓰기
