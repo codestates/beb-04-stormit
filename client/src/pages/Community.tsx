@@ -1,7 +1,12 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import NavigationRail from "../components/NavigationRail";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import {
+  Link,
+  useLocation,
+  useNavigate,
+  useSearchParams,
+} from "react-router-dom";
 import {
   FAKE_ARRAY,
   getLastPathname,
@@ -95,13 +100,19 @@ const Base = styled.div`
 const Community: React.FC = () => {
   const [postList, setPostList] = useState<GetPostsByBoardResponseType>([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [currentPostList, setCurrentPostList] = useState(postList.slice(0, 10));
+
+  console.log(currentPage);
+
+  const currentPostList = postList.slice(
+    currentPage * 10 - 10,
+    currentPage * 10
+  );
+
+  const location = useLocation();
 
   const dispatch = useDispatch();
 
   const navigate = useNavigate();
-
-  const location = useLocation();
 
   const communityName = getLastPathname(location.pathname);
 
@@ -144,6 +155,16 @@ const Community: React.FC = () => {
     dispatch(communityActions.setCurrentCommunity(communityName));
   }, [communityName, dispatch]);
 
+  useEffect(() => {
+    const pageQueryString = location.search;
+
+    if (!pageQueryString) {
+      setCurrentPage(1);
+    } else {
+      setCurrentPage(Number(pageQueryString.split("=")[1]));
+    }
+  }, [location.search]);
+
   return (
     <Base>
       <NavigationRail />
@@ -175,16 +196,6 @@ const Community: React.FC = () => {
         </div>
         <Divider />
         <ul className="posts-wrapper">
-          {postList.map((post, index) => (
-            <CommunityPostCard
-              key={index}
-              postId={post.post_id}
-              title={post.post_title}
-              commentCount={post.comment_count}
-              nickname={post.nickname}
-              createdAt={post.created_at}
-            />
-          ))}
           {postList
             .filter((post) => post.comment_count > 10)
             .slice(0, 3)
@@ -198,17 +209,17 @@ const Community: React.FC = () => {
                 createdAt={post.created_at}
                 isPopular
               />
-            ))}
-          {/* {currentPostList.map((post: number, index: number) => (
+            ))}{" "}
+          {currentPostList.map((post, index) => (
             <CommunityPostCard
               key={index}
-              postId={1}
-              title="랜덤 게시물"
-              commentCount={post}
-              nickname="닉네임"
-              createdAt={parseDate(new Date())}
+              postId={post.post_id}
+              title={post.post_title}
+              commentCount={post.comment_count}
+              nickname={post.nickname}
+              createdAt={post.created_at}
             />
-          ))} */}
+          ))}
         </ul>
         <div className="pagination-wrapper">
           <Pagination

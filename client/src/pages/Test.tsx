@@ -1,9 +1,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import Menu from "../components/common/Menu";
-import MenuItem from "../components/common/MenuItem";
-import Tab from "../components/common/Tab";
-import Tabs from "../components/common/Tabs";
+import Button from "../components/common/Button";
+import Snackbar from "../components/common/Snackbar";
 
 const Base = styled.section`
   display: flex;
@@ -21,7 +19,16 @@ const Base = styled.section`
 `;
 
 const Test: React.FC = () => {
-  return <Base></Base>;
+  const [open, setOpen] = useState(false);
+
+  return (
+    <Base>
+      <Snackbar open={open} onClose={() => setOpen(false)}>
+        스낵바입니다.
+      </Snackbar>
+      <Button onClick={() => setOpen(true)}>버튼</Button>
+    </Base>
+  );
 };
 
 export default Test;

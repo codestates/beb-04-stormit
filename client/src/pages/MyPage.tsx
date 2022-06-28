@@ -3,7 +3,6 @@ import styled from "styled-components";
 import IconButton from "../components/common/IconButton";
 import CommunityPostCard from "../components/CommunityPostCard";
 import NavigationRail from "../components/NavigationRail";
-import { parseDate } from "../lib/utils";
 import palette from "../styles/palette";
 import EditIcon from "@mui/icons-material/Edit";
 import Input from "../components/common/Input";
@@ -19,6 +18,7 @@ import Tab from "../components/common/Tab";
 import ManageSearchIcon from "@mui/icons-material/ManageSearch";
 import useAuthenticate from "../hooks/useAuthenticate";
 import { useNavigate } from "react-router-dom";
+import { getAllPostAPI } from "../lib/api/post";
 
 const Base = styled.div`
   display: flex;
@@ -134,11 +134,9 @@ const Mypage: React.FC = () => {
   const [input, setInput] = useState("");
   const [editMode, setEditMode] = useState(false);
   const [activeTab, setActiveTab] = useState("나의 글");
+  const [myPostList, setMyPostList] = useState<GetAllPostsResponseType>([]);
 
   const nickname = useSelector((state) => state.user.nickname);
-  const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
-  console.log("@@ isLoggedIn @@");
-  console.log(isLoggedIn);
 
   const dispatch = useDispatch();
 
@@ -174,6 +172,7 @@ const Mypage: React.FC = () => {
     alert("현재 프로필 이미지 변경은 지원하지 않습니다.");
   };
 
+  // 인증
   useEffect(() => {
     console.log("@@@ mypage authenticate @@@");
     try {
@@ -182,6 +181,23 @@ const Mypage: React.FC = () => {
       navigate("/login");
     }
   }, [authenticate, navigate]);
+
+  // 게시물 가져오기
+  useEffect(() => {
+    const fetchPosts = async () => {
+      try {
+        const response = await getAllPostAPI();
+
+        const myPostsData = response.data.filter(
+          (post) => post.nickname === nickname
+        );
+        setMyPostList(myPostsData);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchPosts();
+  }, [nickname]);
 
   return (
     <Base>
@@ -233,40 +249,28 @@ const Mypage: React.FC = () => {
         {activeTab === "나의 글" && (
           <>
             <p className="my-posts">내가 작성한 게시글</p>
-            <CommunityPostCard
-              postId={1}
-              title="나의 글"
-              commentCount={2}
-              nickname="노논"
-              createdAt={parseDate(new Date())}
-            />
-            <CommunityPostCard
-              postId={1}
-              title="나의 글"
-              commentCount={2}
-              nickname="노논"
-              createdAt={parseDate(new Date())}
-            />
-            <CommunityPostCard
-              postId={1}
-              title="나의 글"
-              commentCount={2}
-              nickname="노논"
-              createdAt={parseDate(new Date())}
-            />
-            <CommunityPostCard
-              postId={1}
-              title="나의 글"
-              commentCount={2}
-              nickname="노논"
-              createdAt={parseDate(new Date())}
-            />
+            {myPostList.map((post, index) => (
+              <CommunityPostCard
+                key={index}
+                postId={post.post_id}
+                title={post.post_title}
+                commentCount={post.comment_count}
+                nickname={post.nickname}
+                createdAt={post.created_at}
+              />
+            ))}
+            {myPostList.length === 0 && (
+              <div className="empty-content">
+                <ManageSearchIcon className="empty-content-icon" />
+                <p>작성한 게시글이 없습니다.</p>
+              </div>
+            )}
           </>
         )}
         {activeTab === "나의 댓글" && (
           <>
             <p className="my-posts">내가 작성한 댓글</p>
-
+            {/* fetch commments */}
             <div className="empty-content">
               <ManageSearchIcon className="empty-content-icon" />
               <p>작성한 댓글이 없습니다.</p>
