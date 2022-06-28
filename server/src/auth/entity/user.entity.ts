@@ -24,4 +24,7 @@ export class User {
 
   @Column({ nullable: true })
   thirdPartyId? :string;
+
+  @Column({nullable: true})
+  thirdPartyToken? :string;
 }

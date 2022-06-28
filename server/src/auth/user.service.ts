@@ -28,7 +28,7 @@ export class UserService {
   async delete(user_id: number): Promise<any> {
     return this.userRepository.deleteUser(user_id);
   }
-
+  
   async updateHashedRt(user_id: number, hash: any): Promise<any> {
     return this.userRepository.update({ user_id: user_id }, { hashedRt: hash });
   }
@@ -38,6 +38,13 @@ export class UserService {
       { user_id: user_id },
       { nickname: body.nickname },
     );
+  }
+
+  async updateThirdPartyToken(username: string, thirdPartyToken:string): Promise<any>{
+    return this.userRepository.update(
+      { username: username},
+      {thirdPartyToken: thirdPartyToken}
+    )
   }
 
   async updatePassword(userDTO: UserDTO, new_password: string): Promise<any> {

@@ -11,4 +11,6 @@ export class UserDTO {
   hashedRt?: string;
 
   thirdPartyId?: string;
+
+  thirdPartyToken?:string;
 }
