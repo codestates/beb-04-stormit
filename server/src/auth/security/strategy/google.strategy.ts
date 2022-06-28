@@ -15,7 +15,7 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
       clientSecret: ouathConfig.GOOGLE_CLIENT_SECRET, // CLIENT_SECRET
       callbackURL: 'http://localhost:4000/user/google/callback',
       passReqToCallback: true,
-      scope: ['profile'],
+      scope: ['profile', 'email'],
     });
   }
   // @nestjs/passport PassportStrategy를 상속
@@ -32,15 +32,15 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
     done: any,
   ) {
     try {
-      console.log(profile);
+      // console.log(profile);
 
-      const jwt = await this.authService.validateOAuthLogin(
+      const {jwt, userInfo} = await this.authService.validateOAuthLogin(
         profile,
         profile.id,
         Provider.GOOGLE,
       );
       const user = {
-        jwt,
+        jwt, userInfo
       };
       done(null, user);
     } catch (err) {

@@ -24,7 +24,7 @@ export class UserRepository extends Repository<User> {
     console.log(`getUserByNickname() : ${userNickname}`);
     const found = await this.findOne({ nickname: userNickname });
 
-    console.log(found);
+    // console.log(found);
 
     return found;
   }
