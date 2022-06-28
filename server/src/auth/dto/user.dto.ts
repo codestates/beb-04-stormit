@@ -9,4 +9,6 @@ export class UserDTO {
   nickname?: string;
 
   hashedRt?: string;
+
+  thirdPartyId?: string;
 }

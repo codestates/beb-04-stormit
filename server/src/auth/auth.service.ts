@@ -31,6 +31,7 @@ export class AuthService {
   ) {}
 
   async validateOAuthLogin(
+    profile: any,
     thirdPartyId: string,
     provider: Provider,
   ): Promise<string> {
@@ -39,15 +40,24 @@ export class AuthService {
       // to register the user using their thirdPartyId (in this case their googleId)
       // let user: IUser = await this.usersService.findOneByThirdPartyId(thirdPartyId, provider);
 
+      console.log(thirdPartyId);
       // if (!user)
       // user = await this.usersService.registerOAuthUser(thirdPartyId, provider);
       let userFind: UserDTO = await this.userService.findByFields({
-        where: { username: thirdPartyId },
+        where: { thirdPartyId: thirdPartyId },
       });
-
-      if (userFind) {
-        throw new HttpException('duplicated email', HttpStatus.BAD_REQUEST);
+      if (!userFind) {
+        const userDTO = new UserDTO();
+        userDTO.username = profile.emails[0].value;
+        userDTO.password = thirdPartyId;
+        userDTO.nickname = profile.displayName;
+        userDTO.thirdPartyId = thirdPartyId;
+        await this.registerUser(userDTO);
       }
+
+      // if(!userFind) {
+      //     user = await this.userService.
+      // }
 
       // let newUser: UserDTO = UserDTO(
       //     "username" : thirdPartyId

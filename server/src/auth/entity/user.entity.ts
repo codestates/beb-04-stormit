@@ -21,4 +21,7 @@ export class User {
   @Column({ nullable: true })
   @Exclude({ toPlainOnly: true })
   hashedRt?: string;
+
+  @Column({ nullable: true })
+  thirdPartyId? :string;
 }
