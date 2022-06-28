@@ -104,11 +104,14 @@ const Community: React.FC = () => {
   const communityName = getLastPathname(location.pathname);
 
   useEffect(() => {
+    console.log("@@@ useEffect @@@");
     const fetchPosts = async () => {
       try {
         const body = { board_title: communityName };
+        console.log(body);
         const response = await getPostsByBoardAPI(body);
         setPostList(response.data);
+        console.log(response.data);
       } catch (error) {
         console.log(error);
       }
