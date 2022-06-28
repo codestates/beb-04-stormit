@@ -51,9 +51,8 @@ export class ContentService {
   // 글 상세정보 가져오기
   async getContentById(id: number, userService: UserService): Promise<object> {
     const found_content = await this.contentRepository.findOne(id, {
-      relations: ['user', 'board'],
+      relations: ['user', 'board', 'comments'],
     });
-    console.log(found_content);
     if (!found_content) {
       throw new BadRequestException(`Can't find Content with id ${id}`);
     }
@@ -63,10 +62,11 @@ export class ContentService {
       created_at,
       user: { nickname },
       board: { board_title },
+      comments,
     } = found_content;
     const user = await userService.getUserByNickname(nickname);
     if (user) {
-      const temp = user.nickname;
+      const _nickname = user.nickname;
       const _date = created_at.toString();
       const time = this.getTime(_date);
       const obj = {
@@ -74,7 +74,8 @@ export class ContentService {
         post_title: post_title,
         post_content: post_content,
         created_at: time,
-        nickname: temp,
+        nickname: _nickname,
+        comments: comments,
       };
       this.logger.log(`${JSON.stringify(obj)}`);
       return obj;
