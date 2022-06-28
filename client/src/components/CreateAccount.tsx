@@ -98,25 +98,37 @@ const CreateAccount: React.FC = () => {
 
   // nickname 유효성 검사
   // issue: 문자와 특수문자 조합시 그대로 유효성 통과됨.
-  function validateNickname(nickname: string) {
-    var re = /^(?=.*[a-zA-Z0-9ㄱ-ㅎㅏ-ㅣ가-힣]).{2,8}$/;
+  // solve : 특수문자만 확인하는 special 변수를 만들어서 먼저 통과가 안될시 false
+  const validateNickname = (nickname: string) => {
+    const special = /[`~!@#$%^&*|\\\'\";:\/?]/gi;
+    const re = /^(?=.*[a-zA-Z0-9ㄱ-ㅎㅏ-ㅣ가-힣]).{2,8}$/;
+    if (special.test(nickname)) {
+      return false;
+    }
     return re.test(nickname);
-  }
+  };
 
   // email 유효성 검사
   // '@' 포함여부와 대문자,소문자를 구분하지않게 표현식끝에 i 사용
-  function validateEmail(email: string) {
-    var re =
+  const validateEmail = (email: string) => {
+    const re =
       /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
     return re.test(email);
-  }
+  };
 
   // password 유효성 검사
   // issue: 조건 충족시 문자 삽입해도 통과됨.
-  function validatePassword(password: string) {
-    var re = /^(?=.*[a-z])(?=.*[$@!%*#?&])[a-z0-9$@!%*#?&]{8,20}$/;
+  // solve: nickname과 마찬가지로 문자 확인 변수 생성해서 먼저 통과가 안될시 false
+  // 참고 https://regexr.com/
+  const validatePassword = (password: string) => {
+    // gi -> global serch, ignore case
+    const engcheck = /[a-z]/gi;
+    const re = /^(?=.*[0-9$@!%*#?&]).{8,20}$/;
+    if (engcheck.test(password)) {
+      return false;
+    }
     return re.test(password);
-  }
+  };
 
   // inputvaule 감지 및 state 전송 함수
   const handleInputValue =
@@ -155,8 +167,8 @@ const CreateAccount: React.FC = () => {
     dispatch(modalActions.closeCreateAccountModal());
   };
 
-  // 가입하기 버튼 클릭
-  const onClickCreateBtn = async (e: React.MouseEvent<HTMLButtonElement>) => {
+  // 가입하기 클릭
+  const onSubmitBtn = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const { email, password, nickname } = userinfo;
     if (!validateNickname(nickname)) {
@@ -179,6 +191,7 @@ const CreateAccount: React.FC = () => {
     try {
       await signUpAPI(body);
     } catch (error) {
+      // 피드백 (중복된 닉네임 등)
       console.log(error);
     }
     onCreateAccountCloseBtn();
@@ -197,7 +210,7 @@ const CreateAccount: React.FC = () => {
           </IconButton>
         </div>
         <Divider />
-        <form className="createAccount-form">
+        <form className="createAccount-form" onSubmit={onSubmitBtn}>
           <Input
             type="text"
             placeholder="닉네임"
@@ -245,9 +258,7 @@ const CreateAccount: React.FC = () => {
               8~20자, 하나 이상의 특수문자를 사용하세요.
             </InputExplain>
           )}
-          <Button className="submit" onClick={onClickCreateBtn}>
-            가입하기
-          </Button>
+          <Button className="submit">가입하기</Button>
         </form>
       </Dialog>
     </Cover>

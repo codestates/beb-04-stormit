@@ -10,10 +10,6 @@ interface BaseProps {
   totalPage: number[];
 }
 
-const totalPage = Array(34)
-  .fill(0)
-  .map((_, index) => index + 1);
-
 const Base = styled.div<BaseProps>`
   display: flex;
   align-items: center;
@@ -47,14 +43,27 @@ const Base = styled.div<BaseProps>`
     `}
 `;
 
-// totalPage: 전체 페이지의 갯수 ex) 서버에서 받아오는 전체 글 갯수가 1000개 -> 100
-// currentPage: 현재 보여지고 있는 페이지
-// pageListIndex: 페이지 리스트의 인덱스 ex) 1 -> 1~5, 2 -> 6~10, 3 -> 11~15
-// currentPageList: 현재 보여지고 있는 페이지 리스트
-const Pagination: React.FC = () => {
-  const [currentPage, setCurrentPage] = useState(1);
+interface Props {
+  totalPosts: number;
+  currentPage: number;
+  setCurrentPage: React.Dispatch<React.SetStateAction<number>>;
+}
 
-  const [pageListIndex, setPageIndex] = useState(1);
+// totalPosts (number): 전체 글의 갯수
+// totalPage (array): 전체 페이지의 갯수 ex) 서버에서 받아오는 전체 글 갯수가 1000개 -> 100
+// currentPage (number): 현재 보여지고 있는 페이지
+// pageListIndex (number): 페이지 리스트의 인덱스 ex) 1 -> 1~5, 2 -> 6~10, 3 -> 11~15
+// currentPageList (array): 현재 보여지고 있는 페이지 리스트 (pageListIndex로 구함)
+const Pagination: React.FC<Props> = ({
+  totalPosts,
+  currentPage,
+  setCurrentPage,
+}) => {
+  const [pageListIndex, setPageListIndex] = useState(1);
+
+  const totalPage = Array(Math.ceil(totalPosts / 10))
+    .fill(0)
+    .map((_, index) => index + 1);
 
   const currentPageList = totalPage.slice(
     pageListIndex * 5 - 5,
@@ -64,14 +73,14 @@ const Pagination: React.FC = () => {
   const loadPrevPageList = () => {
     if (pageListIndex === 1) return;
 
-    setPageIndex((pageListIndex) => pageListIndex - 1);
+    setPageListIndex((pageListIndex: number) => pageListIndex - 1);
     setCurrentPage(currentPageList[currentPageList.length - 1] - 5);
   };
 
   const loadNextPageList = () => {
     if (pageListIndex === Math.ceil(totalPage.length / 5)) return;
 
-    setPageIndex((pageListIndex) => pageListIndex + 1);
+    setPageListIndex((pageListIndex: number) => pageListIndex + 1);
     setCurrentPage(currentPageList[0] + 5);
   };
 
@@ -86,7 +95,10 @@ const Pagination: React.FC = () => {
           key={index}
           value={page}
           color={currentPage === page ? "primary" : "default"}
-          onClick={() => setCurrentPage(page)}
+          onClick={() => {
+            setCurrentPage(page);
+            console.log(page);
+          }}
         >
           <span>{page}</span>
         </IconButton>

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import IconButton from "../components/common/IconButton";
 import CommunityPostCard from "../components/CommunityPostCard";
@@ -13,6 +13,12 @@ import CheckIcon from "@mui/icons-material/Check";
 import CloseIcon from "@mui/icons-material/Close";
 import CameraAltIcon from "@mui/icons-material/CameraAlt";
 import { userActions } from "../store/userSlice";
+import Divider from "../components/common/Divider";
+import Tabs from "../components/common/Tabs";
+import Tab from "../components/common/Tab";
+import ManageSearchIcon from "@mui/icons-material/ManageSearch";
+import useAuthenticate from "../hooks/useAuthenticate";
+import { useNavigate } from "react-router-dom";
 
 const Base = styled.div`
   display: flex;
@@ -23,32 +29,21 @@ const Base = styled.div`
     display: none;
   }
 
-  .profile-legend {
-    position: relative;
-    background-color: ${palette.gray[100]};
-    height: 12.5rem; // 200px
-    margin-bottom: 4rem; // 32px
-  }
-
-  .body {
+  .profile-image-area {
     display: flex;
-  }
-
-  .contents-area {
-    margin: 1rem; // 16px
-
-    display: flex;
-    flex-direction: column;
-    gap: 1rem; // 16px
+    align-items: center;
+    gap: 1rem;
+    margin: 4rem 1rem;
   }
 
   .profile-image-wrapper {
-    position: absolute;
-    top: 7rem;
-    left: 2rem;
-    width: 8rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     height: 8rem;
+    width: 8rem;
     border-radius: 50%;
+    margin-right: 1rem;
     cursor: pointer;
 
     &:hover {
@@ -67,10 +62,8 @@ const Base = styled.div`
   }
 
   .profile-image-edit-button {
-    color: ${palette.gray[900]};
     position: absolute;
-    top: 3.7rem;
-    left: 3.3rem;
+    color: ${palette.gray[900]};
     display: none;
   }
 
@@ -82,14 +75,30 @@ const Base = styled.div`
 
   .my-posts {
     font-weight: 500;
+    font-size: 1.25rem;
+    margin: 1rem;
+    margin-top: 2rem;
+  }
+
+  .empty-content {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    justify-content: center;
+    align-items: center;
+    height: 8rem;
+    color: ${palette.gray[400]};
+  }
+
+  .empty-content-icon {
+    width: 4rem;
+    height: 4rem;
   }
 
   .profile-nickname-wrapper {
     display: flex;
     align-items: center;
     gap: 0.5rem; // 8px
-
-    margin-bottom: 3rem; // 48px
   }
 
   .profile-nickname {
@@ -118,19 +127,24 @@ const Base = styled.div`
     .navigation-rail {
       display: flex;
     }
-
-    .profile-image {
-    }
   }
 `;
 
 const Mypage: React.FC = () => {
   const [input, setInput] = useState("");
   const [editMode, setEditMode] = useState(false);
+  const [activeTab, setActiveTab] = useState("나의 글");
 
   const nickname = useSelector((state) => state.user.nickname);
+  const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
+  console.log("@@ isLoggedIn @@");
+  console.log(isLoggedIn);
 
   const dispatch = useDispatch();
+
+  const authenticate = useAuthenticate();
+
+  const navigate = useNavigate();
 
   const onChangeInput = (event: React.ChangeEvent<HTMLInputElement>) => {
     setInput(event.target.value);
@@ -157,76 +171,108 @@ const Mypage: React.FC = () => {
   };
 
   const onClickProfileImage = () => {
-    alert("현재 프로필 변경은 지원하지 않습니다.");
+    alert("현재 프로필 이미지 변경은 지원하지 않습니다.");
   };
+
+  useEffect(() => {
+    console.log("@@@ mypage authenticate @@@");
+    try {
+      authenticate();
+    } catch (error) {
+      navigate("/login");
+    }
+  }, [authenticate, navigate]);
 
   return (
     <Base>
       <NavigationRail className="navigation-rail" />
       <section className="contents">
-        <div className="profile-legend">
+        <div className="profile-image-area">
           <div className="profile-image-wrapper" onClick={onClickProfileImage}>
             <img className="profile-image" src="/profile-image.png" alt="" />
             <CameraAltIcon className="profile-image-edit-button" />
           </div>
+          {!editMode && (
+            <>
+              <p className="profile-nickname">{nickname}</p>
+              <IconButton>
+                <EditIcon onClick={onClickEditButton} />
+              </IconButton>
+            </>
+          )}
+          {editMode && (
+            <>
+              <Input
+                className="profile-nickname-input"
+                value={input}
+                onChange={onChangeInput}
+                onKeyDown={onEnterNickname}
+              />
+              <IconButton variant="contained" onClick={submitNickname}>
+                <CheckIcon />
+              </IconButton>
+              <IconButton onClick={() => setEditMode(false)}>
+                <CloseIcon />
+              </IconButton>
+            </>
+          )}
         </div>
-        <div className="contents-area">
-          <div className="profile-nickname-wrapper">
-            {!editMode && (
-              <>
-                <p className="profile-nickname">{nickname}</p>
-                <IconButton>
-                  <EditIcon onClick={onClickEditButton} />
-                </IconButton>
-              </>
-            )}
-            {editMode && (
-              <>
-                <Input
-                  className="profile-nickname-input"
-                  value={input}
-                  onChange={onChangeInput}
-                  onKeyDown={onEnterNickname}
-                />
-                <IconButton variant="contained" onClick={submitNickname}>
-                  <CheckIcon />
-                </IconButton>
-                <IconButton onClick={() => setEditMode(false)}>
-                  <CloseIcon />
-                </IconButton>
-              </>
-            )}
-          </div>
-          <p className="my-posts">내가 작성한 게시글</p>
-          <CommunityPostCard
-            postId={1}
-            title="나의 글"
-            commentCount={2}
-            nickname="노논"
-            createdAt={parseDate(new Date())}
+        <Tabs>
+          <Tab
+            label="내 게시글"
+            active={activeTab === "나의 글"}
+            onClick={() => setActiveTab("나의 글")}
           />
-          <CommunityPostCard
-            postId={1}
-            title="나의 글"
-            commentCount={2}
-            nickname="노논"
-            createdAt={parseDate(new Date())}
+          <Tab
+            label="내 댓글"
+            active={activeTab === "나의 댓글"}
+            onClick={() => setActiveTab("나의 댓글")}
           />
-          <CommunityPostCard
-            postId={1}
-            title="나의 글"
-            commentCount={2}
-            nickname="노논"
-            createdAt={parseDate(new Date())}
-          />
-          <CommunityPostCard
-            postId={1}
-            title="나의 글"
-            commentCount={2}
-            nickname="노논"
-            createdAt={parseDate(new Date())}
-          />
-        </div>
+        </Tabs>
+        <Divider />
+        {activeTab === "나의 글" && (
+          <>
+            <p className="my-posts">내가 작성한 게시글</p>
+            <CommunityPostCard
+              postId={1}
+              title="나의 글"
+              commentCount={2}
+              nickname="노논"
+              createdAt={parseDate(new Date())}
+            />
+            <CommunityPostCard
+              postId={1}
+              title="나의 글"
+              commentCount={2}
+              nickname="노논"
+              createdAt={parseDate(new Date())}
+            />
+            <CommunityPostCard
+              postId={1}
+              title="나의 글"
+              commentCount={2}
+              nickname="노논"
+              createdAt={parseDate(new Date())}
+            />
+            <CommunityPostCard
+              postId={1}
+              title="나의 글"
+              commentCount={2}
+              nickname="노논"
+              createdAt={parseDate(new Date())}
+            />
+          </>
+        )}
+        {activeTab === "나의 댓글" && (
+          <>
+            <p className="my-posts">내가 작성한 댓글</p>
+
+            <div className="empty-content">
+              <ManageSearchIcon className="empty-content-icon" />
+              <p>작성한 댓글이 없습니다.</p>
+            </div>
+          </>
+        )}
       </section>
     </Base>
   );

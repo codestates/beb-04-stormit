@@ -4,6 +4,7 @@ import {
   Injectable,
   UnauthorizedException,
   NotFoundException,
+  InternalServerErrorException,
 } from '@nestjs/common';
 import { UserDTO } from './dto/user.dto';
 import { UserService } from './user.service';
@@ -15,6 +16,11 @@ import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 import * as argon from 'argon2';
 import { jwtConstants } from './security/constants';
+import { sign } from 'jsonwebtoken';
+
+export enum Provider {
+  GOOGLE = 'google',
+}
 
 @Injectable()
 export class AuthService {
@@ -24,8 +30,52 @@ export class AuthService {
     private config: ConfigService,
   ) {}
 
+  async validateOAuthLogin(profile: any, thirdPartyId: string, provider: Provider): Promise<string> {
+    try {
+      // You can add some registration logic here,
+      // to register the user using their thirdPartyId (in this case their googleId)
+      // let user: IUser = await this.usersService.findOneByThirdPartyId(thirdPartyId, provider);
+  
+      console.log(thirdPartyId)
+      // if (!user)
+      // user = await this.usersService.registerOAuthUser(thirdPartyId, provider);
+      let userFind: UserDTO = await this.userService.findByFields({
+        where: { thirdPartyId: thirdPartyId },
+      });
+      if (!userFind) {
+        const userDTO = new UserDTO();
+        userDTO.username = profile.emails[0].value;
+        userDTO.password = thirdPartyId;
+        userDTO.nickname = profile.displayName;
+        userDTO.thirdPartyId = thirdPartyId;
+        await this.registerUser(userDTO);
+      }
+
+      // if(!userFind) {
+      //     user = await this.userService.
+      // }
+
+      // let newUser: UserDTO = UserDTO(
+      //     "username" : thirdPartyId
+      // )
+      // return await this.userService.save(newUser);
+
+      const payload = {
+        thirdPartyId,
+        provider
+      };
+
+      const jwt: string = sign(payload, jwtConstants.JWT_ACCESS_TOKEN_SECRET, {
+        expiresIn: 3600,
+      });
+      return jwt;
+    } catch (err) {
+      throw new InternalServerErrorException('validateOAuthLogin', err.message);
+    }
+  }
+
   async registerUser(newUser: UserDTO): Promise<UserDTO> {
-    const userFind: UserDTO = await this.userService.findByFields({
+    let userFind: UserDTO = await this.userService.findByFields({
       where: { username: newUser.username },
     });
 
@@ -39,29 +89,10 @@ export class AuthService {
     const userFind: User = await this.userService.findByFields({
       where: { user_id: user_id },
     });
-
-    if (!userFind) {
-      throw new UnauthorizedException();
-    }
-
-    const validatePassword = await bcrypt.compare(
-      body.current_password,
-      userFind.password,
-    );
-
-    if (!validatePassword) {
-      throw new UnauthorizedException();
-    } else {
-      const result = await this.userService.updatePassword(
-        userFind,
-        body.new_password,
-      );
-      return result;
-    }
   }
 
   async validateUser(userDTO: UserDTO): Promise<any> {
-    const userFind: User = await this.userService.findByFields({
+    let userFind: User = await this.userService.findByFields({
       where: { username: userDTO.username },
     });
 
@@ -79,9 +110,9 @@ export class AuthService {
     }
     // const { password, ...result} = userFind;
     // return result;
-    const tokens = await this.getTokens(userFind.user_id, userFind.username);
-    await this.updateRtHash(userFind.user_id, tokens.refresh_token);
-    return tokens;
+    // const tokens = await this.getTokens(userFind.user_id, userFind.username);
+    // await this.updateRtHash(userFind.user_id, tokens.refresh_token);
+    return userFind;
 
     // const payload: Payload = { user_id: userFind.user_id, username: userFind.username }
     // return {

@@ -4,6 +4,8 @@ import styled from "styled-components";
 import Divider from "../components/common/Divider";
 import CommunityCard from "../components/CommunityCard";
 import NavigationRail from "../components/NavigationRail";
+import { staticCommunityList } from "../lib/staticData";
+import { translateCommunityName } from "../lib/utils";
 
 const Base = styled.div`
   display: flex;
@@ -41,44 +43,19 @@ const Communities: React.FC = () => {
       <NavigationRail />
       <section className="contents">
         <h1 className="communities-title">전체 커뮤니티</h1>
-        <Link to="/community/blockchain">
-          <CommunityCard
-            title="블록체인"
-            description="커뮤니티에 대한 설명을 적어주세요."
-            image="/profile-image.png"
-          />
-        </Link>
         <Divider />
-        <Link to="/community/webdev">
-          <CommunityCard
-            title="웹개발"
-            description="커뮤니티에 대한 설명을 적어주세요."
-            image="/profile-image.png"
-          />
-        </Link>
-        <Divider />
-        <Link to="/community/beb">
-          <CommunityCard
-            title="BEB"
-            description="커뮤니티에 대한 설명을 적어주세요"
-            image="/profile-image.png"
-          />
-        </Link>
-        <Divider />
-        <Link to="/community/bitcoin">
-          <CommunityCard
-            title="비트코인"
-            description="커뮤니티에 대한 설명을 적어주세요."
-            image="/profile-image.png"
-          />
-        </Link>
-        <Link to="/community/qa">
-          <CommunityCard
-            title="Q&amp;A"
-            description="커뮤니티에 대한 설명을 적어주세요."
-            image="/profile-image.png"
-          />
-        </Link>
+        {staticCommunityList.map((community, index) => (
+          <React.Fragment key={index}>
+            <Link to={`/community/${community}`}>
+              <CommunityCard
+                title={translateCommunityName(community)}
+                description="커뮤니티에 대한 설명을 적어주세요."
+                image="/profile-image.png"
+              />
+            </Link>
+            <Divider />
+          </React.Fragment>
+        ))}
       </section>
     </Base>
   );

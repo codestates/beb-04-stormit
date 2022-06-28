@@ -12,10 +12,17 @@ import { useSelector } from "../store";
 import MovetoPost from "../components/MovetoPost";
 import { getAllPostAPI } from "../lib/api/post";
 import PersonIcon from "@mui/icons-material/Person";
-import { FAKE_ARRAY, parseDate, shortenPostContents } from "../lib/utils";
+import {
+  FAKE_ARRAY,
+  parseDate,
+  shortenPostContents,
+  translateCommunityName,
+} from "../lib/utils";
 import IconButton from "../components/common/IconButton";
 import KeyboardDoubleArrowDownIcon from "@mui/icons-material/KeyboardDoubleArrowDown";
 import Skeleton from "../components/common/Skeleton";
+import Chip from "../components/common/Chip";
+import { staticCommunityList } from "../lib/staticData";
 
 const Base = styled.div`
   display: flex;
@@ -27,10 +34,14 @@ const Base = styled.div`
     align-items: center;
     flex-direction: column;
     gap: 0.5rem; // 8px
+    margin: 1rem;
   }
 
-  .contents {
-    margin: 1rem; // 16px
+  .board-list-wrapper {
+    display: flex;
+    margin: 0 1rem;
+    margin-bottom: 2rem;
+    gap: 0.5rem;
   }
 
   .stormit {
@@ -57,7 +68,7 @@ const Base = styled.div`
   .section-title {
     font-size: 1.5rem; // 24px
     font-weight: 500;
-    padding: 1rem 0; // 16px 0
+    padding: 1rem; // 16px
   }
 
   .fab-wrapper {
@@ -153,35 +164,22 @@ const Home: React.FC = () => {
       <NavigationRail />
       <section className="contents">
         <div className="contents-top">
-          {!isLoggedIn && (
-            <>
-              <h1 className="stormit">Stormit.</h1>
-              <h2 className="stormit-subtitle">
-                스톰잇은 ERC-20 기반의 온라인 커뮤니티로, 누구나 자유롭게 이용할
-                수 있습니다.
-              </h2>
-              <h2 className="stormit-subtitle">
-                지금 바로 새 글을 작성하고 토큰을 지급받으세요!
-              </h2>
-              <div className="home-cta-wrapper">
-                <Link to="/agreement">
-                  <Button className="home-cta" variant="contained">
-                    시작하기
-                  </Button>
-                </Link>
-                <Link to="/login">
-                  <Button className="home-cta-sub" variant="outlined">
-                    로그인
-                  </Button>
-                </Link>
-              </div>
-            </>
-          )}
+          <h1 className="stormit">Stormit.</h1>
         </div>
+        {/* <Link to="/communities">
+          <h2 className="section-title">커뮤니티</h2>
+        </Link>
+        <div className="board-list-wrapper">
+          {boardList.map((community) => (
+            <Link to={`/community/${community}`}>
+              <Chip size="large">{translateCommunityName(community)}</Chip>
+            </Link>
+          ))}
+        </div> */}
         {isLoggedIn && <MovetoPost />}
         <h2 className="section-title">전체 글 보기</h2>
         <ul className="posts-wrapper">
-          {postList.map((post) => (
+          {/* {postList.map((post) => (
             <PostCard
               key={post.post_id}
               postId={post.post_id}
@@ -192,7 +190,7 @@ const Home: React.FC = () => {
               contents={shortenPostContents(post.post_content)}
               nickname="노논"
             />
-          ))}
+          ))} */}
           {fakePostList.map((_, index) => (
             <PostCard
               key={index}

@@ -5,7 +5,11 @@ import { useSelector } from "../store";
 import palette from "../styles/palette";
 import Button from "./common/Button";
 import Divider from "./common/Divider";
+import IconButton from "./common/IconButton";
 import Textarea from "./common/Textarea";
+import MoreVertIcon from "@mui/icons-material/MoreVert";
+import Menu from "./common/Menu";
+import MenuItem from "./common/MenuItem";
 
 const Base = styled.div`
   display: flex;
@@ -24,8 +28,21 @@ const Base = styled.div`
     height: 1rem; // 16px
   }
 
+  .comment-profile-image-wrapper {
+    border-radius: 50%;
+    width: 1.5rem;
+    height: 1.5rem;
+  }
+
+  .comment-profile-image {
+    border-radius: 50%;
+    width: 100%;
+    height: 100%;
+  }
+
   .comment-metadata-left-area {
     display: flex;
+    align-items: center;
     gap: 0.5rem; // 8px
   }
 
@@ -62,6 +79,15 @@ const Base = styled.div`
     display: flex;
     justify-content: flex-end;
   }
+
+  .comment-dropdown-wrapper {
+    position: relative;
+  }
+
+  .comment-dropdown {
+    top: 2.8rem;
+    right: 0;
+  }
 `;
 
 interface Props {
@@ -79,10 +105,15 @@ const CommentCard: React.FC<Props> = ({
 }) => {
   const [editMode, setEditMode] = useState(false);
   const [editText, setEditText] = useState(commentContents);
+  const [dropdownOpen, setDropdownOpen] = useState(false);
 
   const loggedUserNickname = useSelector((state) => state.user.nickname);
 
   const isMyComment = loggedUserNickname === nickname;
+
+  const toggleDropdownMenu = () => {
+    setDropdownOpen((dropdownOpen) => !dropdownOpen);
+  };
 
   const onChangeEditText = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     setEditText(event.target.value);
@@ -120,6 +151,13 @@ const CommentCard: React.FC<Props> = ({
       <Divider />
       <div className="comment-metadata">
         <div className="comment-metadata-left-area">
+          <div className="comment-profile-image-wrapper">
+            <img
+              className="comment-profile-image"
+              src="/profile-image.png"
+              alt=""
+            />
+          </div>
           <p className="comment-author">{nickname}</p>
           <Divider orientation="vertical" />
           <p className="comment-date">{createdAt}</p>
@@ -135,6 +173,24 @@ const CommentCard: React.FC<Props> = ({
                 삭제
               </p>
             </>
+          )}
+          {!isMyComment && (
+            <div className="comment-dropdown-wrapper">
+              <IconButton onClick={toggleDropdownMenu}>
+                <MoreVertIcon />
+              </IconButton>
+              {dropdownOpen && (
+                <Menu
+                  className="comment-dropdown"
+                  onClose={() => setDropdownOpen(false)}
+                >
+                  <MenuItem
+                    label="신고"
+                    onClick={() => alert("안타깝지만 신고 기능은 없습니다.")}
+                  />
+                </Menu>
+              )}
+            </div>
           )}
         </div>
       </div>

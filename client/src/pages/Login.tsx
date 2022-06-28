@@ -12,7 +12,7 @@ import { useSelector, useDispatch } from "../store";
 import { useNavigate } from "react-router-dom";
 import { snackbarActions } from "../store/snackbarSlice";
 // login API
-import { authenticateAPI, loginAPI } from "../lib/api/user";
+import { authenticateAPI, googleLoginAPI, loginAPI } from "../lib/api/user";
 import { setCookie } from "../lib/utils";
 import Input from "../components/common/Input";
 
@@ -49,24 +49,14 @@ const LoginForm = styled.form`
   gap: 1rem;
   max-height: 26rem;
   max-width: 22rem;
-  height: 100%;
   width: 100%;
   padding: 20px;
 
   box-shadow: 0 1rem 20px rgba(0, 0, 0, 0.1);
 
-  .inputBox {
-    font-size: 1.2rem;
-    padding: 0.7rem;
-    border-radius: 0.3rem;
-    border: 1px solid ${palette.gray[300]};
-    ::placeholder {
-      color: ${palette.gray[300]};
-    }
-  }
-
   .validation-text {
     color: ${palette.red[500]};
+    font-size: 0.875rem; // 14px
   }
 
   .login-btn {
@@ -99,12 +89,13 @@ const LoginForm = styled.form`
   }
 
   .google-login-button {
-    width: 2rem;
-    height: 2rem;
+    width: 1.5rem;
+    height: 1.5rem;
   }
 
   .google-login-text {
-    color: ${palette.gray[500]};
+    font-weight: 500;
+    color: ${palette.gray[400]};
   }
 
   .forgot-pw {
@@ -112,6 +103,7 @@ const LoginForm = styled.form`
     color: ${palette.blue[500]};
     font-size: 0.8rem;
     font-weight: 500;
+    cursor: pointer;
 
     :hover {
       text-decoration: underline;
@@ -148,6 +140,10 @@ const Login: React.FC = () => {
 
   const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
 
+  const onClickGoogleButton = () => {
+    window.location.assign("http://localhost:4000/user/google");
+  };
+
   // e: 이건 타입스크립트에서 event의 타입을 지정해주는것이다.
   const onChangeEmail = (e: React.ChangeEvent<HTMLInputElement>) => {
     setValidated(true);
@@ -158,6 +154,7 @@ const Login: React.FC = () => {
     setValidated(true);
     setPassword(e.target.value);
   };
+
   // 계정생성 클릭 시 모달창 생성
   const createAccountOpen = useSelector(
     (state) => state.modal.createAccountOpen
@@ -184,7 +181,7 @@ const Login: React.FC = () => {
 
       const { access_token } = loginAPIResponse.data;
 
-      setCookie("access_token", access_token, "10");
+      setCookie("access_token", access_token, "7200");
 
       if (loginAPIResponse.status !== 201) return;
 
@@ -256,7 +253,9 @@ const Login: React.FC = () => {
         </div>
         <div className="google-login-button-wrapper">
           <img className="google-login-button" src="/google-logo.png" alt="" />
-          <div className="google-login-text">구글 계정으로 계속하기</div>
+          <div className="google-login-text" onClick={onClickGoogleButton}>
+            구글 계정으로 로그인
+          </div>
         </div>
       </LoginForm>
       {createAccountOpen ? <CreateAccount /> : ""}

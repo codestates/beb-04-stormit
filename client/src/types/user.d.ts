@@ -42,3 +42,7 @@ type GetProfileAPIResponseType = {
   wallet_address: string;
   balance: number;
 };
+
+type GoogleLoginAPIBodyType = {
+  google_token: string;
+};
