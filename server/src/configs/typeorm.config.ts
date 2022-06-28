@@ -1,7 +1,5 @@
 import { Content } from 'src/content/entity/content.entity';
-
 import { Board } from 'src/board/entity/board.entity';
-import { Comment } from 'src/content/entity/comment.entity';
 
 import { TypeOrmModuleOptions, TypeOrmModule } from '@nestjs/typeorm';
 

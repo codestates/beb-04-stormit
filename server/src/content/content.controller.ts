@@ -20,7 +20,7 @@ import { BoardService } from 'src/board/board.service';
 
 import { UserService } from 'src/auth/user.service';
 import { AuthGuard } from '@nestjs/passport';
-import { GetUser } from 'src/auth/get-user.decorator';
+// import { GetUser } from 'src/auth/get-user.decorator';
 
 @Controller('board/post') // @UseGuards(AuthGuard())
 export class ContentController {
