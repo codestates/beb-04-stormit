@@ -5,6 +5,7 @@ import {
   CreateDateColumn,
   Entity,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
   Timestamp,
   Unique,
@@ -13,6 +14,7 @@ import {
 import { User } from 'src/auth/entity/user.entity';
 import { Board } from 'src/board/entity/board.entity';
 import { IsEmail } from 'class-validator';
+import { Comment } from 'src/comment/entity/comment.entity';
 //CREATE TABLE content{}
 @Entity() //
 export class Content extends BaseEntity {
@@ -24,6 +26,9 @@ export class Content extends BaseEntity {
 
   @ManyToOne(() => User, (user) => user.user_id)
   user: User;
+
+  @OneToMany(() => Comment, (comment) => comment.content)
+  comments: Comment[];
 
   @IsEmail({ nullable: true })
   nickname: string;

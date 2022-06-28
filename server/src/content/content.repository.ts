@@ -11,8 +11,8 @@ import { UserService } from 'src/auth/user.service';
 export class ContentRepository extends Repository<Content> {
   private logger = new Logger('ContentRepository');
 
-  // 글 상세정보 가져오기
-  async getContentById(id: number): Promise<object> {
+  // post_id값에 맞는 하나의 글 가져오기
+  async getPostId(id: number): Promise<Content> {
     const found = await this.findOne(id);
     if (!found) {
       throw new NotFoundException(`Can't find Post with id ${id}`);

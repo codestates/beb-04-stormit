@@ -1,4 +1,9 @@
-import { Injectable, Logger, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  Logger,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserService } from 'src/auth/user.service';
 import { BoardService } from 'src/board/board.service';
@@ -44,17 +49,13 @@ export class ContentService {
   }
 
   // 글 상세정보 가져오기
-  async getContentById(
-    id: number,
-    userService: UserService,
-    boardService: BoardService,
-  ): Promise<object> {
+  async getContentById(id: number, userService: UserService): Promise<object> {
     const found_content = await this.contentRepository.findOne(id, {
       relations: ['user', 'board'],
     });
     console.log(found_content);
     if (!found_content) {
-      throw new NotFoundException(`Can't find Content with id ${id}`);
+      throw new BadRequestException(`Can't find Content with id ${id}`);
     }
     const {
       post_title,
@@ -78,7 +79,7 @@ export class ContentService {
       this.logger.log(`${JSON.stringify(obj)}`);
       return obj;
     } else {
-      throw new NotFoundException(
+      throw new BadRequestException(
         `User not found.
           ${nickname}`,
       );
@@ -104,7 +105,7 @@ export class ContentService {
     }
     const foundBoard = await boardService.getBoardById(board_id);
     if (!foundBoard) {
-      throw new NotFoundException(`The board could not be found.`);
+      throw new BadRequestException(`The board could not be found.`);
     }
     return this.contentRepository.createContent(
       createContentDto,
@@ -137,7 +138,10 @@ export class ContentService {
     if (found_board) {
       return this.contentRepository.updateContent(id, updateDataDto);
     } else {
-      throw new NotFoundException('Board not found.');
+      throw new BadRequestException('Board not found.');
     }
+  }
+  getPostId(post_id: number): Promise<Content> {
+    return this.contentRepository.getPostId(post_id);
   }
 }
