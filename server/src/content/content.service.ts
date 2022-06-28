@@ -87,11 +87,11 @@ export class ContentService {
   ): Promise<object> {
     const { board_title } = createContentDto;
     let board_id = 0;
-    if (board_title === 'Bitcoin') {
+    if (board_title === 'bitcoin') {
       board_id = 1;
-    } else if (board_title === 'Ethereum') {
+    } else if (board_title === 'ethereum') {
       board_id = 2;
-    } else if (board_title === 'Solana') {
+    } else if (board_title === 'solana') {
       board_id = 3;
     } else {
       board_id = 0;
