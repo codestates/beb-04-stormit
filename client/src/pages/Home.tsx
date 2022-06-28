@@ -181,9 +181,9 @@ const Home: React.FC = () => {
         <h2 className="section-title">전체 글 보기</h2>
         <ul className="posts-wrapper">
           {postList &&
-            postList.map((post) => (
+            postList.map((post, index) => (
               <PostCard
-                key={post.post_id}
+                key={index}
                 postId={post.post_id}
                 title={post.post_title}
                 commentCount={post.comment_count}

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import NavigationRail from "../components/NavigationRail";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import {
   FAKE_ARRAY,
   getLastPathname,
@@ -15,7 +15,7 @@ import { getPostsByBoardAPI } from "../lib/api/post";
 import Input from "../components/common/Input";
 import IconButton from "../components/common/IconButton";
 import SearchIcon from "@mui/icons-material/Search";
-import { useDispatch } from "../store";
+import { useDispatch, useSelector } from "../store";
 import { communityActions } from "../store/communitySlice";
 import Divider from "../components/common/Divider";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
@@ -99,9 +99,18 @@ const Community: React.FC = () => {
 
   const dispatch = useDispatch();
 
+  const navigate = useNavigate();
+
   const location = useLocation();
 
   const communityName = getLastPathname(location.pathname);
+
+  const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
+
+  const onClickPostButton = () => {
+    if (!isLoggedIn) navigate("/login");
+    if (isLoggedIn) navigate("/post");
+  };
 
   useEffect(() => {
     console.log("@@@ useEffect @@@");
@@ -159,9 +168,9 @@ const Community: React.FC = () => {
                 {translateCommunityName(communityName)}
               </p>
             </Link>
-            <Link to="/post">
-              <Button variant="contained">글쓰기</Button>
-            </Link>
+            <Button variant="contained" onClick={onClickPostButton}>
+              글쓰기
+            </Button>
           </div>
         </div>
         <Divider />

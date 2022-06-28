@@ -33,31 +33,34 @@ const GoogleSuccess: React.FC = () => {
         console.log(access_token);
 
         setCookie("access_token", access_token, "7200");
+
+        const authAPIResponse = await authenticateAPI(access_token);
+
+        const {
+          user_id: userId,
+          username: email,
+          nickname,
+        } = authAPIResponse.data;
+
+        if (authAPIResponse.status !== 200) return;
+
+        dispatch(userActions.setLoggedIn());
+        dispatch(
+          userActions.setUserInfo({
+            email: email,
+            nickname: nickname,
+            userId: userId,
+          })
+        );
+
+        dispatch(snackbarActions.openLoginSnackbar());
       } catch (error) {
         console.log(error);
       }
-
-      // const {
-      //   user_id: userId,
-      //   username: email,
-      //   nickname,
-      // } = authAPIResponse.data;
-
-      // if (authAPIResponse.status !== 200) return;
-
-      // dispatch(userActions.setLoggedIn());
-      // dispatch(
-      //   userActions.setUserInfo({
-      //     email: email,
-      //     nickname: nickname,
-      //     userId: userId,
-      //   })
-      // );
-
-      // dispatch(snackbarActions.openLoginSnackbar());
     };
 
     googleLogin();
+    navigate("/");
   }, [googleToken, dispatch, navigate]);
 
   return <div>Redirecting...</div>;

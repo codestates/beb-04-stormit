@@ -14,7 +14,11 @@ import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import theme from "../styles/theme";
 import { deletePostByIdAPI, getPostByIdAPI } from "../lib/api/post";
 import { useLocation, useNavigate } from "react-router-dom";
-import { getLastPathname, parseDate } from "../lib/utils";
+import {
+  getLastPathname,
+  parseDate,
+  translateCommunityName,
+} from "../lib/utils";
 import { postActions } from "../store/postSlice";
 import parse from "html-react-parser";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
@@ -293,7 +297,11 @@ const PostDetail: React.FC = () => {
       <NavigationRail />
       <div className="contents">
         <div className="contents-top">
-          <p className="post-detail-community"># {postData.community}</p>
+          {postData.community && (
+            <p className="post-detail-community">
+              # {translateCommunityName(postData.community)}
+            </p>
+          )}
           <p className="post-detail-title">{postData.postTitle}</p>
           <div className="post-detail-metadata">
             <div className="post-detail-metadata-left-area">

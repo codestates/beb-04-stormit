@@ -112,14 +112,13 @@ const ProfileModal: React.FC = () => {
   };
 
   const onClickLogOutButton = async () => {
-    try {
-      await logoutAPI();
-      closeModal();
-      dispatch(userActions.setLoggedOut());
-      removeCookie("access_token");
-    } catch (error) {
-      console.log(error);
-    }
+    console.log("log out button clicked");
+
+    await logoutAPI();
+
+    closeModal();
+    dispatch(userActions.setLoggedOut());
+    removeCookie("access_token");
   };
 
   useOutsideClick(modalRef, () => dispatch(modalActions.closeProfileModal()));
