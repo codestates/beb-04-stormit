@@ -23,14 +23,10 @@ export class CommentController {
   ) {}
   private logger = new Logger('ContentController');
 
-  @Get('/hi')
-  test() {
-    console.log('test');
-  }
   //댓글 쓰기
   @Post('')
   writeComment(@Body() writeCommentDto: WriteCommentDto): object {
-    console.log('hi');
+    this.logger.debug(`writeComment() : ${writeCommentDto}`);
     return this.commentService.writeComment(
       writeCommentDto,
       this.userService,

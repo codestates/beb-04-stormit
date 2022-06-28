@@ -8,6 +8,7 @@ import {
   ParseIntPipe,
   Patch,
   Post,
+  Put,
   UseGuards,
   UsePipes,
   ValidationPipe,
@@ -66,7 +67,7 @@ export class ContentController {
   }
 
   //글 수정
-  @Patch('/:id')
+  @Put('/:id')
   @UsePipes(ValidationPipe)
   path(
     @Param('id') id: number,
