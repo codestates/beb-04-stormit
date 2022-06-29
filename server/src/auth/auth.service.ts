@@ -20,6 +20,8 @@ import { sign } from 'jsonwebtoken';
 import { EmailService } from './email/email.service';
 import { isUUID } from 'class-validator';
 import * as uuid from 'uuid';
+import cryptoRandomString from 'crypto-random-string';
+import * as crypto from 'crypto';
 
 export enum Provider {
   GOOGLE = 'google',
@@ -57,8 +59,7 @@ export class AuthService {
       throw new Error('User does not exist with related signupVerifyToken');
     }
 
-    return this.userService.updateSignupToken(userFind,null);
-    
+    return this.userService.updateSignupToken(userFind, null);
   }
 
   async validateOAuthLogin(
@@ -136,6 +137,45 @@ export class AuthService {
     const userFind: User = await this.userService.findByFields({
       where: { user_id: user_id },
     });
+  }
+
+  async findPassword(userDTO: UserDTO): Promise<any> {
+    const userFind: UserDTO = await this.userService.findByFields({
+      where: { username: userDTO.username },
+    });
+
+    if (!userFind) {
+      throw new HttpException(
+        'there is no user with this email',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+    // const token = cryptoRandomString({ length: 20, type: 'base64' });
+    const token = crypto.randomBytes(10).toString('hex');
+
+    await this.userService.updateCryptoToken(userFind, token);
+    return await this.emailService.sendFindPasswordVerification(
+      userFind.username,
+      token,
+    );
+  }
+
+  async resetPassword(userDTO: UserDTO): Promise<any> {
+    const userFind: UserDTO = await this.userService.findByFields({
+      where: { cryptoToken: userDTO.cryptoToken },
+    });
+    console.log(userDTO);
+    console.log(userFind);
+
+    if (!userFind) {
+      throw new HttpException(
+        `there is no matched user info with username ${userDTO.username}`,
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+
+    const new_password = userDTO.cryptoToken;
+    return await this.userService.updatePassword(userFind, new_password);
   }
 
   async validateUser(userDTO: UserDTO): Promise<any> {

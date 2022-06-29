@@ -33,4 +33,7 @@ export class User {
 
   @Column({ nullable: true })
   signupVerifyToken?: string;
+
+  @Column({ nullable: true })
+  cryptoToken?: string;
 }

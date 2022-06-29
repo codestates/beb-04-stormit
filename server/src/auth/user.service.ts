@@ -27,6 +27,12 @@ export class UserService {
       { signupVerifyToken: null },
     );
   }
+  async updateCryptoToken(userDTO: UserDTO, token: string): Promise<any> {
+    return this.userRepository.update(
+      { username: userDTO.username },
+      { cryptoToken: token },
+    );
+  }
 
   async save(userDTO: UserDTO): Promise<UserDTO | undefined> {
     await this.transformPassword(userDTO);
