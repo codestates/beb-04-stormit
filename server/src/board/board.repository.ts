@@ -56,7 +56,6 @@ export class BoardRepository extends Repository<Board> {
           views,
         };
       });
-      // console.log(content_set);
       return content_set;
     });
     const data = new Array(0);
@@ -66,7 +65,6 @@ export class BoardRepository extends Repository<Board> {
         data.push(index);
       });
     });
-
     return data;
   }
 
@@ -74,7 +72,7 @@ export class BoardRepository extends Repository<Board> {
     const found = await this.findOne(id, { relations: ['contents'] });
     this.logger.debug(`getBoardById() : ${JSON.stringify(found)}`);
     if (!found) {
-      throw new NotFoundException(`Can't find Board with id ${id}`);
+      throw new BadRequestException(`Can't find Board with id ${id}`);
     } else {
       return found;
     }
@@ -129,7 +127,7 @@ export class BoardRepository extends Repository<Board> {
       this.logger.debug(`getBoardByTitle () : ${JSON.stringify(result)}`);
       return result;
     } else {
-      throw new NotFoundException(`Board not found : ${_board_title} `);
+      throw new BadRequestException(`Board Title not found : ${_board_title} `);
     }
   }
   async createBoard(createBoardDto: CreateBoardDto): Promise<Board> {
@@ -146,7 +144,7 @@ export class BoardRepository extends Repository<Board> {
     const result = await this.delete(id);
     this.logger.debug(`deleteBoard() : ${JSON.stringify(result)}`);
     if (result.affected === 0) {
-      throw new NotFoundException(`Can't find Board with id ${id}`);
+      throw new BadRequestException(`Can't find Board with id ${id}`);
     }
   }
 }

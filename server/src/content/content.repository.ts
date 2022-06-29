@@ -1,4 +1,4 @@
-import { BadRequestException, NotFoundException } from '@nestjs/common';
+import { BadRequestException } from '@nestjs/common';
 import { EntityRepository, Repository } from 'typeorm';
 import { CreateContentDto } from './dto/create-content.dto';
 import { UpdateDataDto } from './dto/updateData.dto';
@@ -6,8 +6,6 @@ import { Board } from '../board/entity/board.entity';
 import { Content } from './entity/content.entity';
 import { Logger } from '@nestjs/common';
 import { UserService } from 'src/auth/user.service';
-import { Console } from 'console';
-import { RecommendationsContentDto } from './dto/recommendations-content.dto';
 
 @EntityRepository(Content)
 export class ContentRepository extends Repository<Content> {
@@ -39,7 +37,7 @@ export class ContentRepository extends Repository<Content> {
   async getPostId(id: number): Promise<Content> {
     const found = await this.findOne(id);
     if (!found) {
-      throw new NotFoundException(`Can't find Post with id ${id}`);
+      throw new BadRequestException(`Can't find Post with id ${id}`);
     }
     return found;
   }
@@ -65,12 +63,12 @@ export class ContentRepository extends Repository<Content> {
         const id = { success: true, post_id: contents.id };
         return id;
       } else {
-        throw new NotFoundException(
+        throw new BadRequestException(
           `Please check the input value ${createContentDto}`,
         );
       }
     } else {
-      throw new NotFoundException(
+      throw new BadRequestException(
         `Please check the input value ${createContentDto}`,
       );
     }
@@ -80,7 +78,7 @@ export class ContentRepository extends Repository<Content> {
   async deleteContent(id: number): Promise<object> {
     const result = await this.delete(id);
     if (result.affected === 0) {
-      throw new NotFoundException(`Can't delete Post with id ${id}`);
+      throw new BadRequestException(`Can't delete Post with id ${id}`);
     } else {
       return { success: true };
     }
@@ -144,7 +142,6 @@ export class ContentRepository extends Repository<Content> {
       views,
       user: { nickname },
       board: { board_title },
-      // comments,
     } = found_content;
 
     const user = await userService.getUserByNickname(nickname);

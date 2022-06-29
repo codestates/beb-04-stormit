@@ -1,4 +1,4 @@
-import { Injectable, Logger, NotFoundException } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { BoardRepository } from './board.repository';
 import { CreateBoardDto } from './dto/create-board.dto';
@@ -9,20 +9,12 @@ export class BoardService {
   constructor(
     @InjectRepository(BoardRepository)
     private boardRepository: BoardRepository,
-  ) {
-    // this.boardRepository.setBoardTitle();
-    // 왜 계속 불리는거지 ㅂㄷ
-  }
+  ) {}
   private logger = new Logger('BoardService');
 
   async getBoardInfo(): Promise<object> {
     this.logger.debug(`getAllBoards()`);
-    const result = this.boardRepository.getBoardInfo();
-    if (result) {
-      return result;
-    } else {
-      throw new NotFoundException('');
-    }
+    return this.boardRepository.getBoardInfo();
   }
   getBoardByTitle(board_title): Promise<object> {
     return this.boardRepository.getBoardByTitle(board_title);

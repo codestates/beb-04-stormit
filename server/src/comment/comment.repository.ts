@@ -47,7 +47,8 @@ export class CommentRepository extends Repository<Comment> {
   async deleteComment(id: number): Promise<object> {
     const result = await this.delete(id);
     if (result.affected === 0) {
-      throw new NotFoundException(`Can't delete comment with id ${id}`);
+      throw new BadRequestException(`Can't delete comment with id ${id} please check the post
+      `);
     } else {
       return { success: true };
     }
@@ -56,7 +57,7 @@ export class CommentRepository extends Repository<Comment> {
   async getUserNickname(id: number): Promise<string> {
     const comment = await this.findOne(id);
     if (!comment) {
-      throw new BadRequestException(`Comment ID ${id} Not Found`);
+      throw new BadRequestException(`Comment ID Not Found ${id}`);
     } else {
       console.log(comment.user.nickname);
       return '';
