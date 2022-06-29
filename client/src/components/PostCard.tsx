@@ -118,7 +118,7 @@ const PostCard: React.FC<Props> = ({
             <Link to={`/post/${postId}`}>
               <p className="post-title">{title}</p>
             </Link>
-            {commentCount && (
+            {commentCount !== 0 && (
               <span className="post-comments">[{commentCount}]</span>
             )}
             <Chip size="small">{community}</Chip>
@@ -129,11 +129,9 @@ const PostCard: React.FC<Props> = ({
             <span className="post-vote">0</span>
           </div>
         </div>
-        <div className="post-contents">{contents}</div>
         <div className="post-metadata-area">
           <p className="post-metadata">
             <span className="post-author">{nickname}</span>
-
             <span className="time">{createdAt}</span>
             <span className="post-views">조회수 0</span>
           </p>

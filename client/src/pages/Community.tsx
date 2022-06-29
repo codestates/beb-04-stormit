@@ -89,6 +89,8 @@ const Base = styled.div`
 
 const Community: React.FC = () => {
   const [postList, setPostList] = useState<GetPostsByBoardResponseType>([]);
+  const [popularPostList, setPopularPostList] =
+    useState<GetPostsByBoardResponseType>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [searchInput, setSearchInput] = useState("");
 
@@ -145,7 +147,15 @@ const Community: React.FC = () => {
         const body = { board_title: communityName };
         console.log(body);
         const response = await getPostsByBoardAPI(body);
-        setPostList(response.data);
+
+        // reverse(): 최신순으로 배열 뒤집기
+        const postData = response.data.reverse();
+
+        setPostList(postData);
+        setPopularPostList(
+          postData.filter((post) => post.comment_count > 5).slice(0, 3)
+        );
+
         console.log(response.data);
       } catch (error) {
         console.log(error);
@@ -200,20 +210,17 @@ const Community: React.FC = () => {
         </div>
         <Divider />
         <ul className="posts-wrapper">
-          {postList
-            .filter((post) => post.comment_count > 10)
-            .slice(0, 3)
-            .map((post, index) => (
-              <CommunityPostCard
-                key={index}
-                postId={post.post_id}
-                title={post.post_title}
-                commentCount={post.comment_count}
-                nickname={post.nickname}
-                createdAt={post.created_at}
-                isPopular
-              />
-            ))}{" "}
+          {popularPostList.map((post, index) => (
+            <CommunityPostCard
+              key={index}
+              postId={post.post_id}
+              title={post.post_title}
+              commentCount={post.comment_count}
+              nickname={post.nickname}
+              createdAt={post.created_at}
+              isPopular
+            />
+          ))}
           {currentPostList.map((post, index) => (
             <CommunityPostCard
               key={index}
