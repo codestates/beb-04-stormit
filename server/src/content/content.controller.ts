@@ -91,7 +91,7 @@ export class ContentController {
   getRecommendationsDecrease(@Param('id') id: number): Promise<object> {
     return this.contentsService.getRecommendationsDecrease(id);
   }
-  @Get('/views/:id')
+  @Get('/view/:id')
   getViews(@Param('id') id: number): Promise<object> {
     return this.contentsService.getViews(id);
   }

@@ -159,7 +159,7 @@ export class ContentRepository extends Repository<Content> {
         created_at: time,
         nickname: _nickname,
         likes: recommendations,
-        view: views,
+        views: views,
         comments: com,
       };
 

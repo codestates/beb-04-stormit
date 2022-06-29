@@ -39,7 +39,7 @@ export class BoardRepository extends Repository<Board> {
         const post_content = content.post_content;
         const post_id = content.id;
         const likes = content.recommendations;
-        const view = content.views;
+        const views = content.views;
         const nickname = content.user.nickname;
         const created_at = this.getTime(content.created_at.toString());
         const comment_count = content.comments.length;
@@ -53,7 +53,7 @@ export class BoardRepository extends Repository<Board> {
           comment_count,
           board_title,
           likes,
-          view,
+          views,
         };
       });
       // console.log(content_set);
@@ -121,7 +121,7 @@ export class BoardRepository extends Repository<Board> {
             created_at: time,
             comment_count: comments.length,
             likes: recommendations,
-            view: views,
+            views: views,
           };
           return obj;
         },
