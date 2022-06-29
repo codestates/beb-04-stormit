@@ -42,10 +42,10 @@ export class AuthController {
 
   @Post('find-password')
   async findPassowrd(
-      @Req() req: Request,
-      @Body() UserDTO: UserDTO
-  ): Promise<any>{
-      return await this.authService.findPassword(UserDTO);
+    @Req() req: Request,
+    @Body() UserDTO: UserDTO,
+  ): Promise<any> {
+    return await this.authService.findPassword(UserDTO);
   }
 
   @Get('google')
@@ -137,10 +137,9 @@ export class AuthController {
     return res.send(jwt);
   }
 
-//   @UseGuards(AuthGuard)
+  //   @UseGuards(AuthGuard)
   @Post('/logout')
   async logout(@Req() req, @Res() res: Response): Promise<any> {
-
     // await this.UserService.removeRefreshToken(req.user.id)
     res.cookie('refresh_token', '', {
       maxAge: 0,
@@ -200,21 +199,17 @@ export class AuthController {
     }
   }
 
-
   @Post('/email-verify')
-    async verifyEmail(@Query() dto: VerifyEmailDTO): Promise<string> {
-  const { signupVerifyToken } = dto;
+  async verifyEmail(@Query() dto: VerifyEmailDTO): Promise<string> {
+    const { signupVerifyToken } = dto;
 
-  return await this.authService.verifyEmail(signupVerifyToken);
-}
+    return await this.authService.verifyEmail(signupVerifyToken);
+  }
 
-@Post('/reset-password')
-async resetPassword(@Query() dto: UserDTO): Promise<string> {
-
-
-return await this.authService.resetPassword(dto);
-}
-
+  @Post('/reset-password')
+  async resetPassword(@Query() dto: UserDTO): Promise<string> {
+    return await this.authService.resetPassword(dto);
+  }
 
   // // 사용자 프로필 가져오기
   // @Get('/:username')

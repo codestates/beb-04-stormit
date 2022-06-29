@@ -14,7 +14,9 @@ import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import theme from "../styles/theme";
 import {
   deletePostByIdAPI,
+  dislikePostAPI,
   getPostByIdAPI,
+  likePostAPI,
   submitCommentAPI,
 } from "../lib/api/post";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -24,6 +26,8 @@ import parse from "html-react-parser";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import Menu from "../components/common/Menu";
 import MenuItem from "../components/common/MenuItem";
+import RefreshIcon from "@mui/icons-material/Refresh";
+import { debounce } from "../lib/utils";
 
 interface BaseProps {
   vote: number;
@@ -153,9 +157,15 @@ const Base = styled.div<BaseProps>`
     right: 0rem;
   }
 
+  .comment-title-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 1rem; // 16px
+  }
+
   .comment-title {
     font-size: 1.5rem; // 24px
-    padding-top: 1rem; // 16px
   }
 
   .comment-submit-title {
@@ -257,6 +267,10 @@ const PostDetail: React.FC = () => {
     setCommentContent(event.target.value);
   };
 
+  const onClickRefreshButton = () => {
+    debounce(fetchPost());
+  };
+
   const onClickEditButton = () => {
     dispatch(
       postActions.setPostState({
@@ -281,12 +295,24 @@ const PostDetail: React.FC = () => {
     }
   };
 
-  const onClickVoteUpButton = () => {
-    dispatch(postActions.setVoteUp());
+  const onClickLikeButton = async () => {
+    try {
+      const response = await likePostAPI(postId);
+      console.log(response);
+      fetchPost();
+    } catch (error) {
+      console.log(error);
+    }
   };
 
-  const onClickVoteDownButton = () => {
-    dispatch(postActions.setVoteDown());
+  const onClickDislikeButton = async () => {
+    try {
+      const response = await dislikePostAPI(postId);
+      console.log(response);
+      fetchPost();
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const submitComment = async () => {
@@ -383,15 +409,20 @@ const PostDetail: React.FC = () => {
           <Chip>커뮤니티</Chip>
         </div>
         <div className="post-detail-vote-area">
-          <IconButton onClick={onClickVoteUpButton}>
+          <IconButton onClick={onClickLikeButton}>
             <KeyboardArrowUpIcon />
           </IconButton>
           <span className="post-detail-vote">{vote}</span>
-          <IconButton onClick={onClickVoteDownButton}>
+          <IconButton onClick={onClickDislikeButton}>
             <KeyboardArrowDownIcon />
           </IconButton>
         </div>
-        <p className="comment-title">댓글 {commentsData.length}개</p>
+        <div className="comment-title-wrapper">
+          <p className="comment-title">댓글 {commentsData.length}개</p>
+          <IconButton onClick={onClickRefreshButton}>
+            <RefreshIcon />
+          </IconButton>
+        </div>
         {commentsData.map((comment, index) => (
           <CommentCard
             key={index}

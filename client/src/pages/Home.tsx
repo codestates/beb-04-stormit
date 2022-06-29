@@ -164,7 +164,9 @@ const Home: React.FC = () => {
                   community={translateCommunityName(post.board_title)}
                   createdAt={post.created_at}
                   contents={shortenPostContents(post.post_content) || ""}
-                  nickname="노논"
+                  nickname={post.nickname}
+                  views={post.views}
+                  likes={post.likes}
                 />
               ))}
           {!postList && <p>글이 없습니다.</p>}

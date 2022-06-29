@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 import theme from "../styles/theme";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import Chip from "./common/Chip";
+import { viewPostAPI } from "../lib/api/post";
 
 interface BaseProps {
   commentCount: number;
@@ -69,16 +70,16 @@ const Base = styled.li<BaseProps>`
     line-height: 1.4;
   }
 
-  .post-vote-wrapper {
+  .post-likes-wrapper {
     display: flex;
     align-items: center;
   }
 
-  .post-vote-icon {
+  .post-likes-icon {
     color: ${palette.gray[600]};
   }
 
-  .post-vote {
+  .post-likes {
     color: ${theme.primary};
   }
 
@@ -99,6 +100,8 @@ interface Props {
   nickname: string;
   createdAt: string;
   community: string;
+  views: number;
+  likes: number;
 }
 
 const PostCard: React.FC<Props> = ({
@@ -109,13 +112,23 @@ const PostCard: React.FC<Props> = ({
   nickname,
   createdAt,
   community,
+  views,
+  likes,
 }) => {
+  const viewPost = async () => {
+    try {
+      await viewPostAPI(postId);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <>
       <Base commentCount={commentCount}>
         <div className="post-title-area-wrapper">
           <div className="post-title-wrapper">
-            <Link to={`/post/${postId}`}>
+            <Link to={`/post/${postId}`} onClick={viewPost}>
               <p className="post-title">{title}</p>
             </Link>
             {commentCount !== 0 && (
@@ -124,16 +137,16 @@ const PostCard: React.FC<Props> = ({
             <Chip size="small">{community}</Chip>
             {commentCount > 10 && <Chip size="small">인기글</Chip>}
           </div>
-          <div className="post-vote-wrapper">
-            <KeyboardArrowUpIcon className="post-vote-icon" />
-            <span className="post-vote">0</span>
+          <div className="post-likes-wrapper">
+            <KeyboardArrowUpIcon className="post-likes-icon" />
+            <span className="post-likes">{likes}</span>
           </div>
         </div>
         <div className="post-metadata-area">
           <p className="post-metadata">
             <span className="post-author">{nickname}</span>
             <span className="time">{createdAt}</span>
-            <span className="post-views">조회수 0</span>
+            <span className="post-views">조회수 {views}</span>
           </p>
         </div>
       </Base>

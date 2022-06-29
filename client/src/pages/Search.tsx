@@ -143,6 +143,8 @@ const Search: React.FC = () => {
             nickname={post.nickname}
             createdAt={post.created_at}
             community={translateCommunityName(post.board_title)}
+            views={post.views}
+            likes={post.likes}
           />
         ))}
       </div>

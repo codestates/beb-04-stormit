@@ -46,3 +46,7 @@ type GetProfileAPIResponseType = {
 type GoogleLoginAPIBodyType = {
   google_token: string;
 };
+
+type FindpasswordAPIBodyType = {
+  username: string;
+};

@@ -283,7 +283,9 @@ const Login: React.FC = () => {
         <button className="login-btn" onClick={onClickLoginButton}>
           로그인
         </button>
-        <p className="forgot-pw">비밀번호를 잊으셨나요?</p>
+        <p className="forgot-pw" onClick={() => navigate("/password")}>
+          비밀번호를 잊으셨나요?
+        </p>
         <Divider />
         <div className="createAccount-btn-container">
           <div className="createAccount-btn" onClick={onCreateAccountBtn}>

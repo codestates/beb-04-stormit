@@ -222,6 +222,8 @@ const Community: React.FC = () => {
               commentCount={post.comment_count}
               nickname={post.nickname}
               createdAt={post.created_at}
+              views={post.views}
+              likes={post.likes}
               isPopular
             />
           ))}
@@ -233,6 +235,8 @@ const Community: React.FC = () => {
               commentCount={post.comment_count}
               nickname={post.nickname}
               createdAt={post.created_at}
+              views={post.views}
+              likes={post.likes}
             />
           ))}
         </ul>

@@ -257,6 +257,8 @@ const Mypage: React.FC = () => {
                 commentCount={post.comment_count}
                 nickname={post.nickname}
                 createdAt={post.created_at}
+                views={post.views}
+                likes={post.likes}
               />
             ))}
             {myPostList.length === 0 && (
