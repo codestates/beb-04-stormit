@@ -9,7 +9,6 @@ import {
   Post,
 } from '@nestjs/common';
 import { UserService } from 'src/auth/user.service';
-import { BoardService } from 'src/board/board.service';
 import { ContentService } from 'src/content/content.service';
 import { CommentService } from './comment.service';
 import { WriteCommentDto } from './dto/write-comment.dto';
@@ -25,7 +24,7 @@ export class CommentController {
 
   //댓글 쓰기
   @Post('')
-  writeComment(@Body() writeCommentDto: WriteCommentDto): object {
+  writeComment(@Body() writeCommentDto: WriteCommentDto): Promise<object> {
     this.logger.debug(`writeComment() : ${writeCommentDto}`);
     return this.commentService.writeComment(
       writeCommentDto,

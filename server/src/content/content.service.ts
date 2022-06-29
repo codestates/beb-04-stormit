@@ -53,6 +53,17 @@ export class ContentService {
     const found_content = await this.contentRepository.findOne(id, {
       relations: ['user', 'board', 'comments'],
     });
+    const com = found_content.comments.map((value) => {
+      const _data = value.create_at.toString();
+      const time = this.getTime(_data);
+      const comment_content = value.comment_content;
+      const comment_id = value.id;
+      const comment_created_at = time;
+
+      const obj = { comment_content, comment_id, comment_created_at };
+      return obj;
+    });
+    console.log(com);
     if (!found_content) {
       throw new BadRequestException(`Can't find Content with id ${id}`);
     }
@@ -62,8 +73,9 @@ export class ContentService {
       created_at,
       user: { nickname },
       board: { board_title },
-      comments,
+      // comments,
     } = found_content;
+
     const user = await userService.getUserByNickname(nickname);
     if (user) {
       const _nickname = user.nickname;
@@ -75,7 +87,7 @@ export class ContentService {
         post_content: post_content,
         created_at: time,
         nickname: _nickname,
-        comments: comments,
+        comments: com,
       };
       this.logger.log(`${JSON.stringify(obj)}`);
       return obj;

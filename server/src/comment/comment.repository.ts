@@ -15,7 +15,7 @@ export class CommentRepository extends Repository<Comment> {
     writeCommentDto: WriteCommentDto,
     userService: UserService,
     contentService: ContentService,
-  ) {
+  ): Promise<object> {
     this.logger.debug(`writeComment()`);
     // post_id를 통해 게시글을 찾는다.
     // user_id를 통해 유저를 찾는다.
@@ -37,6 +37,7 @@ export class CommentRepository extends Repository<Comment> {
     comment.comment_content = comment_content;
     comment.user = found_user;
     comment.content = found_post;
+
     await this.save(comment);
     return { success: true, comment_id: comment.id };
   }

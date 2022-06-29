@@ -17,7 +17,7 @@ export class CommentService {
     writeCommentDto: WriteCommentDto,
     userService: UserService,
     contentService: ContentService,
-  ) {
+  ): Promise<object> {
     return this.commentRepository.writeComment(
       writeCommentDto,
       userService,
