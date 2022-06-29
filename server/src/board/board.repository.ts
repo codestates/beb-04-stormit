@@ -23,15 +23,6 @@ export class BoardRepository extends Repository<Board> {
   // private coinList = ['bitcoin', 'ethereum', 'solana'];
 
   async getBoardInfo(): Promise<object> {
-    // {
-    //   post_id: number, 1
-    //   post_title: string, 1
-    //   post_content: string, 1
-    //   nickname: string, 1
-    //   created_at: string, 1
-    //   comment_count: number, 1
-    //   board_title: string
-    //   }
     const board = await this.find({
       relations: ['contents'],
     });
@@ -47,6 +38,8 @@ export class BoardRepository extends Repository<Board> {
         const post_title = content.post_title;
         const post_content = content.post_content;
         const post_id = content.id;
+        const likes = content.recommendations;
+        const views = content.views;
         const nickname = content.user.nickname;
         const created_at = this.getTime(content.created_at.toString());
         const comment_count = content.comments.length;
@@ -59,6 +52,8 @@ export class BoardRepository extends Repository<Board> {
           created_at,
           comment_count,
           board_title,
+          likes,
+          views,
         };
       });
       // console.log(content_set);
@@ -85,12 +80,6 @@ export class BoardRepository extends Repository<Board> {
     }
   }
 
-  // async setBoardTitle() {
-  //   this.coinList.map((value) => {
-  //     const title = this.create({ board_title: value });
-  //     this.save(title);
-  //   });
-  // }
   getTime(_date: string): string {
     const _day = _date.split(' ');
     const time = _day[4].split(':');
@@ -114,7 +103,15 @@ export class BoardRepository extends Repository<Board> {
     this.logger.debug(`getBoardByTitle () : ${JSON.stringify(found)}`);
     if (found) {
       const result = found.contents.map(
-        ({ post_content, post_title, created_at, id, comments }) => {
+        ({
+          post_content,
+          post_title,
+          created_at,
+          id,
+          comments,
+          recommendations,
+          views,
+        }) => {
           const _date = created_at.toString();
           const time = this.getTime(_date);
           const obj = {
@@ -123,6 +120,8 @@ export class BoardRepository extends Repository<Board> {
             post_content: post_content,
             created_at: time,
             comment_count: comments.length,
+            likes: recommendations,
+            views: views,
           };
           return obj;
         },

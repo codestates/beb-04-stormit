@@ -91,4 +91,9 @@ export class ContentService {
   getRecommendationsDecrease(id: number): Promise<object> {
     return this.contentRepository.getRecommendationsDecrease(id);
   }
+
+  // 조회수 증가
+  getViews(id: number): Promise<object> {
+    return this.contentRepository.getViews(id);
+  }
 }

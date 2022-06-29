@@ -59,8 +59,9 @@ export class ContentController {
   // 글 삭제
   @Delete('/:id')
   @UsePipes(ValidationPipe)
-  deleteContent(@Param('id', ParseIntPipe) id): Promise<object> {
+  async deleteContent(@Param('id', ParseIntPipe) id): Promise<object> {
     this.logger.debug(`deleteContent()`);
+
     return this.contentsService.deleteContent(id);
   }
 
@@ -89,5 +90,9 @@ export class ContentController {
   @Get('/thumbdown/:id')
   getRecommendationsDecrease(@Param('id') id: number): Promise<object> {
     return this.contentsService.getRecommendationsDecrease(id);
+  }
+  @Get('/view/:id')
+  getViews(@Param('id') id: number): Promise<object> {
+    return this.contentsService.getViews(id);
   }
 }

@@ -115,7 +115,6 @@ export class ContentRepository extends Repository<Content> {
     const found_content = await this.findOne(id, {
       relations: ['user', 'board', 'comments'],
     });
-    console.log('hi');
     console.log(found_content);
     if (!found_content) {
       throw new BadRequestException(`Can't find Content with id ${id}`);
@@ -141,6 +140,8 @@ export class ContentRepository extends Repository<Content> {
       post_title,
       post_content,
       created_at,
+      recommendations,
+      views,
       user: { nickname },
       board: { board_title },
       // comments,
@@ -157,6 +158,8 @@ export class ContentRepository extends Repository<Content> {
         post_content: post_content,
         created_at: time,
         nickname: _nickname,
+        likes: recommendations,
+        views: views,
         comments: com,
       };
 
@@ -189,6 +192,19 @@ export class ContentRepository extends Repository<Content> {
     post.recommendations--;
     this.save(post);
     console.log(post.recommendations);
+    return { success: true };
+  }
+
+  // 조회수 증가
+  async getViews(id: number): Promise<object> {
+    const post = await this.findOne(id);
+    if (!post) {
+      throw new BadRequestException(`Post ID not found. ${id}
+      `);
+    }
+    post.views++;
+    this.save(post);
+    console.log(post.views);
     return { success: true };
   }
 }
