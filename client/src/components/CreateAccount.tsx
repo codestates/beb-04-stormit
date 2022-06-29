@@ -123,7 +123,7 @@ const CreateAccount: React.FC = () => {
   const validatePassword = (password: string) => {
     // gi -> global serch, ignore case
     const engcheck = /[a-z]/gi;
-    const re = /^(?=.*[0-9$@!%*#?&]).{8,20}$/;
+    const re = /^(?=.*[0-9][$@!%*#?&]).{8,20}$/;
     if (engcheck.test(password)) {
       return false;
     }
