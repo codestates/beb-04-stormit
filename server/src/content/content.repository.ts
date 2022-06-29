@@ -171,6 +171,10 @@ export class ContentRepository extends Repository<Content> {
   }
   async getRecommendationsIncrease(id: number): Promise<object> {
     const post = await this.findOne(id);
+    if (!post) {
+      throw new BadRequestException(`Post ID not found. ${id}
+      `);
+    }
     post.recommendations++;
     this.save(post);
     console.log(post.recommendations);
@@ -178,6 +182,10 @@ export class ContentRepository extends Repository<Content> {
   }
   async getRecommendationsDecrease(id: number): Promise<object> {
     const post = await this.findOne(id);
+    if (!post) {
+      throw new BadRequestException(`Post ID not found. ${id}
+      `);
+    }
     post.recommendations--;
     this.save(post);
     console.log(post.recommendations);
