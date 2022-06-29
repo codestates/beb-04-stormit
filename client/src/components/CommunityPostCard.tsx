@@ -50,15 +50,15 @@ const Base = styled.li<BaseProps>`
     align-items: center;
   }
 
-  .post-title-wrapper {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem; // 8px
+  .post-chip {
+    display: inline-block;
+    margin-right: 0.5rem;
   }
 
   .post-title {
     color: ${palette.gray[600]};
     cursor: pointer;
+    margin-right: 0.5rem;
   }
 
   .post-likes-wrapper {
@@ -131,6 +131,7 @@ interface Props {
   likes: number;
   isPopular?: boolean;
   viewed?: boolean;
+  community?: string;
 }
 
 const CommunityPostCard: React.FC<Props> = ({
@@ -143,6 +144,7 @@ const CommunityPostCard: React.FC<Props> = ({
   views,
   likes,
   viewed,
+  community,
 }) => {
   const viewPost = async () => {
     try {
@@ -157,8 +159,12 @@ const CommunityPostCard: React.FC<Props> = ({
       <Base isPopular={isPopular} viewed={viewed} likes={likes}>
         <div className="post-title-area-wrapper">
           <div className="post-title-wrapper">
-            {isPopular && <Chip size="small">인기</Chip>}
-            <p className="post-title">{shortenPostTitle(title, 24)}</p>
+            {isPopular && (
+              <Chip className="post-chip" size="small">
+                인기
+              </Chip>
+            )}
+            <span className="post-title">{shortenPostTitle(title, 50)}</span>
             {commentCount !== 0 && (
               <span className="post-comments">[{commentCount}]</span>
             )}

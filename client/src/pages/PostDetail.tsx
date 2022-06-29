@@ -91,12 +91,13 @@ const Base = styled.div<BaseProps>`
   .post-detail-views {
     font-size: 0.875rem; // 14px
     color: ${palette.gray[400]};
+
+    display: none;
   }
 
   .post-detail-created-at {
     font-size: 0.875rem;
     color: ${palette.gray[400]};
-    display: none;
   }
 
   .post-detail-title {
@@ -190,7 +191,7 @@ const Base = styled.div<BaseProps>`
       width: 37.5rem; // 600px
     }
 
-    .post-detail-created-at {
+    .post-detail-views {
       display: block;
     }
   }
@@ -426,6 +427,7 @@ const PostDetail: React.FC = () => {
           {parse(postData.postContents)}
         </div>
         <div className="post-detail-chip-wrapper">
+          <Chip>태그</Chip>
           <Chip>{translateCommunityName(postData.community)}</Chip>
         </div>
         <div className="post-detail-likes-area">

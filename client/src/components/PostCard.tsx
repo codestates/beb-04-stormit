@@ -52,11 +52,21 @@ const Base = styled.li<BaseProps>`
 
   .post-title {
     color: ${palette.gray[600]};
+    line-height: 1.4;
     cursor: pointer;
 
     &:hover {
       opacity: 0.7;
     }
+  }
+
+  .post-title-text {
+    margin-right: 0.5rem;
+  }
+
+  .post-chip {
+    display: inline-block;
+    margin-right: 0.5rem;
   }
 
   .post-contents {
@@ -98,6 +108,7 @@ const Base = styled.li<BaseProps>`
 
   .post-comments {
     color: ${theme.primary};
+    margin-right: 0.5rem;
   }
 
   .post-author {
@@ -148,13 +159,23 @@ const PostCard: React.FC<Props> = ({
         <div className="post-title-area-wrapper">
           <div className="post-title-wrapper">
             <Link to={`/post/${postId}`} onClick={viewPost}>
-              <p className="post-title">{shortenPostTitle(title, 16)}</p>
+              <div className="post-title">
+                <span className="post-title-text">
+                  {shortenPostTitle(title, 50)}
+                </span>
+                {commentCount !== 0 && (
+                  <span className="post-comments">[{commentCount}]</span>
+                )}
+                <Chip className="post-chip" size="small">
+                  {translateCommunityName(community)}
+                </Chip>
+                {likes > 5 && (
+                  <Chip className="post-chip" size="small">
+                    인기글
+                  </Chip>
+                )}
+              </div>
             </Link>
-            {commentCount !== 0 && (
-              <span className="post-comments">[{commentCount}]</span>
-            )}
-            <Chip size="small">{translateCommunityName(community)}</Chip>
-            {commentCount > 10 && <Chip size="small">인기글</Chip>}
           </div>
           <div className="post-likes-wrapper">
             <KeyboardArrowUpIcon className="post-likes-icon" />
