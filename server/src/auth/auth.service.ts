@@ -164,8 +164,8 @@ export class AuthService {
     const userFind: UserDTO = await this.userService.findByFields({
       where: { cryptoToken: userDTO.cryptoToken },
     });
-    console.log(userDTO);
-    console.log(userFind);
+    // console.log(userDTO);
+    // console.log(userFind);
 
     if (!userFind) {
       throw new HttpException(

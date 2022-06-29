@@ -30,7 +30,7 @@ export class Content extends BaseEntity {
   @IsEmail({ nullable: true })
   nickname: string;
 
-  @Column()
+  @Column({ nullable: true })
   recommendations: number;
 
   @Column({ nullable: true })
