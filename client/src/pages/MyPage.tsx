@@ -104,6 +104,7 @@ const Base = styled.div`
   .profile-nickname {
     font-size: 2rem; // 32px
     font-weight: 500;
+    margin-bottom: 0.2rem;
   }
 
   .profile-nickname-input {
@@ -215,12 +216,12 @@ const Mypage: React.FC = () => {
             <CameraAltIcon className="profile-image-edit-button" />
           </div>
           {!editMode && (
-            <>
+            <div className="profile-nickname-wrapper">
               <p className="profile-nickname">{nickname}</p>
-              <IconButton>
-                <EditIcon onClick={onClickEditButton} />
+              <IconButton onClick={onClickEditButton}>
+                <EditIcon />
               </IconButton>
-            </>
+            </div>
           )}
           {editMode && (
             <>

@@ -37,7 +37,9 @@ const Base = styled.div`
 
   .account-email-wrapper {
     display: flex;
+    align-items: center;
     gap: 0.5rem; // 8px
+    margin-bottom: 1rem;
   }
 
   .private-key-wrapper {
@@ -171,12 +173,6 @@ const Account: React.FC = () => {
             {email || "nononcrust@gmail.com"}
           </span>
         </p>
-        <div className="private-key-wrapper">
-          <span>개인 키:</span>
-          <span className="private-key">
-            anewafkv-ajfnzkvkx1123-dffnwkfsd-sfwefl
-          </span>
-        </div>
         <label className="password-label">현재 비밀번호</label>
         <div className="password-input-wrapper">
           <Input

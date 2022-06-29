@@ -106,7 +106,7 @@ const Base = styled.div<BaseProps>`
   }
 
   .post-detail-contents {
-    padding-top: 1rem; // 16px
+    padding: 2rem 0; // 16px
     line-height: 1.6;
   }
 
@@ -177,7 +177,10 @@ const Base = styled.div<BaseProps>`
   .comment-submit-button-wrapper {
     display: flex;
     justify-content: flex-end;
+    align-items: center;
+    gap: 1rem;
     margin-bottom: 2rem;
+    color: ${palette.gray[400]};
   }
 
   // 600px
@@ -329,6 +332,11 @@ const PostDetail: React.FC = () => {
   };
 
   const submitComment = async () => {
+    if (commentContent.length > 200) {
+      alert("댓글 길이 제한 수를 초과하였습니다.");
+      return;
+    }
+
     const body = {
       user_id: userId,
       post_id: postId,
@@ -418,8 +426,7 @@ const PostDetail: React.FC = () => {
           {parse(postData.postContents)}
         </div>
         <div className="post-detail-chip-wrapper">
-          <Chip>태그</Chip>
-          <Chip>커뮤니티</Chip>
+          <Chip>{translateCommunityName(postData.community)}</Chip>
         </div>
         <div className="post-detail-likes-area">
           <IconButton onClick={onClickLikeButton}>
@@ -456,6 +463,7 @@ const PostDetail: React.FC = () => {
               height="6rem"
             />
             <div className="comment-submit-button-wrapper">
+              <p>({commentContent.length}/200자)</p>
               <Button variant="contained" onClick={submitComment}>
                 등록
               </Button>

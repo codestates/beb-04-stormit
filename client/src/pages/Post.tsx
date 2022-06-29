@@ -80,6 +80,16 @@ const Post: React.FC = () => {
       return;
     }
 
+    if (title.length > 100) {
+      alert("제목을 100자 이내로 입력해주세요.");
+      return;
+    }
+
+    if (contents.length > 1000) {
+      alert("내용이 너무 깁니다. 1000자 이내로 입력해주세요");
+      return;
+    }
+
     const body = {
       user_id: userId,
       post_content: contents,
