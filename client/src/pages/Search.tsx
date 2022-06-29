@@ -9,6 +9,7 @@ import palette from "../styles/palette";
 import KeyboardDoubleArrowDownIcon from "@mui/icons-material/KeyboardDoubleArrowDown";
 import Skeleton from "../components/common/Skeleton";
 import ErrorIcon from "@mui/icons-material/Error";
+import { translateCommunityName } from "../lib/utils";
 
 const Base = styled.div`
   .contents {
@@ -141,7 +142,7 @@ const Search: React.FC = () => {
             commentCount={post.comment_count}
             nickname={post.nickname}
             createdAt={post.created_at}
-            community={post.board_title}
+            community={translateCommunityName(post.board_title)}
           />
         ))}
       </div>

@@ -12,6 +12,7 @@ import { modalActions } from "../store/modalSlice";
 import IconButton from "./common/IconButton";
 import SettingsIcon from "@mui/icons-material/Settings";
 import PersonIcon from "@mui/icons-material/Person";
+import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import Tooltip from "./common/Tooltip";
 
 const Base = styled.aside`
@@ -130,6 +131,13 @@ const NavigationRail: React.FC<Props> = ({ ...props }) => {
           </Tooltip>
         </>
       )}
+      <Tooltip text="정보" position="right">
+        <Link to="/about">
+          <IconButton>
+            <InfoOutlinedIcon />
+          </IconButton>
+        </Link>
+      </Tooltip>
     </Base>
   );
 };

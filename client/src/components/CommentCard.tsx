@@ -95,6 +95,7 @@ interface Props {
   createdAt: string;
   commentContents: string;
   commentId: number;
+  refresh?: () => void;
 }
 
 const CommentCard: React.FC<Props> = ({
@@ -102,6 +103,7 @@ const CommentCard: React.FC<Props> = ({
   createdAt,
   commentContents,
   commentId,
+  refresh,
 }) => {
   const [editMode, setEditMode] = useState(false);
   const [editText, setEditText] = useState(commentContents);
@@ -123,6 +125,17 @@ const CommentCard: React.FC<Props> = ({
     setEditMode((editMode) => !editMode);
   };
 
+  const onClickDeleteButton = async () => {
+    if (window.confirm("삭제하시겠습니까?")) {
+      try {
+        await deleteCommentAPI(commentId);
+        if (refresh) refresh();
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  };
+
   const onClickSubmitButton = async () => {
     try {
       const body = {
@@ -131,18 +144,9 @@ const CommentCard: React.FC<Props> = ({
       };
 
       await updateCommentAPI(body);
+      if (refresh) refresh();
     } catch (error) {
       console.log(error);
-    }
-  };
-
-  const onClickDeleteButton = async () => {
-    if (window.confirm("삭제하시겠습니까?")) {
-      try {
-        await deleteCommentAPI(commentId);
-      } catch (error) {
-        console.log(error);
-      }
     }
   };
 

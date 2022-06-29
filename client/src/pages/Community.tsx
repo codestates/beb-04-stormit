@@ -153,7 +153,11 @@ const Community: React.FC = () => {
 
         setPostList(postData);
         setPopularPostList(
-          postData.filter((post) => post.comment_count > 5).slice(0, 3)
+          postData.filter((post) => post.comment_count >= 5).slice(0, 3)
+        );
+
+        console.log(
+          postData.filter((post) => post.comment_count >= 5).slice(0, 3)
         );
 
         console.log(response.data);
