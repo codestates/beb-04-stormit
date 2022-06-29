@@ -118,7 +118,7 @@ export class ContentRepository extends Repository<Content> {
     }
     console.log(found_content);
     const com = found_content.comments.map((value) => {
-      const _data = value.create_at.toString();
+      const _data = value.created_at.toString();
       const time = this.getTime(_data);
       const comment_content = value.comment_content;
       const comment_id = value.id;

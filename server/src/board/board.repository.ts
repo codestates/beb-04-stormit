@@ -1,4 +1,4 @@
-import { Logger, NotFoundException } from '@nestjs/common';
+import { BadRequestException, Logger, NotFoundException } from '@nestjs/common';
 import { EntityRepository, Repository } from 'typeorm';
 import { CreateBoardDto } from './dto/create-board.dto';
 import { Board } from './entity/board.entity';
@@ -20,7 +20,59 @@ export class BoardRepository extends Repository<Board> {
     Nov: 11,
     Dec: 12,
   };
-  private coinList = ['bitcoin', 'ethereum', 'solana'];
+  // private coinList = ['bitcoin', 'ethereum', 'solana'];
+
+  async getBoardInfo(): Promise<object> {
+    // {
+    //   post_id: number, 1
+    //   post_title: string, 1
+    //   post_content: string, 1
+    //   nickname: string, 1
+    //   created_at: string, 1
+    //   comment_count: number, 1
+    //   board_title: string
+    //   }
+    const board = await this.find({ relations: ['contents'] });
+    if (!board) {
+      throw new BadRequestException(`The bulletin board does not exist.`);
+    }
+    const obj = board.map((value) => {
+      // console.log(value);
+
+      const contents = value.contents;
+
+      const content_set = contents.map((content) => {
+        const post_title = content.post_title;
+        const post_content = content.post_content;
+        const post_id = content.id;
+        const nickname = content.user.nickname;
+        const created_at = this.getTime(content.created_at.toString());
+        const comment_count = content.comments.length;
+        const board_title = content.board.board_title;
+        return {
+          post_title,
+          post_content,
+          post_id,
+          nickname,
+          created_at,
+          comment_count,
+          board_title,
+        };
+      });
+      // console.log(content_set);
+      return content_set;
+    });
+    const data = new Array(0);
+    obj.forEach((value) => {
+      value.forEach((index) => {
+        console.log(index);
+        data.push(index);
+      });
+    });
+
+    return data;
+  }
+
   async getBoardById(id: number) {
     const found = await this.findOne(id, { relations: ['contents'] });
     this.logger.debug(`getBoardById() : ${JSON.stringify(found)}`);
@@ -31,12 +83,12 @@ export class BoardRepository extends Repository<Board> {
     }
   }
 
-  async setBoardTitle() {
-    this.coinList.map((value) => {
-      const title = this.create({ board_title: value });
-      this.save(title);
-    });
-  }
+  // async setBoardTitle() {
+  //   this.coinList.map((value) => {
+  //     const title = this.create({ board_title: value });
+  //     this.save(title);
+  //   });
+  // }
   getTime(_date: string): string {
     const _day = _date.split(' ');
     const time = _day[4].split(':');

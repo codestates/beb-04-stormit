@@ -15,9 +15,9 @@ export class BoardService {
   }
   private logger = new Logger('BoardService');
 
-  async getAllBoards(): Promise<Board[]> {
+  async getBoardInfo(): Promise<object> {
     this.logger.debug(`getAllBoards()`);
-    const result = this.boardRepository.find();
+    const result = this.boardRepository.getBoardInfo();
     if (result) {
       return result;
     } else {

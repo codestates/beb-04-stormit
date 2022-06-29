@@ -18,7 +18,7 @@ export class Comment extends BaseEntity {
   comment_content: string;
 
   @CreateDateColumn()
-  create_at: Date;
+  created_at: Date;
 
   @ManyToOne(() => Content, (content) => content.id)
   content: Content;

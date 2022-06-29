@@ -23,9 +23,9 @@ export class BoardController {
 
   // 현재 게시판 가져오기
   @Get('/')
-  getAllBoards(): Promise<Board[]> {
+  getBoardInfo(): Promise<object> {
     this.logger.verbose(`User ### trying to get all contents `);
-    return this.boardsService.getAllBoards();
+    return this.boardsService.getBoardInfo();
   }
 
   // 게시판과 게시글 가져오기
