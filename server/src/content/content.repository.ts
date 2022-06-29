@@ -6,8 +6,7 @@ import { Board } from '../board/entity/board.entity';
 import { Content } from './entity/content.entity';
 import { Logger } from '@nestjs/common';
 import { UserService } from 'src/auth/user.service';
-import { User } from 'src/auth/entity/user.entity';
-import { CommentService } from 'src/comment/comment.service';
+import { Console } from 'console';
 
 @EntityRepository(Content)
 export class ContentRepository extends Repository<Content> {
@@ -108,15 +107,19 @@ export class ContentRepository extends Repository<Content> {
   }
 
   // 글 상세정보 가져오기
-  async getContentById(id: number, userService: UserService): Promise<object> {
+  async getContentInfoById(
+    id: number,
+    userService: UserService,
+  ): Promise<object> {
     const found_content = await this.findOne(id, {
       relations: ['user', 'board', 'comments'],
     });
-
+    console.log('hi');
+    console.log(found_content);
     if (!found_content) {
       throw new BadRequestException(`Can't find Content with id ${id}`);
     }
-    console.log(found_content);
+
     const com = found_content.comments.map((value) => {
       const _data = value.created_at.toString();
       const time = this.getTime(_data);

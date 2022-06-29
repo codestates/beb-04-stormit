@@ -17,7 +17,6 @@ import { Content } from './entity/content.entity';
 import { UpdateDataDto } from './dto/updateData.dto';
 import { BoardService } from 'src/board/board.service';
 import { UserService } from 'src/auth/user.service';
-import { CommentService } from 'src/comment/comment.service';
 
 @Controller('board/post') // @UseGuards(AuthGuard())
 export class ContentController {
@@ -37,9 +36,9 @@ export class ContentController {
   // 글 상세정보 가져오기
   @Get('/:id')
   @UsePipes(ValidationPipe)
-  getContentById(@Param('id') id: number): Promise<object> {
+  getContentInfoById(@Param('id') id: number): Promise<object> {
     this.logger.debug(`getContentById() : ${id}`);
-    return this.contentsService.getContentById(id, this.userService);
+    return this.contentsService.getContentInfoById(id, this.userService);
   }
 
   // 글 쓰기

@@ -32,7 +32,9 @@ export class BoardRepository extends Repository<Board> {
     //   comment_count: number, 1
     //   board_title: string
     //   }
-    const board = await this.find({ relations: ['contents'] });
+    const board = await this.find({
+      relations: ['contents'],
+    });
     if (!board) {
       throw new BadRequestException(`The bulletin board does not exist.`);
     }

@@ -21,8 +21,8 @@ export class ContentService {
   }
 
   // 글 상세정보 가져오기
-  getContentById(id: number, userService: UserService): Promise<object> {
-    return this.contentRepository.getContentById(id, userService);
+  getContentInfoById(id: number, userService: UserService): Promise<object> {
+    return this.contentRepository.getContentInfoById(id, userService);
   }
 
   // 글 쓰기

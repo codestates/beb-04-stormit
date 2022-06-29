@@ -3,6 +3,7 @@ import { UserService } from 'src/auth/user.service';
 import { ContentService } from 'src/content/content.service';
 import { Content } from 'src/content/entity/content.entity';
 import { EntityRepository, Repository } from 'typeorm';
+import { UpdateCommentDto } from './dto/update-comment.dto';
 import { WriteCommentDto } from './dto/write-comment.dto';
 import { Comment } from './entity/comment.entity';
 
@@ -59,6 +60,26 @@ export class CommentRepository extends Repository<Comment> {
     } else {
       console.log(comment.user.nickname);
       return '';
+    }
+  }
+
+  // 댓글 수정
+  async updateComment(
+    id: number,
+    updateCommentDto: UpdateCommentDto,
+    contentService: ContentService,
+  ): Promise<object> {
+    const { comment_content } = updateCommentDto;
+    const comment = await this.findOne(id);
+
+    if (!comment) {
+      throw new BadRequestException(`Comment id not found ${id}`);
+    } else {
+      comment.comment_content = comment_content;
+      await this.save(comment);
+      return {
+        success: true,
+      };
     }
   }
 }
