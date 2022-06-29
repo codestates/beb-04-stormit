@@ -12,6 +12,7 @@ import { modalActions } from "../store/modalSlice";
 import { useDispatch } from "../store";
 // API 설정
 import { signUpAPI } from "../lib/api/user";
+import { useNavigate } from "react-router-dom";
 
 const Cover = styled.div`
   .createAccount-section {
@@ -95,6 +96,8 @@ const CreateAccount: React.FC = () => {
   });
 
   const dispatch = useDispatch();
+
+  const navigate = useNavigate();
 
   // nickname 유효성 검사
   // issue: 문자와 특수문자 조합시 그대로 유효성 통과됨.
@@ -186,6 +189,7 @@ const CreateAccount: React.FC = () => {
     };
     try {
       await signUpAPI(body);
+      navigate("/email");
     } catch (error) {
       // 피드백 (중복된 닉네임 등)
       console.log(error);

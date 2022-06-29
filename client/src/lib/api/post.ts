@@ -32,8 +32,8 @@ export const submitCommentAPI = (body: SubmitCommentAPIBodyType) =>
   axios.post("/board/post/comment", body);
 
 // 댓글 수정
-export const updateCommentAPI = (body: UpdateCommentAPIBodyType) =>
-  axios.put("/board/post/comment", body);
+export const updateCommentAPI = (id: number, body: UpdateCommentAPIBodyType) =>
+  axios.put(`/board/post/comment/${id}`, body);
 
 // 댓글 삭제
 export const deleteCommentAPI = (id: number) =>

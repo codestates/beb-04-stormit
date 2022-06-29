@@ -392,12 +392,14 @@ const PostDetail: React.FC = () => {
           </IconButton>
         </div>
         <p className="comment-title">댓글 {commentsData.length}개</p>
-        {commentsData.map((comment) => (
+        {commentsData.map((comment, index) => (
           <CommentCard
+            key={index}
             nickname={comment.comment_nickname}
             createdAt={comment.comment_created_at}
             commentContents={comment.comment_content}
             commentId={comment.comment_id}
+            refresh={fetchPost}
           />
         ))}
         {isLoggedIn && (
