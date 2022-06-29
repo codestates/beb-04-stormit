@@ -39,6 +39,15 @@ export class AuthController {
     const data = await this.authService.registerUser(UserDTO);
     return { success: true, data };
   }
+
+  @Post('find-password')
+  async findPassowrd(
+      @Req() req: Request,
+      @Body() UserDTO: UserDTO
+  ): Promise<any>{
+      return await this.authService.findPassword(UserDTO);
+  }
+
   @Get('google')
   @UseGuards(GoogleAuthGuard)
   googleLogin() {
@@ -198,6 +207,14 @@ export class AuthController {
 
   return await this.authService.verifyEmail(signupVerifyToken);
 }
+
+@Post('/reset-password')
+async resetPassword(@Query() dto: UserDTO): Promise<string> {
+
+
+return await this.authService.resetPassword(dto);
+}
+
 
   // // 사용자 프로필 가져오기
   // @Get('/:username')
