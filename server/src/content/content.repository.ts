@@ -123,12 +123,12 @@ export class ContentRepository extends Repository<Content> {
       const comment_content = value.comment_content;
       const comment_id = value.id;
       const comment_created_at = time;
-      const comment_nicname = value.user.nickname;
+      const comment_nickname = value.user.nickname;
       const obj = {
         comment_content,
         comment_id,
         comment_created_at,
-        comment_nicname,
+        comment_nickname,
       };
       return obj;
     });
