@@ -28,6 +28,7 @@ import Edit from "./pages/Edit";
 import GoogleSuccess from "./pages/GoogleSuccess";
 import Search from "./pages/Search";
 import About from "./pages/About";
+import EmailSent from "./pages/EmailSent";
 
 const App: React.FC = () => {
   const menuModalOpen = useSelector((state) => state.modal.menuModalOpen);
@@ -88,6 +89,7 @@ const App: React.FC = () => {
         <Route path="user/google/success" element={<GoogleSuccess />} />
         <Route path="/search" element={<Search />} />
         <Route path="/about" element={<About />} />
+        <Route path="/email" element={<EmailSent />} />
         <Route path="/*" element={<ErrorPage />} />
       </Routes>
     </ThemeProvider>

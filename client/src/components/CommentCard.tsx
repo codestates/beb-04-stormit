@@ -137,13 +137,12 @@ const CommentCard: React.FC<Props> = ({
   };
 
   const onClickSubmitButton = async () => {
-    try {
-      const body = {
-        comment_id: commentId,
-        comment_content: editText,
-      };
+    const body = {
+      comment_content: editText,
+    };
 
-      await updateCommentAPI(body);
+    try {
+      await updateCommentAPI(commentId, body);
       if (refresh) refresh();
     } catch (error) {
       console.log(error);

@@ -54,6 +54,5 @@ type SubmitCommentAPIBodyType = {
 };
 
 type UpdateCommentAPIBodyType = {
-  comment_id: number;
   comment_content: string;
 };

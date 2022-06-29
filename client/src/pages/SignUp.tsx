@@ -182,7 +182,7 @@ const SignUp: React.FC = () => {
     try {
       await signUpAPI(body);
 
-      navigate("/login");
+      navigate("/email");
     } catch (error) {
       console.log(error);
     }

@@ -29,7 +29,9 @@ const About: React.FC = () => {
   return (
     <Base>
       <h1 className="about-heading">Stormit.</h1>
-      <p className="about-description">스톰잇은 ERC-20 기반의</p>
+      <p className="about-description">
+        스톰잇은 ERC-20 기반의 온라인 커뮤니티입니다.
+      </p>
     </Base>
   );
 };
