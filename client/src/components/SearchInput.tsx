@@ -1,10 +1,11 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import SearchIcon from "@mui/icons-material/Search";
 import CloseIcon from "@mui/icons-material/Close";
 import { useDispatch } from "../store";
 import { modalActions } from "../store/modalSlice";
 import { useOutsideClick } from "../hooks/useOutsideClick";
+import { useNavigate } from "react-router-dom";
 
 const Base = styled.div`
   display: flex;
@@ -45,7 +46,11 @@ const Base = styled.div`
 `;
 
 const SearchInput: React.FC = () => {
+  const [input, setInput] = useState("");
+
   const dispatch = useDispatch();
+
+  const navigate = useNavigate();
 
   const closeSearchInputModal = () => {
     dispatch(modalActions.closeSearchInputModal());
@@ -54,9 +59,15 @@ const SearchInput: React.FC = () => {
   const inputRef = useRef<HTMLInputElement | null>(null);
   const inputModalRef = useRef<HTMLDivElement | null>(null);
 
+  const onChangeInput = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setInput(event.target.value);
+  };
+
   const onEnter = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === "Enter") {
       closeSearchInputModal();
+      if (!inputRef.current) return;
+      navigate(`/search?keyword=${input}`);
     }
   };
 
@@ -71,6 +82,8 @@ const SearchInput: React.FC = () => {
       <div className="search-input-left">
         <SearchIcon />
         <input
+          value={input}
+          onChange={onChangeInput}
           className="search-input"
           type="text"
           name="search"

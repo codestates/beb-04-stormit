@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
 import styled from "styled-components";
 import NavigationRail from "../components/NavigationRail";
 import PostCard from "../components/PostCard";
@@ -24,27 +25,47 @@ const Search: React.FC = () => {
   const [filteredPostList, setFilteredPostList] =
     useState<GetAllPostsResponseType>([]);
 
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+  const keyword = searchParams.get("keyword");
+  console.log(keyword);
+
   useEffect(() => {
-    const fetchAllPosts = async () => {
+    const fetchFilteredPosts = async () => {
       try {
+        if (!keyword) return;
+
         const response = await getAllPostAPI();
 
         const postList = response.data;
 
-        setFilteredPostList(postList);
+        const filteredPostList = postList.filter((post) => {
+          if (
+            post.nickname?.includes(keyword) ||
+            post.post_title?.includes(keyword)
+          ) {
+            return true;
+          } else {
+            return false;
+          }
+        });
+
+        setFilteredPostList(filteredPostList);
       } catch (error) {
         console.log(error);
       }
     };
 
-    fetchAllPosts();
-  }, []);
+    fetchFilteredPosts();
+  }, [keyword]);
 
   return (
     <Base>
       <NavigationRail />
       <div className="contents">
-        <h1 className="search-title">'노논'으로 검색한 결과입니다.</h1>
+        <h1 className="search-title">
+          "{keyword}" 키워드로 검색한 결과입니다.
+        </h1>
         {filteredPostList.map((post) => (
           <PostCard
             postId={post.post_id}
