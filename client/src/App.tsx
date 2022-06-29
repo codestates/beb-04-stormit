@@ -29,6 +29,7 @@ import GoogleSuccess from "./pages/GoogleSuccess";
 import Search from "./pages/Search";
 import About from "./pages/About";
 import EmailSent from "./pages/EmailSent";
+import FindPassword from "./pages/FindPassword";
 
 const App: React.FC = () => {
   const menuModalOpen = useSelector((state) => state.modal.menuModalOpen);
@@ -90,6 +91,7 @@ const App: React.FC = () => {
         <Route path="/search" element={<Search />} />
         <Route path="/about" element={<About />} />
         <Route path="/email" element={<EmailSent />} />
+        <Route path="/password" element={<FindPassword />} />
         <Route path="/*" element={<ErrorPage />} />
       </Routes>
     </ThemeProvider>

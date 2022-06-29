@@ -13,6 +13,8 @@ type GetAllPostsResponseType = {
   created_at: string;
   comment_count: number;
   board_title: string;
+  views: number;
+  likes: number;
 }[];
 
 type GetPostsByBoardBodyType = {
@@ -25,6 +27,8 @@ type GetPostsByBoardResponseType = {
   nickname: string;
   created_at: string;
   comment_count: number;
+  views: number;
+  likes: number;
 }[];
 
 type GetPostByIdResponseType = {
@@ -33,6 +37,8 @@ type GetPostByIdResponseType = {
   nickname: string;
   created_at: string;
   board_title: string;
+  views: number;
+  likes: number;
   comments: {
     comment_nickname: string;
     comment_content: string;

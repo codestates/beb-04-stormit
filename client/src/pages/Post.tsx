@@ -10,6 +10,7 @@ import { translateCommunityName } from "../lib/utils";
 import { useSelector } from "../store";
 import { CKEditor } from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
+import useAuthenticate from "../hooks/useAuthenticate";
 
 const Base = styled.div`
   display: flex;
@@ -51,11 +52,14 @@ const Post: React.FC = () => {
   const [contents, setContents] = useState("");
 
   const userId = useSelector((state) => state.user.userId);
+  const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
   const currentCommunity = useSelector(
     (state) => state.community.currentCommunity
   );
 
   const navigate = useNavigate();
+
+  const authenticate = useAuthenticate();
 
   const onChangeCommunity = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setCommunity(event.target.value);
@@ -76,6 +80,16 @@ const Post: React.FC = () => {
       return;
     }
 
+    if (title.length > 100) {
+      alert("제목을 100자 이내로 입력해주세요.");
+      return;
+    }
+
+    if (contents.length > 1000) {
+      alert("내용이 너무 깁니다. 1000자 이내로 입력해주세요");
+      return;
+    }
+
     const body = {
       user_id: userId,
       post_content: contents,
@@ -92,6 +106,20 @@ const Post: React.FC = () => {
       console.log(error);
     }
   };
+
+  // 인증
+  useEffect(() => {
+    const protectPage = async () => {
+      try {
+        await authenticate();
+        !isLoggedIn && navigate("/login", { replace: true });
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    protectPage();
+  }, [authenticate, navigate, isLoggedIn]);
 
   // 특정 게시판에서 글쓰기를 누르면 해당하는 게시판이 초기값으로 선택되도록 합니다
   useEffect(() => {

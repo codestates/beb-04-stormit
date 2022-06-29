@@ -6,9 +6,11 @@ import { Link } from "react-router-dom";
 import theme from "../styles/theme";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import Chip from "./common/Chip";
+import { viewPostAPI } from "../lib/api/post";
+import { shortenPostTitle, translateCommunityName } from "../lib/utils";
 
 interface BaseProps {
-  commentCount: number;
+  likes: number;
 }
 
 const Base = styled.li<BaseProps>`
@@ -16,12 +18,6 @@ const Base = styled.li<BaseProps>`
   flex-direction: column;
   gap: 0.5rem; // 8px
   padding: 0.5rem 1rem;
-
-  ${({ commentCount }) =>
-    commentCount > 10 &&
-    css`
-      background-color: ${palette.blue[50]};
-    `}
 
   .post-metadata-area {
     display: flex;
@@ -56,11 +52,21 @@ const Base = styled.li<BaseProps>`
 
   .post-title {
     color: ${palette.gray[600]};
+    line-height: 1.4;
     cursor: pointer;
 
     &:hover {
       opacity: 0.7;
     }
+  }
+
+  .post-title-text {
+    margin-right: 0.5rem;
+  }
+
+  .post-chip {
+    display: inline-block;
+    margin-right: 0.5rem;
   }
 
   .post-contents {
@@ -69,26 +75,51 @@ const Base = styled.li<BaseProps>`
     line-height: 1.4;
   }
 
-  .post-vote-wrapper {
+  .post-likes-wrapper {
     display: flex;
     align-items: center;
   }
 
-  .post-vote-icon {
+  .post-likes-icon {
     color: ${palette.gray[600]};
   }
 
-  .post-vote {
+  .post-likes {
     color: ${theme.primary};
+
+    ${({ likes }) => {
+      if (likes > 0) {
+        return css`
+          color: ${theme.primary};
+        `;
+      }
+      if (likes === 0) {
+        return css`
+          color: ${palette.black};
+        `;
+      }
+      if (likes < 0) {
+        return css`
+          color: ${palette.red[500]};
+        `;
+      }
+    }}
   }
 
   .post-comments {
     color: ${theme.primary};
+    margin-right: 0.5rem;
   }
 
   .post-author {
     font-size: 0.875rem; // 14px
   }
+
+  ${({ likes }) =>
+    likes > 10 &&
+    css`
+      background-color: ${palette.blue[50]};
+    `}
 `;
 
 interface Props {
@@ -99,6 +130,8 @@ interface Props {
   nickname: string;
   createdAt: string;
   community: string;
+  views: number;
+  likes: number;
 }
 
 const PostCard: React.FC<Props> = ({
@@ -109,31 +142,51 @@ const PostCard: React.FC<Props> = ({
   nickname,
   createdAt,
   community,
+  views,
+  likes,
 }) => {
+  const viewPost = async () => {
+    try {
+      await viewPostAPI(postId);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <>
-      <Base commentCount={commentCount}>
+      <Base likes={likes}>
         <div className="post-title-area-wrapper">
           <div className="post-title-wrapper">
-            <Link to={`/post/${postId}`}>
-              <p className="post-title">{title}</p>
+            <Link to={`/post/${postId}`} onClick={viewPost}>
+              <div className="post-title">
+                <span className="post-title-text">
+                  {shortenPostTitle(title, 50)}
+                </span>
+                {commentCount !== 0 && (
+                  <span className="post-comments">[{commentCount}]</span>
+                )}
+                <Chip className="post-chip" size="small">
+                  {translateCommunityName(community)}
+                </Chip>
+                {likes > 5 && (
+                  <Chip className="post-chip" size="small">
+                    인기글
+                  </Chip>
+                )}
+              </div>
             </Link>
-            {commentCount !== 0 && (
-              <span className="post-comments">[{commentCount}]</span>
-            )}
-            <Chip size="small">{community}</Chip>
-            {commentCount > 10 && <Chip size="small">인기글</Chip>}
           </div>
-          <div className="post-vote-wrapper">
-            <KeyboardArrowUpIcon className="post-vote-icon" />
-            <span className="post-vote">0</span>
+          <div className="post-likes-wrapper">
+            <KeyboardArrowUpIcon className="post-likes-icon" />
+            <span className="post-likes">{likes}</span>
           </div>
         </div>
         <div className="post-metadata-area">
           <p className="post-metadata">
             <span className="post-author">{nickname}</span>
             <span className="time">{createdAt}</span>
-            <span className="post-views">조회수 0</span>
+            <span className="post-views">조회수 {views}</span>
           </p>
         </div>
       </Base>

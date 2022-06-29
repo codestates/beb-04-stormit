@@ -22,6 +22,10 @@ export const updateNameAPI = (body: UpdateNameAPIBodyType) =>
 export const updatePasswordAPI = (body: UpdatePasswordAPIBodyType) =>
   axios.patch("/user/password", body);
 
+// 비밀번호 찾기
+export const findPasswordAPI = (body: FindpasswordAPIBodyType) =>
+  axios.post("/user/find-password", body);
+
 // 회원탈퇴
 export const withdrawalAPI = () => axios.delete("/user");
 

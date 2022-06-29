@@ -9,7 +9,6 @@ import palette from "../styles/palette";
 import KeyboardDoubleArrowDownIcon from "@mui/icons-material/KeyboardDoubleArrowDown";
 import Skeleton from "../components/common/Skeleton";
 import ErrorIcon from "@mui/icons-material/Error";
-import { translateCommunityName } from "../lib/utils";
 
 const Base = styled.div`
   .contents {
@@ -134,15 +133,18 @@ const Search: React.FC = () => {
           "<span className="search-keyword">{keyword}</span>" 키워드로 검색한
           결과입니다.
         </h1>
-        {filteredPostList.map((post) => (
+        {filteredPostList.map((post, index) => (
           <PostCard
+            key={index}
             postId={post.post_id}
             title={post.post_title}
             contents={post.post_content}
             commentCount={post.comment_count}
             nickname={post.nickname}
             createdAt={post.created_at}
-            community={translateCommunityName(post.board_title)}
+            community={post.board_title}
+            views={post.views}
+            likes={post.likes}
           />
         ))}
       </div>

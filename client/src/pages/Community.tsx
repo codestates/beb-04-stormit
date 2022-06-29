@@ -15,6 +15,8 @@ import { communityActions } from "../store/communitySlice";
 import Divider from "../components/common/Divider";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import palette from "../styles/palette";
+import Tabs from "../components/common/Tabs";
+import Tab from "../components/common/Tab";
 
 const Base = styled.div`
   display: flex;
@@ -41,6 +43,10 @@ const Base = styled.div`
   .community-title {
     font-size: 1.5rem; // 32px
     font-weight: 500;
+  }
+
+  .tab-wrapper {
+    margin: 1rem 0;
   }
 
   .pagination-wrapper {
@@ -93,6 +99,7 @@ const Community: React.FC = () => {
     useState<GetPostsByBoardResponseType>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [searchInput, setSearchInput] = useState("");
+  const [activeTab, setActiveTab] = useState("전체");
 
   console.log(currentPage);
 
@@ -153,12 +160,10 @@ const Community: React.FC = () => {
 
         setPostList(postData);
         setPopularPostList(
-          postData.filter((post) => post.comment_count >= 5).slice(0, 3)
+          postData.filter((post) => post.likes >= 5).slice(0, 3)
         );
 
-        console.log(
-          postData.filter((post) => post.comment_count >= 5).slice(0, 3)
-        );
+        console.log(postData.filter((post) => post.likes >= 5).slice(0, 3));
 
         console.log(response.data);
       } catch (error) {
@@ -212,6 +217,21 @@ const Community: React.FC = () => {
             </Button>
           </div>
         </div>
+        <div className="tab-wrapper">
+          <Tabs>
+            <Tab
+              label="전체"
+              active={activeTab === "전체"}
+              onClick={() => setActiveTab("전체")}
+            />
+            <Tab
+              label="인기글"
+              active={activeTab === "인기글"}
+              onClick={() => setActiveTab("인기글")}
+            />
+          </Tabs>
+          <Divider />
+        </div>
         <Divider />
         <ul className="posts-wrapper">
           {popularPostList.map((post, index) => (
@@ -222,6 +242,8 @@ const Community: React.FC = () => {
               commentCount={post.comment_count}
               nickname={post.nickname}
               createdAt={post.created_at}
+              views={post.views}
+              likes={post.likes}
               isPopular
             />
           ))}
@@ -233,6 +255,8 @@ const Community: React.FC = () => {
               commentCount={post.comment_count}
               nickname={post.nickname}
               createdAt={post.created_at}
+              views={post.views}
+              likes={post.likes}
             />
           ))}
         </ul>

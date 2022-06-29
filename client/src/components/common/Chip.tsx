@@ -50,7 +50,7 @@ const Base = styled.div<BaseProps>`
   ${({ size }) => getChipSize(size)}
 `;
 
-interface Props {
+interface Props extends React.HTMLAttributes<HTMLDivElement> {
   children: React.ReactNode;
   size?: "small" | "medium" | "large";
 }

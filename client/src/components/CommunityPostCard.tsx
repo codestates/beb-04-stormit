@@ -5,8 +5,12 @@ import Divider from "./common/Divider";
 import { Link } from "react-router-dom";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import Chip from "./common/Chip";
+import { viewPostAPI } from "../lib/api/post";
+import theme from "../styles/theme";
+import { shortenPostTitle } from "../lib/utils";
 
 interface BaseProps {
+  likes: number;
   isPopular?: boolean;
   viewed?: boolean;
 }
@@ -46,28 +50,46 @@ const Base = styled.li<BaseProps>`
     align-items: center;
   }
 
-  .post-title-wrapper {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem; // 8px
+  .post-chip {
+    display: inline-block;
+    margin-right: 0.5rem;
   }
 
   .post-title {
     color: ${palette.gray[600]};
     cursor: pointer;
+    margin-right: 0.5rem;
   }
 
-  .post-vote-wrapper {
+  .post-likes-wrapper {
     display: flex;
     align-items: center;
   }
 
-  .post-vote-icon {
+  .post-likes-icon {
     color: ${palette.gray[600]};
   }
 
-  .post-vote {
+  .post-likes {
     color: ${palette.blue[500]};
+
+    ${({ likes }) => {
+      if (likes > 0) {
+        return css`
+          color: ${theme.primary};
+        `;
+      }
+      if (likes === 0) {
+        return css`
+          color: ${palette.black};
+        `;
+      }
+      if (likes < 0) {
+        return css`
+          color: ${palette.red[500]};
+        `;
+      }
+    }}
   }
 
   .post-comments {
@@ -105,8 +127,11 @@ interface Props {
   commentCount: number;
   nickname: string;
   createdAt: string;
+  views: number;
+  likes: number;
   isPopular?: boolean;
   viewed?: boolean;
+  community?: string;
 }
 
 const CommunityPostCard: React.FC<Props> = ({
@@ -116,30 +141,44 @@ const CommunityPostCard: React.FC<Props> = ({
   nickname,
   createdAt,
   isPopular,
+  views,
+  likes,
   viewed,
+  community,
 }) => {
+  const viewPost = async () => {
+    try {
+      await viewPostAPI(postId);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
-    <Link to={`/post/${postId}`}>
-      <Base isPopular={isPopular} viewed={viewed}>
+    <Link to={`/post/${postId}`} onClick={viewPost}>
+      <Base isPopular={isPopular} viewed={viewed} likes={likes}>
         <div className="post-title-area-wrapper">
           <div className="post-title-wrapper">
-            {isPopular && <Chip size="small">인기</Chip>}
-            <p className="post-title">{title}</p>
+            {isPopular && (
+              <Chip className="post-chip" size="small">
+                인기
+              </Chip>
+            )}
+            <span className="post-title">{shortenPostTitle(title, 50)}</span>
             {commentCount !== 0 && (
               <span className="post-comments">[{commentCount}]</span>
             )}
           </div>
-          <div className="post-vote-wrapper">
-            <KeyboardArrowUpIcon className="post-vote-icon" />
-            <span className="post-vote">0</span>
+          <div className="post-likes-wrapper">
+            <KeyboardArrowUpIcon className="post-likes-icon" />
+            <span className="post-likes">{likes}</span>
           </div>
         </div>
         <div className="post-metadata-area">
           <p className="post-metadata">
             <span className="post-author">{nickname}</span>
-
             <span className="time">{createdAt}</span>
-            <span className="post-views">조회수 0</span>
+            <span className="post-views">조회수 {views}</span>
           </p>
         </div>
       </Base>

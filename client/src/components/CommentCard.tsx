@@ -78,6 +78,9 @@ const Base = styled.div`
   .submit-button-wrapper {
     display: flex;
     justify-content: flex-end;
+    align-items: center;
+    gap: 1rem;
+    color: ${palette.gray[400]};
   }
 
   .comment-dropdown-wrapper {
@@ -137,6 +140,11 @@ const CommentCard: React.FC<Props> = ({
   };
 
   const onClickSubmitButton = async () => {
+    if (editText.length > 200) {
+      alert("댓글 길이 제한 수를 초과하였습니다.");
+      return;
+    }
+
     const body = {
       comment_content: editText,
     };
@@ -206,6 +214,7 @@ const CommentCard: React.FC<Props> = ({
             onChange={onChangeEditText}
           />
           <div className="submit-button-wrapper">
+            <p>({editText.length}/200자)</p>
             <Button variant="contained" onClick={onClickSubmitButton}>
               수정하기
             </Button>

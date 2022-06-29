@@ -11,7 +11,6 @@ import { useSelector } from "../store";
 import MovetoPost from "../components/MovetoPost";
 import { getAllPostAPI } from "../lib/api/post";
 import PersonIcon from "@mui/icons-material/Person";
-import { shortenPostContents, translateCommunityName } from "../lib/utils";
 import IconButton from "../components/common/IconButton";
 import KeyboardDoubleArrowDownIcon from "@mui/icons-material/KeyboardDoubleArrowDown";
 import Skeleton from "../components/common/Skeleton";
@@ -152,21 +151,20 @@ const Home: React.FC = () => {
         <MovetoPost />
         <h2 className="section-title">전체 글 보기</h2>
         <ul className="posts-wrapper">
-          {postList &&
-            postList
-              .reverse()
-              .map((post, index) => (
-                <PostCard
-                  key={index}
-                  postId={post.post_id}
-                  title={post.post_title}
-                  commentCount={post.comment_count}
-                  community={translateCommunityName(post.board_title)}
-                  createdAt={post.created_at}
-                  contents={shortenPostContents(post.post_content) || ""}
-                  nickname="노논"
-                />
-              ))}
+          {postList.map((post, index) => (
+            <PostCard
+              key={index}
+              postId={post.post_id}
+              title={post.post_title}
+              commentCount={post.comment_count}
+              community={post.board_title}
+              createdAt={post.created_at}
+              contents={post.post_content}
+              nickname={post.nickname}
+              views={post.views}
+              likes={post.likes}
+            />
+          ))}
           {!postList && <p>글이 없습니다.</p>}
         </ul>
         {loading &&

@@ -10,13 +10,13 @@ interface Check {
 }
 
 export const CheckOrFail: React.FC<Check> = ({ validate, eyes }) => {
-  if (validate == "fail") {
+  if (validate === "fail") {
     if (eyes) {
       return <VisibilityIcon className="signup-error-icon" />;
     } else {
       return <ErrorIcon className="signup-error-icon" />;
     }
-  } else if (validate == "pass") {
+  } else if (validate === "pass") {
     if (eyes) {
       return <VisibilityIcon className="signup-pass-icon" />;
     } else {
