@@ -47,9 +47,8 @@ export class CommentController {
   updateComment(
     @Param('id') id: number,
     @Body() updateDateDto: UpdateCommentDto,
-    contentService: ContentService,
   ): Promise<object> {
     this.logger.debug(`updateComment() : ${id}`);
-    return this.commentService.updateComment(id, updateDateDto, contentService);
+    return this.commentService.updateComment(id, updateDateDto);
   }
 }

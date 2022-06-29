@@ -38,12 +38,7 @@ export class CommentService {
   updateComment(
     id: number,
     updateCommentDto: UpdateCommentDto,
-    contentService: ContentService,
   ): Promise<object> {
-    return this.commentRepository.updateComment(
-      id,
-      updateCommentDto,
-      contentService,
-    );
+    return this.commentRepository.updateComment(id, updateCommentDto);
   }
 }

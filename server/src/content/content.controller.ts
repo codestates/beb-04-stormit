@@ -17,6 +17,7 @@ import { Content } from './entity/content.entity';
 import { UpdateDataDto } from './dto/updateData.dto';
 import { BoardService } from 'src/board/board.service';
 import { UserService } from 'src/auth/user.service';
+import { RecommendationsContentDto } from './dto/recommendations-content.dto';
 
 @Controller('board/post') // @UseGuards(AuthGuard())
 export class ContentController {
@@ -76,5 +77,17 @@ export class ContentController {
       updateDataDto,
       this.boardService,
     );
+  }
+
+  // 추천수 증가
+  @Get('/thumbup/:id')
+  getRecommendationsIncrease(@Param('id') id: number): Promise<object> {
+    return this.contentsService.getRecommendationsIncrease(id);
+  }
+
+  // 추천수 감소
+  @Get('/thumbdown/:id')
+  getRecommendationsDecrease(@Param('id') id: number): Promise<object> {
+    return this.contentsService.getRecommendationsDecrease(id);
   }
 }

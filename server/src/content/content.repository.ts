@@ -7,6 +7,7 @@ import { Content } from './entity/content.entity';
 import { Logger } from '@nestjs/common';
 import { UserService } from 'src/auth/user.service';
 import { Console } from 'console';
+import { RecommendationsContentDto } from './dto/recommendations-content.dto';
 
 @EntityRepository(Content)
 export class ContentRepository extends Repository<Content> {
@@ -167,5 +168,19 @@ export class ContentRepository extends Repository<Content> {
           ${nickname}`,
       );
     }
+  }
+  async getRecommendationsIncrease(id: number): Promise<object> {
+    const post = await this.findOne(id);
+    post.recommendations++;
+    this.save(post);
+    console.log(post.recommendations);
+    return { success: true };
+  }
+  async getRecommendationsDecrease(id: number): Promise<object> {
+    const post = await this.findOne(id);
+    post.recommendations--;
+    this.save(post);
+    console.log(post.recommendations);
+    return { success: true };
   }
 }

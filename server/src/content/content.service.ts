@@ -5,6 +5,7 @@ import { BoardService } from 'src/board/board.service';
 import { CommentService } from 'src/comment/comment.service';
 import { ContentRepository } from './content.repository';
 import { CreateContentDto } from './dto/create-content.dto';
+import { RecommendationsContentDto } from './dto/recommendations-content.dto';
 import { UpdateDataDto } from './dto/updateData.dto';
 import { Content } from './entity/content.entity';
 @Injectable()
@@ -82,5 +83,12 @@ export class ContentService {
   }
   getPostId(post_id: number): Promise<Content> {
     return this.contentRepository.getPostId(post_id);
+  }
+
+  getRecommendationsIncrease(id: number): Promise<object> {
+    return this.contentRepository.getRecommendationsIncrease(id);
+  }
+  getRecommendationsDecrease(id: number): Promise<object> {
+    return this.contentRepository.getRecommendationsDecrease(id);
   }
 }

@@ -67,7 +67,6 @@ export class CommentRepository extends Repository<Comment> {
   async updateComment(
     id: number,
     updateCommentDto: UpdateCommentDto,
-    contentService: ContentService,
   ): Promise<object> {
     const { comment_content } = updateCommentDto;
     const comment = await this.findOne(id);
