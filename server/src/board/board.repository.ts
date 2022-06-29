@@ -112,7 +112,7 @@ export class BoardRepository extends Repository<Board> {
     this.logger.debug(`getBoardByTitle () : ${JSON.stringify(found)}`);
     if (found) {
       const result = found.contents.map(
-        ({ post_content, post_title, created_at, id }) => {
+        ({ post_content, post_title, created_at, id, comments }) => {
           const _date = created_at.toString();
           const time = this.getTime(_date);
           const obj = {
@@ -120,6 +120,7 @@ export class BoardRepository extends Repository<Board> {
             post_title: post_title,
             post_content: post_content,
             created_at: time,
+            comment_count: comments.length,
           };
           return obj;
         },
