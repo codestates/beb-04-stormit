@@ -89,6 +89,11 @@ const Base = styled.div<BaseProps>`
     color: ${palette.gray[400]};
   }
 
+  .post-detail-created-at {
+    font-size: 0.875rem;
+    color: ${palette.gray[400]};
+  }
+
   .post-detail-title {
     font-size: 2rem; // 36px
     font-weight: 500;
@@ -325,6 +330,9 @@ const PostDetail: React.FC = () => {
               />
               <span className="post-detail-author-name">
                 {postData.nickname}
+              </span>
+              <span className="post-detail-created-at">
+                {postData.createdAt}
               </span>
               <span className="post-detail-views">조회수 0</span>
             </div>

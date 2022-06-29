@@ -67,13 +67,6 @@ const Base = styled.div`
     right: 1rem; // 16px
     bottom: 1rem; // 16px
   }
-  .loading-skeleton-wrapper {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    gap: 0.5rem;
-    margin: 1rem 0;
-  }
 
   .more-button-wrapper {
     display: flex;
@@ -156,10 +149,7 @@ const Home: React.FC = () => {
     <Base>
       <NavigationRail />
       <section className="contents">
-        {isLoggedIn && <MovetoPost />}
-        <div className="contents-top">
-          <h1 className="stormit">Stormit.</h1>
-        </div>
+        <MovetoPost />
         <h2 className="section-title">전체 글 보기</h2>
         <ul className="posts-wrapper">
           {postList &&

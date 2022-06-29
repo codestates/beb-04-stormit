@@ -6,8 +6,8 @@ import Input from "../components/common/Input";
 import Button from "../components/common/Button";
 import { useNavigate } from "react-router-dom";
 import palette from "../styles/palette";
-import ErrorIcon from "@mui/icons-material/Error";
 import { scrollToTop } from "../lib/utils";
+import { CheckOrFail } from "../components/common/CheckOrFail";
 
 const Base = styled.div`
   display: flex;
@@ -27,6 +27,10 @@ const Base = styled.div`
 
   .signup-error-icon {
     color: ${palette.red[500]};
+  }
+
+  .signup-pass-icon {
+    color: ${palette.green[500]};
   }
 
   .signup-input-wrapper {
@@ -53,6 +57,10 @@ const Base = styled.div`
     gap: 1rem; // 16px
   }
 
+  .signup-input-visible {
+    cursor: pointer;
+  }
+
   // 600px
   @media screen and (min-width: 37.5rem) {
     margin: 1rem auto; // 16px
@@ -61,39 +69,24 @@ const Base = styled.div`
 `;
 
 const SignUp: React.FC = () => {
-  /* 
-  const [nickname, setNickname] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [nicknameValid, setNicknameValid] = useState(true);
-  const [emailValid, setEmailValid] = useState(true);
-  const [passwordValid, setPasswordValid] = useState(true); */
+  // user 정보를 담은 state
   const [userinfo, setUserinfo] = useState({
     email: "",
     password: "",
     nickname: "",
   });
+  // 정규식 state
   const [validate, setValidate] = useState({
     email: "none",
     password: "none",
     nickname: "none",
   });
+  // passwordType state
+  const [passwordType, setPasswordType] = useState({
+    type: "password",
+    visible: false,
+  });
   const navigate = useNavigate();
-
-  /*   const onChangeNickname = (event: React.ChangeEvent<HTMLInputElement>) => {
-    validateNickname(event.target.value);
-    setNickname(event.target.value);
-  };
-
-  const onChangePassword = (event: React.ChangeEvent<HTMLInputElement>) => {
-    validatePassword(event.target.value);
-    setPassword(event.target.value);
-  };
-
-  const onChangeEmail = (event: React.ChangeEvent<HTMLInputElement>) => {
-    validateEmail(event.target.value);
-    setEmail(event.target.value);
-  }; */
 
   // 닉네임 정규표현식
   const validateNickname = (nickname: string) => {
@@ -115,13 +108,14 @@ const SignUp: React.FC = () => {
   // 패스워드 정규표현식
   const validatePassword = (password: string) => {
     const engcheck = /[a-z]/gi;
-    const regExp = /^(?=.*[0-9$@!%*#?&]).{8,20}$/;
+    const regExp = /^(?=.*[0-9][$@!%*#?&]).{8,20}$/;
     if (engcheck.test(password)) {
       return false;
     }
     return regExp.test(password);
   };
 
+  // input value값에 따른 결과를 반영하는 함수
   const handleInputValue =
     (key: string) => (e: React.ChangeEvent<HTMLInputElement>) => {
       const value = e.target.value;
@@ -144,6 +138,8 @@ const SignUp: React.FC = () => {
       } else if (key === "password") {
         if (value === "") {
           setValidate({ ...validate, [key]: "none" });
+          // input값이 없을 때 password 기본 타입으로 변경
+          setPasswordType({ type: "password", visible: false });
         } else if (validatePassword(value)) {
           setValidate({ ...validate, [key]: "pass" });
         } else {
@@ -152,11 +148,18 @@ const SignUp: React.FC = () => {
       }
       setUserinfo({ ...userinfo, [key]: value });
     };
-
+  // password type을 변경하는 함수
+  const onVisible = () => {
+    setPasswordType(() => {
+      if (!passwordType.visible) {
+        return { type: "text", visible: true };
+      } else {
+        return { type: "password", visible: false };
+      }
+    });
+  };
+  // 가입하기 클릭시 발생 함수
   const onClickSubmitButton = async () => {
-    /*     validateEmail(email);
-    validateNickname(nickname);
-    validatePassword(password); */
     const { email, password, nickname } = userinfo;
     if (!validateNickname(nickname)) {
       alert("pls check your nickname");
@@ -202,12 +205,17 @@ const SignUp: React.FC = () => {
           validated={validate.nickname === "fail" ? false : true}
           width="100%"
         />
-        {validate.nickname === "fail" && (
-          <ErrorIcon className="signup-error-icon" />
-        )}
+        <div>
+          <CheckOrFail validate={validate.nickname} />
+        </div>
       </div>
       {validate.nickname === "pass" ? (
-        <p className="signup-input-message">멋진 닉네임이네요!</p>
+        <p
+          className="signup-input-message"
+          style={{ color: palette.green[500] }}
+        >
+          멋진 닉네임이네요!
+        </p>
       ) : (
         <p
           className={
@@ -228,12 +236,17 @@ const SignUp: React.FC = () => {
           validated={validate.email === "fail" ? false : true}
           width="100%"
         />
-        {validate.email === "fail" && (
-          <ErrorIcon className="signup-error-icon" />
-        )}
+        <div>
+          <CheckOrFail validate={validate.email} />
+        </div>
       </div>
       {validate.email === "pass" ? (
-        <p className="signup-input-message">사용 가능한 이메일입니다.</p>
+        <p
+          className="signup-input-message"
+          style={{ color: palette.green[500] }}
+        >
+          사용 가능한 이메일입니다.
+        </p>
       ) : (
         <p
           className={
@@ -250,19 +263,23 @@ const SignUp: React.FC = () => {
       <p className="signup-input-label">비밀번호</p>
       <div className="signup-input-wrapper">
         <Input
-          type="password"
+          type={passwordType.type}
           placeholder="비밀번호를 입력해주세요"
           onChange={handleInputValue("password")}
           validated={validate.password === "fail" ? false : true}
           width="100%"
         />
-
-        {validate.password === "fail" && (
-          <ErrorIcon className="signup-error-icon" />
-        )}
+        <div className="signup-input-visible" onClick={onVisible}>
+          <CheckOrFail validate={validate.password} eyes={"on"} />
+        </div>
       </div>
       {validate.password === "pass" ? (
-        <p className="signup-input-message">사용 가능한 비밀번호입니다.</p>
+        <p
+          className="signup-input-message"
+          style={{ color: palette.green[500] }}
+        >
+          사용 가능한 비밀번호입니다.
+        </p>
       ) : (
         <p
           className={
