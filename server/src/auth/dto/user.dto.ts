@@ -13,4 +13,6 @@ export class UserDTO {
   thirdPartyId?: string;
 
   thirdPartyToken?:string;
+
+  signupVerifyToken?:string;
 }

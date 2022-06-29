@@ -13,6 +13,7 @@ import { Board } from './board/entity/board.entity';
 import { BoardModule } from './board/board.module';
 import { Comment } from './comment/entity/comment.entity';
 import { CommentModule } from './comment/comment.module';
+import { EmailService } from './auth/email/email.service';
 
 const serverConfig = config.get('server');
 const dbConfig = config.get('db');
@@ -39,5 +40,6 @@ const dbConfig = config.get('db');
     BoardModule,
     CommentModule,
   ],
+  providers: [EmailService],
 })
 export class AppModule {}
