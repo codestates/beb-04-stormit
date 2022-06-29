@@ -4,6 +4,9 @@ import palette from "../styles/palette";
 import CreateAccount from "../components/CreateAccount";
 import Divider from "../components/common/Divider";
 import { useState } from "react";
+// eye icon
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 // modal 상태를 가지고 있는 파일
 import { modalActions } from "../store/modalSlice";
 import { userActions } from "../store/userSlice";
@@ -131,12 +134,33 @@ const LoginForm = styled.form`
       }
     }
   }
+  // 겉에를 absolute로 감싸고 내부에 relative를 적용하면 화면 크기 전환에도 맞게 변한다
+  .password-container {
+    cursor: pointer;
+    position: absolute;
+    color: ${palette.gray[400]};
+    transition: 0.3s;
+    &:hover {
+      color: ${palette.gray[600]};
+    }
+    .password-container-visibile {
+      position: relative;
+      top: 4rem;
+      left: 17rem;
+    }
+  }
 `;
 
 const Login: React.FC = () => {
   const [email, setEmail] = useState("nonon@gmail.com");
   const [password, setPassword] = useState("1234!@#$");
   const [validated, setValidated] = useState(true);
+
+  // passwordType state
+  const [passwordType, setPasswordType] = useState({
+    type: "password",
+    visible: false,
+  });
 
   const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
 
@@ -212,6 +236,16 @@ const Login: React.FC = () => {
       setValidated(false);
     }
   };
+  // password type을 변경하는 함수
+  const onVisible = () => {
+    setPasswordType(() => {
+      if (!passwordType.visible) {
+        return { type: "text", visible: true };
+      } else {
+        return { type: "password", visible: false };
+      }
+    });
+  };
 
   // 로그인 되어있으면 리다이렉트
   useEffect(() => {
@@ -231,11 +265,16 @@ const Login: React.FC = () => {
           onChange={onChangeEmail}
         />
         <Input
-          type="password"
+          type={passwordType.type}
           placeholder="비밀번호"
           value={password}
           onChange={onChangePassword}
         />
+        <div className="password-container" onClick={onVisible}>
+          <div className="password-container-visibile">
+            {!passwordType.visible ? <VisibilityIcon /> : <VisibilityOffIcon />}
+          </div>
+        </div>
         {!validated && (
           <p className="validation-text">
             이메일 또는 비밀번호가 잘못되었습니다.

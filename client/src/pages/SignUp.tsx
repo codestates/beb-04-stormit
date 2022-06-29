@@ -105,13 +105,9 @@ const SignUp: React.FC = () => {
     return regExp.test(email);
   };
 
-  // 패스워드 정규표현식
+  // 패스워드 정규표현식 (특수문자 포함)
   const validatePassword = (password: string) => {
-    const engcheck = /[a-z]/gi;
-    const regExp = /^(?=.*[0-9][$@!%*#?&]).{8,20}$/;
-    if (engcheck.test(password)) {
-      return false;
-    }
+    const regExp = /^(?=.*[0-9a-zA-Z][$@!%*#?&]).{8,20}$/;
     return regExp.test(password);
   };
 

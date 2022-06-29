@@ -125,11 +125,7 @@ const CreateAccount: React.FC = () => {
   // 참고 https://regexr.com/
   const validatePassword = (password: string) => {
     // gi -> global serch, ignore case
-    const engcheck = /[a-z]/gi;
-    const re = /^(?=.*[0-9][$@!%*#?&]).{8,20}$/;
-    if (engcheck.test(password)) {
-      return false;
-    }
+    const re = /^(?=.*[0-9a-zA-Z][$@!%*#?&]).{8,20}$/;
     return re.test(password);
   };
 
@@ -238,7 +234,9 @@ const CreateAccount: React.FC = () => {
           />
 
           {validate.email === "pass" ? (
-            <InputExplain style={{ gap: "1rem" }}></InputExplain>
+            <InputExplain style={{ color: "#22C55E" }}>
+              사용 가능한 이메일입니다.
+            </InputExplain>
           ) : (
             <InputExplain
               color={validate.email === "none" ? "type-off" : "type-on"}
@@ -253,7 +251,7 @@ const CreateAccount: React.FC = () => {
           />
           {validate.password === "pass" ? (
             <InputExplain style={{ color: "#22C55E" }}>
-              사용 가능합니다.
+              사용 가능한 비밀번호입니다.
             </InputExplain>
           ) : (
             <InputExplain
