@@ -7,10 +7,12 @@ import {
   Param,
   ParseIntPipe,
   Post,
+  Put,
 } from '@nestjs/common';
 import { UserService } from 'src/auth/user.service';
 import { ContentService } from 'src/content/content.service';
 import { CommentService } from './comment.service';
+import { UpdateCommentDto } from './dto/update-comment.dto';
 import { WriteCommentDto } from './dto/write-comment.dto';
 
 @Controller('board/post/comment')
@@ -32,9 +34,19 @@ export class CommentController {
       this.contentService,
     );
   }
-
+  // 댓글 삭제
   @Delete('/:id')
   deleteComment(@Param('id', ParseIntPipe) id): Promise<object> {
     return this.commentService.deleteComment(id);
+  }
+
+  // 댓글 수정
+  @Put('/:id')
+  updateComment(
+    @Param('id') id: number,
+    @Body() updateDateDto: UpdateCommentDto,
+    contentService: ContentService,
+  ): Promise<object> {
+    return this.commentService.updateComment(id, updateDateDto, contentService);
   }
 }
