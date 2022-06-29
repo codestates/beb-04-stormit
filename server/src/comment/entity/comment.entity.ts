@@ -23,6 +23,6 @@ export class Comment extends BaseEntity {
   @ManyToOne(() => Content, (content) => content.id)
   content: Content;
 
-  @ManyToOne(() => User, (user) => user.user_id)
+  @ManyToOne(() => User, (user) => user.user_id, { eager: true })
   user: User;
 }

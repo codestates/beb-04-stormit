@@ -51,4 +51,14 @@ export class CommentRepository extends Repository<Comment> {
       return { success: true };
     }
   }
+
+  async getUserNickname(id: number): Promise<string> {
+    const comment = await this.findOne(id);
+    if (!comment) {
+      throw new BadRequestException(`Comment ID ${id} Not Found`);
+    } else {
+      console.log(comment.user.nickname);
+      return '';
+    }
+  }
 }

@@ -7,6 +7,7 @@ import { Content } from './entity/content.entity';
 import { Logger } from '@nestjs/common';
 import { UserService } from 'src/auth/user.service';
 import { User } from 'src/auth/entity/user.entity';
+import { CommentService } from 'src/comment/comment.service';
 
 @EntityRepository(Content)
 export class ContentRepository extends Repository<Content> {
@@ -115,16 +116,23 @@ export class ContentRepository extends Repository<Content> {
     if (!found_content) {
       throw new BadRequestException(`Can't find Content with id ${id}`);
     }
-
+    console.log(found_content);
     const com = found_content.comments.map((value) => {
       const _data = value.create_at.toString();
       const time = this.getTime(_data);
       const comment_content = value.comment_content;
       const comment_id = value.id;
       const comment_created_at = time;
-      const obj = { comment_content, comment_id, comment_created_at };
+      const comment_nicname = value.user.nickname;
+      const obj = {
+        comment_content,
+        comment_id,
+        comment_created_at,
+        comment_nicname,
+      };
       return obj;
     });
+    console.log(com);
     const {
       post_title,
       post_content,

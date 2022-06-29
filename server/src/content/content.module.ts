@@ -5,6 +5,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { ContentRepository } from './content.repository';
 import { AuthModule } from 'src/auth/auth.module';
 import { BoardModule } from 'src/board/board.module';
+import { CommentModule } from 'src/comment/comment.module';
 
 @Module({
   imports: [

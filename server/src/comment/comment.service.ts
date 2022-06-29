@@ -29,4 +29,8 @@ export class CommentService {
   deleteComment(id: number): Promise<object> {
     return this.commentRepository.deleteComment(id);
   }
+
+  getUserNickname(id: number): Promise<string> {
+    return this.commentRepository.getUserNickname(id);
+  }
 }

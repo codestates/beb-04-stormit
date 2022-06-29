@@ -2,6 +2,7 @@ import { BadRequestException, Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserService } from 'src/auth/user.service';
 import { BoardService } from 'src/board/board.service';
+import { CommentService } from 'src/comment/comment.service';
 import { ContentRepository } from './content.repository';
 import { CreateContentDto } from './dto/create-content.dto';
 import { UpdateDataDto } from './dto/updateData.dto';
