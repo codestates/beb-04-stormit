@@ -90,6 +90,7 @@ const Base = styled.div`
 const Community: React.FC = () => {
   const [postList, setPostList] = useState<GetPostsByBoardResponseType>([]);
   const [currentPage, setCurrentPage] = useState(1);
+  const [searchInput, setSearchInput] = useState("");
 
   console.log(currentPage);
 
@@ -108,11 +109,35 @@ const Community: React.FC = () => {
 
   const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
 
+  const searchParams = new URLSearchParams(location.search);
+
+  const pageQueryString = searchParams.get("page");
+
+  const keywordQueryString = searchParams.get("keyword");
+
+  console.log(keywordQueryString);
+
+  const onChangeSearchInput = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchInput(event.target.value);
+  };
+
+  const onEnter = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === "Enter") {
+      navigate(`${location.pathname}?keyword=${searchInput}`);
+    }
+  };
+
   const onClickPostButton = () => {
     if (!isLoggedIn) navigate("/login");
     if (isLoggedIn) navigate("/post");
   };
 
+  const onClickSearchButton = () => {
+    if (!searchInput) return;
+    navigate(`${location.pathname}?keyword=${searchInput}`);
+  };
+
+  // 게시물 가져오기
   useEffect(() => {
     console.log("@@@ useEffect @@@");
     const fetchPosts = async () => {
@@ -130,19 +155,19 @@ const Community: React.FC = () => {
     fetchPosts();
   }, [communityName]);
 
+  // 현재 커뮤니티 지정
   useEffect(() => {
     dispatch(communityActions.setCurrentCommunity(communityName));
   }, [communityName, dispatch]);
 
+  // 쿼리스트링에서 현재 페이지 번호 가져오기
   useEffect(() => {
-    const pageQueryString = location.search;
-
     if (!pageQueryString) {
       setCurrentPage(1);
     } else {
-      setCurrentPage(Number(pageQueryString.split("=")[1]));
+      setCurrentPage(Number(pageQueryString));
     }
-  }, [location.search]);
+  }, [pageQueryString]);
 
   return (
     <Base>
@@ -208,8 +233,13 @@ const Community: React.FC = () => {
           />
         </div>
         <div className="community-search-input-wrapper">
-          <Input className="community-search-input" />
-          <IconButton>
+          <Input
+            className="community-search-input"
+            onKeyDown={onEnter}
+            value={searchInput}
+            onChange={onChangeSearchInput}
+          />
+          <IconButton onClick={onClickSearchButton}>
             <SearchIcon />
           </IconButton>
         </div>
