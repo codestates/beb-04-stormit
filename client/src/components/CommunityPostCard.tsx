@@ -6,8 +6,11 @@ import { Link } from "react-router-dom";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import Chip from "./common/Chip";
 import { viewPostAPI } from "../lib/api/post";
+import theme from "../styles/theme";
+import { shortenPostTitle } from "../lib/utils";
 
 interface BaseProps {
+  likes: number;
   isPopular?: boolean;
   viewed?: boolean;
 }
@@ -69,6 +72,24 @@ const Base = styled.li<BaseProps>`
 
   .post-likes {
     color: ${palette.blue[500]};
+
+    ${({ likes }) => {
+      if (likes > 0) {
+        return css`
+          color: ${theme.primary};
+        `;
+      }
+      if (likes === 0) {
+        return css`
+          color: ${palette.black};
+        `;
+      }
+      if (likes < 0) {
+        return css`
+          color: ${palette.red[500]};
+        `;
+      }
+    }}
   }
 
   .post-comments {
@@ -133,11 +154,11 @@ const CommunityPostCard: React.FC<Props> = ({
 
   return (
     <Link to={`/post/${postId}`} onClick={viewPost}>
-      <Base isPopular={isPopular} viewed={viewed}>
+      <Base isPopular={isPopular} viewed={viewed} likes={likes}>
         <div className="post-title-area-wrapper">
           <div className="post-title-wrapper">
             {isPopular && <Chip size="small">인기</Chip>}
-            <p className="post-title">{title}</p>
+            <p className="post-title">{shortenPostTitle(title, 24)}</p>
             {commentCount !== 0 && (
               <span className="post-comments">[{commentCount}]</span>
             )}

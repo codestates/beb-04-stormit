@@ -11,7 +11,6 @@ import { useSelector } from "../store";
 import MovetoPost from "../components/MovetoPost";
 import { getAllPostAPI } from "../lib/api/post";
 import PersonIcon from "@mui/icons-material/Person";
-import { shortenPostContents, translateCommunityName } from "../lib/utils";
 import IconButton from "../components/common/IconButton";
 import KeyboardDoubleArrowDownIcon from "@mui/icons-material/KeyboardDoubleArrowDown";
 import Skeleton from "../components/common/Skeleton";
@@ -161,9 +160,9 @@ const Home: React.FC = () => {
                   postId={post.post_id}
                   title={post.post_title}
                   commentCount={post.comment_count}
-                  community={translateCommunityName(post.board_title)}
+                  community={post.board_title}
                   createdAt={post.created_at}
-                  contents={shortenPostContents(post.post_content) || ""}
+                  contents={post.post_content}
                   nickname={post.nickname}
                   views={post.views}
                   likes={post.likes}

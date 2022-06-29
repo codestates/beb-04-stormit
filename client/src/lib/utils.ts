@@ -1,9 +1,16 @@
-// 게시물의 내용이 120자보다 길면 120자만큼으로 줄입니다 - nonon
-export const shortenPostContents = (contents: string) => {
-  if (!contents) return;
+// 게시물의 제목이 length보다 길면 length만큼으로 줄입니다 - nonon
+export const shortenPostTitle = (title: string, length: number) => {
+  if (title.length > length) {
+    return `${title.slice(0, length)}...`;
+  } else {
+    return title;
+  }
+};
 
-  if (contents.length > 120) {
-    return `${contents.slice(0, 120)}...`;
+// 게시물의 내용이 length보다 길면 length만큼으로 줄입니다 - nonon
+export const shortenPostContents = (contents: string, length: number) => {
+  if (contents.length > length) {
+    return `${contents.slice(0, length)}...`;
   } else {
     return contents;
   }

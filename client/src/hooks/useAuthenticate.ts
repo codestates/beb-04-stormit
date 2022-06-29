@@ -26,10 +26,7 @@ const useAuthenticate = () => {
           userId: userId,
         })
       );
-
-      console.log("logged in");
     } catch (error) {
-      console.log("@@@ authenticate failed @@@");
       console.log(error);
       dispatch(userActions.setLoggedOut());
     }

@@ -30,7 +30,7 @@ import RefreshIcon from "@mui/icons-material/Refresh";
 import { debounce } from "../lib/utils";
 
 interface BaseProps {
-  vote: number;
+  likes: number;
 }
 
 const Base = styled.div<BaseProps>`
@@ -96,6 +96,7 @@ const Base = styled.div<BaseProps>`
   .post-detail-created-at {
     font-size: 0.875rem;
     color: ${palette.gray[400]};
+    display: none;
   }
 
   .post-detail-title {
@@ -109,28 +110,28 @@ const Base = styled.div<BaseProps>`
     line-height: 1.6;
   }
 
-  .post-detail-vote-area {
+  .post-detail-likes-area {
     display: flex;
     justify-content: center;
     align-items: center;
     gap: 0.5rem;
   }
 
-  .post-detail-vote {
+  .post-detail-likes {
     font-size: 1.5rem;
 
-    ${({ vote }) => {
-      if (vote > 0) {
+    ${({ likes }) => {
+      if (likes > 0) {
         return css`
           color: ${theme.primary};
         `;
       }
-      if (vote === 0) {
+      if (likes === 0) {
         return css`
           color: ${palette.black};
         `;
       }
-      if (vote < 0) {
+      if (likes < 0) {
         return css`
           color: ${palette.red[500]};
         `;
@@ -185,6 +186,10 @@ const Base = styled.div<BaseProps>`
       margin: 1rem auto;
       width: 37.5rem; // 600px
     }
+
+    .post-detail-created-at {
+      display: block;
+    }
   }
 
   // 1240px
@@ -203,6 +208,8 @@ const PostDetail: React.FC = () => {
     nickname: "",
     community: "",
     createdAt: "",
+    views: 0,
+    likes: 0,
   });
   const [commentsData, setCommentsData] = useState<
     {
@@ -216,7 +223,6 @@ const PostDetail: React.FC = () => {
 
   const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
   const nickname = useSelector((state) => state.user.nickname);
-  const vote = useSelector((state) => state.post.vote);
   const userId = useSelector((state) => state.user.userId);
 
   const dispatch = useDispatch();
@@ -241,6 +247,8 @@ const PostDetail: React.FC = () => {
         created_at,
         board_title,
         comments,
+        views,
+        likes,
       } = response.data;
 
       setPostData({
@@ -249,13 +257,16 @@ const PostDetail: React.FC = () => {
         nickname: nickname,
         createdAt: created_at,
         community: board_title,
+        views: views,
+        likes: likes,
       });
 
       comments && setCommentsData(comments);
     } catch (error) {
       console.log(error);
+      navigate("/deleted", { replace: true });
     }
-  }, [postId]);
+  }, [postId, navigate]);
 
   const toggleDropdownMenu = () => {
     setDropdownOpen((dropdownOpen) => !dropdownOpen);
@@ -299,7 +310,9 @@ const PostDetail: React.FC = () => {
     try {
       const response = await likePostAPI(postId);
       console.log(response);
-      fetchPost();
+      setTimeout(() => {
+        fetchPost();
+      }, 100);
     } catch (error) {
       console.log(error);
     }
@@ -337,7 +350,7 @@ const PostDetail: React.FC = () => {
   }, [fetchPost]);
 
   return (
-    <Base vote={vote}>
+    <Base likes={postData.likes}>
       <NavigationRail />
       <div className="contents">
         <div className="contents-top">
@@ -360,7 +373,7 @@ const PostDetail: React.FC = () => {
               <span className="post-detail-created-at">
                 {postData.createdAt}
               </span>
-              <span className="post-detail-views">조회수 0</span>
+              <span className="post-detail-views">조회수 {postData.views}</span>
             </div>
             <div className="post-detail-metadata-right-area">
               {isMyPost && (
@@ -408,11 +421,11 @@ const PostDetail: React.FC = () => {
           <Chip>태그</Chip>
           <Chip>커뮤니티</Chip>
         </div>
-        <div className="post-detail-vote-area">
+        <div className="post-detail-likes-area">
           <IconButton onClick={onClickLikeButton}>
             <KeyboardArrowUpIcon />
           </IconButton>
-          <span className="post-detail-vote">{vote}</span>
+          <span className="post-detail-likes">{postData.likes}</span>
           <IconButton onClick={onClickDislikeButton}>
             <KeyboardArrowDownIcon />
           </IconButton>

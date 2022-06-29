@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 import palette from "../styles/palette";
 import { scrollToTop } from "../lib/utils";
 import { CheckOrFail } from "../components/common/CheckOrFail";
+import { useSelector } from "../store";
 
 const Base = styled.div`
   display: flex;
@@ -86,6 +87,9 @@ const SignUp: React.FC = () => {
     type: "password",
     visible: false,
   });
+
+  const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
+
   const navigate = useNavigate();
 
   // 닉네임 정규표현식
@@ -183,6 +187,10 @@ const SignUp: React.FC = () => {
       console.log(error);
     }
   };
+
+  useEffect(() => {
+    isLoggedIn && navigate("/", { replace: true });
+  });
 
   useEffect(() => {
     scrollToTop();

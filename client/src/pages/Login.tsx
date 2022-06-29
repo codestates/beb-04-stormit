@@ -250,7 +250,7 @@ const Login: React.FC = () => {
   // 로그인 되어있으면 리다이렉트
   useEffect(() => {
     if (isLoggedIn) {
-      navigate("/");
+      navigate("/", { replace: true });
     }
   }, [isLoggedIn, navigate]);
 

@@ -7,9 +7,10 @@ import theme from "../styles/theme";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import Chip from "./common/Chip";
 import { viewPostAPI } from "../lib/api/post";
+import { shortenPostTitle, translateCommunityName } from "../lib/utils";
 
 interface BaseProps {
-  commentCount: number;
+  likes: number;
 }
 
 const Base = styled.li<BaseProps>`
@@ -17,12 +18,6 @@ const Base = styled.li<BaseProps>`
   flex-direction: column;
   gap: 0.5rem; // 8px
   padding: 0.5rem 1rem;
-
-  ${({ commentCount }) =>
-    commentCount > 10 &&
-    css`
-      background-color: ${palette.blue[50]};
-    `}
 
   .post-metadata-area {
     display: flex;
@@ -81,6 +76,24 @@ const Base = styled.li<BaseProps>`
 
   .post-likes {
     color: ${theme.primary};
+
+    ${({ likes }) => {
+      if (likes > 0) {
+        return css`
+          color: ${theme.primary};
+        `;
+      }
+      if (likes === 0) {
+        return css`
+          color: ${palette.black};
+        `;
+      }
+      if (likes < 0) {
+        return css`
+          color: ${palette.red[500]};
+        `;
+      }
+    }}
   }
 
   .post-comments {
@@ -90,6 +103,12 @@ const Base = styled.li<BaseProps>`
   .post-author {
     font-size: 0.875rem; // 14px
   }
+
+  ${({ likes }) =>
+    likes > 10 &&
+    css`
+      background-color: ${palette.blue[50]};
+    `}
 `;
 
 interface Props {
@@ -125,16 +144,16 @@ const PostCard: React.FC<Props> = ({
 
   return (
     <>
-      <Base commentCount={commentCount}>
+      <Base likes={likes}>
         <div className="post-title-area-wrapper">
           <div className="post-title-wrapper">
             <Link to={`/post/${postId}`} onClick={viewPost}>
-              <p className="post-title">{title}</p>
+              <p className="post-title">{shortenPostTitle(title, 16)}</p>
             </Link>
             {commentCount !== 0 && (
               <span className="post-comments">[{commentCount}]</span>
             )}
-            <Chip size="small">{community}</Chip>
+            <Chip size="small">{translateCommunityName(community)}</Chip>
             {commentCount > 10 && <Chip size="small">인기글</Chip>}
           </div>
           <div className="post-likes-wrapper">

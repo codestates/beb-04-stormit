@@ -32,7 +32,7 @@ const DeletedPost: React.FC = () => {
     <Base>
       <ErrorIcon className="deleted-icon" />
       <p className="deleted-text">삭제된 게시물입니다.</p>
-      <Button variant="contained" onClick={() => navigate(-3)}>
+      <Button variant="contained" onClick={() => navigate(-1)}>
         돌아가기
       </Button>
     </Base>
