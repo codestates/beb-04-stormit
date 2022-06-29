@@ -24,6 +24,8 @@ export class CommentController {
   ) {}
   private logger = new Logger('ContentController');
 
+  @Get('')
+  test() {}
   //댓글 쓰기
   @Post('')
   writeComment(@Body() writeCommentDto: WriteCommentDto): Promise<object> {
@@ -47,6 +49,7 @@ export class CommentController {
     @Body() updateDateDto: UpdateCommentDto,
     contentService: ContentService,
   ): Promise<object> {
+    this.logger.debug(`updateComment() : ${id}`);
     return this.commentService.updateComment(id, updateDateDto, contentService);
   }
 }
