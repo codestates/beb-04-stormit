@@ -1,18 +1,8 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import NavigationRail from "../components/NavigationRail";
-import {
-  Link,
-  useLocation,
-  useNavigate,
-  useSearchParams,
-} from "react-router-dom";
-import {
-  FAKE_ARRAY,
-  getLastPathname,
-  parseDate,
-  translateCommunityName,
-} from "../lib/utils";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { getLastPathname, translateCommunityName } from "../lib/utils";
 import Pagination from "../components/Pagination";
 import Button from "../components/common/Button";
 import CommunityPostCard from "../components/CommunityPostCard";
@@ -140,17 +130,6 @@ const Community: React.FC = () => {
     fetchPosts();
   }, [communityName]);
 
-  // useEffect(() => {
-  //   const simulateFetchPosts = () => {
-  //     setPostList(FAKE_ARRAY);
-  //     setCurrentPostList(
-  //       postList.slice(currentPage * 10 - 10, currentPage * 10)
-  //     );
-  //   };
-
-  //   simulateFetchPosts();
-  // }, [currentPage, postList]);
-
   useEffect(() => {
     dispatch(communityActions.setCurrentCommunity(communityName));
   }, [communityName, dispatch]);
@@ -223,7 +202,7 @@ const Community: React.FC = () => {
         </ul>
         <div className="pagination-wrapper">
           <Pagination
-            totalPosts={postList.length || 100}
+            totalPosts={postList.length || 1}
             currentPage={currentPage}
             setCurrentPage={setCurrentPage}
           />

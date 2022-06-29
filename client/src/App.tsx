@@ -26,6 +26,7 @@ import Test from "./pages/Test";
 import Post from "./pages/Post";
 import Edit from "./pages/Edit";
 import GoogleSuccess from "./pages/GoogleSuccess";
+import Search from "./pages/Search";
 
 const App: React.FC = () => {
   const menuModalOpen = useSelector((state) => state.modal.menuModalOpen);
@@ -84,6 +85,7 @@ const App: React.FC = () => {
         <Route path="/communities" element={<Communities />} />
         <Route path="/deleted" element={<DeletedPost />} />
         <Route path="user/google/success" element={<GoogleSuccess />} />
+        <Route path="/search" element={<Search />} />
         <Route path="/*" element={<ErrorPage />} />
       </Routes>
     </ThemeProvider>

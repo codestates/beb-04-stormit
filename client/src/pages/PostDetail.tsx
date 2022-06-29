@@ -191,10 +191,10 @@ const PostDetail: React.FC = () => {
   });
   const [commentsData, setCommentsData] = useState<
     {
-      nickname: string;
-      commentContent: string;
-      commentId: number;
-      createdAt: string;
+      comment_nickname: string;
+      comment_content: string;
+      comment_id: number;
+      comment_created_at: string;
     }[]
   >([]);
   const [commentContent, setCommentContent] = useState("");
@@ -236,18 +236,7 @@ const PostDetail: React.FC = () => {
         community: board_title,
       });
 
-      comments &&
-        comments.map((comment) =>
-          setCommentsData((commentsData) => [
-            ...commentsData,
-            {
-              nickname: comment.nickname,
-              commentContent: comment.comment_content,
-              commentId: comment.comment_id,
-              createdAt: comment.created_at,
-            },
-          ])
-        );
+      comments && setCommentsData(comments);
     } catch (error) {
       console.log(error);
     }
@@ -397,10 +386,10 @@ const PostDetail: React.FC = () => {
         <p className="comment-title">댓글 {commentsData.length}개</p>
         {commentsData.map((comment) => (
           <CommentCard
-            nickname={comment.nickname}
-            createdAt={comment.createdAt}
-            commentContents={comment.commentContent}
-            commentId={comment.commentId}
+            nickname={comment.comment_nickname}
+            createdAt={comment.comment_created_at}
+            commentContents={comment.comment_content}
+            commentId={comment.comment_id}
           />
         ))}
         {isLoggedIn && (

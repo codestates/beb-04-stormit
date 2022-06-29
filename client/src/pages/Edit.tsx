@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import Button from "../components/common/Button";
-import Chip from "../components/common/Chip";
 import Input from "../components/common/Input";
 import Select from "../components/common/Select";
 import { updatePostAPI } from "../lib/api/post";
@@ -125,11 +124,6 @@ const Edit: React.FC = () => {
           setContents(data);
         }}
       />
-      <div className="community-wrapper">
-        <Chip>Tag</Chip>
-        <Chip>Community</Chip>
-        <Chip>Long Community Name</Chip>
-      </div>
       <div className="post-button-wrapper">
         <Button variant="outlined" onClick={onClickCancelButton}>
           돌아가기

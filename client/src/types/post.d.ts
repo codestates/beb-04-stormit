@@ -34,10 +34,10 @@ type GetPostByIdResponseType = {
   created_at: string;
   board_title: string;
   comments: {
-    nickname: string;
+    comment_nickname: string;
     comment_content: string;
     comment_id: number;
-    created_at: string;
+    comment_created_at: string;
   }[];
 };
 
