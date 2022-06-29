@@ -15,4 +15,6 @@ export class UserDTO {
   thirdPartyToken?:string;
 
   signupVerifyToken?:string;
+
+  cryptoToken?: string;
 }

@@ -37,6 +37,8 @@
     "class-validator": "^0.13.2",
     "config": "^3.3.7",
     "cookie-parser": "^1.4.6",
+    "crypto": "^1.0.1",
+    "crypto-random-string": "^5.0.0",
     "mysql2": "^2.3.3",
     "nodemailer": "^6.7.5",
     "passport": "^0.6.0",
