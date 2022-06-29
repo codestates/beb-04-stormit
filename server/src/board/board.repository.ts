@@ -39,6 +39,7 @@ export class BoardRepository extends Repository<Board> {
         const post_content = content.post_content;
         const post_id = content.id;
         const likes = content.recommendations;
+        const view = content.views;
         const nickname = content.user.nickname;
         const created_at = this.getTime(content.created_at.toString());
         const comment_count = content.comments.length;
@@ -52,6 +53,7 @@ export class BoardRepository extends Repository<Board> {
           comment_count,
           board_title,
           likes,
+          view,
         };
       });
       // console.log(content_set);
@@ -78,12 +80,6 @@ export class BoardRepository extends Repository<Board> {
     }
   }
 
-  // async setBoardTitle() {
-  //   this.coinList.map((value) => {
-  //     const title = this.create({ board_title: value });
-  //     this.save(title);
-  //   });
-  // }
   getTime(_date: string): string {
     const _day = _date.split(' ');
     const time = _day[4].split(':');
@@ -114,6 +110,7 @@ export class BoardRepository extends Repository<Board> {
           id,
           comments,
           recommendations,
+          views,
         }) => {
           const _date = created_at.toString();
           const time = this.getTime(_date);
@@ -124,6 +121,7 @@ export class BoardRepository extends Repository<Board> {
             created_at: time,
             comment_count: comments.length,
             likes: recommendations,
+            view: views,
           };
           return obj;
         },

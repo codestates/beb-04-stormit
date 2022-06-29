@@ -31,6 +31,9 @@ export class Content extends BaseEntity {
   nickname: string;
 
   @Column({ nullable: true })
+  views: number;
+
+  @Column({ nullable: true })
   recommendations: number;
 
   @Column({ nullable: true })
