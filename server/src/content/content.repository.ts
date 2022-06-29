@@ -32,7 +32,7 @@ export class ContentRepository extends Repository<Content> {
     const hour = parseInt(time[0]);
     const result_time = `${_day[3]}년 ${this.en_month[_day[1]]}월 ${
       _day[2]
-    }일 ${hour}시 ${time[1]}분 ${time[2]}초`;
+    }일 ${hour}:${time[1]}:${time[2]}`;
     return result_time;
   }
   // post_id값에 맞는 하나의 글 가져오기
