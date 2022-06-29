@@ -18,7 +18,7 @@ export class Content extends BaseEntity {
   @PrimaryGeneratedColumn() // 기본 key 열임을 나타낸다.
   id: number;
 
-  @ManyToOne(() => Board, (board) => board.contents)
+  @ManyToOne(() => Board, (board) => board.contents, { eager: true })
   board: Board;
 
   @ManyToOne(() => User, (user) => user.user_id)
