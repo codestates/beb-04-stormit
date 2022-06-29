@@ -1,4 +1,3 @@
-import { type } from 'os';
 import {
   BaseEntity,
   Column,
@@ -7,8 +6,6 @@ import {
   ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
-  Timestamp,
-  Unique,
 } from 'typeorm';
 
 import { User } from 'src/auth/entity/user.entity';

@@ -6,10 +6,8 @@ import {
   Logger,
   Param,
   ParseIntPipe,
-  Patch,
   Post,
   Put,
-  UseGuards,
   UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
@@ -18,10 +16,7 @@ import { CreateContentDto } from './dto/create-content.dto';
 import { Content } from './entity/content.entity';
 import { UpdateDataDto } from './dto/updateData.dto';
 import { BoardService } from 'src/board/board.service';
-
 import { UserService } from 'src/auth/user.service';
-import { AuthGuard } from '@nestjs/passport';
-// import { GetUser } from 'src/auth/get-user.decorator';
 
 @Controller('board/post') // @UseGuards(AuthGuard())
 export class ContentController {
@@ -40,6 +35,7 @@ export class ContentController {
 
   // 글 상세정보 가져오기
   @Get('/:id')
+  @UsePipes(ValidationPipe)
   getContentById(@Param('id') id: number): Promise<object> {
     this.logger.debug(`getContentById() : ${id}`);
     return this.contentsService.getContentById(id, this.userService);
@@ -61,6 +57,7 @@ export class ContentController {
 
   // 글 삭제
   @Delete('/:id')
+  @UsePipes(ValidationPipe)
   deleteContent(@Param('id', ParseIntPipe) id): Promise<object> {
     this.logger.debug(`deleteContent()`);
     return this.contentsService.deleteContent(id);
@@ -80,5 +77,4 @@ export class ContentController {
       this.boardService,
     );
   }
-  //ParseIntpipe는 숫자로 잘 오는지 체크한다.
 }
