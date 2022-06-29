@@ -6,6 +6,7 @@ import { UserRepository } from './user.repository';
 import { User } from './entity/user.entity';
 import * as bcrypt from 'bcrypt';
 import { deleteContentDto } from '../content/dto/delete-content.dto';
+import { EmailService } from './email/email.service';
 
 @Injectable()
 export class UserService {
@@ -20,6 +21,13 @@ export class UserService {
     return await this.userRepository.findOne(options);
   }
 
+  async updateSignupToken(userDTO: UserDTO, signupToken: string): Promise<any> {
+    return this.userRepository.update(
+      { username: userDTO.username },
+      { signupVerifyToken: null },
+    );
+  }
+
   async save(userDTO: UserDTO): Promise<UserDTO | undefined> {
     await this.transformPassword(userDTO);
     return await this.userRepository.save(userDTO);
@@ -28,7 +36,7 @@ export class UserService {
   async delete(user_id: number): Promise<any> {
     return this.userRepository.deleteUser(user_id);
   }
-  
+
   async updateHashedRt(user_id: number, hash: any): Promise<any> {
     return this.userRepository.update({ user_id: user_id }, { hashedRt: hash });
   }
@@ -40,11 +48,14 @@ export class UserService {
     );
   }
 
-  async updateThirdPartyToken(username: string, thirdPartyToken:string): Promise<any>{
+  async updateThirdPartyToken(
+    username: string,
+    thirdPartyToken: string,
+  ): Promise<any> {
     return this.userRepository.update(
-      { username: username},
-      {thirdPartyToken: thirdPartyToken}
-    )
+      { username: username },
+      { thirdPartyToken: thirdPartyToken },
+    );
   }
 
   async updatePassword(userDTO: UserDTO, new_password: string): Promise<any> {
