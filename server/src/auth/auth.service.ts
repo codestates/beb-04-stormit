@@ -17,6 +17,9 @@ import { ConfigService } from '@nestjs/config';
 import * as argon from 'argon2';
 import { jwtConstants } from './security/constants';
 import { sign } from 'jsonwebtoken';
+import { EmailService } from './email/email.service';
+import { isUUID } from 'class-validator';
+import * as uuid from 'uuid';
 
 export enum Provider {
   GOOGLE = 'google',
@@ -28,7 +31,35 @@ export class AuthService {
     private userService: UserService,
     private jwtService: JwtService,
     private config: ConfigService,
+    private emailService: EmailService,
   ) {}
+
+  private async sendMemberJoinEmail(
+    email: string,
+    signupVerifyToken: string,
+  ): Promise<any> {
+    return await this.emailService.sendMemberJoinVerification(
+      email,
+      signupVerifyToken,
+    );
+  }
+
+  async verifyEmail(signupVerifyToken: string): Promise<string> {
+    // TODO
+    // 1. DB에서 signupVerifyToken으로 회원 가입 처리중인 유저가 있는지 조회하고 없다면 에러 처리
+    // 2. 바로 로그인 상태가 되도록 JWT를 발급
+
+    const userFind: UserDTO = await this.userService.findByFields({
+      where: { signupVerifyToken: signupVerifyToken },
+    });
+
+    if (!userFind) {
+      throw new Error('User does not exist with related signupVerifyToken');
+    }
+
+    return this.userService.updateSignupToken(userFind,null);
+    
+  }
 
   async validateOAuthLogin(
     profile: any,
@@ -64,7 +95,6 @@ export class AuthService {
         userDTO.nickname = profile.displayName;
         userDTO.thirdPartyId = thirdPartyId;
         userDTO.thirdPartyToken = jwt;
-        console.log('debug');
         await this.registerUser(userDTO);
         const userInfo: UserDTO = await this.getInfoByName(userDTO.username);
         console.log(userInfo);
@@ -95,7 +125,11 @@ export class AuthService {
     if (userFind) {
       throw new HttpException('duplicated email', HttpStatus.BAD_REQUEST);
     }
-    return await this.userService.save(newUser);
+    const signupVerifyToken = uuid.v1();
+
+    newUser.signupVerifyToken = signupVerifyToken;
+    await this.userService.save(newUser);
+    return await this.sendMemberJoinEmail(newUser.username, signupVerifyToken);
   }
 
   async verifyPassword(user_id: number, body: any): Promise<any> {
@@ -106,7 +140,7 @@ export class AuthService {
 
   async validateUser(userDTO: UserDTO): Promise<any> {
     const userFind: User = await this.userService.findByFields({
-      where: { username: userDTO.username },
+      where: { username: userDTO.username, signupVerifyToken: null },
     });
 
     if (!userFind) {

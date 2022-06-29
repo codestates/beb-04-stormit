@@ -11,10 +11,12 @@ import {
   Param,
   Delete,
   Patch,
+  Query,
 } from '@nestjs/common';
 import { Request, Response } from 'express';
 import { AuthService } from './auth.service';
 import { UserDTO } from './dto/user.dto';
+import { VerifyEmailDTO } from './dto/verifyEmail.dto';
 import { AuthGuard } from './security/guard/auth.guard';
 import { JwtRefreshGuard } from './security/guard/jwt-refresh.guard';
 import { LocalAuthGuard } from './security/guard/local-auth.guard';
@@ -188,6 +190,15 @@ export class AuthController {
       });
     }
   }
+
+
+  @Post('/email-verify')
+    async verifyEmail(@Query() dto: VerifyEmailDTO): Promise<string> {
+  const { signupVerifyToken } = dto;
+
+  return await this.authService.verifyEmail(signupVerifyToken);
+}
+
   // // 사용자 프로필 가져오기
   // @Get('/:username')
   // getContentById(@Param ('username') username: string): Promise<any> {
