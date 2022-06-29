@@ -155,6 +155,7 @@ export class ContentRepository extends Repository<Content> {
         nickname: _nickname,
         comments: com,
       };
+
       this.logger.log(`${JSON.stringify(obj)}`);
       return obj;
     } else {
