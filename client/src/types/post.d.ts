@@ -42,7 +42,6 @@ type GetPostByIdResponseType = {
 };
 
 type UpdatePostAPIBodyType = {
-  post_id: string;
   board_title: string;
   post_title: string;
   post_content: string;

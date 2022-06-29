@@ -7,22 +7,14 @@ import NavigationRail from "../components/NavigationRail";
 import { Link } from "react-router-dom";
 import theme from "../styles/theme";
 import palette from "../styles/palette";
-import Button from "../components/common/Button";
 import { useSelector } from "../store";
 import MovetoPost from "../components/MovetoPost";
 import { getAllPostAPI } from "../lib/api/post";
 import PersonIcon from "@mui/icons-material/Person";
-import {
-  FAKE_ARRAY,
-  parseDate,
-  shortenPostContents,
-  translateCommunityName,
-} from "../lib/utils";
+import { shortenPostContents, translateCommunityName } from "../lib/utils";
 import IconButton from "../components/common/IconButton";
 import KeyboardDoubleArrowDownIcon from "@mui/icons-material/KeyboardDoubleArrowDown";
 import Skeleton from "../components/common/Skeleton";
-import Chip from "../components/common/Chip";
-import { staticCommunityList } from "../lib/staticData";
 
 const Base = styled.div`
   display: flex;
@@ -49,7 +41,6 @@ const Base = styled.div`
     font-weight: 500;
     color: ${theme.primary};
     padding-bottom: 1rem;
-    padding-top: 2rem;
   }
 
   .stormit-subtitle {
@@ -90,8 +81,11 @@ const Base = styled.div`
     margin: 1rem 0;
   }
 
-  .observer {
-    border-bottom: 1px solid transparent;
+  .skeleton-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin: 1rem;
   }
 
   // 600px
@@ -128,7 +122,6 @@ const Base = styled.div`
 
 const Home: React.FC = () => {
   const [postList, setPostList] = useState<GetAllPostsResponseType>([]);
-  const [fakePostList, setFakePostList] = useState(FAKE_ARRAY);
   const [loading, setLoading] = useState(false);
 
   const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
@@ -136,9 +129,8 @@ const Home: React.FC = () => {
   const onClickMorePosts = () => {
     setLoading(true);
     setTimeout(() => {
-      setFakePostList((fakePostList) => [...fakePostList, ...FAKE_ARRAY]);
       setLoading(false);
-    }, 500);
+    }, 2000);
   };
 
   useEffect(() => {
@@ -164,20 +156,10 @@ const Home: React.FC = () => {
     <Base>
       <NavigationRail />
       <section className="contents">
+        {isLoggedIn && <MovetoPost />}
         <div className="contents-top">
           <h1 className="stormit">Stormit.</h1>
         </div>
-        {/* <Link to="/communities">
-          <h2 className="section-title">커뮤니티</h2>
-        </Link>
-        <div className="board-list-wrapper">
-          {boardList.map((community) => (
-            <Link to={`/community/${community}`}>
-              <Chip size="large">{translateCommunityName(community)}</Chip>
-            </Link>
-          ))}
-        </div> */}
-        {isLoggedIn && <MovetoPost />}
         <h2 className="section-title">전체 글 보기</h2>
         <ul className="posts-wrapper">
           {postList &&
@@ -194,24 +176,12 @@ const Home: React.FC = () => {
               />
             ))}
           {!postList && <p>글이 없습니다.</p>}
-          {/* {fakePostList.map((_, index) => (
-            <PostCard
-              key={index}
-              postId={0}
-              commentCount={index}
-              title="이건 그냥 글 제목임"
-              community="리그 오브 레전드"
-              createdAt={parseDate(new Date())}
-              contents="이건 그냥 글 내용임 이건 그냥 글 내용임 이건 그냥 글 내용임 이건 그냥 글 내용임 이건 그냥 글 내용임 이건 그냥 글 내용임 이건 그냥 글 내용임 이건 그냥 글 내용임..."
-              nickname="노논"
-            />
-          ))} */}
         </ul>
         {loading &&
           Array(5)
             .fill(0)
             .map((_, index) => (
-              <div key={index}>
+              <div key={index} className="skeleton-wrapper">
                 <Skeleton width="40%" variant="text" />
                 <Skeleton width="100%" height="4rem" />
               </div>

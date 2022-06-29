@@ -18,8 +18,8 @@ export const getPostByIdAPI = (id: number) =>
   axios.get<GetPostByIdResponseType>(`/board/post/${id}`);
 
 // 게시글 수정
-export const updatePostAPI = (body: UpdatePostAPIBodyType) =>
-  axios.post("/board/post", body);
+export const updatePostAPI = (id: number, body: UpdatePostAPIBodyType) =>
+  axios.put(`/board/post/${id}`, body);
 
 // 게시글 id로 게시글 삭제
 export const deletePostByIdAPI = (id: number) =>

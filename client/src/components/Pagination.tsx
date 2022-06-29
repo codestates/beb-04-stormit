@@ -4,6 +4,7 @@ import ArrowLeftIcon from "@mui/icons-material/ArrowLeft";
 import ArrowRightIcon from "@mui/icons-material/ArrowRight";
 import IconButton from "./common/IconButton";
 import palette from "../styles/palette";
+import { useLocation, useNavigate } from "react-router-dom";
 
 interface BaseProps {
   pageListIndex: number;
@@ -61,6 +62,10 @@ const Pagination: React.FC<Props> = ({
 }) => {
   const [pageListIndex, setPageListIndex] = useState(1);
 
+  const location = useLocation();
+
+  const navigate = useNavigate();
+
   const totalPage = Array(Math.ceil(totalPosts / 10))
     .fill(0)
     .map((_, index) => index + 1);
@@ -75,6 +80,11 @@ const Pagination: React.FC<Props> = ({
 
     setPageListIndex((pageListIndex: number) => pageListIndex - 1);
     setCurrentPage(currentPageList[currentPageList.length - 1] - 5);
+    navigate(
+      `${location.pathname}?page=${
+        currentPageList[currentPageList.length - 1] - 5
+      }`
+    );
   };
 
   const loadNextPageList = () => {
@@ -82,6 +92,7 @@ const Pagination: React.FC<Props> = ({
 
     setPageListIndex((pageListIndex: number) => pageListIndex + 1);
     setCurrentPage(currentPageList[0] + 5);
+    navigate(`${location.pathname}?page=${currentPageList[0] + 5}`);
   };
 
   return (
@@ -97,6 +108,7 @@ const Pagination: React.FC<Props> = ({
           color={currentPage === page ? "primary" : "default"}
           onClick={() => {
             setCurrentPage(page);
+            navigate(`${location.pathname}?page=${page}`);
             console.log(page);
           }}
         >

@@ -7,7 +7,7 @@ import Input from "../components/common/Input";
 import Select from "../components/common/Select";
 import { updatePostAPI } from "../lib/api/post";
 import { staticCommunityList } from "../lib/staticData";
-import { getLastPathname } from "../lib/utils";
+import { getLastPathname, translateCommunityName } from "../lib/utils";
 import { useSelector } from "../store";
 import { CKEditor } from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
@@ -61,7 +61,7 @@ const Edit: React.FC = () => {
 
   const location = useLocation();
 
-  const postId = getLastPathname(location.pathname);
+  const postId = Number(getLastPathname(location.pathname));
 
   const onChangeCommunity = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setCommunity(event.target.value);
@@ -83,15 +83,16 @@ const Edit: React.FC = () => {
     }
 
     const body = {
-      post_id: postId,
       board_title: community,
       post_title: title,
       post_content: contents,
     };
 
     try {
-      await updatePostAPI(body);
+      await updatePostAPI(postId, body);
+      navigate(`/community/post/${postId}`);
     } catch (error) {
+      alert("무언가 잘못되었습니다. 다시 시도해주세요.");
       console.log(error);
     }
   };
@@ -108,7 +109,7 @@ const Edit: React.FC = () => {
       <Select value={community} onChange={onChangeCommunity}>
         {staticCommunityList.map((community, index) => (
           <option key={index} value={community}>
-            {community}
+            {translateCommunityName(community)}
           </option>
         ))}
       </Select>

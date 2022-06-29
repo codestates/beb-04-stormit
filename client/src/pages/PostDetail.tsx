@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import styled, { css } from "styled-components";
 import NavigationRail from "../components/NavigationRail";
 import Textarea from "../components/common/Textarea";
@@ -18,11 +18,7 @@ import {
   submitCommentAPI,
 } from "../lib/api/post";
 import { useLocation, useNavigate } from "react-router-dom";
-import {
-  getLastPathname,
-  parseDate,
-  translateCommunityName,
-} from "../lib/utils";
+import { getLastPathname, translateCommunityName } from "../lib/utils";
 import { postActions } from "../store/postSlice";
 import parse from "html-react-parser";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
@@ -218,6 +214,45 @@ const PostDetail: React.FC = () => {
 
   const isMyPost = postData.nickname === nickname;
 
+  const fetchPost = useCallback(async () => {
+    try {
+      const response = await getPostByIdAPI(postId);
+
+      console.log(response.data);
+      const {
+        post_title,
+        post_content,
+        nickname,
+        created_at,
+        board_title,
+        comments,
+      } = response.data;
+
+      setPostData({
+        postTitle: post_title,
+        postContents: post_content,
+        nickname: nickname,
+        createdAt: created_at,
+        community: board_title,
+      });
+
+      comments &&
+        comments.map((comment) =>
+          setCommentsData((commentsData) => [
+            ...commentsData,
+            {
+              nickname: comment.nickname,
+              commentContent: comment.comment_content,
+              commentId: comment.comment_id,
+              createdAt: comment.created_at,
+            },
+          ])
+        );
+    } catch (error) {
+      console.log(error);
+    }
+  }, [postId]);
+
   const toggleDropdownMenu = () => {
     setDropdownOpen((dropdownOpen) => !dropdownOpen);
   };
@@ -231,17 +266,11 @@ const PostDetail: React.FC = () => {
   const onClickEditButton = () => {
     dispatch(
       postActions.setPostState({
-        title: "글 수정 제목",
-        contents: "글 수정 내용",
-        community: "공지사항",
+        title: postData.postTitle,
+        contents: postData.postContents,
+        community: translateCommunityName(postData.community),
       })
     );
-
-    // dispatch(postActions.setPostState({
-    //   title: postData.postTitle,
-    //   contents: postData.postContents,
-    //   community: postData.community
-    // }))
 
     navigate(`/edit/${postId}`);
   };
@@ -276,53 +305,16 @@ const PostDetail: React.FC = () => {
     console.log(body);
     try {
       await submitCommentAPI(body);
+      await fetchPost();
+      setCommentContent("");
     } catch (error) {
       console.log(error);
     }
   };
 
   useEffect(() => {
-    const fetchPost = async () => {
-      try {
-        const response = await getPostByIdAPI(postId);
-
-        console.log(response.data);
-        const {
-          post_title,
-          post_content,
-          nickname,
-          created_at,
-          board_title,
-          comments,
-        } = response.data;
-
-        setPostData({
-          postTitle: post_title,
-          postContents: post_content,
-          nickname: nickname,
-          createdAt: created_at,
-          community: board_title,
-        });
-
-        comments &&
-          comments.map((comment) =>
-            setCommentsData((commentsData) => [
-              ...commentsData,
-              {
-                nickname: comment.nickname,
-                commentContent: comment.comment_content,
-                commentId: comment.comment_id,
-                createdAt: comment.created_at,
-              },
-            ])
-          );
-      } catch (error) {
-        console.log(error);
-      }
-    };
-
     fetchPost();
-  }, [postId, navigate]);
+  }, [fetchPost]);
 
   return (
     <Base vote={vote}>
@@ -402,34 +394,15 @@ const PostDetail: React.FC = () => {
             <KeyboardArrowDownIcon />
           </IconButton>
         </div>
-        <p className="comment-title">댓글 {commentsData.length || "3"}개</p>
-        {commentsData &&
-          commentsData.map((comment) => (
-            <CommentCard
-              nickname={comment.nickname}
-              createdAt={comment.createdAt}
-              commentContents={comment.commentContent}
-              commentId={comment.commentId}
-            />
-          ))}
-        {/* <CommentCard
-          nickname="너구리"
-          createdAt={parseDate(new Date())}
-          commentContents="와"
-          commentId={0}
-        />
-        <CommentCard
-          nickname="너구리"
-          createdAt={parseDate(new Date())}
-          commentContents="와"
-          commentId={0}
-        />
-        <CommentCard
-          nickname="너구리"
-          createdAt={parseDate(new Date())}
-          commentContents="와"
-          commentId={0}
-        /> */}
+        <p className="comment-title">댓글 {commentsData.length}개</p>
+        {commentsData.map((comment) => (
+          <CommentCard
+            nickname={comment.nickname}
+            createdAt={comment.createdAt}
+            commentContents={comment.commentContent}
+            commentId={comment.commentId}
+          />
+        ))}
         {isLoggedIn && (
           <>
             <p className="comment-submit-title">댓글 쓰기</p>

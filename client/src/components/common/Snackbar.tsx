@@ -3,8 +3,25 @@ import styled, { css } from "styled-components";
 import CloseIcon from "@mui/icons-material/Close";
 import palette from "../../styles/palette";
 
+const getSnackbarColor = (color?: "primary" | "green" | "red") => {
+  switch (color) {
+    case "primary":
+      return css`
+        background-color: ${palette.blue[500]};
+      `;
+    case "green":
+      return css`
+        background-color: ${palette.green[500]};
+      `;
+    case "red":
+      return css`
+        background-color: ${palette.red[500]};
+      `;
+  }
+};
+
 interface BaseProps {
-  color?: string;
+  color?: "primary" | "green" | "red";
   open: boolean;
   autoHideDuration?: number;
 }
@@ -41,11 +58,12 @@ const Base = styled.div<BaseProps>`
 
     color: white;
     width: 15rem; // 240px
-    height: 3.5rem; // 56px
+    height: 3rem; // 48px
     padding: 1rem; // 16px
-    background-color: ${palette.green[500]};
+    background-color: ${palette.gray[700]};
+    border-radius: 0.25rem;
 
-    background-color: ${({ color }) => color};
+    background-color: ${({ color }) => getSnackbarColor(color)};
   }
 
   .snackbar-close-icon {
@@ -77,7 +95,7 @@ const Base = styled.div<BaseProps>`
 
 interface Props extends React.HTMLAttributes<HTMLDivElement> {
   children: React.ReactNode;
-  color?: string;
+  color?: "primary" | "green" | "red";
   autoHideDuration?: number;
   open: boolean;
   onClose?: () => void;
@@ -93,15 +111,13 @@ const Snackbar: React.FC<Props> = ({
   icon,
   ...props
 }) => {
-  // 수정 필요함
   useEffect(() => {
-    if (autoHideDuration && onClose) {
-      setTimeout(() => {
-        onClose();
-      }, autoHideDuration);
-    }
+    if (!(autoHideDuration && onClose)) return;
+    const time = setTimeout(() => {
+      onClose();
+    }, autoHideDuration);
 
-    return () => clearTimeout();
+    return () => clearTimeout(time);
   }, [autoHideDuration, onClose]);
 
   return (

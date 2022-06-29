@@ -12,7 +12,7 @@ import { useSelector, useDispatch } from "../store";
 import { useNavigate } from "react-router-dom";
 import { snackbarActions } from "../store/snackbarSlice";
 // login API
-import { authenticateAPI, googleLoginAPI, loginAPI } from "../lib/api/user";
+import { authenticateAPI, loginAPI } from "../lib/api/user";
 import { setCookie } from "../lib/utils";
 import Input from "../components/common/Input";
 
