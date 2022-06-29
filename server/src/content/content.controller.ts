@@ -17,6 +17,7 @@ import { Content } from './entity/content.entity';
 import { UpdateDataDto } from './dto/updateData.dto';
 import { BoardService } from 'src/board/board.service';
 import { UserService } from 'src/auth/user.service';
+import { CommentService } from 'src/comment/comment.service';
 
 @Controller('board/post') // @UseGuards(AuthGuard())
 export class ContentController {
