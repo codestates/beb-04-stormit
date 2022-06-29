@@ -10,6 +10,7 @@ import { JwtStrategy } from './security/strategy/passport.jwt.strategy';
 import { JwtRefreshStrategy } from './security/strategy/jwt-refresh.strategy';
 import { jwtConstants } from './security/constants';
 import { GoogleStrategy } from './security/strategy/google.strategy';
+import { EmailService } from './email/email.service';
 
 @Module({
   imports: [
@@ -30,6 +31,7 @@ import { GoogleStrategy } from './security/strategy/google.strategy';
     UserService,
     JwtStrategy,
     JwtRefreshStrategy,
+    EmailService
   ],
 })
 export class AuthModule {}
