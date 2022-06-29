@@ -59,8 +59,9 @@ export class ContentController {
   // 글 삭제
   @Delete('/:id')
   @UsePipes(ValidationPipe)
-  deleteContent(@Param('id', ParseIntPipe) id): Promise<object> {
+  async deleteContent(@Param('id', ParseIntPipe) id): Promise<object> {
     this.logger.debug(`deleteContent()`);
+
     return this.contentsService.deleteContent(id);
   }
 
