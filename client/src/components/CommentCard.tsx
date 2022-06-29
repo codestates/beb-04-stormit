@@ -143,6 +143,7 @@ const CommentCard: React.FC<Props> = ({
 
     try {
       await updateCommentAPI(commentId, body);
+      setEditMode(false);
       if (refresh) refresh();
     } catch (error) {
       console.log(error);

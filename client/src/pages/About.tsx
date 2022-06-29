@@ -14,7 +14,7 @@ const Base = styled.div`
   }
 
   .about-description {
-    font-size: 2rem;
+    font-size: 1.5rem; // 24px
     font-weight: 500;
     color: ${palette.gray[400]};
   }
