@@ -181,6 +181,7 @@ export class AuthController {
       req.user.user_id,
       body,
     );
+    console.log(result);
     if (result.affected === 1) {
       return res.send({
         success: true,
