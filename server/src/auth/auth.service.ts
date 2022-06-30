@@ -79,38 +79,32 @@ export class AuthService {
         thirdPartyId,
         provider,
       };
-
+      console.log('1');
       const jwt: string = sign(payload, jwtConstants.JWT_ACCESS_TOKEN_SECRET, {
         expiresIn: 3600,
       });
-
+      console.log('2');
       const userFind: UserDTO = await this.userService.findByFields({
         where: { thirdPartyId: thirdPartyId },
       });
       const userInfo: UserDTO = userFind;
+      console.log('3');
       if (!userFind) {
+        console.log('4');
         const userDTO = new UserDTO();
         // userDTO.username = 'email';
-        userDTO.username = profile.emails[0];
+        userDTO.username = profile.emails[0].value;
         userDTO.password = thirdPartyId;
         userDTO.nickname = profile.displayName;
         userDTO.thirdPartyId = thirdPartyId;
         userDTO.thirdPartyToken = jwt;
-        await this.registerUser(userDTO);
-        const userInfo: UserDTO = await this.getInfoByName(userDTO.username);
-        console.log(userInfo);
+        console.log(userDTO);
+        await this.registerOAuthUser(userDTO);
+        // const userInfo: UserDTO = await this.getInfoByName(userDTO.username);
+        // console.log(userInfo);
       } else {
         await this.userService.updateThirdPartyToken(userInfo.username, jwt);
       }
-
-      // if(!userFind) {
-      //     user = await this.userService.
-      // }
-
-      // let newUser: UserDTO = UserDTO(
-      //     "username" : thirdPartyId
-      // )
-      // return await this.userService.save(newUser);
 
       return { jwt, userInfo };
     } catch (err) {
@@ -133,10 +127,39 @@ export class AuthService {
     return await this.sendMemberJoinEmail(newUser.username, signupVerifyToken);
   }
 
+  async registerOAuthUser(newUser: UserDTO): Promise<UserDTO> {
+    console.log(newUser);
+    const userFind: UserDTO = await this.userService.findByFields({
+      where: { username: newUser.username },
+    });
+    if (userFind) {
+      throw new HttpException('duplicated email', HttpStatus.BAD_REQUEST);
+    }
+    return await this.userService.save(newUser);
+  }
+
   async verifyPassword(user_id: number, body: any): Promise<any> {
     const userFind: User = await this.userService.findByFields({
       where: { user_id: user_id },
     });
+    if (!userFind) {
+      throw new UnauthorizedException();
+    }
+
+    const validatePassword = await bcrypt.compare(
+      body.current_password,
+      userFind.password,
+    );
+
+    if (!validatePassword) {
+      throw new UnauthorizedException();
+    } else {
+      const result = await this.userService.updatePassword(
+        userFind,
+        body.new_password,
+      );
+      return result;
+    }
   }
 
   async findPassword(userDTO: UserDTO): Promise<any> {
