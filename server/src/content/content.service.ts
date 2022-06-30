@@ -66,8 +66,10 @@ export class ContentService {
     boardService: BoardService,
   ): Promise<object> {
     const { board_title } = updateDataDto;
-    let board_id = 1;
-    if (board_title === 'ethereum') {
+    let board_id = 0;
+    if (board_title === 'bitcoin') {
+      board_id = 1;
+    } else if (board_title === 'ethereum') {
       board_id = 2;
     } else if (board_title === 'solana') {
       board_id = 3;

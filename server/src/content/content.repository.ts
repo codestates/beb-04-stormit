@@ -89,7 +89,7 @@ export class ContentRepository extends Repository<Content> {
     id: number,
     updateDataDto: UpdateDataDto,
   ): Promise<object> {
-    const { post_title, post_content } = updateDataDto;
+    const { board_title, post_title, post_content } = updateDataDto;
     this.logger.log(`updateContent() : ${updateDataDto}`);
 
     let content = await this.findOne(id);
