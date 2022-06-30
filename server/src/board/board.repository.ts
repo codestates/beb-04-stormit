@@ -56,6 +56,8 @@ export class BoardRepository extends Repository<Board> {
           views,
         };
       });
+
+      // return [...content_set].reverse();
       return content_set;
     });
     const data = new Array(0);
@@ -94,6 +96,7 @@ export class BoardRepository extends Repository<Board> {
       },
       {
         relations: ['contents'],
+        // order: { id: 'DESC' },
       },
     );
 
@@ -125,7 +128,7 @@ export class BoardRepository extends Repository<Board> {
         },
       );
       this.logger.debug(`getBoardByTitle () : ${JSON.stringify(result)}`);
-      return result;
+      return result.reverse();
     } else {
       throw new BadRequestException(`Board Title not found : ${_board_title} `);
     }

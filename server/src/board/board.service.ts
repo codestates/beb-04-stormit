@@ -13,7 +13,7 @@ export class BoardService {
   private logger = new Logger('BoardService');
 
   async getBoardInfo(): Promise<object> {
-    this.logger.debug(`getAllBoards()`);
+    this.logger.debug(`getBoardInfo()`);
     return this.boardRepository.getBoardInfo();
   }
   getBoardByTitle(board_title): Promise<object> {
