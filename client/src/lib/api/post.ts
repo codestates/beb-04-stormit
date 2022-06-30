@@ -25,6 +25,17 @@ export const updatePostAPI = (id: number, body: UpdatePostAPIBodyType) =>
 export const deletePostByIdAPI = (id: number) =>
   axios.delete(`/board/post/${id}`);
 
+// 게시글 추천
+export const likePostAPI = (id: number) =>
+  axios.get(`/board/post/thumbup/${id}`);
+
+// 게시글 비추천
+export const dislikePostAPI = (id: number) =>
+  axios.get(`/board/post/thumbdown/${id}`);
+
+// 게시글 조회
+export const viewPostAPI = (id: number) => axios.get(`/board/post/view/${id}`);
+
 /* ------------------------ 댓글 관련 API ------------------------ */
 
 // 댓글 작성

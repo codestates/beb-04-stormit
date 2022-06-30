@@ -14,7 +14,9 @@ import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import theme from "../styles/theme";
 import {
   deletePostByIdAPI,
+  dislikePostAPI,
   getPostByIdAPI,
+  likePostAPI,
   submitCommentAPI,
 } from "../lib/api/post";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -24,9 +26,11 @@ import parse from "html-react-parser";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import Menu from "../components/common/Menu";
 import MenuItem from "../components/common/MenuItem";
+import RefreshIcon from "@mui/icons-material/Refresh";
+import { debounce } from "../lib/utils";
 
 interface BaseProps {
-  vote: number;
+  likes: number;
 }
 
 const Base = styled.div<BaseProps>`
@@ -87,6 +91,8 @@ const Base = styled.div<BaseProps>`
   .post-detail-views {
     font-size: 0.875rem; // 14px
     color: ${palette.gray[400]};
+
+    display: none;
   }
 
   .post-detail-created-at {
@@ -101,32 +107,32 @@ const Base = styled.div<BaseProps>`
   }
 
   .post-detail-contents {
-    padding-top: 1rem; // 16px
+    padding: 2rem 0; // 16px
     line-height: 1.6;
   }
 
-  .post-detail-vote-area {
+  .post-detail-likes-area {
     display: flex;
     justify-content: center;
     align-items: center;
     gap: 0.5rem;
   }
 
-  .post-detail-vote {
+  .post-detail-likes {
     font-size: 1.5rem;
 
-    ${({ vote }) => {
-      if (vote > 0) {
+    ${({ likes }) => {
+      if (likes > 0) {
         return css`
           color: ${theme.primary};
         `;
       }
-      if (vote === 0) {
+      if (likes === 0) {
         return css`
           color: ${palette.black};
         `;
       }
-      if (vote < 0) {
+      if (likes < 0) {
         return css`
           color: ${palette.red[500]};
         `;
@@ -153,9 +159,15 @@ const Base = styled.div<BaseProps>`
     right: 0rem;
   }
 
+  .comment-title-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 1rem; // 16px
+  }
+
   .comment-title {
     font-size: 1.5rem; // 24px
-    padding-top: 1rem; // 16px
   }
 
   .comment-submit-title {
@@ -166,7 +178,10 @@ const Base = styled.div<BaseProps>`
   .comment-submit-button-wrapper {
     display: flex;
     justify-content: flex-end;
+    align-items: center;
+    gap: 1rem;
     margin-bottom: 2rem;
+    color: ${palette.gray[400]};
   }
 
   // 600px
@@ -174,6 +189,10 @@ const Base = styled.div<BaseProps>`
     .contents {
       margin: 1rem auto;
       width: 37.5rem; // 600px
+    }
+
+    .post-detail-views {
+      display: block;
     }
   }
 
@@ -193,6 +212,8 @@ const PostDetail: React.FC = () => {
     nickname: "",
     community: "",
     createdAt: "",
+    views: 0,
+    likes: 0,
   });
   const [commentsData, setCommentsData] = useState<
     {
@@ -206,7 +227,6 @@ const PostDetail: React.FC = () => {
 
   const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
   const nickname = useSelector((state) => state.user.nickname);
-  const vote = useSelector((state) => state.post.vote);
   const userId = useSelector((state) => state.user.userId);
 
   const dispatch = useDispatch();
@@ -231,6 +251,8 @@ const PostDetail: React.FC = () => {
         created_at,
         board_title,
         comments,
+        views,
+        likes,
       } = response.data;
 
       setPostData({
@@ -239,13 +261,16 @@ const PostDetail: React.FC = () => {
         nickname: nickname,
         createdAt: created_at,
         community: board_title,
+        views: views,
+        likes: likes,
       });
 
       comments && setCommentsData(comments);
     } catch (error) {
       console.log(error);
+      navigate("/deleted", { replace: true });
     }
-  }, [postId]);
+  }, [postId, navigate]);
 
   const toggleDropdownMenu = () => {
     setDropdownOpen((dropdownOpen) => !dropdownOpen);
@@ -255,6 +280,10 @@ const PostDetail: React.FC = () => {
     event: React.ChangeEvent<HTMLTextAreaElement>
   ) => {
     setCommentContent(event.target.value);
+  };
+
+  const onClickRefreshButton = () => {
+    debounce(fetchPost());
   };
 
   const onClickEditButton = () => {
@@ -281,15 +310,34 @@ const PostDetail: React.FC = () => {
     }
   };
 
-  const onClickVoteUpButton = () => {
-    dispatch(postActions.setVoteUp());
+  const onClickLikeButton = async () => {
+    try {
+      const response = await likePostAPI(postId);
+      console.log(response);
+      setTimeout(() => {
+        fetchPost();
+      }, 100);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
-  const onClickVoteDownButton = () => {
-    dispatch(postActions.setVoteDown());
+  const onClickDislikeButton = async () => {
+    try {
+      const response = await dislikePostAPI(postId);
+      console.log(response);
+      fetchPost();
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const submitComment = async () => {
+    if (commentContent.length > 200) {
+      alert("댓글 길이 제한 수를 초과하였습니다.");
+      return;
+    }
+
     const body = {
       user_id: userId,
       post_id: postId,
@@ -311,7 +359,7 @@ const PostDetail: React.FC = () => {
   }, [fetchPost]);
 
   return (
-    <Base vote={vote}>
+    <Base likes={postData.likes}>
       <NavigationRail />
       <div className="contents">
         <div className="contents-top">
@@ -334,7 +382,7 @@ const PostDetail: React.FC = () => {
               <span className="post-detail-created-at">
                 {postData.createdAt}
               </span>
-              <span className="post-detail-views">조회수 0</span>
+              <span className="post-detail-views">조회수 {postData.views}</span>
             </div>
             <div className="post-detail-metadata-right-area">
               {isMyPost && (
@@ -380,18 +428,23 @@ const PostDetail: React.FC = () => {
         </div>
         <div className="post-detail-chip-wrapper">
           <Chip>태그</Chip>
-          <Chip>커뮤니티</Chip>
+          <Chip>{translateCommunityName(postData.community)}</Chip>
         </div>
-        <div className="post-detail-vote-area">
-          <IconButton onClick={onClickVoteUpButton}>
+        <div className="post-detail-likes-area">
+          <IconButton onClick={onClickLikeButton}>
             <KeyboardArrowUpIcon />
           </IconButton>
-          <span className="post-detail-vote">{vote}</span>
-          <IconButton onClick={onClickVoteDownButton}>
+          <span className="post-detail-likes">{postData.likes}</span>
+          <IconButton onClick={onClickDislikeButton}>
             <KeyboardArrowDownIcon />
           </IconButton>
         </div>
-        <p className="comment-title">댓글 {commentsData.length}개</p>
+        <div className="comment-title-wrapper">
+          <p className="comment-title">댓글 {commentsData.length}개</p>
+          <IconButton onClick={onClickRefreshButton}>
+            <RefreshIcon />
+          </IconButton>
+        </div>
         {commentsData.map((comment, index) => (
           <CommentCard
             key={index}
@@ -412,6 +465,7 @@ const PostDetail: React.FC = () => {
               height="6rem"
             />
             <div className="comment-submit-button-wrapper">
+              <p>({commentContent.length}/200자)</p>
               <Button variant="contained" onClick={submitComment}>
                 등록
               </Button>

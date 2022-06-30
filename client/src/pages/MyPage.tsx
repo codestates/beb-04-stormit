@@ -104,6 +104,7 @@ const Base = styled.div`
   .profile-nickname {
     font-size: 2rem; // 32px
     font-weight: 500;
+    margin-bottom: 0.2rem;
   }
 
   .profile-nickname-input {
@@ -137,6 +138,8 @@ const Mypage: React.FC = () => {
   const [myPostList, setMyPostList] = useState<GetAllPostsResponseType>([]);
 
   const nickname = useSelector((state) => state.user.nickname);
+  const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
+  console.log(isLoggedIn);
 
   const dispatch = useDispatch();
 
@@ -174,13 +177,17 @@ const Mypage: React.FC = () => {
 
   // 인증
   useEffect(() => {
-    console.log("@@@ mypage authenticate @@@");
-    try {
-      authenticate();
-    } catch (error) {
-      navigate("/login");
-    }
-  }, [authenticate, navigate]);
+    const protectPage = async () => {
+      try {
+        await authenticate();
+        !isLoggedIn && navigate("/login", { replace: true });
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    protectPage();
+  }, [authenticate, navigate, isLoggedIn]);
 
   // 게시물 가져오기
   useEffect(() => {
@@ -209,12 +216,12 @@ const Mypage: React.FC = () => {
             <CameraAltIcon className="profile-image-edit-button" />
           </div>
           {!editMode && (
-            <>
+            <div className="profile-nickname-wrapper">
               <p className="profile-nickname">{nickname}</p>
-              <IconButton>
-                <EditIcon onClick={onClickEditButton} />
+              <IconButton onClick={onClickEditButton}>
+                <EditIcon />
               </IconButton>
-            </>
+            </div>
           )}
           {editMode && (
             <>
@@ -257,6 +264,8 @@ const Mypage: React.FC = () => {
                 commentCount={post.comment_count}
                 nickname={post.nickname}
                 createdAt={post.created_at}
+                views={post.views}
+                likes={post.likes}
               />
             ))}
             {myPostList.length === 0 && (

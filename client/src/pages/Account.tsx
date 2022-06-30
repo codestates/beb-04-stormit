@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import Button from "../components/common/Button";
@@ -9,6 +9,7 @@ import { useDispatch, useSelector } from "../store";
 import { userActions } from "../store/userSlice";
 import palette from "../styles/palette";
 import ErrorIcon from "@mui/icons-material/Error";
+import useAuthenticate from "../hooks/useAuthenticate";
 
 const Base = styled.div`
   display: flex;
@@ -36,7 +37,9 @@ const Base = styled.div`
 
   .account-email-wrapper {
     display: flex;
+    align-items: center;
     gap: 0.5rem; // 8px
+    margin-bottom: 1rem;
   }
 
   .private-key-wrapper {
@@ -88,8 +91,11 @@ const Account: React.FC = () => {
 
   const email = useSelector((state) => state.user.email);
   const userId = useSelector((state) => state.user.userId);
+  const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
 
   const navigate = useNavigate();
+
+  const authenticate = useAuthenticate();
 
   const dispatch = useDispatch();
 
@@ -143,6 +149,19 @@ const Account: React.FC = () => {
     }
   };
 
+  useEffect(() => {
+    const protectPage = async () => {
+      try {
+        await authenticate();
+        !isLoggedIn && navigate("/login", { replace: true });
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    protectPage();
+  }, [authenticate, navigate, isLoggedIn]);
+
   return (
     <Base>
       <NavigationRail />
@@ -154,12 +173,6 @@ const Account: React.FC = () => {
             {email || "nononcrust@gmail.com"}
           </span>
         </p>
-        <div className="private-key-wrapper">
-          <span>개인 키:</span>
-          <span className="private-key">
-            anewafkv-ajfnzkvkx1123-dffnwkfsd-sfwefl
-          </span>
-        </div>
         <label className="password-label">현재 비밀번호</label>
         <div className="password-input-wrapper">
           <Input

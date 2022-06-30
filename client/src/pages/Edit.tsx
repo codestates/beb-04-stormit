@@ -10,6 +10,7 @@ import { getLastPathname, translateCommunityName } from "../lib/utils";
 import { useSelector } from "../store";
 import { CKEditor } from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
+import useAuthenticate from "../hooks/useAuthenticate";
 
 const Base = styled.div`
   display: flex;
@@ -55,10 +56,13 @@ const Edit: React.FC = () => {
   const prevTitle = useSelector((state) => state.post.title);
   const prevContents = useSelector((state) => state.post.contents);
   const prevCommunity = useSelector((state) => state.post.community);
+  const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
 
   const navigate = useNavigate();
 
   const location = useLocation();
+
+  const authenticate = useAuthenticate();
 
   const postId = Number(getLastPathname(location.pathname));
 
@@ -95,6 +99,19 @@ const Edit: React.FC = () => {
       console.log(error);
     }
   };
+
+  useEffect(() => {
+    const protectPage = async () => {
+      try {
+        await authenticate();
+        !isLoggedIn && navigate("/login", { replace: true });
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    protectPage();
+  }, [authenticate, navigate, isLoggedIn]);
 
   useEffect(() => {
     setTitle(prevTitle);
