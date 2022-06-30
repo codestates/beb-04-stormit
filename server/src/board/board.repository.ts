@@ -105,6 +105,7 @@ export class BoardRepository extends Repository<Board> {
     if (found) {
       const result = found.contents.map(
         ({
+          user,
           post_content,
           post_title,
           created_at,
@@ -117,6 +118,7 @@ export class BoardRepository extends Repository<Board> {
           const time = this.getTime(_date);
           const obj = {
             post_id: id,
+            nickname: user.nickname,
             post_title: post_title,
             post_content: post_content,
             created_at: time,
