@@ -32,4 +32,4 @@ beb-04-stormit
 <img width="1431" alt="Screen Shot 2022-07-01 at 12 09 15 PM" src="https://user-images.githubusercontent.com/94950829/176816001-2348046c-5fa1-4025-8a95-b5dae03cb27b.png">
 
 
-[API Doc]([http://www.google.co.kr](https://www.notion.so/a3f595020cbd4ae88186caffc3bdc7c0?v=a535993222c842f68e13eaa09b74612c))
+[API Doc]([http://www.google.co.kr](https://www.notion.so/a3f595020cbd4ae88186caffc3bdc7c0?v=a535993222c842f68e13eaa09b74612c)
