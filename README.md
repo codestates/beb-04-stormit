@@ -4,8 +4,9 @@
 beb-04-stormit
 
 ## Commands
-* **npm run start:** run webpack dev server.
-* **npm run build:** build project with webpack.
+* **npm run start (on client):** run webpack dev server.
+* **npm run build (on client):** build project with webpack.
+* **npm run start:dev (on server):** run dev server
 
 ## Packages
 * **react**
