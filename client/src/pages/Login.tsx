@@ -50,7 +50,7 @@ const LoginForm = styled.form`
   flex-direction: column;
   border: 1px solid ${palette.gray[300]};
   gap: 1rem;
-  max-height: 26rem;
+  max-height: 30rem;
   max-width: 22rem;
   width: 100%;
   padding: 20px;
@@ -272,7 +272,7 @@ const Login: React.FC = () => {
         />
         <div className="password-container" onClick={onVisible}>
           <div className="password-container-visibile">
-            {!passwordType.visible ? <VisibilityIcon /> : <VisibilityOffIcon />}
+            {!passwordType.visible ? <VisibilityOffIcon /> : <VisibilityIcon />}
           </div>
         </div>
         {!validated && (

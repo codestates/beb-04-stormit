@@ -25,6 +25,10 @@ const Base = styled.div`
   }
 `;
 
+// react-reveal 버전이 현재 react 버전과 맞지 않아서 install 안됨
+// https://elvanov.com/2195 참고
+// 일단 보류 ㅠ.ㅜ
+
 const About: React.FC = () => {
   return (
     <Base>
