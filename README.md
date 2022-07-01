@@ -33,3 +33,5 @@ beb-04-stormit
 
 
 [API Doc](https://www.notion.so/a3f595020cbd4ae88186caffc3bdc7c0?v=a535993222c842f68e13eaa09b74612c)
+<img width="641" alt="image" src="https://user-images.githubusercontent.com/20445415/176899467-1bf07cec-f796-4dc6-831d-ceec47234af6.png">
+
