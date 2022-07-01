@@ -15,7 +15,6 @@ beb-04-stormit
 * **styled-components**
 * **ckeditor**
 * **jsonwebtoken**
-
 * **nestjs**
 * **mysql**
 * **typeorm**
